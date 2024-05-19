@@ -1,4 +1,5 @@
 import { EnvelopeIcon, MapPinIcon } from "@heroicons/react/16/solid";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -37,36 +38,36 @@ const Footer = () => {
         <div className="mb-14 mt-16 w-full [border-bottom:1.7px_solid_rgb(0,_0,_0)]"></div>
         <div className="flex flex-row justify-between max-[991px]:items-center max-[767px]:flex-col max-[767px]:items-start max-[479px]:flex-col-reverse">
           <div className="max-[991px]: text-center font-semibold max-[991px]:py-1 max-[479px]:mb-4 sm:text-center">
-            <a
-              href="#"
+            <Link
+              href="policy"
               className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
             >
-              About
-            </a>
-            <a
-              href="#"
+              Privacy & policy
+            </Link>
+            <Link
+              href="terms"
               className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
             >
-              Features
-            </a>
-            <a
+              Terms & Conditions
+            </Link>
+            <Link
               href="#"
               className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
             >
               Works
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
             >
               Support
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
             >
               Help
-            </a>
+            </Link>
           </div>
           <div className="max-[991px]:flex-none">
             <p className="text-[#636262] max-[479px]:text-sm">

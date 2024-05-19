@@ -24,17 +24,18 @@ const Header = () => {
           {/* Button Wrap */}{" "}
           <div className="flex">
             <a
-              href="#"
+              download
+              href="/myFund-Enterprise-App.apk"
               className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
             >
-              Download
+              Download the App
             </a>
-            <a
+            {/* <a
               href="#"
               className="flex max-w-full flex-row items-center rounded-xl border border-solid border-purple1 px-6 py-3 font-semibold text-purple1 [box-shadow:rgb(76,_40,188)_6px_6px]"
             >
-              <p className="text-black">Download</p>
-            </a>
+              <p className="text-black">Download the App</p>
+            </a> */}
           </div>
         </div>{" "}
         {/* Image Div */}{" "}
