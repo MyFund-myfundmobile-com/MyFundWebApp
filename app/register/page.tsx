@@ -64,7 +64,7 @@ const RegisterPage = () => {
                 href="#"
                 className="flex max-w-[300px] text-white flex-row items-center border-2 border-black bg-purple1 px-8 py-4 font-semibold transition [box-shadow:rgb(0,_0,0)-8px_8px] hover:[box-shadow:rgb(171,_196,_245)_0px_0px]"
               >
-                <p className="mr-6 font-bold">Join Flowspark</p>
+                <p className="mr-6 font-bold">Login</p>
                 <svg
                   className="h-4 w-4 flex-none"
                   fill="currentColor"
@@ -77,9 +77,9 @@ const RegisterPage = () => {
               </a>
             </form>
             <p className="text-sm text-[#636262]">
-              Already have an account?{" "}
+              New to MyFund?{" "}
               <a href="#" className="text-sm font-bold text-purple1">
-                Login now
+                Create a New Account
               </a>
             </p>
           </div>
@@ -96,12 +96,10 @@ const RegisterPage = () => {
               />
             </div>
             <p className="mb-8 text-[#647084] md:mb-12 lg:mb-16">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-              aliquam, purus sit amet luctus venenatis, lectus magna fringilla
-              urna, porttitor rhoncus dolor purus non enim.
+              MyFund is doing better than most savings platform out there.
             </p>
-            <p className="font-bold">John Robert</p>
-            <p className="text-sm">Senior Webflow Developer</p>
+            <p className="font-bold">Emmanuel Abolo</p>
+            <p className="text-sm">Income Boomers</p>
           </div>
         </div>
       </div>

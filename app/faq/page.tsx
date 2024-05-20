@@ -49,9 +49,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-[#647084]">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit ut
-            aliquam,purus sit amet luctus magna fringilla urna
-          </p>
+            These are the common questions our users ask and the best solutions to them </p>
         </div>{" "}
         {/* FAQ Content */}{" "}
         <div className="mb-12 flex flex-col items-center">

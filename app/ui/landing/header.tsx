@@ -17,8 +17,8 @@ const Header = () => {
           </h1>
           <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans">
             <p className="text-xl text-[#636262]">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-              aliquam, purus sit amet luctus venenatis, lectus
+              Let us help you achieve what we have achieved and helping others achieve 
+              Save, Buy Properties, Earn Rent.
             </p>
           </div>{" "}
           {/* Button Wrap */}{" "}
