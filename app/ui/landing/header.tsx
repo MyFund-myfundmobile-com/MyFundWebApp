@@ -17,7 +17,7 @@ const Header = () => {
           </h1>
           <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans">
             <p className="text-xl text-[#636262]">
-              Let's help you achieve what we've achieved and assist others in
+              Let&apos;s help you achieve what we&apos;ve achieved and assist others in
               reaching their goals.
               <div className="mt-1" />
               Grow your funds to the millions with MyFund.
