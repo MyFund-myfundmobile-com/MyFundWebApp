@@ -79,7 +79,7 @@ const RegisterPage = () => {
             <p className="text-sm text-[#636262]">
               New to MyFund?{" "}
               <a href="#" className="text-sm font-bold text-purple1">
-                Create a New Account
+                Create a Free Account
               </a>
             </p>
           </div>
