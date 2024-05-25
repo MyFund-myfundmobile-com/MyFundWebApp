@@ -1,3 +1,4 @@
+// tailwind.config.js
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -22,7 +23,8 @@ const config: Config = {
         cream: "#FBDABB",
         silver: "#EDEFEE",
         black1: "#333333",
-        customBackground: "#F7F5FF", 
+        customBackground: "#F7F5FF",
+        customPurple: "#351265",  
       },
     },
   },

@@ -30,9 +30,17 @@ const handleDownload = () => {
         <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter">
   The {' '}
   <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-    TRUE {' '}
+    TRUE {' '} 
   </span>
-  Way to Save and Invest
+  <span className="text-4xl md:text-6xl font-proxima font-bold">Way to</span>
+
+  <div className="flex items-center">
+  <h1 className="font-proxima font-black text-8xl md:text-6xl text-customPurple ml-2">Save</h1>
+  <span className="text-4xl md:text-6xl font-proxima font-bold ml-2">&</span>
+  <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">Invest</h1>
+</div>
+
+
 </h1>
 
 
