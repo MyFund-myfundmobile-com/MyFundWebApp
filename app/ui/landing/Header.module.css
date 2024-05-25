@@ -33,3 +33,13 @@
     display: flex;
     gap: 10px;
 }
+
+/* Header.module.css */
+.buttonContainer {
+    transition: transform 0.3s ease;
+  }
+  
+  .buttonContainer:hover {
+    transform: scale(1.05);
+  }
+  

@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@heroicons/react": "^2.1.3",
     "@iconify-icons/ion": "^1.2.10",
     "@iconify/react": "^4.1.1",
+    "@mui/material": "^5.15.18",
     "ionicons": "^7.4.0",
     "react": "^18",
     "react-dom": "^18",

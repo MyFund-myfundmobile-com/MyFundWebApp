@@ -1,14 +1,28 @@
 "use client";
-// Header.js
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 import styles from './Header.module.css';
 import { IoLogoApple, IoLogoAndroid } from 'react-icons/io5';
+import { CircularProgress } from '@mui/material'; 
+
 
 
 const Header = () => {
+
+  const [downloading, setDownloading] = useState(false);
+
+const handleDownload = () => {
+  // Simulate downloading process
+  setDownloading(true);
+  setTimeout(() => {
+    setDownloading(false);
+  }, 4000); 
+};
+
+
+
   return (
     <div className={`mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24"`}>
       <div className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}>
@@ -29,22 +43,29 @@ const Header = () => {
             </p>
           </div>
           <div className="flex flex-col">
-            <div className="flex mb-4">
-              {/* <a
-                download
-                href="/myFund-Enterprise-App.apk"
-                className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
-              >
-                Create Free Account
-              </a> */}
+          <div className={`${styles.buttonContainer} flex mb-4`}>
+            {/* Conditionally render CircularProgress when downloading */}
+            {downloading ? (
+              <a
+              download
+              href="/myFund-Enterprise-App.apk"
+              className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+              onClick={handleDownload} // Add onClick event to start downloading
+            >
+               <CircularProgress size={24} /> {" "}  Downloading MyFund Mobile App...
+            </a>
+             
+            ) : (
               <a
                 download
                 href="/myFund-Enterprise-App.apk"
                 className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+                onClick={handleDownload} // Add onClick event to start downloading
               >
                 Download The Mobile App
               </a>
-            </div>
+            )}
+          </div>
 
             <div className={styles.buttonGroup}>
               <PrimaryButton
