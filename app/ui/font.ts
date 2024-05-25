@@ -59,6 +59,11 @@ export const proxima = localFont({
       weight: "800",
       style: "bold",
     },
+    {
+      path: "../../public/fonts/Proxima-Nova-Black.otf",
+      weight: "800",
+      style: "black",
+    },
   ],
   variable: "--font-proxima",
   display: "auto",

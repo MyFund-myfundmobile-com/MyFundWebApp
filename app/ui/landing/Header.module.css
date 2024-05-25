@@ -22,6 +22,11 @@
     animation: hoverAnimation 5s linear infinite; /* Adjust duration and timing here */
 }
 
+.tracking-custom {
+    letter-spacing: 10.01px; /* Adjust the value as needed */
+  }
+  
+
 .smallButton {
     font-size: 12px;
     margin-right: 10px;

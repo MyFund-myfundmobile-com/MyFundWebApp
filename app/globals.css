@@ -12,10 +12,10 @@
 
 html, body, #__next {
   height: 100%;
-  background-color: #F7F5FF; /* Custom background color */
+  background-color: #F7F5FF; 
 }
 
 body {
   margin: 0;
-  font-family: 'var(--font-karla)', sans-serif; /* Ensure you're using your custom font here */
+  font-family: 'var(--font-karla)', sans-serif; 
 }

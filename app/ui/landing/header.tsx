@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 import styles from './Header.module.css';
-import { IoLogoApple, IoLogoAndroid } from 'react-icons/io5';
+import { IoLogoApple, IoLogoAndroid, IoCheckmarkCircle } from 'react-icons/io5';
 import { CircularProgress } from '@mui/material'; 
 
 
@@ -27,17 +27,22 @@ const handleDownload = () => {
     <div className={`mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24"`}>
       <div className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}>
         <div className="max-w-[720px] lg:max-w-[842px]">
-          <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-extrabold">
-            The {' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              TRUE </span>
-            Way to Save and Invest
-          </h1>
+        <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter">
+  The {' '}
+  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+    TRUE {' '}
+  </span>
+  Way to Save and Invest
+</h1>
+
+
           <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans">
-            <p className="text-xl text-[#636262]">
+          <p className="text-xl text-[#636262]">
+              <IoCheckmarkCircle className="inline text-green-500 mr-2" />
               Earn <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               20% p.a. </span> on your funds every January and July!
               <div className="mt-1" /> 
+              <IoCheckmarkCircle className="inline text-green-500 mr-2" />
               Buy properties and <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               earn lifetime rent </span> via our hostels.
             </p>

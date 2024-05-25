@@ -22,7 +22,7 @@ const config: Config = {
         cream: "#FBDABB",
         silver: "#EDEFEE",
         black1: "#333333",
-        customBackground: "#F7F5FF", // Custom background color
+        customBackground: "#F7F5FF", 
       },
     },
   },

@@ -109,6 +109,8 @@ const NavBar = () => {
             LOG IN
           </PrimaryButton>
         </Link>
+
+        
         <Link href="/login">
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
