@@ -29,6 +29,11 @@ export const productSans = localFont({
       weight: "400",
       style: "normal",
     },
+    {
+      path: "../../public/fonts/ProductSans-Black.ttf",
+      weight: "900",
+      style: "black",
+    },
   ],
   variable: "--font-product-sans",
   display: "auto",
@@ -43,9 +48,18 @@ export const nexa = localFont({
 });
 
 export const proxima = localFont({
-  src: "../../public/fonts/Proxima-Nova-Bold.otf",
-  weight: "700",
-  style: "bold",
-  display: "auto",
+  src: [
+    {
+      path: "../../public/fonts/Proxima-Nova-Bold.otf",
+      weight: "700",
+      style: "bold",
+    },
+    {
+      path: "../../public/fonts/Proxima-Nova-Extrabold.otf",
+      weight: "800",
+      style: "bold",
+    },
+  ],
   variable: "--font-proxima",
+  display: "auto",
 });

@@ -9,10 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        karla: ["var(--font-karla)"],
-        "product-sans": ["var(--font-product-sans)"],
-        nexa: ["var(--font-nexa)"],
-        proxima: ["var(--font-proxima)"],
+        karla: ["var(--font-karla)", "sans-serif"],
+        "product-sans": ["var(--font-product-sans)", "sans-serif"],
+        nexa: ["var(--font-nexa)", "sans-serif"],
+        proxima: ["var(--font-proxima)", "sans-serif"],
       },
       colors: {
         purple1: "#4C28BC",
@@ -22,9 +22,11 @@ const config: Config = {
         cream: "#FBDABB",
         silver: "#EDEFEE",
         black1: "#333333",
+        customBackground: "#F7F5FF", // Custom background color
       },
     },
   },
   plugins: [],
 };
+
 export default config;

@@ -1,56 +1,106 @@
-import Image from "next/image";
+"use client";
+// Header.js
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import styles from './Header.module.css';
+import { IoLogoApple, IoLogoAndroid } from 'react-icons/io5';
+
 
 const Header = () => {
   return (
-    <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24">
-      {" "}
-      {/* Component */}{" "}
-      <div className="grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center">
-        {" "}
-        {/* Heading Div */}{" "}
+    <div className={`mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24"`}>
+      <div className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}>
         <div className="max-w-[720px] lg:max-w-[842px]">
-          <h1 className="mb-4 text-4xl md:text-6xl font-proxima font-bold">
-            Grow Your Funds,{" "}
+          <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-extrabold">
+            The {' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              Acquire Assets
-            </span>
+              TRUE </span>
+            Way to Save and Invest
           </h1>
           <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans">
             <p className="text-xl text-[#636262]">
-              Let us help you achieve what we have achieved and helping others achieve 
-              Save, Buy Properties, Earn Rent.
+              Earn <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+              20% p.a. </span> on your funds every January and July!
+              <div className="mt-1" /> 
+              Buy properties and <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+              earn lifetime rent </span> via our hostels.
             </p>
-          </div>{" "}
-          {/* Button Wrap */}{" "}
-          <div className="flex">
-            <a
-              href="#"
-              className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
-            >
-              Download
-            </a>
-            <a
-              href="#"
-              className="flex max-w-full flex-row items-center rounded-xl border border-solid border-purple1 px-6 py-3 font-semibold text-purple1 [box-shadow:rgb(76,_40,188)_6px_6px]"
-            >
-              <p className="text-black">Download</p>
-            </a>
           </div>
-        </div>{" "}
-        {/* Image Div */}{" "}
-        <div className="relative left-4 h-full max-h-[660px] w-[85%] lg:left-0 lg:w-full">
-          <Image
-            src="/images/hero.png"
-            width={600}
-            height={600}
-            alt=""
-            className="relative h-full w-full max-w-[800px] -rotate-[3.5deg] rounded-2xl object-cover border-1"
-          />
-          <div className="absolute bottom-0 left-4 right-0 top-4 -z-10 rounded-2xl"></div>
+          <div className="flex flex-col">
+            <div className="flex mb-4">
+              {/* <a
+                download
+                href="/myFund-Enterprise-App.apk"
+                className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+              >
+                Create Free Account
+              </a> */}
+              <a
+                download
+                href="/myFund-Enterprise-App.apk"
+                className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+              >
+                Download The Mobile App
+              </a>
+            </div>
+
+            <div className={styles.buttonGroup}>
+              <PrimaryButton
+                className={`text-center w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                onClick={() => console.log("Get it on iPhone button clicked")}
+                background="#fff"
+                color="#351265"
+                borderWidth="2px"
+                borderColor="silver"
+                // hoverColor="#fff"
+                // hoverBackgroundColor="black"
+                // hoverBorderWidth="2px"
+                // hoverBorderColor="#4C28BC"
+                startIcon={<IoLogoApple className="h-6 w-6 mr-2" />}
+              >
+                Get it on iPhone
+              </PrimaryButton>
+              <PrimaryButton
+                className={`text-center w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                onClick={() => console.log("Get it on Android button clicked")}
+                background="#fff"
+                color="#351265"
+                borderWidth="2px"
+                borderColor="silver"
+                // hoverColor="#fff"
+                // hoverBackgroundColor="black"
+                // hoverBorderWidth="2px"
+                // hoverBorderColor="#4C28BC"
+                startIcon={<IoLogoAndroid className="h-6 w-6 mr-2" />}
+              >
+                Get it on Android
+              </PrimaryButton>
+            </div>
+            
+
+            
+          </div>
+          
         </div>
+
+        
+            
+        <div className={`mt-20 ml--30 relative left-4 h-full max-h-[1680px] max-w-[2680px] w-full lg:left-0 lg:w-full ${styles.heroImage}`}>
+          <Image
+            src="/images/hero1.png" // Only show hero1.png
+            width={2900}
+            height={1680}
+            alt=""
+            className="ml--10 relative h-full w-full max-w-none rounded-2xl object-cover border-1"
+          />
+        </div>
+        
       </div>
     </div>
   );
 };
 
 export default Header;
+

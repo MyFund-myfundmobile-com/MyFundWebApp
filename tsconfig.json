@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "allowJs": true,                // Allow JavaScript files
+    "checkJs": true,                // Enable type checking for JavaScript files
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -21,6 +22,13 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",                      // Include JavaScript files
+    "**/*.jsx",                     // Include JSX files if you have any
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
