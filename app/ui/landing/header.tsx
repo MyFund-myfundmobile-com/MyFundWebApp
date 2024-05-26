@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 import styles from './Header.module.css';
-import { IoLogoApple, IoLogoAndroid, IoCheckmarkCircle } from 'react-icons/io5';
+import { IoLogoApple, IoLogoAndroid, IoCheckmarkCircle, IoCheckmark } from 'react-icons/io5';
 import { CircularProgress } from '@mui/material'; 
+import { IonIcon } from '@ionic/react';
+import { shieldCheckmarkOutline } from 'ionicons/icons';
 
 
 
@@ -37,7 +39,9 @@ const handleDownload = () => {
   <div className="flex items-center">
   <h1 className="font-proxima font-black text-8xl md:text-6xl text-customPurple ml-2">Save</h1>
   <span className="text-4xl md:text-6xl font-proxima font-bold ml-2">&</span>
-  <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">Invest</h1>
+  <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">Invest&nbsp;</h1>       
+  { <IonIcon icon={shieldCheckmarkOutline} className="text-green-500 text-6xl md:text-6xl" />}
+
 </div>
 
 
@@ -55,6 +59,8 @@ const handleDownload = () => {
               earn lifetime rent </span> via our hostels.
             </p>
           </div>
+
+
           <div className="flex flex-col">
           <div className={`${styles.buttonContainer} flex mb-4`}>
             {/* Conditionally render CircularProgress when downloading */}

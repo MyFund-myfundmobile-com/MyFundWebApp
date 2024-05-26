@@ -1,23 +1,40 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth >= 1024); 
+    };
+
+    handleResize();
+
+   window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+
+
+
   return (
 <div className="bg-[#fff] w-full fixed top-0 left-0 right-0 z-50 shadow-md">
 <nav className="mx-auto h-auto w-full max-w-[1600px] lg:relative lg:top-0">
 <div className="flex flex-row items-center justify-between py-4"
-         style={{marginRight: 70,}}
+         style={{marginRight: 90,}}
         >          
           <Link
             href="/"
             aria-current="page"
             className="bg-transparent leading-[0] text-[#333333] no-underline hover:outline-0 ml-20"
             aria-label="home"
+            style={{marginRight: -190,}}
           >
             <Image
               src="/images/MyFundlogo.png"
@@ -82,7 +99,7 @@ const NavBar = () => {
         style={{marginTop: 5, marginBottom: -15,}}
       >
     
-        <Link href="/login">
+        {/* <Link href="/login">
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={() => console.log("Sign Up button clicked")}
@@ -108,9 +125,9 @@ const NavBar = () => {
           >
             LOG IN
           </PrimaryButton>
-        </Link>
+        </Link> */}
 
-{/*         
+        
         <a
            download
            href="/myFund-Enterprise-App.apk">
@@ -126,9 +143,9 @@ const NavBar = () => {
           >
             DOWNLOAD THE MOBILE APP
           </PrimaryButton>
-          </a> */}
+          </a>
 
-        <Link href="/register">
+        {/* <Link href="/register">
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={() => console.log("Create Free Account button clicked")}
@@ -141,7 +158,7 @@ const NavBar = () => {
           >
             CREATE FREE ACCOUNT
           </PrimaryButton>
-          </Link>
+          </Link> */}
         </div>
 
 

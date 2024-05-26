@@ -4,6 +4,7 @@ import React from "react";
 import Testimonials from "./testimonials";
 import axios from "axios";
 import { AxiosError } from 'axios';
+import styles from '../ui/landing/Header.module.css';
 
 
 function isAxiosError(error: any): error is AxiosError {
@@ -139,14 +140,15 @@ const RegisterPage = () => {
 
               {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
-
+              <div className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}>
               <a
-                className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+                className="inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px]"
                 onClick={handleSignup}
                 // disabled={isLoading}
               >
                 {isLoading ? "Creating Account..." : "Create Account"}
               </a>
+              </div>
 
 
             </form>

@@ -1,4 +1,3 @@
-/* Header.module.css */
 
 .headerContainer {
     background-image: url('/images/bgimage.png');
@@ -19,11 +18,11 @@
 }
 
 .heroImage {
-    animation: hoverAnimation 5s linear infinite; /* Adjust duration and timing here */
+    animation: hoverAnimation 5s linear infinite; 
 }
 
 .tracking-custom {
-    letter-spacing: 10.01px; /* Adjust the value as needed */
+    letter-spacing: 10.01px; 
   }
   
 
@@ -39,7 +38,6 @@
     gap: 10px;
 }
 
-/* Header.module.css */
 .buttonContainer {
     transition: transform 0.3s ease;
   }
