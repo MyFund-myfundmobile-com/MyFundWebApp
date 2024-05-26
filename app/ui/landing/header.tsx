@@ -85,7 +85,7 @@ const handleDownload = () => {
                 className={`text-center w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
                 onClick={() => console.log("Get it on iPhone button clicked")}
                 background="#fff"
-                color="#351265"
+                color="grey"
                 borderWidth="2px"
                 borderColor="silver"
                 // hoverColor="#fff"
@@ -100,7 +100,7 @@ const handleDownload = () => {
                 className={`text-center w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
                 onClick={() => console.log("Get it on Android button clicked")}
                 background="#fff"
-                color="#351265"
+                color="grey"
                 borderWidth="2px"
                 borderColor="silver"
                 // hoverColor="#fff"

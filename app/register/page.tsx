@@ -79,13 +79,13 @@ const RegisterPage = () => {
 
 
   return (
-    <section className="bg-[#F7F5FF]">
-      <div className="grid md:h-screen md:grid-cols-2">
+    <section className="bg-[#351265]">
+      <div className="bg-[#351265] grid md:h-screen md:grid-cols-2">
         <div className="flex flex-col items-center justify-center bg-white">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
             <h2 className="mb-4 text-3xl font-bold md:mb-6 md:text-3xl">Create Account</h2>
             <p className="mb-8 text-lg text-[#636262] md:mb-12 md:text-0.5x0.5">
-              Earn up to 20% p.a. every January and July. Own properties and earn a lifetime rental income. Jump right back in!
+              Earn 20% p.a. every January and July. Own properties and earn a lifetime rent. Sign up here.
             </p>
             <form className="mx-auto mb-4 max-w-lg pb-4" name="wf-form-register" method="get">
               {fields.map(({ placeholder, name, type, icon }) => (
