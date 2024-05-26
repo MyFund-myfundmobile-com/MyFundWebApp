@@ -29,36 +29,44 @@ const handleDownload = () => {
     <div className={`mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24"`}>
       <div className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}>
         <div className="max-w-[720px] lg:max-w-[842px]">
-        <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter">
-  The {' '}
-  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-    TRUE {' '} 
-  </span>
-  <span className="text-4xl md:text-6xl font-proxima font-bold">Way to</span>
+  
+  
+        <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter animate-float-up">
+          <span>
+            The{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">TRUE{' '}</span>
+          </span>
+          <span>
+            Way to
+          </span>
 
-  <div className="flex items-center">
-  <h1 className="font-proxima font-black text-8xl md:text-6xl text-customPurple ml-2">Save</h1>
-  <span className="text-4xl md:text-6xl font-proxima font-bold ml-2">&</span>
-  <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">Invest&nbsp;</h1>       
-  { <IonIcon icon={shieldCheckmarkOutline} className="text-green-500 text-6xl md:text-6xl" />}
-
-</div>
-
-
-</h1>
-
-
-          <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans">
-          <p className="text-xl text-[#636262]">
-              <IoCheckmarkCircle className="inline text-green-500 mr-2" />
-              Earn <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              20% p.a. </span> on your funds every January and July!
-              <div className="mt-1" /> 
-              <IoCheckmarkCircle className="inline text-green-500 mr-2" />
-              Buy properties and <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              earn lifetime rent </span> via our hostels.
-            </p>
+          <div className="flex items-center">
+            <h1 className="font-proxima font-black text-8xl md:text-6xl text-customPurple ml-2">
+              Save
+            </h1>
+            <span className="text-4xl md:text-6xl font-proxima font-bold ml-2">&</span>
+            <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">
+              Invest&nbsp;
+            </h1>
+            <IonIcon icon={shieldCheckmarkOutline} className="text-green-500 text-6xl md:text-6xl" />
           </div>
+        </h1>
+
+
+        <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans animate-fade-left-delay">
+          <p className="text-xl text-[#636262]">
+            <IoCheckmarkCircle className="inline text-green-500 mr-2" />
+            Earn{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">20% p.a.</span>{' '}
+            on your funds every January and July!
+            <div className="mt-1" />
+            <IoCheckmarkCircle className="inline text-green-500 mr-2" />
+            Buy properties and{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">earn lifetime rent</span>{' '}
+            via our hostels.
+          </p>
+        </div>
+
 
 
           <div className="flex flex-col">
@@ -141,6 +149,8 @@ const handleDownload = () => {
     </div>
   );
 };
+
+
 
 export default Header;
 

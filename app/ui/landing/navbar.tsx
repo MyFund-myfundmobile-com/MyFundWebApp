@@ -99,7 +99,7 @@ const NavBar = () => {
         style={{marginTop: 5, marginBottom: -15,}}
       >
     
-        {/* <Link href="/login">
+        <Link href="/login">
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={() => console.log("Sign Up button clicked")}
@@ -125,10 +125,10 @@ const NavBar = () => {
           >
             LOG IN
           </PrimaryButton>
-        </Link> */}
+        </Link>
 
         
-        <a
+        {/* <a
            download
            href="/myFund-Enterprise-App.apk">
           <PrimaryButton
@@ -143,9 +143,9 @@ const NavBar = () => {
           >
             DOWNLOAD THE MOBILE APP
           </PrimaryButton>
-          </a>
+          </a> */}
 
-        {/* <Link href="/register">
+        <Link href="/register">
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={() => console.log("Create Free Account button clicked")}
@@ -158,7 +158,7 @@ const NavBar = () => {
           >
             CREATE FREE ACCOUNT
           </PrimaryButton>
-          </Link> */}
+          </Link>
         </div>
 
 

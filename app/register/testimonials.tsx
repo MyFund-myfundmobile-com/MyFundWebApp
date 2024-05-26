@@ -1,8 +1,15 @@
 "use client";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
+interface Testimonial {
+  message: string;
+  name: string;
+  description: string;
+  image: string;
+}
 
 const Testimonials = () => {
-  const testimonials = [
+  const testimonials: Testimonial[] = [
     {
       message: "MyFund is doing way better than all other savings app and here's why: None of them gives the returns MyFund does. The best of them gives 15% ROI max.",
       name: "Emmanuel Abolo",
@@ -35,19 +42,35 @@ const Testimonials = () => {
       }
   ];
 
+  const [shuffledTestimonials, setShuffledTestimonials] = useState<Testimonial[]>([]);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+
+  useEffect(() => {
+    // Shuffle testimonials array when component mounts
+    shuffleTestimonials();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonialIndex((prevIndex) =>
-        prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+        prevIndex === shuffledTestimonials.length - 1 ? 0 : prevIndex + 1
       );
     }, 15000); // Rotate every 15 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [shuffledTestimonials]);
 
-  
-  const currentTestimonial = testimonials[currentTestimonialIndex];
+  // Function to shuffle testimonials array
+  const shuffleTestimonials = () => {
+    const shuffledTestimonials = testimonials.sort(() => Math.random() - 0.5);
+    setShuffledTestimonials(shuffledTestimonials);
+  };
+
+  const currentTestimonial = shuffledTestimonials[currentTestimonialIndex];
+
+  // Check if currentTestimonial is defined before accessing its properties
+  if (!currentTestimonial) {
+    return null; // or handle the case where there is no testimonial to display
+  }
 
   return (
     <div className="max-w-lg mx-auto py-12">
