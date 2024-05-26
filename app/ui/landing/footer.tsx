@@ -6,11 +6,11 @@ const Footer = () => {
     <footer className="block">
       {" "}
       {/* Container */}{" "}
-      <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24">
+      <div className="bg-red mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24">
         {" "}
         {/* Component */}{" "}
-        <div className="flex flex-row justify-between max-[767px]:flex-col max-[767px]:items-start">
-          <div className="max-[767px]: w-full max-w-[560px] max-[991px]:mr-4 max-[991px]:flex-initial">
+        <div className="bg-red flex flex-row justify-between max-[767px]:flex-col max-[767px]:items-start">
+          <div className="bg-red max-[767px]: w-full max-w-[560px] max-[991px]:mr-4 max-[991px]:flex-initial">
             <h2 className="text-3xl font-bold md:text-5xl">
               Grow your Financial Intelligence with{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
