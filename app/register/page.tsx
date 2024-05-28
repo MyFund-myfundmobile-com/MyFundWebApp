@@ -9,6 +9,7 @@ import { CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';
 import { personOutline, mailOutline, callOutline, lockClosedOutline, eyeOutline, eyeOffOutline, peopleOutline } from 'ionicons/icons';
 import OTPModal from './OTPModal';
+import { useRouter } from 'next/router'; // Import the useRouter hook
 
 function isAxiosError(error: any): error is AxiosError {
   return error.isAxiosError !== undefined;
@@ -25,10 +26,11 @@ const iconMap: { [key in IconType]: string } = {
 };
 
 const RegisterPage: React.FC = () => {
+
   useEffect(() => {
     document.body.style.backgroundColor = '#351265';
     return () => {
-      document.body.style.backgroundColor = ''; // Reset background color when component unmounts
+      document.body.style.backgroundColor = ''; 
     };
   }, []);
 
@@ -69,12 +71,9 @@ const RegisterPage: React.FC = () => {
     setShowOTPModal(false);
   };
 
-
   const handleSignup2 = () => {
     setShowOTPModal(true);
   };
-
-
 
   const handleSignup = async () => {
     try {
@@ -191,8 +190,9 @@ const RegisterPage: React.FC = () => {
 
               <div className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}>
                 <a
-                  className="inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white cursor-pointer [box-shadow:rgb(76,_40,188)_6px_6px]"
-                  onClick={handleSignup2}
+                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center  cursor-pointer font-semibold text-white"
+                style={{ boxShadow: '6px 6px #351265' }}
+                onClick={handleSignup2}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -200,7 +200,7 @@ const RegisterPage: React.FC = () => {
                       <CircularProgress size={24} color="inherit" className="ml-2" />
                     </div>
                   ) : (
-                    <span>CREATE ACCOUNT</span>
+                    <span>CREATE FREE ACCOUNT</span>
                   )}
                 </a>
               </div>

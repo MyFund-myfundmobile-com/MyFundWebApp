@@ -1,80 +1,129 @@
 import { EnvelopeIcon, MapPinIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
+import Image from "next/image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faTwitter, faInstagram, faWhatsapp, faTelegram, faYoutube, faTiktok, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
   return (
-    <footer className="block">
-      {" "}
-      {/* Container */}{" "}
-      <div className="bg-red mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24">
-        {" "}
-        {/* Component */}{" "}
-        <div className="bg-red flex flex-row justify-between max-[767px]:flex-col max-[767px]:items-start">
-          <div className="bg-red max-[767px]: w-full max-w-[560px] max-[991px]:mr-4 max-[991px]:flex-initial">
-            <h2 className="text-3xl font-bold md:text-5xl">
-              Grow your Financial Intelligence with{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-                MyFund
-              </span>{" "}
-            </h2>
+    <footer className="bg-[#351265] w-full">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* First Column: Logo */}
+        <div className="flex flex-wrap justify-between">
+          <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
+            <Image 
+              src="/images/myfund.png" 
+              alt="MyFund Logo" 
+              width={120} 
+              height={40} 
+              className="mb-4"
+            />
           </div>
-          <div className="max-[767px]: max-[991px]:ml-4 max-[991px]:flex-none max-[767px]:mt-8">
-            <div className="mb-4 flex max-w-[272px] items-start justify-start">
-              <MapPinIcon className="mr-3 inline-block h-10 fill-purple1" />
-              <p className="text-[#636262] max-[479px]:text-sm">
-                {" "}
-                Lagos,Nigeria{" "}
-              </p>
-            </div>
-            <div className="mb-4 flex max-w-[272px] items-start justify-start">
-              <EnvelopeIcon className="mr-3 inline-block h-8 w-8 fill-purple1" />
-              <p className="text-[#636262] max-[479px]:text-sm">
-                {" "}
-                info@myfundmobile.com{" "}
-              </p>
-            </div>
+
+          {/* Second Column: Company */}
+          <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
+            <h5 className="text-white font-bold mb-4">Company</h5>
+            <ul className="text-gray-400 text-sm font-product-sans space-y-2">
+              <li><Link href="/about-us">About Us</Link></li>
+              <li><Link href="/policy">Privacy Policy</Link></li>
+              <li><Link href="/terms-conditions">Terms and Conditions</Link></li>
+              <li><a href="http://medium.com/@myfundmobile" target="_blank" rel="noopener noreferrer">Blog</a></li>
+              <li><Link href="/faq">FAQs</Link></li>
+              <li><Link href="/press">Press</Link></li>
+            </ul>
+          </div>
+
+          {/* Third Column: Product */}
+          <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
+            <h5 className="text-white font-bold mb-4">Products</h5>
+            <ul className="text-gray-400 text-sm font-product-sans space-y-2">
+              <li>QuickSave</li>
+              <li>AutoSave</li>
+              <li>QuickInvest</li>
+              <li>AutoInvest</li>
+              <li>Sponsorship Investment</li>
+              <li>Ownership Investment</li>
+            </ul>
+          </div>
+
+          {/* Fourth Column: Programmes */}
+          <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
+            <h5 className="text-white font-bold mb-4">Programmes</h5>
+            <ul className="text-gray-400 text-sm font-product-sans space-y-2">
+              <li>Wealth Leadership Academy</li>
+              <li>Financial Mentoring Class</li>
+              <li>Monthly Cashflow Game</li>
+              <li>Multiple Skills of Income</li>
+            </ul>
+          </div>
+
+          {/* Fifth Column: Contact */}
+          <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
+            <h5 className="text-white font-bold mb-4">Contact</h5>
+            <ul className="text-gray-400 text-sm font-product-sans space-y-2">
+              <li>Message Admin</li>
+              <li><Link href="https://wa.me/2349032719396" legacyBehavior><a target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></Link></li>
+              <li><a href="mailto:care@myfundmobile.com">Email: care@myfundmobile.com</a></li>
+              <li>Call: +2349032719396</li>
+            </ul>
           </div>
         </div>
-        <div className="mb-14 mt-16 w-full [border-bottom:1.7px_solid_rgb(0,_0,_0)]"></div>
-        <div className="flex flex-row justify-between max-[991px]:items-center max-[767px]:flex-col max-[767px]:items-start max-[479px]:flex-col-reverse">
-          <div className="max-[991px]: text-center font-semibold max-[991px]:py-1 max-[479px]:mb-4 sm:text-center">
-            <Link
-              href="policy"
-              className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
-            >
-              Privacy & policy
-            </Link>
-            <Link
-              href="terms"
-              className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
-            >
-              Terms & Conditions
-            </Link>
-            <Link
-              href="#"
-              className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
-            >
-              Works
-            </Link>
-            <Link
-              href="#"
-              className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
-            >
-              Support
-            </Link>
-            <Link
-              href="#"
-              className="inline-block py-1.5 pr-6 font-normal text-[#636262] transition hover:text-[#276EF1] sm:py-2 sm:pr-6 lg:pr-12"
-            >
-              Help
-            </Link>
-          </div>
-          <div className="max-[991px]:flex-none">
-            <p className="text-[#636262] max-[479px]:text-sm">
-              {" "}
-              © Copyright {new Date().getFullYear()}. All rights reserved.{" "}
-            </p>
-          </div>
+
+        {/* Social Icons */}
+        <div className="flex justify-center space-x-4 my-6">
+          <Link href="https://facebook.com/myfundmobile" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faFacebook} size="lg" className="text-white group-hover:text-blue-600"/>
+            </a>
+          </Link>
+          <Link href="https://twitter.com/myfundmobile" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faTwitter} size="lg" className="text-white group-hover:text-blue-400"/>
+            </a>
+          </Link>
+          <Link href="https://instagram.com/myfundmobile1" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faInstagram} size="lg" className="text-white group-hover:text-pink-500"/>
+            </a>
+          </Link>
+          <Link href="https://wa.me/2349032719396" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faWhatsapp} size="lg" className="text-white group-hover:text-green-500"/>
+            </a>
+          </Link>
+          <Link href="https://t.me/2349032719396" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faTelegram} size="lg" className="text-white group-hover:text-blue-400"/>
+            </a>
+          </Link>
+          <Link href="https://youtube.com/myfundmobile" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faYoutube} size="lg" className="text-white group-hover:text-red-600"/>
+            </a>
+          </Link>
+          <Link href="https://tiktok.com/myfundmobile" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faTiktok} size="lg" className="text-white group-hover:text-white-200"/>
+            </a>
+          </Link>
+          <Link href="https://linkedin.com/company/myfundmobile" legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer" className="group">
+              <FontAwesomeIcon icon={faLinkedin} size="lg" className="text-white group-hover:text-blue-700"/>
+            </a>
+          </Link>
+        </div>
+
+        {/* Address */}
+        <div className="text-center text-gray-400 text-xs font-product-sans mt-6">
+          <p><strong className="font-bold text-white ">MyFund</strong><br />
+            Save, Buy Properties, Earn Rent<br />
+            13, Gbajabiamila Street, Ayobo, Lagos.</p>
+          <p className="mt-4">
+            MyFund (Vcorp Systems Limited) is duly registered under the Lagos State Ministry as an independent financial institution on June 2022 - RC 1508170
+          </p>
+          <p className="mt-4">
+            ©2024 MyFund Financial Technology. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

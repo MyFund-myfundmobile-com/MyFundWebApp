@@ -5,6 +5,8 @@ import { IonIcon } from '@ionic/react';
 import Testimonials from "../register/testimonials";
 import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline, arrowForwardOutline } from 'ionicons/icons';
 import styles from '../ui/landing/Header.module.css';
+import Link from "next/link";
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -73,10 +75,13 @@ const LoginPage = () => {
                   <a href="#" className="text-sm text-[#276EF1]">Forgot Password?</a>
                 </div>
                 <div className={`${styles.buttonContainer} flex mb-4 justify-center items-center`}>
+                  
+                <Link href="/home"> 
                   <button
-                    className="inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white cursor-pointer [box-shadow:rgb(76,_40,188)_6px_6px]"
+                    className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center  cursor-pointer font-semibold text-white"
+                    style={{ boxShadow: '6px 6px #351265' }}
                     onClick={handleLogin}
-                    disabled={isLoading}
+                   disabled={isLoading}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
@@ -98,6 +103,8 @@ const LoginPage = () => {
                       </span>
                     )}
                   </button>
+                </Link>
+
                 </div>
               </form>
               <p className="text-[#636262]">

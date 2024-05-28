@@ -3,8 +3,9 @@ import "./globals.css";
 import { karla, nexa, productSans, proxima } from "./ui/font";
 import NavBar from "./ui/landing/navbar";
 import Head from "next/head";
-import 'ionicons/dist/ionicons';
-
+import '@fortawesome/fontawesome-svg-core/styles.css'; // Import Font Awesome CSS
+import { config } from '@fortawesome/fontawesome-svg-core';
+config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
 
 export const metadata: Metadata = {
   title: "The TRUE Way to Save and Invest — MyFund",

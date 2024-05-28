@@ -76,7 +76,7 @@ const handleDownload = () => {
               <a
               download
               href="/myFund-Enterprise-App.apk"
-              className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+              className="mr-5 inline-block rounded-xl bg-[#351265b u] px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
               onClick={handleDownload} // Add onClick event to start downloading
             >
                <CircularProgress size={24} /> {" "}  Downloading MyFund Mobile App...
@@ -86,11 +86,13 @@ const handleDownload = () => {
               <a
                 download
                 href="/myFund-Enterprise-App.apk"
-                className="mr-5 inline-block rounded-xl bg-black px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
-                onClick={handleDownload} // Add onClick event to start downloading
+                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
+                style={{ boxShadow: '6px 6px #351265' }}
+                onClick={handleDownload}
               >
                 Download The Mobile App
               </a>
+
             )}
           </div>
 

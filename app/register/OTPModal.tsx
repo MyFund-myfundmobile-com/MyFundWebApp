@@ -3,18 +3,21 @@ import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { CircularProgress } from '@mui/material';
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
-import styles from '../ui/landing/Header.module.css';
+import { useRouter } from 'next/router';
+import { NextRouter } from 'next/router'; // Import the NextRouter type
 
 interface OTPModalProps {
   email: string;
   isOpen: boolean;
   onClose: () => void;
+  router: NextRouter; // Accept router as a prop
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose }) => {
+const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) => {
   const [otp, setOTP] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
+//   const router = useRouter();
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; 
@@ -53,6 +56,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose }) => {
     setTimeout(() => {
       setIsLoading(false);
       onClose();
+      router.push('/home'); // Navigate to the home page after confirming loading
     }, 2000);
   };
 
@@ -66,7 +70,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose }) => {
         <h2 className="md:text-2xl text-xl tracking-tight text-purple1 font-proxima font-bold mb-2 text-left">Confirm Signup</h2>
         <hr className="border-gray-300 mb-4" />
         <p className="font-karla tracking-tight text-black mb-6">
-          Enter the OTP we just sent to your email address: {email} to complete your signup
+          Enter or paste the 6-digit OTP we just sent to <b>{email}</b> to complete your signup
         </p>
         <div className="flex justify-center items-center space-x-2 mb-8">
           {Array.from({ length: 6 }).map((_, index) => (
@@ -87,10 +91,8 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose }) => {
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={handleConfirm}
-            background="#351265"
-            hoverBackgroundColor="#4C28BC"
-            borderColor="#351265"
-            hoverBorderColor="#4C28BC"
+            background="#4C28BC"
+            hoverBackgroundColor="#351265"
             color="#fff"
             hoverColor="#fff"
             style={{ width: '95%' }}
