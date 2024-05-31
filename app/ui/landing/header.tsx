@@ -41,7 +41,7 @@ const handleDownload = () => {
           </span>
 
           <div className="flex items-center">
-            <h1 className="font-proxima font-black text-8xl md:text-6xl text-customPurple ml-2">
+          <h1 className="font-proxima font-black text-6xl md:text-6xl text-customPurple ml-2">
               Save
             </h1>
             <span className="text-4xl md:text-6xl font-proxima font-bold ml-2">&</span>
@@ -71,13 +71,13 @@ const handleDownload = () => {
 
           <div className="flex flex-col">
           <div className={`${styles.buttonContainer} flex mb-4`}>
-            {/* Conditionally render CircularProgress when downloading */}
+
             {downloading ? (
               <a
               download
               href="/myFund-Enterprise-App.apk"
-              className="mr-5 inline-block rounded-xl bg-[#351265b u] px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
-              onClick={handleDownload} // Add onClick event to start downloading
+              className="mr-5 inline-block rounded-xl bg-[#351265] px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
+              onClick={handleDownload} 
             >
                <CircularProgress size={24} /> {" "}  Downloading MyFund Mobile App...
             </a>

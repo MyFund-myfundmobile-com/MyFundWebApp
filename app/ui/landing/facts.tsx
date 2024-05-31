@@ -7,6 +7,8 @@ import {
   SparklesIcon,
 } from "@heroicons/react/16/solid";
 import Image from "next/image";
+import { IoEyeOutline, IoBusinessOutline } from 'react-icons/io5';
+
 
 const Facts = () => {
   return (
@@ -21,10 +23,7 @@ const Facts = () => {
         </h1>
         <div className="mb-6 w-full lg:w-3/4 md:mb-10 lg:mb-12 font-product-sans text-center">
           <p className="text-lg text-[#636262]">
-            At our organization, we offer a comprehensive range of services
-            designed to meet the diverse needs of our clients. With a commitment
-            to quality, efficiency, and innovation, we strive to exceed
-            expectations and deliver value in every interaction.
+          MyFund helps working- and retiring-class people save towards properties. Unlike the currently available solutions, MyFund offers lifetime rental income via our national hostel project.
           </p>
         </div>{" "}
         {/* Component */}{" "}
@@ -46,42 +45,50 @@ const Facts = () => {
             {/* Feature Item */}{" "}
             <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
-                <SparklesIcon className="relative z-[1] inline-block h-6" />
+                <IoEyeOutline className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
               </div>
               <p className="mb-4 font-semibold">Vision</p>
               <p className="text-sm text-[#636262]">
-                Reproducing achievements in others in the quickest, cheapest and
-                most harmonious way possible.
+                To become the go-to platform in the country for the working-class people for real estate investments with 1 million financially free families by 2035.
               </p>
-            </div>{" "}
-            {/* Feature Item */}{" "}
+            </div>
+            {/* Feature Item */}
             <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
-                <AcademicCapIcon className="relative z-[1] inline-block h-6" />
+                <IoBusinessOutline className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
               </div>
-              <p className="mb-4 font-semibold">Educational Services</p>
+              <p className="mb-4 font-semibold">Mission</p>
               <p className="text-sm text-[#636262]">
-                To produce millions of excellent graduates in the country and
-                raise the educational standard in the country.
+                To provide working- and retiring-class people the opportunity to earn passive income from real estate.
               </p>
-            </div>{" "}
+            </div>
+{" "}
             {/* Feature Item */}{" "}
             <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
                 <BanknotesIcon className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
               </div>
-              <p className="mb-4 font-semibold">Financial Services</p>
+              <p className="mb-4 font-semibold">Lifetime Rental Income</p>
               <p className="text-sm text-[#636262]">
-                ValuePlus Fund (aka MyFund) helps you grow your funds, learn
-                financial intelligence,earn rewards/ROI, and manage your assets
-                in 5-10years.
+                Earn lifetime rental income from owning fractions of any of our hostels across campuses across the country by growing your funds on the platform towards it</p>
+            </div>{" "}
+
+
+            {/* Feature Item */}{" "}
+              <div className="flex flex-col p-2">
+              <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
+              <ArchiveBoxIcon className="relative z-[1] inline-block h-6" />
+                <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
+              </div>
+              <p className="mb-4 font-semibold">Monthly Cashflow Game</p>
+              <p className="text-sm text-[#636262]">
+                The free monthly cashflow game stengthens our community to learn to become financially free with fake money. And each month we get a new winner that we spotlight on our platforms. Join us every second Sunday of the month, 8pm on Google Meet.
               </p>
             </div>{" "}
-            {/* Feature Item */}{" "}
-            <div className="flex flex-col p-2">
+            {/* <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
                 <PrinterIcon className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
@@ -94,7 +101,7 @@ const Facts = () => {
               </p>
             </div>{" "}
             {/* Feature Item */}{" "}
-            <div className="flex flex-col p-2">
+            {/* <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
                 <HandThumbUpIcon className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
@@ -107,7 +114,7 @@ const Facts = () => {
               </p>
             </div>{" "}
             {/* Feature Item */}{" "}
-            <div className="flex flex-col p-2">
+            {/* <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
                 <ArchiveBoxIcon className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
@@ -118,7 +125,10 @@ const Facts = () => {
                 technology, expert knowledge, to deliver efficient and effective
                 solutions.
               </p>
-            </div>
+            </div>  */}
+            
+
+
           </div>
         </div>
       </div>

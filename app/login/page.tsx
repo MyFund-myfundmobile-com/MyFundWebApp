@@ -6,6 +6,7 @@ import Testimonials from "../register/testimonials";
 import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline, arrowForwardOutline } from 'ionicons/icons';
 import styles from '../ui/landing/Header.module.css';
 import Link from "next/link";
+import { EnvelopeIcon, MapPinIcon } from "@heroicons/react/16/solid";
 
 
 const LoginPage = () => {
@@ -76,12 +77,15 @@ const LoginPage = () => {
                 </div>
                 <div className={`${styles.buttonContainer} flex mb-4 justify-center items-center`}>
                   
-                <Link href="/home"> 
+                <Link href="/home">
                   <button
-                    className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center  cursor-pointer font-semibold text-white"
-                    style={{ boxShadow: '6px 6px #351265' }}
+                    className="mr-5 inline-block rounded-xl px-8 py-4 text-center cursor-pointer font-semibold text-white"
+                    style={{
+                      boxShadow: '6px 6px #351265',
+                      backgroundColor: isLoading ? 'black' : '#4C28BC'
+                    }}
                     onClick={handleLogin}
-                   disabled={isLoading}
+                    disabled={isLoading}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
@@ -104,6 +108,7 @@ const LoginPage = () => {
                     )}
                   </button>
                 </Link>
+
 
                 </div>
               </form>

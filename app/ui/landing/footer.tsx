@@ -26,7 +26,7 @@ const Footer = () => {
             <ul className="text-gray-400 text-sm font-product-sans space-y-2">
               <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/policy">Privacy Policy</Link></li>
-              <li><Link href="/terms-conditions">Terms and Conditions</Link></li>
+              <li><Link href="/terms">Terms and Conditions</Link></li>
               <li><a href="http://medium.com/@myfundmobile" target="_blank" rel="noopener noreferrer">Blog</a></li>
               <li><Link href="/faq">FAQs</Link></li>
               <li><Link href="/press">Press</Link></li>
@@ -52,7 +52,7 @@ const Footer = () => {
             <ul className="text-gray-400 text-sm font-product-sans space-y-2">
               <li>Wealth Leadership Academy</li>
               <li>Financial Mentoring Class</li>
-              <li>Monthly Cashflow Game</li>
+              <li><a href="https://chat.whatsapp.com/L8t5CzMEpKM5Ma2FXwv0mF" target="_blank" rel="noopener noreferrer">Monthly Cashflow Game</a></li>
               <li>Multiple Skills of Income</li>
             </ul>
           </div>
@@ -103,7 +103,7 @@ const Footer = () => {
           </Link>
           <Link href="https://tiktok.com/myfundmobile" legacyBehavior>
             <a target="_blank" rel="noopener noreferrer" className="group">
-              <FontAwesomeIcon icon={faTiktok} size="lg" className="text-white group-hover:text-white-200"/>
+              <FontAwesomeIcon icon={faTiktok} size="lg" className="text-white group-hover:text-black"/>
             </a>
           </Link>
           <Link href="https://linkedin.com/company/myfundmobile" legacyBehavior>

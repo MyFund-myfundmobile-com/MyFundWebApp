@@ -5,10 +5,10 @@ const TermsAndServicePage = () => {
         {/* Title Container */}
         <div className="flex h-auto min-w-[100vw] flex-col items-center justify-end bg-[#f2f2f7] py-6 md:h-64">
           <div className="flex flex-col items-center gap-y-4 py-5">
-            <h1 className="text-3xl font-bold md:text-5xl font-proxima">
+            <h1 className="text-3xl text-customPurple font-bold md:text-5xl font-proxima">
               Terms &amp; Conditions
             </h1>
-            <p className="text-sm text-[#808080] sm:text-base">
+            <p className="text-sm text-purple1 sm:text-base">
               Terms & conditions for using myfundmobile.com
             </p>
           </div>
@@ -22,7 +22,8 @@ const TermsAndServicePage = () => {
               DEFINED BELOW) ARE SUBJECT TO THE FOLLOWING TERMS; IF YOU DO NOT
               AGREE TO ALL OF THESE TERMS, YOU MAY NOT USE OR ACCESS THE
               SERVICES IN ANY MANNER.
-              <br />
+              <br /> <br />             
+
               These Terms of Use (these &quot;Term&quot;) represent an agreement
               between you and Vcorp Systems Limited. (&quot;MyFund&quot;) and
               contain the terms and conditions governing your use of and access
@@ -35,27 +36,27 @@ const TermsAndServicePage = () => {
               &quot;our&quot; mean MyFund and its successors, affiliates, and
               assignees. As used in these Terms, &quot;MyFund Account&quot;
               means the account you have with us for the Services.
-              <br />
+              <br /><br />
               By using or accessing the Services, you represent that you have
               read and understand these Terms and conditions and you agree to be
               bound by them. If you do not agree to all the terms and
               conditions, do not use or access the Services.
-              <br />
+              <br /><br />
               THESE TERMS INCLUDE, AMONG OTHER THINGS, YOUR AUTHORIZATION FOR
               DEBITS AND CREDITS FROM AND TO YOUR BANK ACCOUNT VIA THE AUTOMATED
               PAYSTACK SYSTEM (&quot;paystack&quot;) AND A BINDING ARBITRATION
               PROVISION CONTAINING A CLASS ACTION WAIVER.
             </p>
             <div className="flex min-w-full flex-col gap-y-10">
-              <div className="flex min-w-full py-4 [border-bottom:1px_solid_rgb(226,_226,_226)]">
-                <h6 className="text-base font-bold">
+              <div className="flex min-w-full py-4 text-[customPurple] [border-bottom:1px_solid_rgb(226,_226,_226)]">
+                <h6 className="text-base text-purple1 font-bold">
                   General Terms &amp; Conditions
                 </h6>
               </div>
               <div className="flex flex-col gap-y-10">
                 <div className="flex min-w-full flex-col items-start gap-y-6">
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       Your Consent to Use Electronic Signatures And
                       Communications
                     </p>
@@ -75,7 +76,7 @@ const TermsAndServicePage = () => {
                       the minimum hardware and software requirements specified
                       below; and (3) your consent will remain in effect until
                       you withdraw your consent as specified below.
-                      <br />
+                      <br /><br />
                       Your Right to Withdraw Your Consent. Your consent to
                       receive Communications electronically will remain in
                       effect until you withdraw it. You may withdraw your
@@ -94,7 +95,7 @@ const TermsAndServicePage = () => {
                       electronically will not apply to Communications
                       electronically provided by us to you before the withdrawal
                       of your consent becomes effective.
-                      <br />
+                      <br /><br />
                       You Must Keep Your Contact Information Current With Us. In
                       order to ensure that we are able to provide Communications
                       to you electronically, you must notify us of any change in
@@ -103,7 +104,7 @@ const TermsAndServicePage = () => {
                       Website. Copies of Communications. You should print and
                       save and/or electronically store a copy of all
                       Communications that we send to you electronically.
-                      <br />
+                      <br /><br />
                       Hardware and Software Requirements. In order to access and
                       retain Communications provided to you electronically, you
                       must have: (1) a valid email address; (2) a computer or
@@ -120,7 +121,7 @@ const TermsAndServicePage = () => {
                       retain Communications in an electronic form. &quot;Current
                       Version&quot; means a version of the software that is
                       currently being supported by its publisher.
-                      <br />
+                      <br /><br />
                       Changes. We reserve the right, in our sole discretion, to
                       communicate with you in paper form. In addition, we
                       reserve the right, in our sole discretion, to discontinue
@@ -134,7 +135,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       What are the requirements to use the Services?
                     </p>
                     <p className="text-sm">
@@ -163,7 +164,7 @@ const TermsAndServicePage = () => {
                       account via the Website. If we approve your registration,
                       you will be authorized to use the Services, subject to
                       these Terms.
-                      <br />
+                      <br /><br />
                       For our compliance purposes and in order to provide the
                       Services to you, you hereby authorize us to, directly or
                       through a third-party, obtain, verify, and record
@@ -219,7 +220,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       How do I use the Services?
                     </p>
                     <p className="text-sm">
@@ -229,7 +230,7 @@ const TermsAndServicePage = () => {
                       anytime on any of our pay out days. Only funds from your
                       debit card may be transferred to your account. The funds
                       in your account are held at a bank for your benefit.
-                      <br />
+                      <br /><br />
                       Your funds will remain in your account until you instruct
                       us to transfer any or all of your funds from your account
                       to your Bank Account by emailing us at
@@ -247,7 +248,7 @@ const TermsAndServicePage = () => {
                       any time if required by applicable law or if we, in our
                       sole discretion, suspect the Services are being used for
                       illicit purposes or otherwise in violation of these Terms.
-                      <br />
+                      <br /><br />
                       You may not use the funds in your account to make
                       purchases, withdraw cash, transfer funds to third parties,
                       or for any other purpose. You are solely responsible for
@@ -258,7 +259,7 @@ const TermsAndServicePage = () => {
                       including, but not limited to, third-party fees incurred
                       as a result of maintaining insufficient funds in your Bank
                       Account.
-                      <br />
+                      <br /><br />
                       MyFund offers basic financial intelligence to all its
                       members but is not a financial adviser, and the Services
                       are not intended to provide financial advice. Your
@@ -272,7 +273,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       How do I check the balance in my account?
                     </p>
                     <p className="text-sm">
@@ -282,7 +283,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       Will I receive interest on the funds held in my account?
                     </p>
                     <p className="text-sm">
@@ -298,7 +299,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       Are there any fees for using the Services?
                     </p>
                     <p className="text-sm">
@@ -315,7 +316,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       What is the penalty fee or penalty charge?
                     </p>
                     <p className="text-sm">
@@ -327,7 +328,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       What are some restrictions on using the Services?
                     </p>
                     <p className="text-sm">
@@ -338,7 +339,7 @@ const TermsAndServicePage = () => {
                       prohibited by applicable law, then you are not authorized
                       to use the Services. We are not responsible if you use the
                       Services in any manner that violates applicable law.
-                      <br />
+                      <br /><br />
                       You agree not to authorize any other person or entity to
                       use your user name and password or mobile device to access
                       the Services. You are solely responsible for the
@@ -357,7 +358,7 @@ const TermsAndServicePage = () => {
                       unauthorized activity or access to your username,
                       password, or mobile device, you must contact us
                       immediately at or 0808 394 2528.
-                      <br />
+                      <br /><br />
                       We offer the Services and the features, information,
                       materials, and content provided and depicted through the
                       Services (collectively, &quot;Content&quot;) solely for
@@ -365,7 +366,7 @@ const TermsAndServicePage = () => {
                       in these Terms. Any and all other uses are prohibited. You
                       may not restrict or inhibit any other person from using or
                       enjoying the Services or Content.
-                      <br />
+                      <br /><br />
                       The Services and Content are protected by copyright,
                       trademark, patent, and other intellectual property laws.
                       We expressly reserve all rights and remedies under
@@ -419,7 +420,7 @@ const TermsAndServicePage = () => {
                       associated patents, trademarks, copyrights, mask work
                       rights, trade secrets, and other intellectual property
                       rights.
-                      <br />
+                      <br /><br />
                       The Services may permit you to submit content, send emails
                       and other communications, and provide other information
                       for publication or distribution to third parties
@@ -442,7 +443,7 @@ const TermsAndServicePage = () => {
                       media. We take no responsibility and assume no liability
                       for any User Content submitted by you or any other user or
                       third party.
-                      <br />
+                      <br /><br />
                       To the extent permitted by applicable law, we may, in our
                       sole discretion and without liability to you, terminate
                       (or suspend access to) your use of the Services, Content,
@@ -451,7 +452,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       What do I do if my mobile device is lost or stolen or if I
                       suspect someone has gained unauthorized access to my
                       username or password?
@@ -466,7 +467,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       How does MyFund communicate with me about the Services?
                     </p>
                     <p className="text-sm">
@@ -485,7 +486,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       What do I need to know about third-party websites?
                     </p>
                     <p className="text-sm">
@@ -510,7 +511,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm font-bold text-purple1 uppercase font-product-sans">
                       What if I want to stop using the Services?
                     </p>
                     <p className="text-sm">
@@ -525,7 +526,7 @@ const TermsAndServicePage = () => {
                       these Terms will not affect any of our rights or your
                       obligations arising under these Terms prior to
                       termination.
-                      <br />
+                      <br /><br />
                       Upon the closure of your account, we will transfer the
                       funds in your account, if any, to your Bank Account on or
                       after the next FREE withdrawal date. If your Bank Account
@@ -548,7 +549,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       What about my privacy?
                     </p>
                     <p className="text-sm">
@@ -560,7 +561,7 @@ const TermsAndServicePage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       What else do I need to know about the Services?
                     </p>
                     <p className="text-sm">
@@ -573,7 +574,7 @@ const TermsAndServicePage = () => {
                       reference into these Terms. In the event of a conflict
                       between any Additional Terms and these Terms, these Terms
                       will control.
-                      <br />
+                      <br /><br />
                       Warranty Disclaimer. TO THE FULLEST EXTENT PERMITTED BY
                       APPLICABLE LAW AND EXCEPT AS OTHERWISE EXPRESSLY PROVIDED
                       IN THESE TERMS, YOU EXPRESSLY UNDERSTAND AND AGREE THAT
@@ -592,7 +593,7 @@ const TermsAndServicePage = () => {
                       STATUTORY, OR OTHERWISE, INCLUDING, BUT NOT LIMITED TO,
                       ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
                       PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
-                      <br />
+                      <br /><br />
                       WITHOUT LIMITING THE FOREGOING, WE AND OUR THIRD-PARTY
                       SERVICE PROVIDERS MAKE NO WARRANTY THAT (A) THE SERVICES
                       WILL MEET YOUR REQUIREMENTS, (B) THE SERVICES WILL BE
@@ -611,7 +612,7 @@ const TermsAndServicePage = () => {
                       RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS
                       OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH
                       MATERIAL.
-                      <br />
+                      <br /><br />
                       Limitation of Liability. TO THE FULLEST EXTENT PERMITTED
                       BY APPLICABLE LAW, YOU AGREE THAT MyFund, ITS AFFILIATES,
                       AND ITS AND THEIR RESPECTIVE EMPLOYEES, OFFICERS,
@@ -632,7 +633,7 @@ const TermsAndServicePage = () => {
                       CONTROL. SOME STATES DO NOT ALLOW THE EXCLUSION OR
                       LIMITATION OF CERTAIN DAMAGES, SO THE ABOVE LIMITATION AND
                       EXCLUSIONS MAY NOT APPLY TO YOU.
-                      <br />
+                      <br /><br />
                       Indemnity. At our request, you agree to defend, indemnify,
                       and hold harmless MyFund, its affiliates, and its and
                       their respective employees, officers, directors, agents,
@@ -648,7 +649,7 @@ const TermsAndServicePage = () => {
                       control of any matter subject to indemnification by you,
                       in which event you will cooperate in asserting any
                       available defenses.
-                      <br />
+                      <br /><br />
                       Assignment. You may not transfer, assign, or delegate
                       these Terms or your rights or obligations hereunder or
                       your account in any way (by operation of law or otherwise)
@@ -656,19 +657,19 @@ const TermsAndServicePage = () => {
                       by applicable law, we may transfer, assign, or delegate
                       these Terms and our rights and obligations hereunder
                       without your consent.
-                      <br />
+                      <br /><br />
                       Third-Party Beneficiary. You agree that our third-party
                       services providers are third-party beneficiaries of the
                       applicable provisions of these Terms, with all rights to
                       enforce such provisions as if such service providers were
                       a party to these Terms.
-                      <br />
+                      <br /><br />
                       Governing Law. These Terms are made under and will be
                       governed by and construed in accordance with the laws of
                       the Federal Republic of Nigeria, without giving effect to
                       any principles that provide for the application of the law
                       of another jurisdiction.
-                      <br />
+                      <br /><br />
                       DISPUTE RESOLUTION BY BINDING ARBITRATION; JURY TRIAL
                       WAIVER; CLASS ACTION WAIVER. For any and all
                       controversies, disputes, demands, claims, or causes of
@@ -704,7 +705,7 @@ const TermsAndServicePage = () => {
                       Rules and, if the arbitrator deems them applicable, the
                       Supplementary Procedures for Consumer Related Disputes
                       (collectively, the &quot;Rules and Procedures&quot;).
-                      <br />
+                      <br /><br />
                       You should review this provision carefully. To the extent
                       permitted by applicable law, you are GIVING UP YOUR RIGHT
                       TO GO TO COURT to assert or defend your rights EXCEPT for
@@ -728,7 +729,7 @@ const TermsAndServicePage = () => {
                       SIMPLER AND MORE LIMITED THAN RULES APPLICABLE IN COURT.
                       Arbitrators’ decisions are as enforceable as any court
                       order and are subject to VERY LIMITED REVIEW BY A COURT.
-                      <br />
+                      <br /><br />
                       You and we must abide by the following rules: (A) ANY
                       CLAIMS BR/GHT BY YOU OR US MUST BE BR/GHT IN THE PARTY’S
                       INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF OR CLASS
@@ -761,7 +762,7 @@ const TermsAndServicePage = () => {
                       such attorneys’ fees and expenses to the prevailing party,
                       and, in such instance, the fees and costs awarded will be
                       determined by the applicable law.
-                      <br />
+                      <br /><br />
                       This Section will survive termination of your account and
                       these Terms as well as any voluntary payment of any debt
                       in full by you or any bankruptcy by you or us. With the
@@ -782,7 +783,7 @@ const TermsAndServicePage = () => {
                       will be exclusively br/ght in federal court if it has
                       jurisdiction or, if it does not, in a state court located
                       in the federal judicial district of your residence.
-                      <br />
+                      <br /><br />
                       If you wish to opt out of this arbitration provision, you
                       must notify us of your election in writing within 30 days
                       of the date that you first became subject to this
@@ -818,7 +819,7 @@ const TermsAndServicePage = () => {
                   </div>
 
                   <div className="flex flex-col items-start gap-y-3">
-                    <p className="text-sm font-bold uppercase font-product-sans">
+                    <p className="text-sm text-purple1 font-bold uppercase font-product-sans">
                       Will MyFund ever change these Terms or the Services?
                     </p>
                     <p className="text-sm">
