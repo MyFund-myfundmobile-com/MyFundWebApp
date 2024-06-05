@@ -1,17 +1,24 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from '@mui/material';
-import { notificationsOutline } from 'ionicons/icons'; // Import the notification icon from Ionicons
+import 'tailwindcss/tailwind.css';
+import { IonIcon } from '@ionic/react';
+import { notificationsOutline } from 'ionicons/icons';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isSidebarRetracted: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isSidebarRetracted }) => {
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
-      <Toolbar>
-        <Typography variant="h6" color="textPrimary" align="center" sx={{ flexGrow: 1, letterSpacing: '0.5rem', fontWeight: 'bold' }}>
-          SAVE   .   BUY PROPERTIES  .  EARN RENT
-        </Typography>
-        <ion-icon icon={notificationsOutline} className="text-gray-500 text-2xl"></ion-icon>
-      </Toolbar>
-    </AppBar>
+    <div className="bg-white shadow-md fixed top-0 left-0 right-0 z-10 transition-all duration-300" style={{ paddingLeft: isSidebarRetracted ? '4rem' : '20rem' }}>
+      <div className="flex justify-between items-center p-4">
+        <div className="text-center text-sm font-nexa flex-grow" style={{ letterSpacing: '0.5rem', fontSize: '10px', color: 'lightgrey' }}>
+          SAVE {" "}<span className="align-middle">&middot;</span>{" "} BUY PROPERTIES {" "}<span className="align-middle">&middot;</span>{" "} EARN RENT
+        </div>
+        <div className="absolute right-4 top-4">
+          <IonIcon icon={notificationsOutline} className="text-purple1 text-2xl mr-4" style={{ color: '#4C28BC'}}/>
+        </div>
+      </div>
+    </div>
   );
 };
 

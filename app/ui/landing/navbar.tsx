@@ -14,155 +14,144 @@ const NavBar = () => {
 
     handleResize();
 
-   window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-
-
-
   return (
-<div className="bg-[#fff] w-full fixed top-0 left-0 right-0 z-50 shadow-md">
-<nav className="mx-auto h-auto w-full max-w-[1600px] lg:relative lg:top-0">
-<div className="flex flex-row items-center justify-between py-4"
-         style={{marginRight: 90,}}
-        >          
-          <Link
-            href="/"
-            aria-current="page"
-            className="bg-transparent leading-[0] text-[#333333] no-underline hover:outline-0 ml-20"
-            aria-label="home"
-            style={{marginRight: -190,}}
-          >
-            <Image
-              src="/images/MyFundlogo.png"
-              loading="lazy"
-              alt="MyFund Logo"
-              className="inline-block max-h-full max-w-full"
-              width={140}
-              height={140}
-            />
-          </Link>
-
-
-            <div
-              className={`transition-all ease-in flex-col space-y-8 lg:mt-0 lg:flex lg:flex-row lg:space-x-1 lg:space-y-0 ${
-                isOpen ? "visible flex" : "hidden invisible"
-              } transition-all ease-in`}
+    <div className="bg-[#fff] w-full fixed top-0 left-0 right-0 z-50 shadow-md">
+      <nav className="mx-auto h-auto w-full max-w-[1600px] lg:relative lg:top-0">
+        <div className="flex flex-row items-center justify-between py-4" style={{ marginRight: 90 }}>
+          
+          {window.innerWidth >= 1024 || !isOpen ? (
+            <Link
+              href="/"
+              aria-current="page"
+              className="bg-transparent leading-[0] text-[#333333] no-underline hover:outline-0 ml-20"
+              aria-label="home"
+              style={{ marginRight: -190 }}
             >
-              <Link
-                onClick={() => setIsOpen(true)}
-                href="/about"
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-              >
-                SAVE
-              </Link>
-              
-              <Link
-                onClick={() => setIsOpen(true)}
-                href="/about"
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-              >
-                INVEST
-              </Link>
-              <Link
-                onClick={() => setIsOpen(true)}
-                href="/blog"
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-              >
-                WITHDRAW
-              </Link>
-              <Link
-                onClick={() => setIsOpen(true)}
-                href="/about"
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-              >
-                ABOUT
-              </Link>
-              <Link
-                onClick={() => setIsOpen(true)}
-                href="/faq"
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-              >
-                FAQs
-              </Link>
-            </div>
+              <Image
+                src="/images/MyFundlogo.png"
+                loading="lazy"
+                alt="MyFund Logo"
+                className="inline-block max-h-full max-w-full"
+                width={140}
+                height={140}
+              />
+            </Link>
+          ) : null}
 
-
-
-            <div
-        className={`flex flex-col space-y-8 lg:flex lg:flex-row lg:space-x-3 lg:space-y-0 ${
-          isOpen ? "visible flex" : "hidden invisible"
-        } transition-all ease-in`}
-        style={{marginTop: 5, marginBottom: -15,}}
-      >
-    
-        {/* <Link href="/login">
-          <PrimaryButton
-            className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-            onClick={() => console.log("Sign Up button clicked")}
-            background="#fff"
-            color="#4C28BC"
-            borderWidth="2px"
-            borderColor="#4C28BC"
-            hoverColor="#351265"
-            hoverBackgroundColor="#FBFAFF"
-            hoverBorderWidth="2px"
-            hoverBorderColor="#351265"
-            startIcon={
-              <svg
-                fill="currentColor"
-                className="h-4 w-4 mr-2"
-                viewBox="0 0 20 21"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Arrow Right</title>
-                <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
-              </svg>
-            }
+          <div
+            className={`transition-all ease-in flex-col space-y-8 lg:mt-0 lg:flex lg:flex-row lg:space-x-1 lg:space-y-0 ${
+              isOpen ? "visible flex" : "hidden invisible"
+            } transition-all ease-in`}
           >
-            LOG IN
-          </PrimaryButton>
-        </Link> */}
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="/about"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            >
+              SAVE
+            </Link>
 
-        
-        <a
-           download
-           href="/myFund-Enterprise-App.apk">
-          <PrimaryButton
-            className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-            onClick={() => console.log("Create Free Account button clicked")}
-            background="#4C28BC"
-            hoverBackgroundColor="#351265"
-            borderColor="#4C28BC"
-            hoverBorderColor="#351265"
-            color="#fff"
-            hoverColor="#fff"
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="/about"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            >
+              INVEST
+            </Link>
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="/blog"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            >
+              WITHDRAW
+            </Link>
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="/about"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            >
+              ABOUT
+            </Link>
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="/faq"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            >
+              FAQs
+            </Link>
+          </div>
+
+          <div
+            className={`flex flex-col space-y-8 lg:flex lg:flex-row lg:space-x-3 lg:space-y-0 ${
+              isOpen ? "visible flex" : "hidden invisible"
+            } transition-all ease-in`}
+            style={{ marginTop: 5, marginBottom: -15 }}
           >
-            DOWNLOAD THE MOBILE APP
-          </PrimaryButton>
-          </a>
+            {/* <Link href="/login">
+              <PrimaryButton
+                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+                onClick={() => console.log("Sign Up button clicked")}
+                background="#fff"
+                color="#4C28BC"
+                borderWidth="2px"
+                borderColor="#4C28BC"
+                hoverColor="#351265"
+                hoverBackgroundColor="#FBFAFF"
+                hoverBorderWidth="2px"
+                hoverBorderColor="#351265"
+                startIcon={
+                  <svg
+                    fill="currentColor"
+                    className="h-4 w-4 mr-2"
+                    viewBox="0 0 20 21"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <title>Arrow Right</title>
+                    <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
+                  </svg>
+                }
+              >
+                LOG IN
+              </PrimaryButton>
+            </Link> */}
 
-        {/* <Link href="/register">
-          <PrimaryButton
-            className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-            onClick={() => console.log("Create Free Account button clicked")}
-            background="#4C28BC"
-            hoverBackgroundColor="#351265"
-            borderColor="#4C28BC"
-            hoverBorderColor="#351265"
-            color="#fff"
-            hoverColor="#fff"
-          >
-            CREATE FREE ACCOUNT
-          </PrimaryButton>
-          </Link> */}
-        </div>
-
-
-
+            <a
+               download
+               href="/myFund-Enterprise-App.apk">
+              <PrimaryButton
+                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+                onClick={() => console.log("Create Free Account button clicked")}
+                background="#4C28BC"
+                hoverBackgroundColor="#351265"
+                borderColor="#4C28BC"
+                hoverBorderColor="#351265"
+                color="#fff"
+                hoverColor="#fff"
+              >
+                DOWNLOAD THE MOBILE APP
+              </PrimaryButton>
+              </a>
+{/* 
+            <Link href="/register">
+              <PrimaryButton
+                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+                onClick={() => console.log("Create Free Account button clicked")}
+                background="#4C28BC"
+                hoverBackgroundColor="#351265"
+                borderColor="#4C28BC"
+                hoverBorderColor="#351265"
+                color="#fff"
+                hoverColor="#fff"
+              >
+                CREATE FREE ACCOUNT
+              </PrimaryButton>
+            </Link> */}
+          </div>
 
           <a
             href="#"

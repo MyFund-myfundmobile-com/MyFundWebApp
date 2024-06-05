@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { karla, nexa, productSans, proxima } from "./ui/font";
-import NavBar from "./ui/landing/navbar";
 import Head from "next/head";
 import '@fortawesome/fontawesome-svg-core/styles.css'; // Import Font Awesome CSS
 import { config } from '@fortawesome/fontawesome-svg-core';
+import ClientLayout from "./clientLayout";
+
+
 config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
 
 export const metadata: Metadata = {
@@ -26,8 +28,7 @@ export default function RootLayout({
       <body
         className={`${karla.variable} ${nexa.variable} ${productSans.variable} ${proxima.variable} ${nexa.className} px-6 lg:px-10 xl:px-20 h-auto`}
       >
-        <NavBar />
-        <main>{children}</main>
+        <ClientLayout>{children}</ClientLayout> {/* Use the ClientLayout component */}
       </body>
     </html>
   );

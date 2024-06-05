@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { CircularProgress } from '@mui/material';
@@ -17,7 +17,12 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) =
   const [otp, setOTP] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
-//   const router = useRouter();
+
+  useEffect(() => {
+    if (isOpen && inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, [isOpen]);
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return; 
@@ -56,7 +61,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) =
     setTimeout(() => {
       setIsLoading(false);
       onClose();
-      router.push('/home'); // Navigate to the home page after confirming loading
+      router.push('/home'); 
     }, 2000);
   };
 

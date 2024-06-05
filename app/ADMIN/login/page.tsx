@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from '@mui/material'; 
 import { IonIcon } from '@ionic/react';
-import Testimonials from "../register/testimonials";
+import Testimonials from "@/app/register/testimonials";
 import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline, arrowForwardOutline } from 'ionicons/icons';
 import styles from '../ui/landing/Header.module.css';
 import Link from "next/link";
@@ -30,7 +30,7 @@ const LoginPage = () => {
         <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
           <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
             <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-              <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">Welcome Back</h2>
+              <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">Admin Login</h2>
               <p className="mb-8 text-lg text-[#4C28Bc] font-karla tracking-tight md:mb-12 md:text-0.5x0.5">
                 Earn 20% p.a. every January and July. {"\n"}
                 Own properties and earn a lifetime rent. Jump right back in!
