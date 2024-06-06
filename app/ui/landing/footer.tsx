@@ -40,21 +40,19 @@ const Footer = () => {
               <li><a href="http://medium.com/@myfundmobile" target="_blank" rel="noopener noreferrer">Blog</a></li>
               <li><Link href="/faq">FAQs</Link></li>
               <li><Link href="/register">Create Free Account</Link></li>
-              <li>
-  <Link href="/login">
-    Log in
-    <svg
-      fill="currentColor"
-      className="h-4 w-4 ml-2 inline"
-      viewBox="0 0 20 21"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <title>Arrow Right</title>
-      <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
-    </svg>
-  </Link>
-</li>
-
+              <li><Link href="/pages/login">
+                    Log in
+                    <svg
+                      fill="currentColor"
+                      className="h-4 w-4 ml-2 inline"
+                      viewBox="0 0 20 21"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>Arrow Right</title>
+                      <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
+                    </svg>
+                  </Link>
+                </li>
               <li><a href="#" onClick={() => handleNavigation('/admin/login')}>Admin</a></li>
 
             </ul>

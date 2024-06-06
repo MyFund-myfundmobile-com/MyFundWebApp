@@ -4,7 +4,7 @@ import React from "react";
 import Testimonials from "./testimonials";
 import axios from "axios";
 import { AxiosError } from 'axios';
-import styles from '../ui/landing/Header.module.css';
+import styles from '../../ui/landing/Header.module.css';
 import { CircularProgress } from '@mui/material'; 
 import { IonIcon } from '@ionic/react';
 import { personOutline, mailOutline, callOutline, lockClosedOutline, eyeOutline, eyeOffOutline, peopleOutline } from 'ionicons/icons';

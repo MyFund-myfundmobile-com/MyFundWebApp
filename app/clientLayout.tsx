@@ -6,7 +6,7 @@ import NavBar from "./ui/landing/navbar";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // Initialize usePathname
-  const showNavBar = ["/", "/login", "/register"].includes(pathname); // Define the routes where NavBar should be shown
+  const showNavBar = ["/", "/pages/login", "/pages/register", "/admin"].includes(pathname); // Define the routes where NavBar should be shown
 
   return (
     <>
