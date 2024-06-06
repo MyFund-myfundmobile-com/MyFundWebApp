@@ -1,27 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Divider, Tooltip } from '@mui/material';
 import { IonIcon } from '@ionic/react';
 import { menuOutline, personCircleOutline, walletOutline, trendingUpOutline, businessOutline, settingsOutline, chatbubbleOutline, logOutOutline, chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 
 interface SidebarProps {
   onToggle: () => void;
+  isRetracted: boolean; // New prop to control the initial state
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onToggle }) => {
-  const [isRetracted, setIsRetracted] = useState<boolean>(false);
+const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetracted }) => {
+  const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
   const [activeItem, setActiveItem] = useState<string>('DASHBOARD');
+  const [lastSelectedItem, setLastSelectedItem] = useState<string>('DASHBOARD');
+
+  useEffect(() => {
+    setIsRetracted(initialRetracted);
+    if (initialRetracted) {
+      setActiveItem(''); // Clear active item when sidebar is initially retracted
+    } else {
+      setActiveItem(lastSelectedItem); // Set active item to last selected item when sidebar is expanded
+    }
+  }, [initialRetracted]);
 
   const handleToggleSidebar = () => {
+    if (isRetracted) {
+      setActiveItem(lastSelectedItem); // Set active item to last selected item when expanding sidebar
+    } else {
+      setLastSelectedItem(activeItem); // Update last selected item when collapsing sidebar
+    }
     setIsRetracted(!isRetracted);
     onToggle();
   };
 
   const handleMenuItemClick = (item: string) => {
-    setActiveItem(item);
+    if (!isRetracted) {
+      setActiveItem(item);
+    }
+    setLastSelectedItem(item); // Update last selected item
+    if (window.innerWidth < 900) {
+      setIsRetracted(true); // Autohide the sidebar
+      onToggle(); // Toggle the sidebar
+    }
   };
 
   return (
-    <div className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-16' : 'w-64'} z-50`}>
+    <div className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-12' : 'w-64'} z-50`}>
       <div>
         <div className="flex items-center justify-between mt-5 mb-10">
           <IonIcon icon={menuOutline} className="text-white text-2xl cursor-pointer" onClick={handleToggleSidebar} />
@@ -42,19 +65,19 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle }) => {
           ].map((item, index) => (
             <div 
               key={index} 
-              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label ? 'bg-[#F7F5FF] text-[#62028C] transform scale-105' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
+              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#9C1CB0] transform scale-110 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
               onClick={() => handleMenuItemClick(item.label)}
             >
               <IonIcon icon={item.icon} className="text-2xl mr-4" />
-              {!isRetracted && <span className="tracking-wide font-bold" style={{fontSize: 14}}>{item.label}</span>}
+              {!isRetracted && <span className="tracking-wide" style={{ fontSize: 14 }}>{item.label}</span>}
               {isRetracted && <span className="hidden">{item.label}</span>}
             </div>
           ))}
         </div>
       </div>
 
-      <div className="text-sm text-gray-400 px-2">
-        {!isRetracted && <Divider className="my-4 bg-gray-400 mb-80" style={{marginBottom: 30}}/>}
+      <div className="text-sm text-gray-100 px-2">
+        {!isRetracted && <Divider className="my-4 bg-gray-400 mb-80" style={{ marginBottom: 30 }} />}
 
         {[
           { icon: settingsOutline, label: 'Settings' },
@@ -63,11 +86,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle }) => {
         ].map((item, index) => (
           <div 
             key={index} 
-            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105' : 'hover:bg-opacity-10 hover:bg-gray-300'}`}
+            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`}
             onClick={() => handleMenuItemClick(item.label)}
           >
             <IonIcon icon={item.icon} className={`text-xl mr-4 ${item.class || ''}`} />
-            {!isRetracted && <span className="tracking-wide" style={{fontSize: 12}}>{item.label}</span>}
+            {!isRetracted && <span className="tracking-wide" style={{ fontSize: 12 }}>{item.label}</span>}
             {isRetracted && <span className="hidden">{item.label}</span>}
           </div>
         ))}
