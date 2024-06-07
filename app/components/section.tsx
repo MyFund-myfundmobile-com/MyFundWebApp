@@ -1,11 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, CSSProperties } from 'react';
 
 interface SectionProps {
   children: ReactNode;
+  style?: CSSProperties;
 }
 
-const Section: React.FC<SectionProps> = ({ children }) => (
-  <h2 className="font-nexa text-gray-600 tracking-wide" style={{ letterSpacing: '0.1em', marginTop: 25, fontSize: 13, color: 'grey' }}>
+const Section: React.FC<SectionProps> = ({ children, style }) => (
+  <h2 className="font-nexa text-gray-600 tracking-wide" style={{ letterSpacing: '0.1em', marginTop: 25, fontSize: 13, color: 'silver', ...style }}>
     {children}
   </h2>
 );

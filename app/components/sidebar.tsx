@@ -65,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
           ].map((item, index) => (
             <div 
               key={index} 
-              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#9C1CB0] transform scale-110 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
+              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#9C1CB0] transform scale-110 font-black' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
               onClick={() => handleMenuItemClick(item.label)}
             >
               <IonIcon icon={item.icon} className="text-2xl mr-4" />
@@ -97,7 +97,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
       </div>
 
       {/* Retract/Expand Chevron Button */}
-      <div className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-purple1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer" onClick={handleToggleSidebar}>
+      <div 
+        className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-purple1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer transition-transform duration-300 hover:bg-customPurple hover:scale-110"
+        onClick={handleToggleSidebar}
+      >
         <IonIcon icon={isRetracted ? chevronForwardOutline : chevronBackOutline} className="text-white text-2xl" />
       </div>
     </div>

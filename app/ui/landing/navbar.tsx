@@ -50,7 +50,7 @@ const NavBar = () => {
           >
             <Link
               onClick={() => setIsOpen(true)}
-              href="/about"
+              href="/"
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             >
               HOME
@@ -65,10 +65,10 @@ const NavBar = () => {
             </Link>
             <Link
               onClick={() => setIsOpen(true)}
-              href="/blog"
+              href="http://medium.com/@myfundmobile"
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             >
-              SAVINGS
+              BLOG
             </Link>
             <Link
               onClick={() => setIsOpen(true)}
