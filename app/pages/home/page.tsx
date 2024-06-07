@@ -12,11 +12,15 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import QuickActionsSection from './quickActions'; // Import QuickActionsSection
 import RecentTransactionsSection from './recentTransactions'; // Import RecentTransactionsSection
+import TopSaversSection from './topSavers'; // Import TopSaversSection
+import WealthMapSection from './wealthMap'; // Import WealthMapSection
 
 const HomePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 768);
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
+  const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
+  const [showRightButton, setShowRightButton] = useState<boolean>(true);
 
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);
@@ -35,8 +39,26 @@ const HomePage = () => {
       }
     };
     window.addEventListener('resize', handleResize);
+
+    const container = document.getElementById('account-cards-container');
+    const handleScroll = () => {
+      if (container) {
+        setScrollPosition(container.scrollLeft);
+        setShowLeftButton(container.scrollLeft > 0);
+        setShowRightButton(container.scrollLeft < container.scrollWidth - container.clientWidth);
+      }
+    };
+
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
     };
   }, []);
 
@@ -44,7 +66,6 @@ const HomePage = () => {
     const container = document.getElementById('account-cards-container');
     if (container) {
       container.scrollLeft -= 150;
-      setScrollPosition(container.scrollLeft);
     }
   };
 
@@ -52,7 +73,6 @@ const HomePage = () => {
     const container = document.getElementById('account-cards-container');
     if (container) {
       container.scrollLeft += 150;
-      setScrollPosition(container.scrollLeft);
     }
   };
 
@@ -65,7 +85,7 @@ const HomePage = () => {
 
         <main className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full" style={{ backgroundColor: '#F7F5FF' }}>
           <div className="px-6 max-w-full">
-            <div className="flex items-center mb-4 mt-10 relative">
+            <div className="flex items-center mb-4 mt-5 relative">
               <div className="relative">
                 <img src="/images/DrTsquare.png" alt="Profile" className="w-24 h-24 rounded-full border-2 border-purple-400" />
 
@@ -103,7 +123,7 @@ const HomePage = () => {
             <Section>MY ACCOUNTS</Section>
 
             <div className="relative">
-              <div id="account-cards-container" className="flex gap-4 mt-2 overflow-x-hidden overscroll-x-contain w-full">
+              <div id="account-cards-container" className="flex gap-4 mt-2 overflow-x-auto w-full">
                 <AccountCard
                   icon="save-outline"
                   label="SAVINGS"
@@ -146,21 +166,34 @@ const HomePage = () => {
                 />
               </div>
 
-              <button className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-lg" onClick={scrollLeft} disabled={scrollPosition === 0} style={{ marginLeft: -25 }}>
-                <IoIosArrowBack className="text-gray-600" />
-              </button>
-              <button className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-lg" onClick={scrollRight} style={{ marginRight: -25 }}>
-                <IoIosArrowForward className="text-gray-600" />
-              </button>
+              {showLeftButton && (
+                <button className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-lg" onClick={scrollLeft} style={{ marginLeft: -25 }}>
+                  <IoIosArrowBack className="text-gray-600" />
+                </button>
+              )}
+              {showRightButton && (
+                <button className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-lg" onClick={scrollRight} style={{ marginRight: -25 }}>
+                  <IoIosArrowForward className="text-gray-600" />
+                </button>
+              )}
             </div>
 
-            <Divider className="my-4 bg-gray-100" style={{ marginTop: 30, marginBottom: 30 }} />
+            <Divider className="my-4 bg-gray-100" style={{ marginTop: 20, marginBottom: 20 }} />
 
-            {/* Quick actions section */}
-            <QuickActionsSection />
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
+              <div className="md:col-span-3" style={{ alignSelf: 'flex-start' }}>
+                <QuickActionsSection />
+                <RecentTransactionsSection />
+              </div>
 
-            {/* Recent transactions section */}
-            <RecentTransactionsSection />
+              <div className="md:col-span-3">
+                <TopSaversSection />
+              </div>
+
+              <div className="md:col-span-6">
+                <WealthMapSection />
+              </div>
+            </div>
           </div>
         </main>
       </div>

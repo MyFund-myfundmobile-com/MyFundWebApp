@@ -3,9 +3,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
+import { CircularProgress } from '@mui/material';
+import { IonIcon } from '@ionic/react';
+import { arrowDownOutline } from 'ionicons/icons';
+
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isHostelsHovered, setIsHostelsHovered] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+
+  const handleDownloadClick = () => {
+    setIsDownloading(true);
+
+    // Simulate download process
+    setTimeout(() => {
+      setIsDownloading(false);
+    }, 3000);
+  };
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,37 +60,74 @@ const NavBar = () => {
             </Link>
           ) : null}
 
-          <div
-            className={`transition-all ease-in flex-col space-y-8 lg:mt-0 lg:flex lg:flex-row lg:space-x-1 lg:space-y-0 ${
-              isOpen ? "visible flex" : "hidden invisible"
-            } transition-all ease-in`}
-          >
+              <div
+                className={`transition-all ease-in flex items-center lg:mt-0 lg:flex lg:flex-row lg:space-x-1 lg:space-y-0 ${
+                  isOpen ? "visible flex" : "hidden invisible"
+                } transition-all ease-in`}
+              >
             <Link
               onClick={() => setIsOpen(true)}
-              href="/about"
+              href="/"
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+              style={{ margin: 0 }} // Add this style to remove any margin
             >
               HOME
             </Link>
 
+            <div
+              onMouseEnter={() => setIsHostelsHovered(true)}
+              onMouseLeave={() => setIsHostelsHovered(false)}
+              className="relative"
+              style={{ margin: 0 }} // Add this style to remove any margin
+            >
+              <Link
+                onClick={() => setIsOpen(true)}
+                href="/about"
+                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+                style={{ alignItems: "center", marginBottom: -20 }} // Add this style to vertically align items
+              >
+                OUR HOSTELS
+              </Link>
+
+              {isHostelsHovered && (
+                <div className="absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-10">
+                 {isDownloading ? (
+                      <div 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#F7F5FF] hover:text-[#4c28bc] rounded-lg"
+                      >
+                        <IonIcon icon={arrowDownOutline} />
+                        <span className="ml-2 mr-2">Downloading...</span>
+                        <CircularProgress size={20} color="inherit" />
+                      </div>
+                    ) : (
+                      <a
+                        href="/MyFundPackages.pdf"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#F7F5FF] hover:text-[#4c28bc] rounded-lg"
+                        download="MyFundPackages.pdf" // Add download attribute to force download
+                        onClick={handleDownloadClick} // Call handleDownloadClick on click
+                      >
+                        Download Package
+                      </a>
+                    )}
+                </div>
+              )}
+            </div>
+
+
+
+            <Link
+              onClick={() => setIsOpen(true)}
+              href="http://medium.com/@myfundmobile"
+              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+              style={{ margin: 0 }} // Add this style to remove any margin
+            >
+              BLOG
+            </Link>
             <Link
               onClick={() => setIsOpen(true)}
               href="/about"
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-            >
-              OUR HOSTELS
-            </Link>
-            <Link
-              onClick={() => setIsOpen(true)}
-              href="/blog"
-              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-            >
-              SAVINGS
-            </Link>
-            <Link
-              onClick={() => setIsOpen(true)}
-              href="/about"
-              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+              style={{ margin: 0 }} // Add this style to remove any margin
             >
               ABOUT
             </Link>
@@ -81,10 +135,12 @@ const NavBar = () => {
               onClick={() => setIsOpen(true)}
               href="/faq"
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-nexa font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+              style={{ margin: 0 }} // Add this style to remove any margin
             >
               FAQs
             </Link>
           </div>
+
 
           <div
             className={`flex flex-col space-y-8 lg:flex lg:flex-row lg:space-x-3 lg:space-y-0 ${
@@ -118,26 +174,9 @@ const NavBar = () => {
               >
                 LOG IN
               </PrimaryButton>
-            </Link> */}
+            </Link>
 
-            <a
-               download
-               href="/myFund-Enterprise-App.apk">
-              <PrimaryButton
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-                onClick={() => console.log("Create Free Account button clicked")}
-                background="#4C28BC"
-                hoverBackgroundColor="#351265"
-                borderColor="#4C28BC"
-                hoverBorderColor="#351265"
-                color="#fff"
-                hoverColor="#fff"
-              >
-                DOWNLOAD THE MOBILE APP
-              </PrimaryButton>
-              </a>
-
-            {/* <Link href="/pages/register">
+            <Link href="/pages/register">
               <PrimaryButton
                 className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
                 onClick={() => console.log("Create Free Account button clicked")}
@@ -151,7 +190,31 @@ const NavBar = () => {
                 CREATE FREE ACCOUNT
               </PrimaryButton>
             </Link> */}
+
+              <a
+               download
+               href="/myFund-Enterprise-App.apk">
+              <PrimaryButton
+                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+                onClick={() => console.log("Create Free Account button clicked")}
+                background="#4C28BC"
+                hoverBackgroundColor="#351265"
+                borderColor="#4C28BC"
+                hoverBorderColor="#351265"
+                color="#fff"
+                hoverColor="#fff"
+                startIcon=""
+              >
+                DOWNLOAD THE MOBILE APP
+              </PrimaryButton>
+              </a>
           </div>
+
+
+
+
+
+
 
           <a
             href="#"
