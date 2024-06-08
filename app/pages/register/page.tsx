@@ -72,8 +72,16 @@ const RegisterPage: React.FC = () => {
   };
 
   const handleSignup2 = () => {
+      setIsLoading(true)
+
+     setTimeout(() => {
+      setIsLoading(false)
+    }, 3000);
+
     setShowOTPModal(true);
   };
+
+  
 
   const handleSignup = async () => {
     try {
@@ -109,7 +117,7 @@ const RegisterPage: React.FC = () => {
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl"><span style={{color: '#BB9CE8'}}>Create</span> Account</h2>
+            <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">Create Account</h2>
             <p className="mb-8 text-lg text-[#4C28Bc] font-karla tracking-tight md:mb-12 md:text-1">
               Earn 20% p.a. every January and July. {"\n"}
               Own properties and earn a lifetime rent. Signup here.
@@ -215,8 +223,10 @@ const RegisterPage: React.FC = () => {
         </div>
         <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg">
           <Testimonials />
-          <OTPModal email={formData.email} isOpen={showOTPModal} onClose={handleCloseOTPModal} router={useRouter()} />
-          </div>
+          
+          <OTPModal email={formData.email} isOpen={showOTPModal} onClose={handleCloseOTPModal} />
+        
+        </div>
       </div>
     </section>
   );

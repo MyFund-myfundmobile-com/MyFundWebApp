@@ -1,7 +1,6 @@
 import React from 'react';
 import Section from '@/app/components/section';
 import Title from '@/app/components/title';
-import Tooltip from '@mui/material/Tooltip';
 import Subtitle from '@/app/components/subtitle';
 
 const WealthMapSection = () => {

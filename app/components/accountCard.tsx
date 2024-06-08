@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IoSaveOutline, IoWalletOutline, IoTrendingUpOutline, IoHomeOutline } from 'react-icons/io5';
 import { Save as MuiSave, AccountBalanceWallet as MuiWallet } from '@mui/icons-material';
-import { useScrollTrigger } from '@mui/material';
 
 interface AccountCardProps {
   icon: 'save-outline' | 'wallet-outline' | 'trending-up-outline' | 'home-outline';
@@ -11,11 +10,10 @@ interface AccountCardProps {
   amount: string;
   buttonText: string;
   buttonIcon: 'save-outline' | 'wallet-outline' | 'trending-up-outline' | 'home-outline';
-  style?: React.CSSProperties; // Add this line to allow style attribute
+  style?: React.CSSProperties;
 }
 
-
-const AccountCard: React.FC<AccountCardProps> = ({ icon, label, rate, currency, amount, buttonText, buttonIcon }) => {
+const AccountCard: React.FC<AccountCardProps> = ({ icon, label, rate, currency, amount, buttonText, buttonIcon, style }) => {
   const [whole, decimal] = amount.split('.');
 
   const iconComponents: Record<string, JSX.Element> = {
@@ -72,7 +70,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ icon, label, rate, currency, 
   }, []);
 
   return (
-    <div className="relative flex-grow min-w-[250px] max-w-[300px] bg-cover rounded-lg p-4 flex flex-col justify-between" style={{ backgroundImage: 'url(/images/icb2.png)', height: '160px' }}>
+    <div className="relative flex-grow min-w-[250px] max-w-[300px] bg-cover rounded-lg p-4 flex flex-col justify-between" style={{ ...style, backgroundImage: 'url(/images/icb2.png)', height: '160px' }}>
       <div className={`overflow-hidden ${showAmount ? 'opacity-100 transition-opacity duration-500' : 'opacity-0'}`}>
         <div className="flex items-center mb-2">
           {iconComponents[icon]}
@@ -84,13 +82,12 @@ const AccountCard: React.FC<AccountCardProps> = ({ icon, label, rate, currency, 
           {decimal && <span className="text-lg text-gray-400 font-karla tracking-tighter">.{decimal}</span>}
         </div>
       </div>
-      <button className="absolute bottom-3 right-3 flex items-center bg-purple-400 text-white rounded-md py-1 px-2 font-productSans whitespace-nowrap">
+      <button className="absolute bottom-3 right-3 flex items-center bg-purple-400 text-white rounded-md py-1 px-2 font-productSans whitespace-nowrap transition-all duration-300 transform hover:scale-105 hover:bg-purple-500">
         {buttonIconComponents[buttonIcon]}
         <span className="text-sm">{buttonText}</span>
       </button>
     </div>
   );
 };
-
 
 export default AccountCard;

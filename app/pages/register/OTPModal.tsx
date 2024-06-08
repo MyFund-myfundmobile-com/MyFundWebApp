@@ -60,9 +60,9 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) =
     // Simulate OTP verification process
     setTimeout(() => {
       setIsLoading(false);
-      onClose();
-      router.push('/home'); 
-    }, 2000);
+      window.location.href = "/pages/home"; // Redirect to the home page after login
+    }, 4000);
+
   };
 
   return (

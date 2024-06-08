@@ -95,8 +95,8 @@ const NavBar = () => {
                       <div 
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#F7F5FF] hover:text-[#4c28bc] rounded-lg"
                       >
-                        <IonIcon icon={arrowDownOutline} />
-                        <span className="ml-2 mr-2">Downloading...</span>
+                        <IonIcon icon={arrowDownOutline} style={{marginRight: 5, marginBottom: -2}}/>
+                        Downloading...
                         <CircularProgress size={20} color="inherit" />
                       </div>
                     ) : (
@@ -106,6 +106,7 @@ const NavBar = () => {
                         download="MyFundPackages.pdf" // Add download attribute to force download
                         onClick={handleDownloadClick} // Call handleDownloadClick on click
                       >
+                        <IonIcon icon={arrowDownOutline} style={{marginRight: 5, marginBottom: -2}}/>
                         Download Package
                       </a>
                     )}
@@ -148,7 +149,7 @@ const NavBar = () => {
             } transition-all ease-in`}
             style={{ marginTop: 5, marginBottom: -15 }}
           >
-            {/* <Link href="/pages/login">
+            <Link href="/pages/login">
               <PrimaryButton
                 className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
                 onClick={() => console.log("Sign Up button clicked")}
@@ -189,9 +190,9 @@ const NavBar = () => {
               >
                 CREATE FREE ACCOUNT
               </PrimaryButton>
-            </Link> */}
+            </Link>
 
-              <a
+              {/* <a
                download
                href="/myFund-Enterprise-App.apk">
               <PrimaryButton
@@ -207,7 +208,7 @@ const NavBar = () => {
               >
                 DOWNLOAD THE MOBILE APP
               </PrimaryButton>
-              </a>
+              </a> */}
           </div>
 
 

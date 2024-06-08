@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Divider, Tooltip } from '@mui/material';
+import { Divider, Tooltip, CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';
 import { menuOutline, personCircleOutline, walletOutline, trendingUpOutline, businessOutline, settingsOutline, chatbubbleOutline, logOutOutline, chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 
@@ -12,6 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
   const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
   const [activeItem, setActiveItem] = useState<string>('DASHBOARD');
   const [lastSelectedItem, setLastSelectedItem] = useState<string>('DASHBOARD');
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false); // State to manage logout loading
 
   useEffect(() => {
     setIsRetracted(initialRetracted);
@@ -41,7 +42,21 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
       setIsRetracted(true); // Autohide the sidebar
       onToggle(); // Toggle the sidebar
     }
+  
+    if (item === 'Log Out') {
+      setIsLoggingOut(true); // Set logging out state
+      setTimeout(() => {
+        window.location.href = '/pages/login'; // Redirect to the login page
+      }, 2000); // 2-second delay for demonstration
+    } else if (item === 'DASHBOARD') {
+      setIsRetracted(false); // Show the sidebar
+      window.history.pushState({}, '', '/pages/home'); // Change the URL to / for the home page
+    } else if (item === 'SAVE') {
+      setIsRetracted(false); // Show the sidebar
+      window.history.pushState({}, '', '/pages/save'); // Change the URL to /save for the save page
+    }
   };
+  
 
   return (
     <div className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-12' : 'w-64'} z-50`}>
@@ -82,17 +97,27 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
         {[
           { icon: settingsOutline, label: 'Settings' },
           { icon: chatbubbleOutline, label: 'Message Admin' },
-          { icon: logOutOutline, label: 'Log Out', class: 'text-red-500' }
+          { icon: logOutOutline, label: 'Log Out', class: 'text-red-500', href: '/pages/login' }
         ].map((item, index) => (
-          <div 
+          <a 
             key={index} 
-            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`}
+            href={item.href || '#'} 
+            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
             onClick={() => handleMenuItemClick(item.label)}
           >
-            <IonIcon icon={item.icon} className={`text-xl mr-4 ${item.class || ''}`} />
-            {!isRetracted && <span className="tracking-wide" style={{ fontSize: 12 }}>{item.label}</span>}
-            {isRetracted && <span className="hidden">{item.label}</span>}
-          </div>
+            {isLoggingOut && item.label === 'Log Out' ? (
+              <>
+                <CircularProgress size={20} className="mr-4" />
+                <span className="tracking-wide" style={{ fontSize: 12 }}>Logging Out...</span>
+              </>
+            ) : (
+              <>
+                <IonIcon icon={item.icon} className={`text-xl mr-4 ${item.class || ''}`} />
+                {!isRetracted && <span className="tracking-wide" style={{ fontSize: 12 }}>{item.label}</span>}
+                {isRetracted && <span className="hidden">{item.label}</span>}
+              </>
+            )}
+          </a>
         ))}
       </div>
 
