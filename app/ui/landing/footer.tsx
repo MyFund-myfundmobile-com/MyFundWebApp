@@ -142,7 +142,7 @@ const Footer = () => {
         <div className="text-center text-gray-400 text-xs font-product-sans mt-6">
           <p><strong className="font-bold text-white ">MyFund</strong><br />
             Save, Buy Properties, Earn Rent<br />
-            13, Gbajabiamila Street, Ayobo, Lagos.</p>
+            13, Gbajabiamila Street, Ayobo, Lagos, Nigeria.</p>
           <p className="mt-4">
             MyFund (Vcorp Systems Limited) is duly registered under the Lagos State Ministry as an independent financial institution on June 2022 - RC 1508170
           </p>
