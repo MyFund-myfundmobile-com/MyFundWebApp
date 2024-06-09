@@ -144,7 +144,10 @@ const Footer = () => {
             Save, Buy Properties, Earn Rent<br />
             13, Gbajabiamila Street, Ayobo, Lagos, Nigeria.</p>
           <p className="mt-4">
-            MyFund (Vcorp Systems Limited) is duly registered under the Lagos State Ministry as an independent financial institution on June 2022 - RC 1508170
+            MyFund (Vcorp Systems Limited) is duly registered under the Lagos State Ministry as an independent financial institution on June 2022
+          </p>
+          <p className="mt-4">
+            MyFund, MyFund Mobile and MyFund Tech are registered Trademarks of Vcorp Systems Limited - RC 1508170
           </p>
           <p className="mt-4">
             ©2024 MyFund Financial Technology. All rights reserved.
