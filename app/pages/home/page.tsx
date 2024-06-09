@@ -1,6 +1,4 @@
-// pages/home.jsx
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
@@ -9,12 +7,12 @@ import AccountCard from '@/app/components/accountCard';
 import { Divider, Tooltip } from '@mui/material';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import QuickActionsSection from './quickActions'; // Import QuickActionsSection
-import RecentTransactionsSection from './recentTransactions'; // Import RecentTransactionsSection
-import TopSaversSection from './topSavers'; // Import TopSaversSection
-import WealthMapSection from './wealthMap'; // Import WealthMapSection
+import QuickActionsSection from './quickActions';
+import RecentTransactionsSection from './recentTransactions';
+import TopSaversSection from './topSavers';
+import WealthMapSection from './wealthMap';
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
@@ -46,8 +44,6 @@ const HomePage = () => {
     };
   }, []);
 
-
-
   const scrollLeft = () => {
     const container = document.getElementById('account-cards-container');
     if (container) {
@@ -63,23 +59,20 @@ const HomePage = () => {
   };
 
   return (
-    <div className="px-6 max-w-full">
+    <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <img src="/images/DrTsquare.png" alt="Profile" className="w-24 h-24 rounded-full border-2 border-purple-400" />
-
           <Tooltip title="My WealthMap" placement="right">
             <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">3</div>
           </Tooltip>
         </div>
-
         <div className="ml-4">
           <Title><span style={{ color: '#BB9CE8' }}>Hi</span> Tolulope,</Title>
           <Subtitle>Good morning! Welcome to MyFund 👋🏼</Subtitle>
         </div>
-
         <div className="ml-auto flex items-center">
-          {window.innerWidth >= 900 && (
+          {typeof window !== 'undefined' && window.innerWidth >= 900 && (
             <span className='mr-2' style={{ letterSpacing: 2, color: 'grey', fontSize: 13 }}>{showBalances ? 'HIDE' : 'SHOW'} BALANCES </span>
           )}
           <span onClick={handleToggleBalances} style={{ cursor: 'pointer', transition: 'color 3s ease', fontSize: 29 }}>
@@ -121,7 +114,7 @@ const HomePage = () => {
             amount={showBalances ? "2,345,678.90" : "****"}
             buttonText="QuickInvest"
             buttonIcon="trending-up-outline"
-            style={{ transition: 'opacity 5s ease' }}
+            style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="home-outline"
@@ -131,7 +124,7 @@ const HomePage = () => {
             amount={showBalances ? "02" : "**"}
             buttonText="Buy Properties"
             buttonIcon="home-outline"
-            style={{ transition: 'opacity 5s ease' }}
+            style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="wallet-outline"
@@ -141,7 +134,7 @@ const HomePage = () => {
             amount={showBalances ? "265,500.50" : "****"}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
-            style={{ transition: 'opacity 5s ease' }}
+            style={{ transition: 'opacity 0.3s ease' }}
           />
         </div>
 

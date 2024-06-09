@@ -15,6 +15,15 @@ const config: Config = {
         nexa: ["var(--font-nexa)", "sans-serif"],
         proxima: ["var(--font-proxima)", "sans-serif"],
       },
+      keyframes: {
+        floatIn: {
+          '0%': { opacity: 0, transform: 'translateX(30px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        floatIn: 'floatIn 0.5s ease-out',
+      },
       colors: {
         purple1: "#4C28BC",
         purple2: "#DCD1FF",
@@ -24,7 +33,7 @@ const config: Config = {
         silver: "#EDEFEE",
         black1: "#333333",
         customBackground: "#F7F5FF",
-        customPurple: "#351265",  
+        customPurple: "#351265",
       },
     },
   },
