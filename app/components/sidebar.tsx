@@ -1,62 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Tooltip, CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';
-import { menuOutline, personCircleOutline, walletOutline, trendingUpOutline, businessOutline, settingsOutline, chatbubbleOutline, logOutOutline, chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
+import { 
+  menuOutline, personCircleOutline, walletOutline, trendingUpOutline, 
+  businessOutline, settingsOutline, chatbubbleOutline, logOutOutline, 
+  chevronForwardOutline, chevronBackOutline 
+} from 'ionicons/icons';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   onToggle: () => void;
-  isRetracted: boolean; // New prop to control the initial state
+  isRetracted: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetracted }) => {
   const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
   const [activeItem, setActiveItem] = useState<string>('DASHBOARD');
   const [lastSelectedItem, setLastSelectedItem] = useState<string>('DASHBOARD');
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false); // State to manage logout loading
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const navigate = useNavigate();
 
+  
   useEffect(() => {
     setIsRetracted(initialRetracted);
     if (initialRetracted) {
-      setActiveItem(''); // Clear active item when sidebar is initially retracted
+      setActiveItem('');
     } else {
-      setActiveItem(lastSelectedItem); // Set active item to last selected item when sidebar is expanded
+      setActiveItem(lastSelectedItem);
     }
   }, [initialRetracted]);
 
   const handleToggleSidebar = () => {
     if (isRetracted) {
-      setActiveItem(lastSelectedItem); // Set active item to last selected item when expanding sidebar
+      setActiveItem(lastSelectedItem);
     } else {
-      setLastSelectedItem(activeItem); // Update last selected item when collapsing sidebar
+      setLastSelectedItem(activeItem);
     }
     setIsRetracted(!isRetracted);
     onToggle();
   };
 
   const handleMenuItemClick = (item: string) => {
-    if (!isRetracted) {
-      setActiveItem(item);
-    }
-    setLastSelectedItem(item); // Update last selected item
+    setActiveItem(item); // Set the active item
+    setLastSelectedItem(item);
     if (window.innerWidth < 900) {
-      setIsRetracted(true); // Autohide the sidebar
-      onToggle(); // Toggle the sidebar
+      setIsRetracted(true);
+      onToggle();
     }
-  
-    if (item === 'Log Out') {
-      setIsLoggingOut(true); // Set logging out state
-      setTimeout(() => {
-        window.location.href = '/pages/login'; // Redirect to the login page
-      }, 2000); // 2-second delay for demonstration
-    } else if (item === 'DASHBOARD') {
-      setIsRetracted(false); // Show the sidebar
-      window.history.pushState({}, '', '/pages/home'); // Change the URL to / for the home page
-    } else if (item === 'SAVE') {
-      setIsRetracted(false); // Show the sidebar
-      window.history.pushState({}, '', '/pages/save'); // Change the URL to /save for the save page
+
+    // Navigate after setting the active item
+    switch(item) {
+      case 'Log Out':
+        setIsLoggingOut(true);
+        setTimeout(() => {
+          navigate('/pages/login');
+        }, 2000);
+        break;
+      case 'DASHBOARD':
+        navigate('/App/*'); // Navigate to the homepage
+        break;
+      case 'SAVE':
+        navigate('/save'); // Navigate to the save page
+        break;
+      case 'INVEST':
+        navigate('/invest'); // Navigate to the invest page
+        break;
+      case 'WITHDRAW':
+        navigate('/home'); // Navigate to the withdraw page
+        break;
+      // Add more cases as needed
+      default:
+        break;
     }
   };
-  
 
   return (
     <div className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-12' : 'w-64'} z-50`}>
@@ -65,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
           <IonIcon icon={menuOutline} className="text-white text-2xl cursor-pointer" onClick={handleToggleSidebar} />
           {!isRetracted && (
             <Tooltip title="Go to the home page" placement="right">
-              <img src="/images/myfund.png" alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => window.location.href = '/'} />
+              <img src="/images/myfund.png" alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => navigate('/')} />
             </Tooltip>
           )}
         </div>
@@ -80,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
           ].map((item, index) => (
             <div 
               key={index} 
-              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#9C1CB0] transform scale-110 font-black' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
+              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label ? 'bg-[#F7F5FF] text-[#9C1CB0] transform scale-110 font-black' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
               onClick={() => handleMenuItemClick(item.label)}
             >
               <IonIcon icon={item.icon} className="text-2xl mr-4" />
@@ -97,12 +113,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
         {[
           { icon: settingsOutline, label: 'Settings' },
           { icon: chatbubbleOutline, label: 'Message Admin' },
-          { icon: logOutOutline, label: 'Log Out', class: 'text-red-500', href: '/pages/login' }
+          { icon: logOutOutline, label: 'Log Out', class: 'text-red-500' }
         ].map((item, index) => (
-          <a 
+          <div 
             key={index} 
-            href={item.href || '#'} 
-            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label && !isRetracted ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
+            className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${activeItem === item.label ? 'bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold' : 'hover:bg-opacity-10 hover:bg-gray-300'}`} 
             onClick={() => handleMenuItemClick(item.label)}
           >
             {isLoggingOut && item.label === 'Log Out' ? (
@@ -117,11 +132,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
                 {isRetracted && <span className="hidden">{item.label}</span>}
               </>
             )}
-          </a>
+          </div>
         ))}
       </div>
 
-      {/* Retract/Expand Chevron Button */}
       <div 
         className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-purple1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer transition-transform duration-300 hover:bg-customPurple hover:scale-110"
         onClick={handleToggleSidebar}

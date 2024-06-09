@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from 'react';
 import Sidebar from '@/app/components/sidebar';
 import Header from '@/app/components/header';
@@ -13,10 +11,9 @@ import { IonIcon } from '@ionic/react';
 import { saveOutline, arrowUpOutline } from 'ionicons/icons';
 import RecentTransactionsSection from '../home/recentTransactions';
 
-const SavePage = () => {
+const InvestPage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 900);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
- 
   
   useEffect(() => {
     const handleResize = () => {
@@ -33,17 +30,18 @@ const SavePage = () => {
   }, []);
 
 
+
+
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);
   };
-  
 
   const slides = [
     {
       icon: saveOutline,
       text: (
         <>
-          Your Savings Goal: You should be saving <span className="font-bold text-green-500">NXXXXX/month</span> to reach <span className="font-bold text-green-500">N5000000</span> for your <span className="font-bold text-green-500">XXXXXX</span> investment in <span className="font-bold text-green-500">XX</span> years. And you are now <span className="font-bold text-green-500">XXX%</span> to success. Well done!
+          Your Investment Goal: You should be investing <span className="font-bold text-green-500">NXXXXX/month</span> to reach <span className="font-bold text-green-500">N5000000</span> for your <span className="font-bold text-green-500">XXXXXX</span> investment in <span className="font-bold text-green-500">XX</span> years. And you are now <span className="font-bold text-green-500">XXX%</span> to success. Well done!
         </>
       ),
     },
@@ -51,7 +49,7 @@ const SavePage = () => {
       icon: arrowUpOutline,
       text: (
         <>
-          Top Saver: Congratulations firstname, you are currently one of the top savers in June. 🥳🍾🎉🎊 Keep saving to earn more rewards.
+          Top Investor: Congratulations firstname, you are currently one of the top investors in June. 🥳🍾🎉🎊 Keep investing to earn more rewards.
         </>
       ),
     },
@@ -88,9 +86,6 @@ const SavePage = () => {
     </div>
   );
 
-
-
-
   return (
     <div className="flex h-screen w-full">
       <Sidebar onToggle={handleSidebarToggle} isRetracted={isSidebarRetracted} />
@@ -99,23 +94,23 @@ const SavePage = () => {
         <main className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full" style={{ backgroundColor: '#F7F5FF' }}>
           <div className="px-6 max-w-full">
             <div className="mb-5">
-              <Title>Save</Title>
+              <Title>Invest</Title>
               <Subtitle>
-                Earn <span className="font-bold text-green-500">13% p.a.</span> every January and July
+                Sponsor at <span className="font-bold text-green-500">20% p.a.</span> or Own for lifetime rent
               </Subtitle>
             </div>
             <div style={{ marginBottom: -30, marginTop: -40, alignSelf: 'flex-start', marginLeft: -5 }}>
               {renderSlides()}
             </div>
-            <Section>MY SAVINGS ACCOUNT</Section>
+            <Section>MY INVESTMENT ACCOUNT</Section>
             <div className="mb-8 relative mt-1" style={{ transform: 'scale(1.25)', transformOrigin: 'top left', marginBottom: 60 }}>
               <AccountCard
                 icon="save-outline"
-                label="SAVINGS"
-                rate="13% p.a."
+                label="INVESTMENT"
+                rate="20% p.a."
                 currency="₦"
-                amount="2,300,000.50"
-                buttonText="QuickSave"
+                amount="11,500,000.50"
+                buttonText="QuickInvest"
                 buttonIcon="save-outline"
               />
             </div>
@@ -129,8 +124,8 @@ const SavePage = () => {
               </div>
               <div className="md:col-span-6">
                 <div className="bg-white p-4 rounded-lg shadow-md h-full">
-                  <Section>MEET TOPSAVER...</Section>
-                  {/* Feature a recent top saver here */}
+                  <Section>MEET TOP INVESTOR...</Section>
+                  {/* Feature a recent top investor here */}
                 </div>
               </div>
             </div>
@@ -141,4 +136,4 @@ const SavePage = () => {
   );
 };
 
-export default SavePage;
+export default InvestPage;

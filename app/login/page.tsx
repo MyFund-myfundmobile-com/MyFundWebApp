@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from '@mui/material'; 
 import { IonIcon } from '@ionic/react';
-import Testimonials from "../../pages/register/testimonials";
+import Testimonials from "../register/testimonials";
 import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline, arrowForwardOutline } from 'ionicons/icons';
-import styles from '../../ui/landing/Header.module.css';
-import Link from "next/link";
+import styles from "../ui/landing/Header.module.css"
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +25,7 @@ const LoginPage = () => {
     // Simulate a login process with a delay
     setTimeout(() => {
       setIsLoading(false);
-      window.location.href = "/pages/save"; // Redirect to the home page after login
+      window.location.href = "/App"; // Redirect to the home page after login
     }, 3000); // 2-second delay for demonstration
   };
 
@@ -108,7 +107,7 @@ const LoginPage = () => {
                     </div>
                   ) : (
                     <span>
-                      LOG IN
+                      LOG ME IN
                       <svg
                         fill="currentColor"
                         className="h-4 w-4 ml-2 inline-block"

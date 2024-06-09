@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from '@mui/material'; 
 import { IonIcon } from '@ionic/react';
-import Testimonials from "@/app/pages/register/testimonials";
+import Testimonials from "@/app/register/testimonials";
 import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline, arrowForwardOutline } from 'ionicons/icons';
 import styles from '@/app/ui/landing/Header.module.css';
 import Link from "next/link";
