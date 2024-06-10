@@ -1,29 +1,35 @@
 "use client";
-// Routing setup (App.tsx or wherever your routing is defined)
-import React, { useState, useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Routing setup (App.tsx)
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
+import HomePage from '../pages/home/page';
 import SavePage from '../pages/save/page';
-import InvestPage from '../pages/invest/page'; // Import the InvestPage component
-import NotFound from '../not-found';
+import InvestPage from '../pages/invest/page';
+import WithdrawPage from '../pages/withdraw/page';
 import LoginPage from '../login/page';
-import { Login } from '@mui/icons-material';
+import NotFound from '../not-found';
+import BuyPropertiesPage from '../pages/buyProperties/page';
 
 const App = () => {
-
-
   return (
     <Router>
       <Routes>
-        <Route path="/App/*" element={<Layout />} /> {/* Render Layout for all routes under /App */}
-        <Route path="/save" element={<SavePage />} /> {/* Save Page Route */}
-        <Route path="/home" element={<Layout />} /> {/* Home Page Route */}
-        <Route path="/invest" element={<InvestPage />} /> {/* Invest Page Route */}
-        <Route path="*" element={<LoginPage />} /> {/* Not Found Route */}
+        <Route path="/" element={<Navigate to="/login" />} /> {/* Root path redirects to login */}
+        <Route path="/login" element={<LoginPage />} /> {/* Login Page Route */}
+        <Route path="/App" element={<Navigate to="/App/home" />} /> {/* Redirect /App to /App/home */}
+        <Route path="/App/*" element={<Layout />}>
+          <Route path="home" element={<HomePage />} /> {/* Home Page Route */}
+          <Route path="save" element={<SavePage />} /> {/* Save Page Route */}
+          <Route path="invest" element={<InvestPage />} /> {/* Invest Page Route */}
+          <Route path="withdraw" element={<WithdrawPage />} /> {/* Withdraw Page Route */}
+          <Route path="buyProperties" element={<BuyPropertiesPage />} /> {/* Buy Properties Page Route */}
+        </Route>
+        <Route path="*" element={<NotFound />} /> {/* Not Found Route */}
       </Routes>
     </Router>
   );
 };
 
 export default App;
-

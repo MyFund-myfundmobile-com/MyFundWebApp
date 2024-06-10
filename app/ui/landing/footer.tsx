@@ -40,7 +40,7 @@ const Footer = () => {
               <li><a href="http://medium.com/@myfundmobile" target="_blank" rel="noopener noreferrer">Blog</a></li>
               <li><Link href="/faq">FAQs</Link></li>
               <li><Link href="/register">Create Free Account</Link></li>
-              <li><Link href="/pages/login">
+              <li><Link href="/login">
                     Log in
                     <svg
                       fill="currentColor"

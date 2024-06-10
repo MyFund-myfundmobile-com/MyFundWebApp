@@ -1,3 +1,4 @@
+// Save page (SavePage.tsx)
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -7,17 +8,18 @@ import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
-import { Divider } from '@mui/material';
-import TopSaversSection from '../home/topSavers';
+import { Divider, Tooltip } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IonIcon } from '@ionic/react';
 import { saveOutline, arrowUpOutline } from 'ionicons/icons';
+import TopSaversSection from '../home/topSavers';
 import RecentTransactionsSection from '../home/recentTransactions';
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 900);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
- 
-  
+  const [showBalances, setShowBalances] = useState<boolean>(true);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) {
@@ -32,11 +34,13 @@ const SavePage = () => {
     };
   }, []);
 
-
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);
   };
-  
+
+  const handleToggleBalances = () => {
+    setShowBalances(!showBalances);
+  };
 
   const slides = [
     {
@@ -88,54 +92,53 @@ const SavePage = () => {
     </div>
   );
 
-
-
-
   return (
-    <div className="flex h-screen w-full">
-      <Sidebar onToggle={handleSidebarToggle} isRetracted={isSidebarRetracted} />
-      <div className={`flex-grow flex flex-col transition-all duration-300 ${isSidebarRetracted ? 'ml-16' : 'ml-80'} w-full`}>
-        <Header isSidebarRetracted={isSidebarRetracted} />
-        <main className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full" style={{ backgroundColor: '#F7F5FF' }}>
-          <div className="px-6 max-w-full">
-            <div className="mb-5">
-              <Title>Save</Title>
-              <Subtitle>
-                Earn <span className="font-bold text-green-500">13% p.a.</span> every January and July
-              </Subtitle>
-            </div>
-            <div style={{ marginBottom: -30, marginTop: -40, alignSelf: 'flex-start', marginLeft: -5 }}>
-              {renderSlides()}
-            </div>
-            <Section>MY SAVINGS ACCOUNT</Section>
-            <div className="mb-8 relative mt-1" style={{ transform: 'scale(1.25)', transformOrigin: 'top left', marginBottom: 60 }}>
-              <AccountCard
-                icon="save-outline"
-                label="SAVINGS"
-                rate="13% p.a."
-                currency="₦"
-                amount="2,300,000.50"
-                buttonText="QuickSave"
-                buttonIcon="save-outline"
-              />
-            </div>
-            <Divider className="my-4 bg-gray-100 " style={{ marginTop: 20, marginBottom: 20 }} />
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
-              <div className="md:col-span-3" style={{ alignSelf: 'flex-start' }}>
-                <RecentTransactionsSection />
-              </div>
-              <div className="md:col-span-3">
-                <TopSaversSection />
-              </div>
-              <div className="md:col-span-6">
-                <div className="bg-white p-4 rounded-lg shadow-md h-full">
-                  <Section>MEET TOPSAVER...</Section>
-                  {/* Feature a recent top saver here */}
-                </div>
-              </div>
-            </div>
+    <div className="px-6 w-full animate-floatIn overflow-x-hidden">
+      <div className="mb-5 flex items-center">
+        <div>
+          <Title>Save</Title>
+          <Subtitle>
+            Earn <span className="font-bold text-green-500">13% p.a.</span> every January and July
+          </Subtitle>
+        </div>
+        <div className="ml-auto flex items-center">
+          {typeof window !== 'undefined' && window.innerWidth >= 900 && (
+            <span className='mr-2' style={{ letterSpacing: 2, color: 'grey', fontSize: 13 }}>{showBalances ? 'HIDE' : 'SHOW'} BALANCE </span>
+          )}
+          <span onClick={handleToggleBalances} style={{ cursor: 'pointer', transition: 'color 3s ease', fontSize: 29 }}>
+            {showBalances ? <Visibility style={{ color: '#4C28BC', transition: 'color 3s ease', fontSize: 29 }} /> : <VisibilityOff style={{ color: 'grey', transition: 'color 0.3s ease' }} />}
+          </span>
+        </div>
+      </div>
+      <div style={{ marginBottom: -30, marginTop: -40, alignSelf: 'flex-start', marginLeft: -5 }}>
+        {renderSlides()}
+      </div>
+      <Section>MY SAVINGS ACCOUNT</Section>
+      <div className="mb-8 relative mt-1" style={{ transform: 'scale(1.25)', transformOrigin: 'top left', marginBottom: 60 }}>
+        <AccountCard
+          icon="save-outline"
+          label="SAVINGS"
+          rate="13% p.a."
+          currency="₦"
+          amount={showBalances ? "2,300,000.50" : "****"}
+          buttonText="QuickSave"
+          buttonIcon="save-outline"
+        />
+      </div>
+      <Divider className="my-4 bg-gray-100" style={{ marginTop: 20, marginBottom: 20 }} />
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
+        <div className="md:col-span-3" style={{ alignSelf: 'flex-start' }}>
+          <RecentTransactionsSection />
+        </div>
+        <div className="md:col-span-3">
+          <TopSaversSection />
+        </div>
+        <div className="md:col-span-6">
+          <div className="bg-white p-4 rounded-lg shadow-md h-full">
+            <Section>MEET TOPSAVER...</Section>
+            {/* Feature a recent top saver here */}
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );

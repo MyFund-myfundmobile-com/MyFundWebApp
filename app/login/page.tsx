@@ -26,8 +26,10 @@ const LoginPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       window.location.href = "/App"; // Redirect to the home page after login
-    }, 3000); // 2-second delay for demonstration
+    }, 2000); // 2-second delay for demonstration
   };
+  
+  
 
   return (
     <section className="bg-customPurple">

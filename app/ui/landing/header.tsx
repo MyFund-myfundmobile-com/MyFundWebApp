@@ -31,7 +31,7 @@ const handleDownload = () => {
         <div className="max-w-[720px] lg:max-w-[842px]">
   
   
-        <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter animate-float-up">
+        <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter animate-float-up animate-floatIn">
           <span>
             The{' '}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">TRUE{' '}</span>
@@ -53,7 +53,7 @@ const handleDownload = () => {
         </h1>
 
 
-        <div className="mb-6 max-w-[528px] md:mb-10 lg:mb-12 font-product-sans animate-fade-left-delay">
+        <div className="mb-6 animate-floatIn max-w-[528px] md:mb-10 lg:mb-12 font-product-sans animate-fade-left-delay">
           <p className="text-xl text-[#636262]">
             <IoCheckmarkCircle className="inline text-green-500 mr-2" />
             Earn{' '}
