@@ -72,6 +72,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
       case 'BUY PROPERTIES':
         navigate('/App/buyProperties'); // Navigate to the buy properties page
         break;
+      case 'Settings':
+        navigate('/App/settings'); // Navigate to the buy properties page
+        break;  
       default:
         break;
     }
@@ -84,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
           <IonIcon icon={menuOutline} className="text-white text-2xl cursor-pointer" onClick={handleToggleSidebar} />
           {!isRetracted && (
             <Tooltip title="Go to the home page" placement="right">
-              <img src="/images/myfund.png" alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => navigate('/App/home')} />
+              <img src="/images/myfund.png" alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => window.location.href ="/"} />
             </Tooltip>
           )}
         </div>
@@ -115,7 +118,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
 
         {[
           { icon: settingsOutline, label: 'Settings' },
-          { icon: chatbubbleOutline, label: 'Message Admin' },
           { icon: logOutOutline, label: 'Log Out', class: 'text-red-500' }
         ].map((item, index) => (
           <div

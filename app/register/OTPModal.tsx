@@ -94,7 +94,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) =
         </div>
         <div className="flex justify-center">
           <PrimaryButton
-            className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
+            className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
             onClick={handleConfirm}
             background="#4C28BC"
             hoverBackgroundColor="#351265"

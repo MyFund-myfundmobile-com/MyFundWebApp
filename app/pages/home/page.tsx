@@ -17,6 +17,8 @@ const HomePage: React.FC = () => {
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
   const [showRightButton, setShowRightButton] = useState<boolean>(true);
+  const [greeting, setGreeting] = useState<string>('');
+
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -58,6 +60,16 @@ const HomePage: React.FC = () => {
     }
   };
 
+
+
+  useEffect(() => {
+    const greetings = ['Hey', 'Hi', 'Hello', 'Hallo', 'Hola', 'Salut', 'Ciao', 'Namaste', 'Bonjour'];
+    const randomIndex = Math.floor(Math.random() * greetings.length);
+    setGreeting(greetings[randomIndex]);
+  }, []);
+
+
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
@@ -68,7 +80,7 @@ const HomePage: React.FC = () => {
           </Tooltip>
         </div>
         <div className="ml-4">
-          <Title><span style={{ color: '#BB9CE8' }}>Hi</span> Tolulope,</Title>
+          <Title><span style={{ color: '#BB9CE8' }}>{greeting}</span> Tolulope,</Title>
           <Subtitle>Good morning! Welcome to MyFund 👋🏼</Subtitle>
         </div>
         <div className="ml-auto flex items-center">

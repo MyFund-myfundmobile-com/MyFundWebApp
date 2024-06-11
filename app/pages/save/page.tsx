@@ -2,8 +2,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '@/app/components/sidebar';
-import Header from '@/app/components/header';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';

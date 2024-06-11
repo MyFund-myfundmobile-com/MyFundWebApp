@@ -61,8 +61,8 @@ const NavBar = () => {
               loading="lazy"
               alt="MyFund Logo"
               className="inline-block max-h-full max-w-full"
-              width={140}
-              height={140}
+              width={130}
+              height={130}
             />
           </Link>
 

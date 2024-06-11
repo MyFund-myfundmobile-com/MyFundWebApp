@@ -58,10 +58,12 @@ const WithdrawPage = () => {
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="mb-5 flex items-center">
+        <div>
         <Title>Withdraw</Title>
         <Subtitle>
           Move money between your accounts or to your bank.
         </Subtitle>
+        </div>
         <div className="ml-auto flex items-center">
           <span className='mr-2' style={{ letterSpacing: 2, color: 'grey', fontSize: 13 }}>{showBalances ? 'HIDE' : 'SHOW'} BALANCES </span>
           <span onClick={handleToggleBalances} style={{ cursor: 'pointer', transition: 'color 3s ease', fontSize: 29 }}>

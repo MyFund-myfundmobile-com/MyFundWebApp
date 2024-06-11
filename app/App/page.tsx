@@ -11,6 +11,8 @@ import WithdrawPage from '../pages/withdraw/page';
 import LoginPage from '../login/page';
 import NotFound from '../not-found';
 import BuyPropertiesPage from '../pages/buyProperties/page';
+import SettingsPage from '../pages/settings/page'; // Import the SettingsPage
+
 
 const App = () => {
   return (
@@ -25,6 +27,7 @@ const App = () => {
           <Route path="invest" element={<InvestPage />} /> {/* Invest Page Route */}
           <Route path="withdraw" element={<WithdrawPage />} /> {/* Withdraw Page Route */}
           <Route path="buyProperties" element={<BuyPropertiesPage />} /> {/* Buy Properties Page Route */}
+          <Route path="settings" element={<SettingsPage />} /> {/* Add this route */}
         </Route>
         <Route path="*" element={<NotFound />} /> {/* Not Found Route */}
       </Routes>
