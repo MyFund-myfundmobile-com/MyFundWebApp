@@ -4,7 +4,8 @@ import { IonIcon } from '@ionic/react';
 import {
   menuOutline, personCircleOutline, walletOutline, trendingUpOutline,
   businessOutline, settingsOutline, chatbubbleOutline, logOutOutline,
-  chevronForwardOutline, chevronBackOutline
+  chevronForwardOutline, chevronBackOutline,
+  personCircleSharp, mailOutline, statsChartOutline, documentTextOutline
 } from 'ionicons/icons';
 import { useNavigate } from 'react-router-dom';
 import LogoutModal from '../pages/settings/modals/logoutModals';
@@ -57,22 +58,23 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
         setIsLoggingOut(true);
         break;
       case 'DASHBOARD':
-        navigate('/App/home'); // Navigate to the homepage
+        navigate('/admin/App/home'); // Navigate to the homepage
         break;
-      case 'SAVE':
-        navigate('/App/save'); // Navigate to the save page
+        case 'USERS':
+          navigate('/admin/App/users'); // Navigate to the emails page
+          break;
+      case 'ADMINS':
+            navigate('/admin/App/users'); // Navigate to the emails page
+            break;
+      case 'EMAILS':
+        navigate('/admin/App/emails'); // Navigate to the emails page
         break;
-      case 'INVEST':
-        navigate('/App/invest'); // Navigate to the invest page
+      case 'TRANSACTIONS':
+        navigate('/admin/App/transactions'); // Navigate to the transactions page
         break;
-      case 'WITHDRAW':
-        navigate('/App/withdraw'); // Navigate to the withdraw page
-        break;
-      case 'BUY PROPERTIES':
-        navigate('/App/buyProperties'); // Navigate to the buy properties page
-        break;
+  
       case 'Settings':
-        navigate('/App/settings'); // Navigate to the buy properties page
+        navigate('/admin/App/settings'); // Navigate to the transactions page
         break;  
       default:
         break;
@@ -80,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
   };
 
   return (
-    <div className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-12' : 'w-64'} z-50`}>
+    <div className={`bg-customPurple h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${isRetracted ? 'w-12' : 'w-64'} z-50`}>
       <div>
         <div className="flex items-center justify-between mt-5 mb-10">
           <IonIcon icon={menuOutline} className="text-white text-2xl cursor-pointer" onClick={handleToggleSidebar} />
@@ -93,11 +95,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
 
         <div className="text-white px-2 space-y-6 font-nexa">
           {[
-            { icon: personCircleOutline, label: 'DASHBOARD' },
-            { icon: walletOutline, label: 'SAVE' },
-            { icon: trendingUpOutline, label: 'INVEST' },
-            { icon: businessOutline, label: 'BUY PROPERTIES' },
-            { icon: walletOutline, label: 'WITHDRAW' }
+            { icon: personCircleSharp, label: 'DASHBOARD' },
+            { icon: personCircleOutline, label: 'USERS' },
+            { icon: mailOutline, label: 'ADMINS' },
+            { icon: mailOutline, label: 'EMAILS' },
+            { icon: trendingUpOutline, label: 'TRANSACTIONS' },
           ].map((item, index) => (
             <div
               key={index}

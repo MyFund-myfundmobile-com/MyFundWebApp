@@ -1,3 +1,4 @@
+// Layout component (Layout.tsx)
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './sidebar';
@@ -25,7 +26,7 @@ const Layout = () => {
     };
   }, []);
 
-  const handleMenuItemClick = (item: string) => {
+  const handleMenuItemClick = (item: string) => { // Define the type for item
     setActiveItem(item);
   };
 

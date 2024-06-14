@@ -1,93 +1,22 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Box } from '@mui/material';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import { Divider } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { IonIcon } from '@ionic/react';
-import { personOutline, callOutline, mailOutline, cashOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+import { personOutline, callOutline, mailOutline, cashOutline } from 'ionicons/icons';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
-import SettingsButtonsSection from './settingsButtons';
-import SettingsExtension from './settingsExtension';
-import LogoutModal from './modals/logoutModals';
-import UpdateSavingsGoalModal from './modals/updateSavingsGoalModal';
-import CardSettings from './subsettings/card';
-import BankSettings from './subsettings/bank';
-import KYCSettings from './subsettings/kyc';
 
 const SettingsPage: React.FC = () => {
-  const [selectedMenu, setSelectedMenu] = useState("");
+  const [selectedMenu, setSelectedMenu] = useState("SELECT A SETTING");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [isUpdateSavingsGoalModalOpen, setIsUpdateSavingsGoalModalOpen] = useState(false);
-  const [updatedSavingsGoal, setUpdatedSavingsGoal] = useState<string | undefined>(undefined);
-  const [tabIndex, setTabIndex] = useState(0);
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
-      setIsLoggingOut(true);
-    } else if (menu === "Update Savings Goal") {
-      setIsUpdateSavingsGoalModalOpen(true);
+      setIsLoggingOut(true); // Trigger the logout modal
     } else {
       setSelectedMenu(menu);
-    }
-  };
-
-  const handleUpdateSavingsGoal = (preferredAsset: string, amount: number, duration: number) => {
-    setIsUpdateSavingsGoalModalOpen(false);
-    setUpdatedSavingsGoal(`${(amount / (duration * 12)).toFixed(2)}`);
-  };
-
-  const getSelectedComponent = () => {
-    switch (selectedMenu) {
-      case "Card and Bank Settings":
-        return (
-          <Box className="border border-gray-300 bg-white rounded-lg p-4 mt-4">
-            <Tabs
-              value={tabIndex}
-              onChange={(e, newIndex) => setTabIndex(newIndex)}
-              aria-label="Card and Bank Settings Tabs"
-              textColor="primary"
-              indicatorColor="primary"
-              variant="fullWidth"
-              classes={{
-                root: 'rounded-full border border-gray-300 bg-gray-100',
-                indicator: 'hidden',
-              }}
-              TabIndicatorProps={{
-                children: <span className="MuiTabs-indicatorSpan" />,
-              }}
-            >
-              <Tab
-                label="My Cards"
-                className={`rounded-full ${
-                  tabIndex === 0 ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
-                classes={{
-                  root: 'w-1/2',
-                }}
-              />
-              <Tab
-                label="My Bank Accounts"
-                className={`rounded-full ${
-                  tabIndex === 1 ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
-                classes={{
-                  root: 'w-1/2',
-                }}
-              />
-            </Tabs>
-            <Box p={3}>
-              {tabIndex === 0 && <CardSettings />}
-              {tabIndex === 1 && <BankSettings />}
-            </Box>
-          </Box>
-        );
-      case "Update KYC":
-        return <KYCSettings />;
-      default:
-        return <SettingsExtension selectedMenu={selectedMenu} updatedSavingsGoal={updatedSavingsGoal} />;
     }
   };
 
@@ -165,31 +94,8 @@ const SettingsPage: React.FC = () => {
 
       <Divider className="my-4 bg-gray-100" />
 
-      {/* SETTINGS SECTION */}
-      <Section>SETTINGS</Section>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-        <div className="md:col-span-1">
-          <SettingsButtonsSection onMenuSelect={handleMenuSelect} />
-        </div>
-        <div className="md:col-span-2">
-          {selectedMenu !== "Log Out" && getSelectedComponent()}
-        </div>
-      </div>
-
-      {/* Logout Modal */}
-      <LogoutModal
-        isOpen={isLoggingOut}
-        onClose={() => setIsLoggingOut(false)}
-      />
-
-      {/* Update Savings Goal Modal */}
-      <UpdateSavingsGoalModal
-        isOpen={isUpdateSavingsGoalModalOpen}
-        onClose={() => setIsUpdateSavingsGoalModalOpen(false)}
-        onUpdate={handleUpdateSavingsGoal}
-        firstname="Tolulope"
-        setUpdatedSavingsGoal={setUpdatedSavingsGoal}
-      />
+   
+     
     </div>
   );
 };

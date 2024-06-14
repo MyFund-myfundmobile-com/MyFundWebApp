@@ -20,7 +20,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
     { label: "Message Admin", icon: mailOutline },
     { label: "Rate MyFund", icon: thumbsUpOutline },
     { label: "Privacy and Policy", icon: lockClosedOutline },
-    { label: "Log Out", icon: logOutOutline, color: "brown" } // Use brown color for logout icon
+    { label: "Log Out", icon: logOutOutline, color: "brown" }
   ];
 
   const handleButtonClick = (label: string) => {
@@ -38,11 +38,19 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
           }`}
           onClick={() => handleButtonClick(setting.label)}
         >
-        <IonIcon icon={setting.icon} className={`text-xl ${selectedButton === setting.label ? 'text-white' : 'text-black'}`} style={{ color: setting.color }} />
-        <span className="ml-3 flex-1 text-left text-sm">{setting.label}</span>
+          <IonIcon icon={setting.icon} className={`text-xl ${selectedButton === setting.label ? 'text-white' : 'text-black'}`} style={{ color: setting.color }} />
+          <span className="ml-3 flex-1 text-left text-sm">
+            {setting.label.includes("Refer and Earn:") ? (
+              <>
+                Refer and Earn: <span style={{ color: 'green-500' }}>N1000 EACH</span>
+              </>
+            ) : (
+              setting.label
+            )}
+          </span>
         </button>
       ))}
-  </section>
+    </section>
   );
 };
 

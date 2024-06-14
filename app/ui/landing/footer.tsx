@@ -53,7 +53,7 @@ const Footer = () => {
                     </svg>
                   </Link>
                 </li>
-              <li><a href="#" onClick={() => handleNavigation('/admin/login')}>Admin</a></li>
+              <li><a href="#" onClick={() => handleNavigation('/admin')}>Admin</a></li>
 
             </ul>
           </div>

@@ -40,7 +40,15 @@ export const productSans = localFont({
 });
 
 export const nexa = localFont({
-  src: "../../public/fonts/Nexa-Regular.otf",
+  src: "../../public/fonts/NexaRegular.otf",
+  weight: "400",
+  style: "normal",
+  display: "auto",
+  variable: "--font-nexa",
+});
+
+export const nexaBold = localFont({
+  src: "../../public/fonts/NexaBold.otf",
   weight: "400",
   style: "normal",
   display: "auto",

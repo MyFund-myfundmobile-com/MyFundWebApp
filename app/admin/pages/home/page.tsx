@@ -7,10 +7,6 @@ import AccountCard from '@/app/components/accountCard';
 import { Divider, Tooltip } from '@mui/material';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import QuickActionsSection from './quickActions';
-import RecentTransactionsSection from './recentTransactions';
-import TopSaversSection from './topSavers';
-import WealthMapSection from './wealthMap';
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -64,7 +60,7 @@ const HomePage: React.FC = () => {
 
 
   useEffect(() => {
-    const greetings = ['Hey', 'Hi', 'Hello', 'Hallo', 'Hola', 'Salut', 'Ciao', 'Namaste', 'Bonjour'];
+    const greetings = ['Admin', 'Exec', 'Admin', ];
     const randomIndex = Math.floor(Math.random() * greetings.length);
     setGreeting(greetings[randomIndex]);
   }, []);
@@ -96,7 +92,7 @@ const HomePage: React.FC = () => {
         </div>
         <div className="ml-4">
           <Title><span style={{ color: '#BB9CE8' }}>{greeting}</span> Tolulope,</Title>
-          <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
+          <Subtitle>{getGreeting}, Welcome to MyFund Admin Page 👋🏼</Subtitle>
           </div>
         <div className="ml-auto flex items-center">
           {typeof window !== 'undefined' && window.innerWidth >= 900 && (
@@ -108,7 +104,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-lg p-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden" style={{ backgroundColor: '#DCD1FF', color: 'black', fontFamily: 'karla', fontSize: 14 }}>
+      {/* <div className="rounded-lg p-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden" style={{ backgroundColor: '#DCD1FF', color: 'black', fontFamily: 'karla', fontSize: 14 }}>
         <img src="/images/logo..png" alt="MyFund Logo" className="w-12 h-12 mr-4 self-center" />
         <p className="overflow-auto" style={{ wordWrap: 'break-word' }}>
           <span className="font-proxima font-bold text-purple1">Every January and July</span>, you will earn
@@ -117,49 +113,49 @@ const HomePage: React.FC = () => {
           (credited to your wallet) until you have saved enough to buy properties and earn lifetime rent.
           So, keep growing your funds.
         </p>
-      </div>
+      </div> */}
 
-      <Section>MY ACCOUNTS</Section>
+      <Section>SUMMARY</Section>
 
       <div className="relative">
         <div id="account-cards-container" className="flex gap-4 mt-2 overflow-x-auto w-full">
           <AccountCard
             icon="save-outline"
-            label="SAVINGS"
-            rate="13% p.a."
-            currency="₦"
-            amount={showBalances ? "1,234,567.89" : "****"}
-            buttonText="QuickSave"
+            label="NEW USERS TODAY"
+            rate="+3%"
+            currency=""
+            amount={showBalances ? "09" : "****"}
+            buttonText="View List"
             buttonIcon="save-outline"
             style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="trending-up-outline"
-            label="INVESTMENTS"
-            rate="20% p.a."
-            currency="₦"
-            amount={showBalances ? "2,345,678.90" : "****"}
-            buttonText="QuickInvest"
+            label="TOTAL USERS"
+            rate="-2%"
+            currency=""
+            amount={showBalances ? "857" : "****"}
+            buttonText="View List"
             buttonIcon="trending-up-outline"
             style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="home-outline"
-            label="PROPERTIES"
-            rate="yearly rent"
-            currency=""
-            amount={showBalances ? "02" : "**"}
-            buttonText="Buy Properties"
+            label="TOTAL USER SAVINGS"
+            rate="+3%"
+            currency="₦"
+            amount={showBalances ? "23,502,231.25" : "**"}
+            buttonText="View Details"
             buttonIcon="home-outline"
             style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="wallet-outline"
-            label="WALLET"
-            rate="(My Earnings)"
+            label="TOTAL USER INVESTMENTS"
+            rate="+9%"
             currency="₦"
-            amount={showBalances ? "265,500.50" : "****"}
-            buttonText="Withdraw"
+            amount={showBalances ? "23,560,200.50." : "****"}
+            buttonText="View Details"
             buttonIcon="wallet-outline"
             style={{ transition: 'opacity 0.3s ease' }}
           />
@@ -181,16 +177,12 @@ const HomePage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3" style={{ alignSelf: 'flex-start' }}>
-          <QuickActionsSection />
-          <RecentTransactionsSection />
         </div>
 
         <div className="md:col-span-3">
-          <TopSaversSection />
         </div>
 
         <div className="md:col-span-6">
-          <WealthMapSection />
         </div>
       </div>
     </div>
