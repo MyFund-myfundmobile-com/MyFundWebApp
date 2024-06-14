@@ -23,7 +23,7 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
   const [successMessage, setSuccessMessage] = useState(''); // Message to display in success modal
   const [showConfetti, setShowConfetti] = useState(false); // State to control confetti display
 
-  // Function to format the amount input with commas
+  
   const formatAmount = (value: string) => {
     const regex = /\B(?=(\d{3})+(?!\d))/g;
     return value.replace(regex, ',');
