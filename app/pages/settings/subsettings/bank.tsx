@@ -2,16 +2,31 @@ import React from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
+import { Box } from '@mui/material';
 import { IonIcon } from '@ionic/react';
 import { addCircleOutline } from 'ionicons/icons';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 
-const BankSettings: React.FC = () => {
+const BankSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({ onNavigate }) => {
   const bankAccounts: string[] = []; // Replace with actual bank account data if available
 
   return (
-    <div className="p-4">
-      <Title>My Bank Accounts</Title>
+    <div className="p-4 animate-floatIn ">
+      <Box className="flex justify-between items-center mb-4">
+        <Box>
+          <Title>My Bank Accounts</Title>
+          <Subtitle style={{ marginTop: 1, paddingRight: 90 }}>
+            For faster withdrawals
+          </Subtitle>
+        </Box>
+        <Box
+          className="bg-gray-300 rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer"
+          onClick={() => onNavigate("Card and Bank Settings")}
+          style={{ letterSpacing: 0.5 }}
+        >
+          My Cards
+        </Box>
+      </Box>
       <div className="bg-purple-100 p-4 rounded flex items-center">
         <IonIcon icon={addCircleOutline} className="text-purple-700 text-2xl mr-2" />
         <Subtitle>Set up your bank accounts so you can perform faster withdrawals.</Subtitle>

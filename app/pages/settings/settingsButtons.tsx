@@ -10,7 +10,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   const settings = [
-    { label: "Update Savings Goal", icon: settingsOutline },
+    { label: "Savings Goal", icon: settingsOutline },
     { label: "Card and Bank Settings", icon: cardOutline },
     { label: "Update KYC", icon: personOutline },
     { label: "Update Transaction PIN", icon: keyOutline },
@@ -19,7 +19,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
     { label: "Refer and Earn: N1000 EACH", icon: giftOutline },
     { label: "Message Admin", icon: mailOutline },
     { label: "Rate MyFund", icon: thumbsUpOutline },
-    { label: "Privacy and Policy", icon: lockClosedOutline },
+    // { label: "Privacy and Policy", icon: lockClosedOutline },
     { label: "Log Out", icon: logOutOutline, color: "brown" }
   ];
 
@@ -34,7 +34,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
         <button
           key={index}
           className={`flex items-center p-2 border rounded-lg transition-all duration-300 transform ${
-            selectedButton === setting.label ? 'bg-purple1 text-white scale-105' : 'bg-white hover:scale-105 hover:bg-[#DCD1FF]'
+            selectedButton === setting.label ? 'bg-purple-500 text-white scale-105' : 'bg-white hover:scale-105 hover:bg-[#DCD1FF]'
           }`}
           onClick={() => handleButtonClick(setting.label)}
         >
@@ -42,7 +42,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({ onMenuS
           <span className="ml-3 flex-1 text-left text-sm">
             {setting.label.includes("Refer and Earn:") ? (
               <>
-                Refer and Earn: <span style={{ color: 'green-500' }}>N1000 EACH</span>
+                Refer and Earn: <span style={{ color: 'green' }}>N1000 EACH</span>
               </>
             ) : (
               setting.label

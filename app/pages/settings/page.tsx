@@ -1,95 +1,68 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
+import { Edit } from '@mui/icons-material';
+import { IonIcon } from '@ionic/react';
+import { personOutline, callOutline, mailOutline, arrowUpOutline, cashOutline } from 'ionicons/icons';
+import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
-import { Divider } from '@mui/material';
-import { Edit } from '@mui/icons-material';
-import { IonIcon } from '@ionic/react';
-import { personOutline, callOutline, mailOutline, cashOutline, shieldCheckmarkOutline } from 'ionicons/icons';
-import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
 import SettingsButtonsSection from './settingsButtons';
-import SettingsExtension from './settingsExtension';
 import LogoutModal from './modals/logoutModals';
-import UpdateSavingsGoalModal from './modals/updateSavingsGoalModal';
 import CardSettings from './subsettings/card';
 import BankSettings from './subsettings/bank';
 import KYCSettings from './subsettings/kyc';
+import TransactionPIN from './subsettings/transactonPIN';
+import TopSaversSettings from './subsettings/topSavers';
+import FAQs from './subsettings/FAQs';
+import ReferAndEarnSettings from './subsettings/referAndEarn';
+import MessageAdminSettings from './subsettings/messageAdmin';
+import RateMyFundSettings from './subsettings/rateMyFund';
+import PrivacyAndPolicySettings from './subsettings/privacyAndPolicy';
+import SavingsGoal from './subsettings/savingsGoal';
+import SettingsExtension from './settingsExtension'; // Ensure this import is added
 
 const SettingsPage: React.FC = () => {
-  const [selectedMenu, setSelectedMenu] = useState("");
+  const [selectedMenu, setSelectedMenu] = useState<string | null>("Savings Goal");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [isUpdateSavingsGoalModalOpen, setIsUpdateSavingsGoalModalOpen] = useState(false);
-  const [updatedSavingsGoal, setUpdatedSavingsGoal] = useState<string | undefined>(undefined);
-  const [tabIndex, setTabIndex] = useState(0);
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
       setIsLoggingOut(true);
-    } else if (menu === "Update Savings Goal") {
-      setIsUpdateSavingsGoalModalOpen(true);
     } else {
       setSelectedMenu(menu);
     }
   };
 
-  const handleUpdateSavingsGoal = (preferredAsset: string, amount: number, duration: number) => {
-    setIsUpdateSavingsGoalModalOpen(false);
-    setUpdatedSavingsGoal(`${(amount / (duration * 12)).toFixed(2)}`);
-  };
-
   const getSelectedComponent = () => {
     switch (selectedMenu) {
+      case "Savings Goal":
+        return <SavingsGoal />;
       case "Card and Bank Settings":
-        return (
-          <Box className="border border-gray-300 bg-white rounded-lg p-4 mt-4">
-            <Tabs
-              value={tabIndex}
-              onChange={(e, newIndex) => setTabIndex(newIndex)}
-              aria-label="Card and Bank Settings Tabs"
-              textColor="primary"
-              indicatorColor="primary"
-              variant="fullWidth"
-              classes={{
-                root: 'rounded-full border border-gray-300 bg-gray-100',
-                indicator: 'hidden',
-              }}
-              TabIndicatorProps={{
-                children: <span className="MuiTabs-indicatorSpan" />,
-              }}
-            >
-              <Tab
-                label="My Cards"
-                className={`rounded-full ${
-                  tabIndex === 0 ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
-                classes={{
-                  root: 'w-1/2',
-                }}
-              />
-              <Tab
-                label="My Bank Accounts"
-                className={`rounded-full ${
-                  tabIndex === 1 ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-600'
-                }`}
-                classes={{
-                  root: 'w-1/2',
-                }}
-              />
-            </Tabs>
-            <Box p={3}>
-              {tabIndex === 0 && <CardSettings />}
-              {tabIndex === 1 && <BankSettings />}
-            </Box>
-          </Box>
-        );
+        return <CardSettings onNavigate={handleMenuSelect} />;
+      case "Bank Settings":
+        return <BankSettings onNavigate={handleMenuSelect} />;
       case "Update KYC":
         return <KYCSettings />;
+      case "Update Transaction PIN":
+        return <TransactionPIN />;
+      case "Top Savers":
+        return <TopSaversSettings />;
+      case "FAQs":
+        return <FAQs />;
+      case "Refer and Earn: N1000 EACH":
+        return <ReferAndEarnSettings />;
+      case "Message Admin":
+        return <MessageAdminSettings />;
+      case "Rate MyFund":
+        return <RateMyFundSettings />;
+      case "Privacy and Policy":
+        return <PrivacyAndPolicySettings />;
       default:
-        return <SettingsExtension selectedMenu={selectedMenu} updatedSavingsGoal={updatedSavingsGoal} />;
+        return null;
     }
   };
+  
 
   return (
     <div className="px-6 max-w-full animate-floatIn">
@@ -101,7 +74,7 @@ const SettingsPage: React.FC = () => {
           <div className="relative">
             <img src="/images/DrTsquare.png" alt="Profile" className="w-36 h-36 rounded-full border-2 border-purple-400" />
             <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <Edit className="text-white" />
+              <Edit className="text-white active cursor-pointer" />
             </div>
           </div>
           {/* Name and Email */}
@@ -151,10 +124,10 @@ const SettingsPage: React.FC = () => {
             <PrimaryButton
               className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
               onClick={() => console.log("Update Profile Clicked")}
-              background="#4C28BC"
-              hoverBackgroundColor="#351265"
-              color="#fff"
-              hoverColor="#fff"
+              background="#fff"
+              hoverBackgroundColor="#DCD1FF"
+              color="#4C28BC"
+              hoverColor="#4C28BC"
               style={{ width: '95%', letterSpacing: 0.5 }}
             >
               UPDATE PROFILE
@@ -172,7 +145,11 @@ const SettingsPage: React.FC = () => {
           <SettingsButtonsSection onMenuSelect={handleMenuSelect} />
         </div>
         <div className="md:col-span-2">
-          {selectedMenu !== "Log Out" && getSelectedComponent()}
+          {selectedMenu !== "Log Out" && selectedMenu !== null && (
+            <SettingsExtension selectedMenu={selectedMenu}>
+              {getSelectedComponent()}
+            </SettingsExtension>
+          )}
         </div>
       </div>
 
@@ -180,15 +157,6 @@ const SettingsPage: React.FC = () => {
       <LogoutModal
         isOpen={isLoggingOut}
         onClose={() => setIsLoggingOut(false)}
-      />
-
-      {/* Update Savings Goal Modal */}
-      <UpdateSavingsGoalModal
-        isOpen={isUpdateSavingsGoalModalOpen}
-        onClose={() => setIsUpdateSavingsGoalModalOpen(false)}
-        onUpdate={handleUpdateSavingsGoal}
-        firstname="Tolulope"
-        setUpdatedSavingsGoal={setUpdatedSavingsGoal}
       />
     </div>
   );

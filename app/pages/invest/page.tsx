@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '@/app/components/sidebar';
-import Header from '@/app/components/header';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
 import { Divider } from '@mui/material';
 import TopSaversSection from '../home/topSavers';
-import { IonIcon } from '@ionic/react';
 import { saveOutline, arrowUpOutline } from 'ionicons/icons';
 import RecentTransactionsSection from '../home/recentTransactions';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import { IonIcon } from '@ionic/react';
+import { arrowDownOutline } from 'ionicons/icons';
+import { CircularProgress } from '@mui/material';
+
+
 
 const InvestPage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 900);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
+  const [isDownloading, setIsDownloading] = useState(false);
+ 
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,9 +37,23 @@ const InvestPage = () => {
     };
   }, []);
 
-  const handleSidebarToggle = () => {
-    setIsSidebarRetracted(!isSidebarRetracted);
+
+  const handleDownloadClick = () => {
+    setIsDownloading(true);
+    // Simulate download delay
+    setTimeout(() => {
+      setIsDownloading(false);
+      // Trigger file download
+      const link = document.createElement('a');
+      link.href = '/MyFundPackages.pdf';
+      link.download = 'MyFundPackages.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 5000); // Adjust the delay as needed
   };
+
+  
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -128,11 +148,32 @@ const InvestPage = () => {
         <div className="md:col-span-3">
           <TopSaversSection />
         </div>
+
+
+
         <div className="md:col-span-6">
+          {/* <Section>LATEST NEWS</Section> */}
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
-            <Section>MEET TOP INVESTOR FOR THE MONTH...</Section>
-            {/* Feature a recent top investor here */}
-          </div>
+            <Section>SPONSOR ONGOING PROJECTS TO EARN HIGHER ROI...</Section>
+            <div className="mb-4 mt-3">
+        <img src="/images/sponsorship.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+      
+      <div className="flex justify-center mt-4">
+      <PrimaryButton
+        className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
+        onClick={handleDownloadClick}
+        background="#4C28BC"
+        hoverBackgroundColor="#351265"
+        color="#fff"
+        hoverColor="#fff"
+        startIcon={isDownloading ? <CircularProgress size={24} style={{ color: '#fff', marginRight: 8 }} /> : <IonIcon icon={arrowDownOutline} />}
+        style={{ width: '95%', letterSpacing: 0.5 }}
+      >
+        {isDownloading ? 'Downloading...' : 'DOWNLOAD SPONSORSHIP PACKAGE'}
+      </PrimaryButton>
+     </div>
+      </div>         
+       </div>
         </div>
       </div>
     </div>

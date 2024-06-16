@@ -43,7 +43,7 @@ const KYCSettings: React.FC = () => {
   };
 
   return (
-    <Box className="px-6 max-w-full bg-[#F7F5FF] pt--150" style={{ border: '1px solid grey', padding: '36px', borderRadius: '8px', backgroundColor: 'white' }}>
+    <Box className="px-6 animate-floatIn max-w-full bg-[#F7F5FF]" style={{ padding: '36px', borderRadius: '8px', backgroundColor: 'white' }}>
       <div className="flex justify-between items-center">
         <div>
           <Title style={{ marginTop: -15 }}>Update KYC</Title>

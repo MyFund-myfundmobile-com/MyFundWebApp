@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { IonIcon } from '@ionic/react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   startIcon?: React.ReactNode;
@@ -47,7 +48,6 @@ const BaseButtonStyles = css<ButtonProps>`
   }
 `;
 
-
 const PrimaryButtonWrapper = styled.button<ButtonProps>`
   ${BaseButtonStyles}
   /* Additional styles for primary button */
@@ -65,6 +65,14 @@ const ButtonText = styled.span`
   font-weight: bold; /* Bold text */
 `;
 
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 31px; /* Default icon size */
+  margin: 0 8px;
+`;
+
 export const PrimaryButton: React.FC<ButtonProps> = ({
   startIcon,
   endIcon,
@@ -74,9 +82,9 @@ export const PrimaryButton: React.FC<ButtonProps> = ({
 }) => {
   return (
     <PrimaryButtonWrapper {...rest}>
-      {startIcon && startIcon}
+      {startIcon && <IconWrapper>{startIcon}</IconWrapper>}
       <ButtonText>{children}</ButtonText>
-      {endIcon && endIcon}
+      {endIcon && <IconWrapper>{endIcon}</IconWrapper>}
     </PrimaryButtonWrapper>
   );
 };
@@ -90,9 +98,9 @@ export const SecondaryButton: React.FC<ButtonProps> = ({
 }) => {
   return (
     <SecondaryButtonWrapper {...rest}>
-      {startIcon && startIcon}
+      {startIcon && <IconWrapper>{startIcon}</IconWrapper>}
       <ButtonText>{children}</ButtonText>
-      {endIcon && endIcon}
+      {endIcon && <IconWrapper>{endIcon}</IconWrapper>}
     </SecondaryButtonWrapper>
   );
 };

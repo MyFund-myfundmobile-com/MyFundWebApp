@@ -131,7 +131,9 @@ const SavePage = () => {
         <div className="md:col-span-3">
           <TopSaversSection />
         </div>
+        
         <div className="md:col-span-6">
+          {/* <Section>LATEST NEWS</Section> */}
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <Section>MEET TOPSAVER...</Section>
             {/* Feature a recent top saver here */}

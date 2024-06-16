@@ -14,7 +14,7 @@ interface UpdateSavingsGoalModalProps {
 }
 
 const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen, onClose, onUpdate, firstname, setUpdatedSavingsGoal }) => {
-  const [preferredAsset, setPreferredAsset] = useState('');
+  const [preferredAsset, setPreferredAsset] = useState('Real Estate (MyFund Hostels)');
   const [amount, setAmount] = useState('');
   const [duration, setDuration] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
@@ -35,23 +35,28 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
       setAlertMessage('Invalid Amount: The minimum amount is ₦1,000,000. Please try again and enter a valid amount.');
       return;
     }
-
+  
     setIsUpdating(true);
     setTimeout(() => {
       onUpdate(preferredAsset, amountNum, parseInt(duration));
       setIsUpdating(false);
       const durationNum = parseInt(duration);
-      const savingsPerMonth = (amountNum / (durationNum * 12)).toFixed(2);
-      const savingsGoalMessage = `You should be saving ₦${savingsPerMonth} per month to reach ₦${amountNum} for your ${preferredAsset} investment in ${duration} ${durationNum > 1 ? 'years' : 'year'}. Keep saving to reach your goal.`;
+      const savingsPerMonth = (amountNum / (durationNum * 12));
+      const roundedSavingsPerMonth = Math.round(Number(savingsPerMonth.toPrecision(3))); // Round to 3 significant figures
+      const savingsGoalMessage = `You should be saving ₦${roundedSavingsPerMonth.toLocaleString()} per month to reach ₦${amountNum.toLocaleString()} for your ${preferredAsset} investment in ${duration} ${durationNum > 1 ? 'years' : 'year'}. Keep saving to reach your goal.`;
       setSuccessMessage(savingsGoalMessage);
       setShowSuccessModal(true);
       setShowConfetti(true); // Activate confetti on success
       setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
-
+  
       // Pass the success message to SettingsExtension
       setUpdatedSavingsGoal(savingsGoalMessage);
+      onClose();
     }, 2000);
   };
+  
+
+  
 
   const handleClearAmount = () => {
     setAmount('');
