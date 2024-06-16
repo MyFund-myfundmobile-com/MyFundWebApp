@@ -18,7 +18,7 @@ const TopSavers: React.FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <Title style={{ marginTop: -15 }}>Top Savers</Title>
-          <Subtitle style={{ marginTop: -5 }}>See who is saving the most!</Subtitle>
+          <Subtitle style={{ marginTop: -5 }}>See who is saving the most and are close you are to the top!</Subtitle>
         </div>
         <div className="flex items-center">
           <IonIcon icon={trophyOutline} className="text-purple1" style={{ fontSize: '32px' }} />

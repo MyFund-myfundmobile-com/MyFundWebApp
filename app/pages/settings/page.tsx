@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, Divider } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { IonIcon } from '@ionic/react';
@@ -21,17 +21,33 @@ import RateMyFundSettings from './subsettings/rateMyFund';
 import PrivacyAndPolicySettings from './subsettings/privacyAndPolicy';
 import SavingsGoal from './subsettings/savingsGoal';
 import SettingsExtension from './settingsExtension'; // Ensure this import is added
+import UpdateProfileModal from './modals/updateProfileModal';
 
 const SettingsPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string | null>("Savings Goal");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isUpdateProfileModalOpen, setUpdateProfileModalOpen] = useState(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
       setIsLoggingOut(true);
     } else {
       setSelectedMenu(menu);
+      if (settingsRef.current && window.innerWidth <= 768) { // Assuming 768px is the mobile breakpoint
+        settingsRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+  };
+
+  const handleUpdateProfileClick = () => {
+    setUpdateProfileModalOpen(true);
+  };
+
+  const handleUpdateProfile = (data: any) => {
+    // Replace with actual update logic
+    console.log('Updating profile with:', data);
+    // Show success modal or toast message here
   };
 
   const getSelectedComponent = () => {
@@ -62,7 +78,6 @@ const SettingsPage: React.FC = () => {
         return null;
     }
   };
-  
 
   return (
     <div className="px-6 max-w-full animate-floatIn">
@@ -122,8 +137,8 @@ const SettingsPage: React.FC = () => {
           {/* Update Profile Button */}
           <div className="flex justify-center mt-4">
             <PrimaryButton
-              className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
-              onClick={() => console.log("Update Profile Clicked")}
+              onClick={handleUpdateProfileClick}
+              startIcon={<IonIcon icon={arrowUpOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
               background="#fff"
               hoverBackgroundColor="#DCD1FF"
               color="#4C28BC"
@@ -144,7 +159,7 @@ const SettingsPage: React.FC = () => {
         <div className="md:col-span-1">
           <SettingsButtonsSection onMenuSelect={handleMenuSelect} />
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2" ref={settingsRef}>
           {selectedMenu !== "Log Out" && selectedMenu !== null && (
             <SettingsExtension selectedMenu={selectedMenu}>
               {getSelectedComponent()}
@@ -157,6 +172,13 @@ const SettingsPage: React.FC = () => {
       <LogoutModal
         isOpen={isLoggingOut}
         onClose={() => setIsLoggingOut(false)}
+      />
+
+      {/* Update Profile Modal */}
+      <UpdateProfileModal
+        isOpen={isUpdateProfileModalOpen}
+        onClose={() => setUpdateProfileModalOpen(false)}
+        onUpdate={handleUpdateProfile}
       />
     </div>
   );

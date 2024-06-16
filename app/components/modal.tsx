@@ -4,7 +4,6 @@ import { closeOutline } from 'ionicons/icons';
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import Confetti from 'react-confetti';
 
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -17,8 +16,8 @@ interface ModalProps {
   zIndex: number;
   buttonDisabled?: boolean;
   confettiAnimation?: boolean; // Optional confetti animation prop
-  children?: React.ReactNode; // Add this line
-
+  children?: React.ReactNode;
+  startIcon?: React.ReactNode; // Add startIcon prop
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -32,16 +31,16 @@ const Modal: React.FC<ModalProps> = ({
   iconColor = '#4C28BC',
   zIndex,
   buttonDisabled = false,
-  confettiAnimation = false, // Default to false if not provided
+  confettiAnimation = false,
   children,
-
+  startIcon, // Add startIcon prop to the destructuring
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     if (confettiAnimation) {
       setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 4000); // Show confetti for 3 seconds
+      setTimeout(() => setShowConfetti(false), 4000);
     }
   }, [confettiAnimation]);
 
@@ -70,6 +69,7 @@ const Modal: React.FC<ModalProps> = ({
               hoverColor="#fff"
               style={{ width: '95%', letterSpacing: 0.5 }}
               disabled={buttonDisabled}
+              startIcon={startIcon} // Use startIcon prop here
             >
               {buttonText}
             </PrimaryButton>
@@ -85,7 +85,6 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       </div>
       {children}
-
     </div>
   );
 };
