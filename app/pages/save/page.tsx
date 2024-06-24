@@ -1,22 +1,36 @@
-// Save page (SavePage.tsx)
-"use client";
-
 import React, { useState, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
-import { Divider, Tooltip } from '@mui/material';
+import { Divider, Switch } from '@mui/material';
+import TopSaversSection from '../home/topSavers';
+import { saveOutline, arrowUpOutline } from 'ionicons/icons';
+import RecentTransactionsSection from '../home/recentTransactions';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IonIcon } from '@ionic/react';
-import { saveOutline, arrowUpOutline } from 'ionicons/icons';
-import TopSaversSection from '../home/topSavers';
-import RecentTransactionsSection from '../home/recentTransactions';
+import QuickSaveModal from './modals/quickSaveModal';
+import AutoSaveModal from './modals/autoSaveModal';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 900);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
+  const [isAutoSaveOn, setIsAutoSaveOn] = useState<boolean>(false);
+  const [isQuickSaveModalOpen, setIsQuickSaveModalOpen] = useState<boolean>(false);
+  const [isAutoSaveModalOpen, setIsAutoSaveModalOpen] = useState<boolean>(false); // State for AutoSave modal
+  const [amount, setAmount] = useState<string>(''); // State for selected amount
+  const location = useLocation(); // Initialize useLocation
+
+  useEffect(() => {
+    if (location.state?.quickSaveModalActive) {
+      setIsQuickSaveModalOpen(true); // Open modal if quickSaveModalActive is true
+    }  else if (location.state?.autoSaveModalActive) {
+      setIsAutoSaveModalOpen(true); // Open modal if quickSaveModalActive is true
+    }
+  }, [location.state]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,12 +46,29 @@ const SavePage = () => {
     };
   }, []);
 
-  const handleSidebarToggle = () => {
-    setIsSidebarRetracted(!isSidebarRetracted);
-  };
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 7000);
+
+    return () => clearInterval(slideInterval);
+  }, []);
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
+  };
+
+  const toggleAutoSave = () => {
+    setIsAutoSaveOn(!isAutoSaveOn);
+    // Optionally open AutoSave modal automatically on toggle
+    if (!isAutoSaveOn) {
+      setIsAutoSaveModalOpen(true);
+    }
+  };
+
+  const handleOpenQuickSaveModal = (presetAmount = '') => {
+    setAmount(presetAmount);
+    setIsQuickSaveModalOpen(true);
   };
 
   const slides = [
@@ -58,14 +89,6 @@ const SavePage = () => {
       ),
     },
   ];
-
-  useEffect(() => {
-    const slideInterval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 7000);
-
-    return () => clearInterval(slideInterval);
-  }, []);
 
   const renderSlides = () => (
     <div className="relative w-full overflow-hidden">
@@ -90,6 +113,8 @@ const SavePage = () => {
     </div>
   );
 
+  const presetAmounts = [5000, 10000, 15000, 20000, 40000, 100000];
+
   return (
     <div className="px-6 w-full animate-floatIn overflow-x-hidden">
       <div className="mb-5 flex items-center">
@@ -111,18 +136,58 @@ const SavePage = () => {
       <div style={{ marginBottom: -30, marginTop: -40, alignSelf: 'flex-start', marginLeft: -5 }}>
         {renderSlides()}
       </div>
-      <Section>MY SAVINGS ACCOUNT</Section>
-      <div className="mb-8 relative mt-1" style={{ transform: 'scale(1.25)', transformOrigin: 'top left', marginBottom: 60 }}>
-        <AccountCard
-          icon="save-outline"
-          label="SAVINGS"
-          rate="13% p.a."
-          currency="₦"
-          amount={showBalances ? "2,300,000.50" : "****"}
-          buttonText="QuickSave"
-          buttonIcon="save-outline"
-        />
+      <div className="flex items-center">
+        <Section>MY SAVINGS ACCOUNT</Section>
       </div>
+      <div className="flex flex-wrap md:flex-nowrap items-start" style={{alignContent: 'flex-start', alignItems: 'flext-start'}}>
+        <div className="relative" style={{ flex: '1 1 auto', transform: 'scale(1.25)', transformOrigin: 'top left', marginBottom: 60 }}>
+          <AccountCard
+            icon="save-outline"
+            label="SAVINGS"
+            rate="13% p.a."
+            currency="₦"
+            amount={showBalances ? "2,300,000.50" : "****"}
+            buttonText="QuickSave"
+            buttonIcon="save-outline"
+            onButtonClick={() => handleOpenQuickSaveModal()} // Pass the function here without preset amount
+          />
+          {/* AutoSave Toggle using MUI Switch */}
+          <div className="absolute bottom-2 left-2 flex items-center">
+            <Switch
+              checked={isAutoSaveOn}
+              onChange={toggleAutoSave}
+              color="default"
+              inputProps={{ 'aria-label': 'toggle autosave' }}
+              sx={{
+                '& .MuiSwitch-thumb': {
+                  color: isAutoSaveOn ? '#43FF8E' : 'silver',
+                },
+                '& .MuiSwitch-track': {
+                  backgroundColor: isAutoSaveOn ? '#0AA447' : 'grey',
+                },
+              }}
+            />
+            <span className={`text-gray-500 ml-1 font-karla ${isAutoSaveOn ? 'text-green-500' : ''}`} style={{ fontSize: 12 }}>{isAutoSaveOn ? 'AutoSave is ON' : 'AutoSave is OFF'}</span>
+          </div>
+        </div>
+
+        <div className="mt-4 md:mt-0 border rounded-lg p-2 animate-floatIn" style={{ flex: '1 1 auto' }}>
+          <Section style={{marginTop: -1, marginBottom: 1}}>ADD MONEY TO YOUR ACCOUNT</Section>
+          <div className="grid grid-cols-2 gap-2">
+            {presetAmounts.map((preset, index) => (
+              <button
+                key={index}
+                className="bg-[#DCD1FF] text-black rounded-md font-productSans whitespace-nowrap transform active:scale-95 active:bg-purple-600 active:text-white"
+                style={{ height: '50px' }}
+                onClick={() => handleOpenQuickSaveModal(preset.toString())} // Open modal with preset amount
+              >
+                {preset.toLocaleString()}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      
       <Divider className="my-4 bg-gray-100" style={{ marginTop: 20, marginBottom: 20 }} />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3" style={{ alignSelf: 'flex-start' }}>
@@ -131,15 +196,21 @@ const SavePage = () => {
         <div className="md:col-span-3">
           <TopSaversSection />
         </div>
-        
         <div className="md:col-span-6">
-          {/* <Section>LATEST NEWS</Section> */}
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
-            <Section>MEET TOPSAVER...</Section>
-            {/* Feature a recent top saver here */}
+            <Section>MEET OUR MOST RECENT TOP SAVER...</Section>
+            <div className="mb-4 mt-3">
+              <img src="/images/topsaver.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <div className="flex justify-center mt-4">
+           
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <QuickSaveModal isOpen={isQuickSaveModalOpen} onClose={() => setIsQuickSaveModalOpen(false)} initialAmount={amount} />
+      <AutoSaveModal isOpen={isAutoSaveModalOpen} onClose={() => setIsAutoSaveModalOpen(false)} />
     </div>
   );
 };

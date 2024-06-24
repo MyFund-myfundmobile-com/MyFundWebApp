@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
@@ -11,6 +10,7 @@ import QuickActionsSection from './quickActions';
 import RecentTransactionsSection from './recentTransactions';
 import TopSaversSection from './topSavers';
 import WealthMapSection from './wealthMap';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -19,10 +19,18 @@ const HomePage: React.FC = () => {
   const [showRightButton, setShowRightButton] = useState<boolean>(true);
   const [greeting, setGreeting] = useState<string>('');
   const [getGreeting, setGetGreeting] = useState<string>('');
-
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
+  };
+
+  const handleQuickSaveClick = () => {
+    navigate('/App/save', { state: { quickSaveModalActive: true } }); // Navigate to SavePage with state
+  };
+
+  const handleQuickInvestClick = () => {
+    navigate('/App/invest', { state: { quickInvestModalActive: true } }); // Navigate to SavePage with state
   };
 
   useEffect(() => {
@@ -61,29 +69,25 @@ const HomePage: React.FC = () => {
     }
   };
 
-
-
   useEffect(() => {
-    const greetings = ['Hey', 'Hi', 'Hello', 'Hallo', 'Hola', 'Salut', 'Ciao', 'Namaste', 'Bonjour'];
+    const greetings = ['Hey', 'Hi', 'Hello', 'Hallo', 'Hola', 'Salut', 'Bonjour'];
     const randomIndex = Math.floor(Math.random() * greetings.length);
     setGreeting(greetings[randomIndex]);
   }, []);
 
   useEffect(() => {
-  const getGreeting = () => {
-    const currentHour = new Date().getHours();
-    if (currentHour >= 5 && currentHour < 12) {
-      return 'Good morning';
-    } else if (currentHour >= 12 && currentHour < 18) {
-      return 'Good afternoon';
-    } else {
-      return 'Good evening';
-    }
-  };
-  setGetGreeting(getGreeting);
-}, []);
-
-
+    const getGreeting = () => {
+      const currentHour = new Date().getHours();
+      if (currentHour >= 5 && currentHour < 12) {
+        return 'Good morning';
+      } else if (currentHour >= 12 && currentHour < 18) {
+        return 'Good afternoon';
+      } else {
+        return 'Good evening';
+      }
+    };
+    setGetGreeting(getGreeting);
+  }, []);
 
   return (
     <div className="px-6 max-w-full animate-floatIn">
@@ -97,13 +101,13 @@ const HomePage: React.FC = () => {
         <div className="ml-4">
           <Title><span style={{ color: '#BB9CE8' }}>{greeting}</span> Tolulope,</Title>
           <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
-          </div>
+        </div>
         <div className="ml-auto flex items-center">
           {typeof window !== 'undefined' && window.innerWidth >= 900 && (
             <span className='mr-2' style={{ letterSpacing: 2, color: 'grey', fontSize: 13 }}>{showBalances ? 'HIDE' : 'SHOW'} BALANCES </span>
           )}
-          <span onClick={handleToggleBalances} style={{ cursor: 'pointer', transition: 'color 3s ease', fontSize: 29 }}>
-            {showBalances ? <Visibility style={{ color: '#4C28BC', transition: 'color 3s ease', fontSize: 29 }} /> : <VisibilityOff style={{ color: 'grey', transition: 'color 0.3s ease' }} />}
+          <span onClick={handleToggleBalances} style={{ cursor: 'pointer', transition: 'color 1s ease', fontSize: 29 }}>
+            {showBalances ? <Visibility style={{ color: '#4C28BC', transition: 'color 1s ease', fontSize: 29 }} /> : <VisibilityOff style={{ color: 'grey', transition: 'color 0.3s ease' }} />}
           </span>
         </div>
       </div>
@@ -131,7 +135,7 @@ const HomePage: React.FC = () => {
             amount={showBalances ? "1,234,567.89" : "****"}
             buttonText="QuickSave"
             buttonIcon="save-outline"
-            style={{ transition: 'opacity 0.3s ease' }}
+            onButtonClick={handleQuickSaveClick} // Add onButtonClick handler
           />
           <AccountCard
             icon="trending-up-outline"
@@ -141,7 +145,8 @@ const HomePage: React.FC = () => {
             amount={showBalances ? "2,345,678.90" : "****"}
             buttonText="QuickInvest"
             buttonIcon="trending-up-outline"
-            style={{ transition: 'opacity 0.3s ease' }}
+            onButtonClick={handleQuickInvestClick} // Add onButtonClick handler
+
           />
           <AccountCard
             icon="home-outline"
@@ -151,7 +156,6 @@ const HomePage: React.FC = () => {
             amount={showBalances ? "02" : "**"}
             buttonText="Buy Properties"
             buttonIcon="home-outline"
-            style={{ transition: 'opacity 0.3s ease' }}
           />
           <AccountCard
             icon="wallet-outline"
@@ -161,7 +165,6 @@ const HomePage: React.FC = () => {
             amount={showBalances ? "265,500.50" : "****"}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
-            style={{ transition: 'opacity 0.3s ease' }}
           />
         </div>
 

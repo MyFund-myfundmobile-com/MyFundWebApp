@@ -10,10 +10,10 @@ interface OTPModalProps {
   email: string;
   isOpen: boolean;
   onClose: () => void;
-  router: NextRouter; // Accept router as a prop
+  // router: NextRouter; // Accept router as a prop
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose, router }) => {
+const OTPModal: React.FC<OTPModalProps> = ({ email, isOpen, onClose,  }) => {
   const [otp, setOTP] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
