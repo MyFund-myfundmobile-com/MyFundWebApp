@@ -11,6 +11,7 @@ import {
 } from 'ionicons/icons';
 import { useNavigate } from 'react-router-dom';
 import LogoutModal from '../pages/settings/modals/logoutModals';
+import Image from 'next/image';
 
 
 interface SidebarProps {
@@ -33,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
     } else {
       setActiveItem(lastSelectedItem);
     }
-  }, [initialRetracted]);
+  }, [initialRetracted, lastSelectedItem]);
 
   const handleToggleSidebar = () => {
     if (isRetracted) {
@@ -90,7 +91,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
           <IonIcon icon={menuOutline} className="text-white text-2xl cursor-pointer" onClick={handleToggleSidebar} />
           {!isRetracted && (
             <Tooltip title="Go to the home page" placement="right">
-              <img src="/images/myfund.png" alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => window.location.href ="/"} />
+              <Image src="/images/myfund.png"  width={120} height={40} alt="MyFund Logo" className="w-26 h-8 mx-auto cursor-pointer" onClick={() => window.location.href ="/"} />
             </Tooltip>
           )}
         </div>

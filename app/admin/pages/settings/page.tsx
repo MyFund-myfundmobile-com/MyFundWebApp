@@ -8,18 +8,11 @@ import { Edit } from '@mui/icons-material';
 import { IonIcon } from '@ionic/react';
 import { personOutline, callOutline, mailOutline, cashOutline } from 'ionicons/icons';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import Image from 'next/image';
 
 const SettingsPage: React.FC = () => {
-  const [selectedMenu, setSelectedMenu] = useState("SELECT A SETTING");
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleMenuSelect = (menu: string) => {
-    if (menu === "Log Out") {
-      setIsLoggingOut(true); // Trigger the logout modal
-    } else {
-      setSelectedMenu(menu);
-    }
-  };
+
 
   return (
     <div className="px-6 max-w-full animate-floatIn">
@@ -29,7 +22,7 @@ const SettingsPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:w-1/3 items-start">
           {/* Profile Image */}
           <div className="relative">
-            <img src="/images/DrTsquare.png" alt="Profile" className="w-36 h-36 rounded-full border-2 border-purple-400" />
+            <Image src="/images/DrTsquare.png" width={120} height={120} alt="Profile" className="w-36 h-36 rounded-full border-2 border-purple-400" />
             <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
               <Edit className="text-white" />
             </div>

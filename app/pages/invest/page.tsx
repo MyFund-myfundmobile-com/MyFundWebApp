@@ -16,6 +16,7 @@ import { CircularProgress } from '@mui/material';
 import QuickInvestModal from './modals/quickInvestModal';
 import AutoInvestModal from './modals/autoInvestModal';
 import { useLocation } from 'react-router-dom'; // Import useLocation
+import Image from 'next/image';
 
 
 const InvestPage = () => {
@@ -73,7 +74,7 @@ const InvestPage = () => {
     }, 7000);
 
     return () => clearInterval(slideInterval);
-  }, []);
+  }, );
 
 
   const handleOpenQuickInvestModal = (presetAmount = '') => {
@@ -220,7 +221,7 @@ const InvestPage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full" style={{alignItems: 'flex-start', alignContent: 'flex-start'}}>
             <Section>SPONSOR ONGOING PROJECTS TO EARN HIGHER ROI...</Section>
             <div className="mb-4 mt-3">
-              <img src="/images/sponsorship.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <Image width={80} height={80} src="/images/sponsorship.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
               <div className="flex justify-center mt-4">
                 <PrimaryButton
                   className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"

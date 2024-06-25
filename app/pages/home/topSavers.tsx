@@ -5,6 +5,7 @@ import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import { Divider, Tooltip } from '@mui/material';
 import Section from '@/app/components/section';
+import Image from 'next/image';
 
 interface Saver {
   id: number;
@@ -36,9 +37,10 @@ const TopSaversSection: React.FC = () => {
         {topSavers.map((saver, index) => (
           <li key={saver.id} className="flex items-center space-x-3">
             <span className="text-lg font-nexa" style={{textAlign: 'center', alignSelf: 'center'}}>{index + 1}</span>
-            <img
+            <Image
               src={saver.profilePicture}
               alt={saver.firstName}
+              width={40} height={40}
               className="w-10 h-10 rounded-full object-cover"
             />
             <span className="text-base font-product-sans">{saver.firstName}</span>

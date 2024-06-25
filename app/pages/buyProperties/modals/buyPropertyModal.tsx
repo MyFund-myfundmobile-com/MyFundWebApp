@@ -7,6 +7,7 @@ import Confetti from 'react-confetti';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { IonIcon } from '@ionic/react';
 import { checkmarkCircleOutline } from 'ionicons/icons';
+import Image from 'next/image';
 
 interface BuyPropertyModalProps {
     isOpen: boolean;
@@ -67,7 +68,7 @@ interface BuyPropertyModalProps {
           body={
             <div>
               <div style={{ display: 'flex', marginBottom: 16 }}>
-                <img src={property.image} alt={property.title} style={{ width: '50%', marginRight: 16 }} />
+                <Image width={80} height={80} src={property.image} alt={property.title} style={{ width: '50%', marginRight: 16 }} />
                 <div style={{ flex: 1 }}>
                   <h3>{property.title}</h3>
                   <p>Cost: <span style={{color: '#4C28BC'}}>&#8358;{property.cost.toLocaleString()}</span>/unit</p>

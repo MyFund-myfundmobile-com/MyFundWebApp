@@ -6,6 +6,7 @@ import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
 import { Divider } from '@mui/material';
 import BuyPropertyModal from './modals/buyPropertyModal';
+import Image from 'next/image';
 
 
 const properties = [
@@ -97,7 +98,7 @@ const BuyPropertiesPage = () => {
       <Title>Own</Title>
       <Subtitle>Buy properties and earn lifetime rental income.</Subtitle>
       <div className="mb-8 mt-4">
-        <img src="/images/ownership2.png" alt="Ownership" className="w-full h-auto rounded-lg" />
+        <Image src="/images/ownership2.png" width={80} height={80} alt="Ownership" className="w-full h-auto rounded-lg" />
       </div>
       <Section>MY PROPERTIES</Section>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { IoSaveOutline, IoWalletOutline, IoTrendingUpOutline, IoHomeOutline } from 'react-icons/io5';
+import Image from 'next/image';
 
 interface AccountCardProps {
   icon: 'save-outline' | 'wallet-outline' | 'trending-up-outline' | 'home-outline';
@@ -94,9 +95,10 @@ const AccountCard: React.FC<AccountCardProps> = ({
       {isPropertyCard ? (
         <div className="flex h-full">
           <div className="w-4/5 h-full overflow-hidden">
-            <img
-              src={image}
-              alt={propertyDetails?.name}
+            <Image
+            width={80} height={80}
+              src={image ?? '/path/to/default/image.jpg'} // Fallback image
+              alt={propertyDetails?.name ?? 'Default Alt Text'} // Fallback alt text
               className="object-cover w-full h-full rounded-l-lg"
               style={{ aspectRatio: '1 / 1', width: '100%', height: '100%' }}
             />
@@ -107,15 +109,15 @@ const AccountCard: React.FC<AccountCardProps> = ({
           >
             <div>
               <div className="flex mb-2">
-                <span className="text-sm text-white font-proxima" style={{fontSize: 14,}}>
+                <span className="text-sm text-white font-proxima" style={{ fontSize: 14 }}>
                   {propertyDetails?.name}
                 </span>
               </div>
-              <div className="text-white" >
-                <p style={{fontSize: 9,}}>{propertyDetails?.description}</p>
-                <p className="text-gray-400" style={{fontSize: 9,}}>{propertyDetails?.availableUnits}</p><br/>
-                <p className="text-purple-200" style={{fontSize: 13,}}>{propertyDetails?.cost}</p>
-                <p className="text-green-400" style={{fontSize: 13,}}>{propertyDetails?.roi}</p>
+              <div className="text-white">
+                <p style={{ fontSize: 9 }}>{propertyDetails?.description}</p>
+                <p className="text-gray-400" style={{ fontSize: 9 }}>{propertyDetails?.availableUnits}</p><br/>
+                <p className="text-purple-200" style={{ fontSize: 13 }}>{propertyDetails?.cost}</p>
+                <p className="text-green-400" style={{ fontSize: 13 }}>{propertyDetails?.roi}</p>
               </div>
             </div>
             <button

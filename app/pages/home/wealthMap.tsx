@@ -3,6 +3,7 @@ import React from 'react';
 import Section from '@/app/components/section';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
+import Image from 'next/image';
 
 const WealthMapSection = () => {
   return (
@@ -17,7 +18,7 @@ const WealthMapSection = () => {
         
         </div>
         <div>
-          <img src="/images/9steps3.png" alt="Wealth Map" className="w-full h-auto rounded-lg object-cover" />
+          <Image width={80} height={80} src="/images/9steps3.png"  alt="Wealth Map" className="w-full h-auto rounded-lg object-cover" />
         </div>
       </div>
     </section>

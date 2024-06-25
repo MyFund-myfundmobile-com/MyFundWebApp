@@ -12,6 +12,7 @@ import RecentTransactionsSection from './recentTransactions';
 import TopSaversSection from './topSavers';
 import WealthMapSection from './wealthMap';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import Image from 'next/image';
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -94,7 +95,7 @@ const HomePage: React.FC = () => {
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
-          <img src="/images/DrTsquare.png" alt="Profile" className="w-24 h-24 rounded-full border-2 border-purple-400" />
+          <Image src="/images/DrTsquare.png" width={120} height={120} alt="Profile" className="w-24 h-24 rounded-full border-2 border-purple-400" />
           <Tooltip title="My WealthMap" placement="right">
             <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">3</div>
           </Tooltip>
@@ -114,7 +115,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <div className="rounded-lg p-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden" style={{ backgroundColor: '#DCD1FF', color: 'black', fontFamily: 'karla', fontSize: 14 }}>
-        <img src="/images/logo..png" alt="MyFund Logo" className="w-12 h-12 mr-4 self-center" />
+        <Image src="/images/logo..png" width={80} height={80} alt="MyFund Logo" className="w-12 h-12 mr-4 self-center" />
         <p className="overflow-auto" style={{ wordWrap: 'break-word' }}>
           <span className="font-proxima font-bold text-purple1">Every January and July</span>, you will earn
           <span className="font-proxima font-bold"> 13% p.a.</span> on your SAVINGS and

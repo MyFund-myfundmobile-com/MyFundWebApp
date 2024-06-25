@@ -13,6 +13,8 @@ import { IonIcon } from '@ionic/react';
 import QuickSaveModal from './modals/quickSaveModal';
 import AutoSaveModal from './modals/autoSaveModal';
 import { useLocation } from 'react-router-dom'; // Import useLocation
+import Image from 'next/image';
+
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(window.innerWidth < 900);
@@ -53,7 +55,7 @@ const SavePage = () => {
     }, 7000);
 
     return () => clearInterval(slideInterval);
-  }, []);
+  },);
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -201,7 +203,7 @@ const SavePage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <Section>MEET OUR MOST RECENT TOP SAVER...</Section>
             <div className="mb-4 mt-3">
-              <img src="/images/topsaver.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <Image width={80} height={80} src="/images/topsaver.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
               <div className="flex justify-center mt-4">
            
               </div>

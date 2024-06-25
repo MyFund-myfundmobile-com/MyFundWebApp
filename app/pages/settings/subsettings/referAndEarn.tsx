@@ -6,6 +6,7 @@ import { IonIcon } from '@ionic/react';
 import { giftOutline, checkmarkOutline, copyOutline, shareSocialOutline } from 'ionicons/icons';
 import { Box, IconButton } from '@mui/material';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import Image from 'next/image';
 
 const ReferAndEarn: React.FC = () => {
   const [isCopied, setIsCopied] = useState(false);
@@ -31,7 +32,7 @@ const ReferAndEarn: React.FC = () => {
       <div className="md:col-span-6">
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
           <div className="mb-4 mt-3">
-        <img src="/images/refer.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+        <Image width={80} height={80} src="/images/refer.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
       
       <div className="flex justify-center mt-4">
       <PrimaryButton

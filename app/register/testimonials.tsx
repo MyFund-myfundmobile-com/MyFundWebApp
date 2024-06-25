@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Testimonial {
   message: string;
@@ -48,7 +49,7 @@ const Testimonials = () => {
   useEffect(() => {
     // Shuffle testimonials array when component mounts
     shuffleTestimonials();
-  }, []);
+  }, );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,7 +76,7 @@ const Testimonials = () => {
   return (
     <div className="max-w-lg mx-auto py-12">
       <div className="relative rounded-full overflow-hidden w-32 h-32 mx-auto mb-6">
-        <img
+        <Image
           src={currentTestimonial.image}
           alt={currentTestimonial.name}
           className="object-cover w-full h-full"
