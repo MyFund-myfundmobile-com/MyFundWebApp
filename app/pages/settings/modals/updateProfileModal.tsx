@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { TextField, CircularProgress } from '@mui/material';
 import Modal from '@/app/components/modal'; // Make sure the import path is correct

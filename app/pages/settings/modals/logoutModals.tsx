@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import Modal from '@/app/components/modal';

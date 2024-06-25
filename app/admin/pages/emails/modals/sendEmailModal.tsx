@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Chip, TextField, IconButton, MenuItem, Select, CircularProgress } from '@mui/material';
 import { Add } from '@mui/icons-material';

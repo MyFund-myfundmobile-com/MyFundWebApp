@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef } from 'react';
 import { Box, Divider } from '@mui/material';
 import { Edit } from '@mui/icons-material';

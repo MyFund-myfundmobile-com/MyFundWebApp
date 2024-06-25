@@ -7,7 +7,7 @@ import { CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';
 import { arrowDownOutline } from 'ionicons/icons';
 import MenuIcon from '@mui/icons-material/Menu';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import hamburger and close icons
+
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(true);

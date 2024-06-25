@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
 import { TextField, IconButton, InputAdornment, CircularProgress } from '@mui/material';

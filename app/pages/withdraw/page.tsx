@@ -1,10 +1,10 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
 import { Divider } from '@mui/material';
-import TopSaversSection from '../home/topSavers';
 import WithdrawalTransactionsSection from './withdrawalTransactions';
 import Referrals from './referrals';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';

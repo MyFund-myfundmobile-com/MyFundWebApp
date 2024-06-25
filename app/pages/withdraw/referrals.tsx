@@ -1,6 +1,6 @@
+"use client";
 import React from 'react';
 import Section from '@/app/components/section';
-import { FaArrowUp, FaArrowDown, FaPiggyBank, FaCoins, FaDollarSign } from 'react-icons/fa';
 import { IonIcon } from '@ionic/react';
 import { checkmarkCircleOutline, ellipsisHorizontalCircleOutline } from 'ionicons/icons';
 
@@ -13,16 +13,6 @@ interface Transaction {
   type: 'credit' | 'debit';
 }
 
-// const iconMapping: { [key: string]: React.ElementType } = {
-//   QuickSave: FaPiggyBank,
-//   AutoSave: FaCoins,
-//   QuickInvest: FaDollarSign,
-//   AutoInvest: FaDollarSign,
-//   Withdrawal: FaArrowDown,
-//   FUNAAB: FaArrowUp,
-//   ReferralReward: FaDollarSign,
-//   'ReferralReward Pending': FaDollarSign,
-// };
 
 const createTransaction = (
   description: string,

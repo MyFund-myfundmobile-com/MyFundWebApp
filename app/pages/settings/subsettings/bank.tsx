@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { IonIcon } from '@ionic/react';

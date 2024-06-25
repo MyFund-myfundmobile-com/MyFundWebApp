@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import Section from '@/app/components/section';
 import Title from '@/app/components/title';

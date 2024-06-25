@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef } from 'react';
 import { createOutline } from 'ionicons/icons';
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";

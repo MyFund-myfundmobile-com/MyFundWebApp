@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';

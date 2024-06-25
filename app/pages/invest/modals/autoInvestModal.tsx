@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { TextField, Select, MenuItem, IconButton, CircularProgress } from '@mui/material';
 import { ArrowUpward, Close, CheckCircleOutline, FileCopyOutlined } from '@mui/icons-material';
