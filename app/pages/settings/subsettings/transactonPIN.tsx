@@ -11,7 +11,7 @@ const TransactionPIN: React.FC = () => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    inputRefs.current[0]?.focus(); // Focus on the first input field initially
+    inputRefs.current[0]?.focus(); // Focus on the first input field 
   }, []);
 
   const handlePinChange = (index: number, value: string) => {
