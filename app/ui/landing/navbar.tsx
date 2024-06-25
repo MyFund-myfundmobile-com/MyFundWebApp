@@ -189,7 +189,7 @@ const NavBar = () => {
                 borderColor="#4C28BC"
                 hoverBorderColor="#351265"
                 color="#fff"
-                hoverColor="#fff"
+                hoverColor="white"
               >
                 CREATE FREE ACCOUNT
               </PrimaryButton>

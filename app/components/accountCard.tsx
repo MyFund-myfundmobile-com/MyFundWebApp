@@ -19,7 +19,7 @@ interface AccountCardProps {
     roi: string;
   };
   image?: string;
-  onButtonClick?: () => void; // Add this line to include onButtonClick prop
+  onButtonClick?: () => void;
 }
 
 const AccountCard: React.FC<AccountCardProps> = ({
@@ -34,7 +34,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
   isPropertyCard,
   propertyDetails,
   image,
-  onButtonClick, // Ensure to destructure onButtonClick here
+  onButtonClick,
 }) => {
   const [whole, decimal] = amount.split('.');
 
@@ -92,7 +92,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
     >
       {isPropertyCard ? (
         <div className="flex h-full">
-          <div className="w-1/3 h-full overflow-hidden">
+          <div className="w-4/5 h-full overflow-hidden">
             <img
               src={image}
               alt={propertyDetails?.name}
@@ -101,26 +101,25 @@ const AccountCard: React.FC<AccountCardProps> = ({
             />
           </div>
           <div
-            className="flex flex-col justify-between p-4 w-2/3 bg-cover bg-no-repeat"
+            className="flex flex-col justify-between p-3 w-1/2 bg-cover bg-no-repeat"
             style={{ backgroundImage: 'url(/images/icb2.png)' }}
           >
             <div>
-              <div className="flex items-center mb-2">
-                {iconComponents[icon]}
-                <span className="text-sm text-white font-proxima">
+              <div className="flex mb-2">
+                <span className="text-sm text-white font-proxima" style={{fontSize: 14,}}>
                   {propertyDetails?.name}
                 </span>
               </div>
-              <div className="text-xs text-white">
-                <p>{propertyDetails?.description}</p>
-                <p>{propertyDetails?.availableUnits}</p>
-                <p>{propertyDetails?.cost}</p>
-                <p className="text-green-500">{propertyDetails?.roi}</p>
+              <div className="text-white" >
+                <p style={{fontSize: 9,}}>{propertyDetails?.description}</p>
+                <p className="text-gray-400" style={{fontSize: 9,}}>{propertyDetails?.availableUnits}</p>
+                <p className="text-purple2" style={{fontSize: 13,}}>{propertyDetails?.cost}</p>
+                <p className="text-green-400" style={{fontSize: 13,}}>{propertyDetails?.roi}</p>
               </div>
             </div>
             <button
               className="absolute bottom-3 right-3 flex items-center bg-purple-400 text-white rounded-md py-1 px-2 font-productSans whitespace-nowrap transition-all duration-300 transform hover:scale-105 hover:bg-purple-500"
-              onClick={onButtonClick} // Ensure to add onClick handler here
+              onClick={onButtonClick}
             >
               {buttonIconComponents[buttonIcon]}
               <span className="text-sm">{buttonText}</span>
@@ -165,7 +164,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
           </div>
           <button
             className="absolute bottom-3 right-3 flex items-center bg-purple-400 text-white rounded-md py-1 px-2 font-productSans whitespace-nowrap transition-all duration-300 transform hover:scale-105 hover:bg-purple-500"
-            onClick={onButtonClick} // Ensure to add onClick handler here
+            onClick={onButtonClick}
           >
             {buttonIconComponents[buttonIcon]}
             <span className="text-sm">{buttonText}</span>
