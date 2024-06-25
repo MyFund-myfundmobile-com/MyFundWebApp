@@ -102,7 +102,7 @@ const SettingsPage: React.FC = () => {
           </div>
         </div>
         
-        {/* Vertical Divider */}
+
         <div className="hidden lg:block h-auto mx-6 border-l border-gray-200"></div>
 
         {/* User Details */}
