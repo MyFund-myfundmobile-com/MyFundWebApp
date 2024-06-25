@@ -112,8 +112,8 @@ const AccountCard: React.FC<AccountCardProps> = ({
               </div>
               <div className="text-white" >
                 <p style={{fontSize: 9,}}>{propertyDetails?.description}</p>
-                <p className="text-gray-400" style={{fontSize: 9,}}>{propertyDetails?.availableUnits}</p>
-                <p className="text-purple2" style={{fontSize: 13,}}>{propertyDetails?.cost}</p>
+                <p className="text-gray-400" style={{fontSize: 9,}}>{propertyDetails?.availableUnits}</p><br/>
+                <p className="text-purple-200" style={{fontSize: 13,}}>{propertyDetails?.cost}</p>
                 <p className="text-green-400" style={{fontSize: 13,}}>{propertyDetails?.roi}</p>
               </div>
             </div>
