@@ -1,4 +1,3 @@
-"use client";
 import type { Metadata } from "next";
 import "./globals.css";
 import { karla, nexa, productSans, proxima } from "./ui/font";
