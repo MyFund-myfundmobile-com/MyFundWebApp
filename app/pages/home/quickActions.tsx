@@ -1,15 +1,19 @@
+"use client";
 import React from 'react';
 import Section from '@/app/components/section';
 import { IonIcon } from '@ionic/react';
 import { carOutline, carSportOutline, personAddOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const QuickActionsSection = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const handleActivateAutoSave = () => {
-    // Logic to activate AutoSave
+    navigate('/App/save', { state: { autoSaveModalActive: true } }); // Navigate to SavePage with state
   };
 
   const handleActivateAutoInvest = () => {
-    // Logic to activate AutoInvest
+    navigate('/App/invest', { state: { autoInvestModalActive: true } }); // Navigate to SavePage with state
   };
 
   const autoSaveSettings = { active: false }; // Update this based on your state
@@ -50,7 +54,7 @@ const QuickActionsSection = () => {
         >
           <IonIcon icon={personAddOutline} className="text-xl text-black" />
           <span className="ml-3 flex-1 text-left text-sm">Refer and Earn</span>
-          <span className="text-xs text-gray-600">₦1000 EACH</span>
+          <span className="text-xs text-green-600">₦1000 EACH</span>
         </button>
 
         {/* Add more buttons as needed */}

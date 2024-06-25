@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 import { settingsOutline, cardOutline, personOutline, keyOutline, starOutline, helpCircleOutline, giftOutline, mailOutline, thumbsUpOutline, lockClosedOutline, logOutOutline } from 'ionicons/icons';

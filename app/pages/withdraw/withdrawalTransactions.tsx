@@ -23,17 +23,17 @@ const iconMapping: { [key: string]: React.ElementType } = {
 };
 
 const recentTransactions: Transaction[] = [
-  { description: 'QuickSave', date: '2024-06-01', time: '09:30', transaction_id: '123456', amount: 1000, type: 'credit' as 'credit' },
-  { description: 'AutoSave', date: '2024-06-02', time: '10:45', transaction_id: '123457', amount: 2000, type: 'credit' as 'credit' },
-  { description: 'QuickInvest', date: '2024-06-03', time: '11:15', transaction_id: '123458', amount: 1500, type: 'credit' as 'credit' },
+  { description: 'Withdrawal', date: '2024-06-01', time: '09:30', transaction_id: '123456', amount: 1000, type: 'credit' as 'credit' },
+  { description: 'Withdrawal', date: '2024-06-02', time: '10:45', transaction_id: '123457', amount: 2000, type: 'credit' as 'credit' },
+  { description: 'ReferralReward', date: '2024-06-03', time: '11:15', transaction_id: '123458', amount: 1500, type: 'credit' as 'credit' },
   { description: 'Withdrawal', date: '2024-06-04', time: '12:30', transaction_id: '123459', amount: 500, type: 'debit' as 'debit' },
   { description: 'ReferralReward', date: '2024-06-05', time: '14:00', transaction_id: '123460', amount: 750, type: 'credit' as 'credit' },
 ].slice(0, 5); // Limit to 5 transactions
 
-const RecentTransactionsSection: React.FC = () => {
+const WithdrawalTransactionsSection: React.FC = () => {
   return (
     <section className="mt-4">
-      <Section>MY RECENT TRANSACTIONS</Section>
+      <Section>WITHDRAWAL TRANSACTIONS</Section>
       <div className="overflow-x-auto">
         {recentTransactions.map((transaction, index) => {
           const Icon = iconMapping[transaction.description] || FaArrowDown;
@@ -61,4 +61,4 @@ const RecentTransactionsSection: React.FC = () => {
   );
 };
 
-export default RecentTransactionsSection;
+export default WithdrawalTransactionsSection;

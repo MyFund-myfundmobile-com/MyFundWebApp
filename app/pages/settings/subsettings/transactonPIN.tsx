@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
+"use client";
+import React, { useState, useRef, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import { IonIcon } from '@ionic/react';
@@ -47,7 +48,7 @@ const TransactionPIN: React.FC = () => {
     inputRefs.current[0]?.focus();
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>, index: number) => {
     if (event.key === 'Backspace') {
       event.preventDefault(); // Prevent default behavior (e.g., navigation)
       handleBackspace(index - 1); // Handle backspace for the previous input
@@ -105,3 +106,5 @@ const TransactionPIN: React.FC = () => {
 };
 
 export default TransactionPIN;
+
+

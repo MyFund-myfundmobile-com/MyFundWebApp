@@ -1,14 +1,49 @@
-import React from 'react';
-import { Box } from '@mui/material';
+"use client";
+import React, { useState } from 'react';
+import { Box, IconButton } from '@mui/material';
 import { IonIcon } from '@ionic/react';
-import { addCircleOutline, cardOutline } from 'ionicons/icons';
+import { addOutline, cardOutline, checkmarkCircleOutline, trashOutline } from 'ionicons/icons';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import Section from '@/app/components/section';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import AddCardModal from '../modals/addCardModal';
+import Modal from '@/app/components/modal';
+import Confetti from 'react-confetti';
 
 const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({ onNavigate }) => {
-  const cards: string[] = []; // Replace with actual card data if available
+  const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [cards, setCards] = useState<any[]>([]);
+
+  const handleAddCardClick = () => {
+    setIsAddCardModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsAddCardModalOpen(false);
+  };
+
+  const handleShowSuccessModal = () => {
+    setShowSuccessModal(true);
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowSuccessModal(false);
+      setShowConfetti(false);
+    }, 6000); // Auto-close success modal after 6 seconds
+  };
+
+  const handleAddCard = (card: any) => {
+    setCards([...cards, card]);
+    handleShowSuccessModal();
+  };
+
+  const handleDeleteCard = (index: number) => {
+    const updatedCards = [...cards];
+    updatedCards.splice(index, 1);
+    setCards(updatedCards);
+  };
 
   return (
     <Box className="px-6 animate-floatIn max-w-full bg-[#F7F5FF]" style={{ padding: '36px', borderRadius: '8px', backgroundColor: 'white', position: 'relative' }}>
@@ -35,32 +70,58 @@ const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({ onNavi
       </div>
       <Section>LIST OF CARDS</Section>
       <Box className="mt-4">
-        {cards.length > 0 ? (
-          cards.map((card, index) => (
-            <Box key={index} className="p-4 border rounded mb-2">
-              {/* Display each card information */}
-              <p>{card}</p>
+        {cards.map((card, index) => (
+          <Box key={index} className="p-4 border rounded mb-2 flex items-center justify-between" style={{ backgroundColor: card.bankColor, borderRadius: 10}}> 
+            <Box className="flex items-center">
+              <IonIcon icon={cardOutline} className="text-green-500 text-white mr-4 self-center" style={{ fontSize: '48px' }} />
+              <div>
+                <h1 className="font-karla font-bold text-white">{`**** **** **** ${card.cardNumber}`}</h1>
+                <p className="font-karla text-sm text-gray-300">{card.bankName}</p>
+                <p className="font-karla text-xs text-gray-200">{`Expiry: ${card.expiry}`}</p>
+              </div>
             </Box>
-          ))
-        ) : (
-          <p className="text-gray-500 font-karla" style={{ marginTop: 65, marginBottom: 65, alignSelf: 'center', alignContent: 'center' }}>No cards added yet</p>
+            <IconButton onClick={() => handleDeleteCard(index)}>
+              <IonIcon icon={trashOutline} style={{color: 'red'}}/>
+            </IconButton>
+          </Box>
+        ))}
+        {cards.length === 0 && (
+          <p className="text-gray-500 font-karla" style={{ marginTop: 65, marginBottom: 65, alignSelf: 'center', alignContent: 'center', textAlign: 'center', alignItems: 'center' }}>You&apos;re yet to add any cards.</p>
         )}
       </Box>
-      <Box className="flex justify-center mt-4">
+      <Box className="flex justify-center mt-14">
         <PrimaryButton
           className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
-          onClick={() => console.log("Add New Card Clicked")}
+          onClick={handleAddCardClick}
           background="#4C28BC"
           hoverBackgroundColor="#351265"
           color="#fff"
           hoverColor="#fff"
-          startIcon={<IonIcon icon={addCircleOutline} style={{ fontSize: '31px', marginRight: 5 }} />}
-          style={{ width: '95%', letterSpacing: 0.5 }}
+          style={{ width: '95%', letterSpacing: 0.5, marginBottom: -10 }}
+          startIcon={<IonIcon icon={addOutline} style={{ fontSize: '31px', marginRight: 5 }} />}
         >
-          Add New Card
+          ADD NEW CARD
         </PrimaryButton>
       </Box>
-    </Box>
+      <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseModal} onSuccess={handleAddCard} />
+      
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        header="Card Added Successfully!"
+        body="Your new card has been added and is ready for transactions."
+        buttonText="Awesome!"
+        modalIcon={checkmarkCircleOutline}
+        iconColor="#4CAF50"
+        zIndex={200}
+        confettiAnimation={true}
+        onButtonClick={() => setShowSuccessModal(false)}
+        startIcon={<IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+      >
+      {showConfetti && <Confetti />}
+      </Modal>
+      
+        </Box>
   );
 };
 

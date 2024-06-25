@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import Title from '@/app/components/title';
 import Subtitle from '@/app/components/subtitle';
 import { IonIcon } from '@ionic/react';
-import { chatbubbleEllipsesOutline, sendOutline, happyOutline } from 'ionicons/icons';
-import { Box, TextField, IconButton, InputAdornment } from '@mui/material';
+import { chatbubbleEllipsesOutline, sendOutline, happyOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { Box, TextField, IconButton, InputAdornment, CircularProgress } from '@mui/material';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import Modal from '@/app/components/modal';
+import Confetti from 'react-confetti';
+
 
 const MessageAdmin: React.FC = () => {
   const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleSendClick = () => {
-    // Handle sending the message
-    console.log("Message sent: ", message);
+    setSending(true);
+    // Simulate sending message process
+    setTimeout(() => {
+      setSending(false);
+      setShowSuccessModal(true);
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 6000);
+      console.log("Message sent: ", message);
+    }, 2000);
   };
 
   return (
@@ -61,12 +77,32 @@ const MessageAdmin: React.FC = () => {
           hoverBackgroundColor="#351265"
           color="#fff"
           hoverColor="#fff"
-          startIcon={<IonIcon icon={sendOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+          startIcon={sending ? <CircularProgress size={20} color="inherit" style={{ marginRight: 5 }} /> : <IonIcon icon={sendOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
           style={{ width: '95%', letterSpacing: 0.5, marginTop: 5 }}
         >
-          SEND MESSAGE
+          {sending ? "Sending..." : "Send Message"}
         </PrimaryButton>
       </Box>
+
+      {/* Success Modal */}
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        header="Message Sent!"
+        body="Thank you for reaching out. Our team will follow up with you via email shortly."
+        buttonText="OK"
+        onButtonClick={() => setShowSuccessModal(false)}
+        modalIcon={checkmarkCircleOutline}
+        iconColor="green"
+        zIndex={200}
+        confettiAnimation={true}
+      >
+        {showConfetti && (
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          </div>
+        )}
+      </Modal>
     </Box>
   );
 };

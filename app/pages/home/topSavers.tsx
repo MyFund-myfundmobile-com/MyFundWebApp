@@ -1,4 +1,4 @@
-// components/TopSaversSection.tsx
+"use client";
 
 import React from 'react';
 import Title from '@/app/components/title';

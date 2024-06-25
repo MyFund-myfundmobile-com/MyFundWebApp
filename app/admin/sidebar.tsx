@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Divider, Tooltip, CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { Divider, Tooltip, CircularProgress } from '@mui/material';
 import { IonIcon } from '@ionic/react';
@@ -18,7 +19,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetracted, onMenuItemClick }) => { // Destructure the new prop
   const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
-  const [activeItem, setActiveItem] = useState<string>('DASHBOARD');
+  const [activeItem, setActiveItem] = useState<string>('');
   const [lastSelectedItem, setLastSelectedItem] = useState<string>('DASHBOARD');
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -75,6 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetract
         navigate('/App/settings'); // Navigate to the buy properties page
         break;  
       default:
+        navigate('/App/home'); // Navigate to the homepage
         break;
     }
   };
