@@ -56,7 +56,7 @@ const Testimonials = () => {
       setCurrentTestimonialIndex((prevIndex) =>
         prevIndex === shuffledTestimonials.length - 1 ? 0 : prevIndex + 1
       );
-    }, 15000); // Rotate every 15 seconds
+    }, 15000000); // Rotate every 15 seconds
     return () => clearInterval(interval);
   }, [shuffledTestimonials]);
 
@@ -79,6 +79,8 @@ const Testimonials = () => {
         <Image
           src={currentTestimonial.image}
           alt={currentTestimonial.name}
+          width={360}
+          height={360}
           className="object-cover w-full h-full"
         />
       </div>

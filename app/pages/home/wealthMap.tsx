@@ -18,7 +18,7 @@ const WealthMapSection = () => {
         
         </div>
         <div>
-          <Image width={80} height={80} src="/images/9steps3.png"  alt="Wealth Map" className="w-full h-auto rounded-lg object-cover" />
+          <Image width='240' height='240' src="/images/9steps3.png"  alt="Wealth Map" className="w-full h-auto rounded-lg object-cover" />
         </div>
       </div>
     </section>

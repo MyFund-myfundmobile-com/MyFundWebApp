@@ -76,7 +76,7 @@ const RegisterPage: React.FC = () => {
 
      setTimeout(() => {
       setIsLoading(false)
-    }, 3000);
+    }, 30000);
 
     setShowOTPModal(true);
   };
@@ -84,33 +84,10 @@ const RegisterPage: React.FC = () => {
   
 
   const handleSignup = async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const response = await axios.post("/api/signup", formData);
-
-      if (response.status === 201) {
-        setIsLoading(false);
-        setShowOTPModal(true);
-        alert("Account created successfully!");
-      } else {
-        setErrorMessage("Signup failed. Please try again.");
-      }
-    } catch (error) {
-      setIsLoading(false);
-
-      if (isAxiosError(error)) {
-        if (error.response && error.response.status === 400) {
-          setErrorMessage("Invalid input. Please check your details and try again.");
-        } else {
-          setErrorMessage("An error occurred. Please try again later.");
-        }
-      } else {
-        setErrorMessage("Network error. Please check your internet connection.");
-      }
-    }
+    
   };
+
+
 
   return (
     <section className="bg-customPurple">

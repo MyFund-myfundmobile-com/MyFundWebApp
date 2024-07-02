@@ -6,7 +6,7 @@ import Section from '@/app/components/section';
 import AccountCard from '@/app/components/accountCard';
 import { Divider, Switch } from '@mui/material';
 import TopSaversSection from '../home/topSavers';
-import { saveOutline, arrowUpOutline } from 'ionicons/icons';
+import { trendingUpOutline, arrowUpOutline } from 'ionicons/icons';
 import RecentTransactionsSection from '../home/recentTransactions';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
@@ -97,7 +97,7 @@ const InvestPage = () => {
 
   const slides = [
     {
-      icon: saveOutline,
+      icon: trendingUpOutline,
       text: (
         <>
           BETTER THAN SAVINGS: Earn at least <span className="font-bold text-green-500">20% p.a. every January and July</span> sponsoring any of our National Hostel Projects at multiples of N100,000
@@ -221,7 +221,7 @@ const InvestPage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full" style={{alignItems: 'flex-start', alignContent: 'flex-start'}}>
             <Section>SPONSOR ONGOING PROJECTS TO EARN HIGHER ROI...</Section>
             <div className="mb-4 mt-3">
-              <Image width={80} height={80} src="/images/sponsorship.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <Image width={720} height={720} src="/images/sponsorship.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
               <div className="flex justify-center mt-4">
                 <PrimaryButton
                   className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
