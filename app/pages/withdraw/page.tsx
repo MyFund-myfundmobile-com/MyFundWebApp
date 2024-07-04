@@ -181,7 +181,7 @@ const WithdrawPage = () => {
         <div className="md:col-span-6">
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <div className="mb-4 mt-3">
-              <Image width={80} height={80} src="/images/refer.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <Image width={240} height={240} src="/images/refer.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
               <div className="flex justify-center mt-4">
                 <PrimaryButton
                   className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"

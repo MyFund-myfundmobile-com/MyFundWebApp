@@ -3,17 +3,14 @@ import { useState, useEffect } from "react";
 import React from "react";
 import Testimonials from "./testimonials";
 import axios from "axios";
-import { AxiosError } from 'axios';
 import styles from '../ui/landing/Header.module.css';
 import { CircularProgress } from '@mui/material'; 
 import { IonIcon } from '@ionic/react';
 import { personOutline, mailOutline, callOutline, lockClosedOutline, eyeOutline, eyeOffOutline, peopleOutline } from 'ionicons/icons';
 import OTPModal from './OTPModal';
-import { useRouter } from 'next/router'; // Import the useRouter hook
-
-function isAxiosError(error: any): error is AxiosError {
-  return error.isAxiosError !== undefined;
-}
+import CustomSnackbar from "../components/snackbar";
+import Title from "../components/title";
+import Subtitle from "../components/subtitle";
 
 type IconType = 'user' | 'mail' | 'phone' | 'lock' | 'hearAbout';
 
@@ -26,7 +23,8 @@ const iconMap: { [key in IconType]: string } = {
 };
 
 const RegisterPage: React.FC = () => {
-
+  
+  
   useEffect(() => {
     document.body.style.backgroundColor = '#351265';
     return () => {
@@ -55,6 +53,9 @@ const RegisterPage: React.FC = () => {
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showOTPModal, setShowOTPModal] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -71,57 +72,71 @@ const RegisterPage: React.FC = () => {
     setShowOTPModal(false);
   };
 
-  const handleSignup2 = () => {
-      setIsLoading(true)
-
-     setTimeout(() => {
-      setIsLoading(false)
-    }, 3000);
-
-    setShowOTPModal(true);
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
-
   
 
   const handleSignup = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      setErrorMessage("");
+      const payload = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        phone_number: formData.phone,
+        password: formData.password,
+        how_did_you_hear: formData.howDidYouHear,
+      };
 
-      const response = await axios.post("/api/signup", formData);
+      console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
 
-      if (response.status === 201) {
-        setIsLoading(false);
-        setShowOTPModal(true);
-        alert("Account created successfully!");
-      } else {
-        setErrorMessage("Signup failed. Please try again.");
-      }
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/signup/`, payload);
+
+      setIsLoading(false);
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Account creation successfully initiated!');
+      setSnackbarOpen(true);
+      setShowOTPModal(true);
     } catch (error) {
       setIsLoading(false);
-
-      if (isAxiosError(error)) {
-        if (error.response && error.response.status === 400) {
-          setErrorMessage("Invalid input. Please check your details and try again.");
+      let errorMsg = 'Something went wrong. Please try again.';
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          errorMsg = error.response.data.email
+            ? 'Kindly fill in all required fields...'
+            : 'Please fill in all required fields to create your account.';
+        } else if (error.response?.status === 500) {
+          errorMsg = 'Internal server error. Please try again later.';
         } else {
-          setErrorMessage("An error occurred. Please try again later.");
+          errorMsg = error.response?.data.detail || errorMsg;
         }
-      } else {
-        setErrorMessage("Network error. Please check your internet connection.");
       }
+      setErrorMessage(errorMsg);
+      setSnackbarSeverity('error');
+      setSnackbarMessage(errorMsg);
+      setSnackbarOpen(true);
     }
   };
+
 
   return (
     <section className="bg-customPurple">
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">Create Account</h2>
-            <p className="mb-8 text-lg text-[#4C28Bc] font-karla tracking-tight md:mb-12 md:text-1">
+            {/* <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">Create Account</h2> */}
+            <Title><span style={{color: "#BB9CE8" }}>Create</span> Account</Title>
+            {/* <p className="mb-8 text-lg text-[#4C28Bc] font-karla tracking-tight md:mb-12 md:text-1">
               Earn 20% p.a. every January and July. {"\n"}
               Own properties and earn a lifetime rent. Signup here.
-            </p>
+            </p> */}
+
+        <Subtitle style={{ color: "#4C28BC", marginBottom: 25}}> 
+          Earn 20% p.a. every January and July. {"\n"}
+              Buy properties for a lifetime rent.
+            </Subtitle> 
+            
             <form className="mx-auto mb-4 max-w-lg pb-4" name="wf-form-register" method="get">
               {fields.map(({ placeholder, name, type, icon }) => (
                 <div key={name} className="relative mb-4">
@@ -185,22 +200,21 @@ const RegisterPage: React.FC = () => {
               </div>
 
               <label className="mb-6 flex items-center pb-12 font-medium lg:mb-1">
-                <input type="checkbox" name="checkbox" required />
-                <span className="ml-4 inline-block cursor-pointer text-sm">
-                  I agree with the{" "}
+                <span className="inline-block text-karla cursor-pointer text-xs">
+                  By clicking Create Free Account, I agree with the{" "}
                   <a href="#" className="font-bold text-[#0b0b1f]">
                     Terms &amp; Conditions
                   </a>
                 </span>
               </label>
 
-              {errorMessage && <p className="text-red-500 mb-5">{errorMessage}</p>}
+              {/* {errorMessage && <p className="text-red-500 mb-5">{errorMessage}</p>} */}
 
               <div className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}>
                 <a
                 className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center  cursor-pointer font-semibold text-white"
                 style={{ boxShadow: '6px 6px #351265' }}
-                onClick={handleSignup2}
+                onClick={handleSignup}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -223,11 +237,22 @@ const RegisterPage: React.FC = () => {
         </div>
         <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg">
           <Testimonials />
-          
-          <OTPModal email={formData.email} isOpen={showOTPModal} onClose={handleCloseOTPModal} />
-        
+         
+        <OTPModal 
+          email={formData.email} 
+          password={formData.password}
+          isOpen={showOTPModal} 
+          onClose={handleCloseOTPModal} />
         </div>
       </div>
+
+      {/* Snackbar component for displaying success or error messages */}
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={handleCloseSnackbar}
+      />
     </section>
   );
 };

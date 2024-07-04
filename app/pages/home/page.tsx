@@ -115,7 +115,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <div className="rounded-lg p-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden" style={{ backgroundColor: '#DCD1FF', color: 'black', fontFamily: 'karla', fontSize: 14 }}>
-        <Image src="/images/logo..png" width={80} height={80} alt="MyFund Logo" className="w-12 h-12 mr-4 self-center" />
+        <Image src="/images/logo..png" width={1280} height={1280} alt="MyFund Logo" className="w-12 h-12 mr-4 self-center" />
         <p className="overflow-auto" style={{ wordWrap: 'break-word' }}>
           <span className="font-proxima font-bold text-purple1">Every January and July</span>, you will earn
           <span className="font-proxima font-bold"> 13% p.a.</span> on your SAVINGS and

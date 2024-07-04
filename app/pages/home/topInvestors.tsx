@@ -13,18 +13,18 @@ interface Saver {
   profilePicture: string;
 }
 
-const TopSaversSection: React.FC = () => {
+const TopInvestorsSection: React.FC = () => {
   const topSavers: Saver[] = [
-    { id: 1, firstName: 'John', profilePicture: '/images/Profile1.png' },
-    { id: 2, firstName: 'Jane', profilePicture: '/images/profile1.png' },
-    { id: 3, firstName: 'Alex', profilePicture: '/images/profile1.png' },
-    { id: 4, firstName: 'Emily', profilePicture: '/images/mundi.png' },
+    { id: 1, firstName: 'DrTee', profilePicture: '/images/DrTsquare.png' },
+    { id: 2, firstName: 'Segun', profilePicture: '/images/segun.png' },
+    { id: 3, firstName: 'Mundi', profilePicture: '/images/mundi.png' },
+    { id: 4, firstName: 'Richard', profilePicture: '/images/profile1.png' },
     { id: 5, firstName: 'Michael', profilePicture: '/images/profile1.png' },
   ];
 
   return (
     <section className="border border-gray-300 bg-white p-4 rounded-lg w-full">
-        <Section style={{marginTop: -1}}>TOP SAVERS THIS MONTH</Section>
+        <Section style={{marginTop: -1}}>TOP INVESTORS THIS MONTH</Section>
       <div style={{ marginTop: 10 }}>
             <Subtitle style={{marginTop: -5, marginBottom: 1, fontSize: 13}}>My Position</Subtitle>
         <Title style={{ color: 'silver', marginTop: 0, fontSize: 70 }}>3RD   
@@ -51,4 +51,4 @@ const TopSaversSection: React.FC = () => {
   );
 };
 
-export default TopSaversSection;
+export default TopInvestorsSection;

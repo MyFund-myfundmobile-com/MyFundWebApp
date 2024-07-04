@@ -29,7 +29,8 @@ const SettingsPage: React.FC = () => {
           </div>
           {/* Name and Email */}
           <div className="ml-4 mt-4 lg:mt-0">
-            <Title>Tolulope</Title>
+
+            <Title><span style={{ color: '#BB9CE8', fontSize: 20, letterSpacing: 0.1 }}>Admin<br/></span> Tolulope</Title>
             <Subtitle>tolulopeahmed@gmail.com</Subtitle>
           </div>
         </div>

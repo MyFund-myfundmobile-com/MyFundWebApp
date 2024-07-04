@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Select, MenuItem, IconButton, CircularProgress, InputLabel } from '@mui/material';
-import { ArrowUpward, Close, CheckCircleOutline, FileCopyOutlined } from '@mui/icons-material';
+import { TextField, Select, MenuItem, IconButton, CircularProgress, InputLabel, FormControl } from '@mui/material';
+import { Close, CheckCircleOutline } from '@mui/icons-material';
 import Modal from '@/app/components/modal';
 import Confetti from 'react-confetti';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -67,11 +67,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
         return (
           <>
             <MenuItem value="Investment">Investment</MenuItem>
-            <MenuItem value="Bank Account">Bank Account2</MenuItem>
+            <MenuItem value="Bank Account">Bank Account</MenuItem>
           </>
         );
       case 'Investment':
-        return <MenuItem value="Bank Account">Bank Account2</MenuItem>;
+        return <MenuItem value="Bank Account">Bank Account</MenuItem>;
       case 'Wallet':
         return (
           <>
@@ -84,6 +84,47 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
       default:
         return null;
     }
+  };
+
+  const renderAdditionalFields = () => {
+    if (withdrawTo === 'Bank Account') {
+      return (
+        <FormControl fullWidth variant="outlined" className="mb-4 bg-white">
+          <InputLabel>Which of Your Bank Accounts</InputLabel>
+          <Select
+            label="Which of Your Bank Accounts"
+            fullWidth
+            variant="outlined"
+            displayEmpty
+            className="mb-4 bg-white"
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="" disabled>
+              Which of Your Bank Accounts...
+            </MenuItem>
+            {/* Replace with actual list of saved bank accounts */}
+            <MenuItem value="bank1">Bank 1 - 123456789</MenuItem>
+            <MenuItem value="bank2">Bank 2 - 987654321</MenuItem>
+            <MenuItem value="no_bank">
+              No bank accounts added yet... Add Bank Account Now
+            </MenuItem>
+          </Select>
+        </FormControl>
+      );
+    } else if (withdrawTo === 'Another User') {
+      return (
+        <TextField
+          fullWidth
+          variant="outlined"
+          className='bg-white mb-4'
+          label="Enter User's Email"
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
+          placeholder="Enter User's email"
+        />
+      );
+    }
+    return null;
   };
 
   const presetAmounts = [5000, 10000, 15000, 20000, 40000, 100000];
@@ -144,37 +185,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
               </Select>
             )}
 
-            {withdrawTo === 'Bank Account' && (
-              <Select
-                fullWidth
-                variant="outlined"
-                displayEmpty
-                className="mb-4 bg-white"
-                inputProps={{ 'aria-label': 'Without label' }}
-              >
-                <MenuItem value="" disabled>
-                  Select Bank Account...
-                </MenuItem>
-                {/* Replace with actual list of saved bank accounts */}
-                <MenuItem value="bank1">Bank 1 - 123456789</MenuItem>
-                <MenuItem value="bank2">Bank 2 - 987654321</MenuItem>
-                <MenuItem value="no_bank">
-                  No bank accounts added yet... Add Bank Account Now
-                </MenuItem>
-              </Select>
-            )}
-
-            {withdrawTo === 'Another User' && (
-              <TextField
-                fullWidth
-                variant="outlined"
-                className='bg-white mb-4'
-                label="Enter User's Email"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-                placeholder="Enter User's email"
-              />
-            )}
+            {renderAdditionalFields()}
 
             <TextField
               fullWidth
@@ -235,8 +246,8 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
       <Modal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
-        header="Withdrawal Successful!"
-        body="Your withdrawal request has been received and will be processed shortly. You'll receive a confirmation email soon. Thank you for using MyFund."
+        header="Withdrawal Successful"
+        body="Your withdrawal request has been processed successfully. Thank you for using MyFund."
         buttonText="OK"
         modalIcon={checkmarkCircleOutline}
         iconColor="green"
@@ -256,4 +267,3 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
 };
 
 export default WithdrawModal;
-

@@ -203,7 +203,7 @@ const SavePage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <Section>MEET OUR MOST RECENT TOP SAVER...</Section>
             <div className="mb-4 mt-3">
-              <Image width={80} height={80} src="/images/topsaver.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
+              <Image width={720} height={720} src="/images/topsaver.png" alt="Refer and earn" className="w-full h-auto rounded-lg" />
               <div className="flex justify-center mt-4">
            
               </div>

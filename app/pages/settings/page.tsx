@@ -24,13 +24,18 @@ import SavingsGoal from './subsettings/savingsGoal';
 import SettingsExtension from './settingsExtension'; // Ensure this import is added
 import UpdateProfileModal from './modals/updateProfileModal';
 import Image from 'next/image';
-
+import Cropper from 'react-cropper'; // Import react-cropper
+import 'cropperjs/dist/cropper.css'; // Import cropper CSS
 
 const SettingsPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string | null>("Savings Goal");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isUpdateProfileModalOpen, setUpdateProfileModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState("/images/DrTsquare.png"); // Add state for profile image
+  const [cropImage, setCropImage] = useState<string | null>(null); // Add state for crop image
+  const [cropper, setCropper] = useState<any>(); // Add state for cropper instance
   const settingsRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null); // Add ref for file input
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
@@ -51,6 +56,32 @@ const SettingsPage: React.FC = () => {
     // Replace with actual update logic
     console.log('Updating profile with:', data);
     // Show success modal or toast message here
+  };
+
+  const handleProfileImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target && typeof e.target.result === "string") {
+          setCropImage(e.target.result); // Set the crop image
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCrop = () => {
+    if (cropper) {
+      setProfileImage(cropper.getCroppedCanvas().toDataURL()); // Update profile image state with cropped image
+      setCropImage(null); // Clear the crop image
+    }
   };
 
   const getSelectedComponent = () => {
@@ -90,9 +121,16 @@ const SettingsPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:w-1/3 items-start">
           {/* Profile Image */}
           <div className="relative">
-            <Image src="/images/DrTsquare.png" width={120} height={120} alt="Profile" className="w-36 h-36 rounded-full border-2 border-purple-400" />
+            <Image src={profileImage} width={120} height={120} alt="Profile" className="w-36 h-36 rounded-full border-2 border-purple-400" />
             <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <Edit className="text-white active cursor-pointer" />
+              <Edit className="text-white active cursor-pointer" onClick={handleProfileImageClick} />
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleProfileImageChange}
+              />
             </div>
           </div>
           {/* Name and Email */}
@@ -170,6 +208,32 @@ const SettingsPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Crop Image Modal */}
+      {cropImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded">
+            <Cropper
+              src={cropImage}
+              style={{ height: 400, width: '100%' }}
+              aspectRatio={1}
+              guides={false}
+              viewMode={1}
+              minCropBoxHeight={10}
+              minCropBoxWidth={10}
+              background={false}
+              responsive={true}
+              autoCropArea={1}
+              checkOrientation={false}
+              onInitialized={(instance) => setCropper(instance)}
+            />
+            <div className="flex justify-end mt-4">
+              <button onClick={() => setCropImage(null)} className="mr-4">Cancel</button>
+              <button onClick={handleCrop}>Crop</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Logout Modal */}
       <LogoutModal

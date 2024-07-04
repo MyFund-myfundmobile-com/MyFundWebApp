@@ -1,5 +1,6 @@
 "use client";
 
+// App.tsx for user app
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -10,8 +11,8 @@ import WithdrawPage from '../pages/withdraw/page';
 import LoginPage from '../login/page';
 import NotFound from '../not-found';
 import BuyPropertiesPage from '../pages/buyProperties/page';
-import SettingsPage from '../pages/settings/page'; // Import the SettingsPage
-
+import SettingsPage from '../pages/settings/page'; 
+import RegisterPage from '../register/page';
 
 const App = () => {
   return (
@@ -26,7 +27,8 @@ const App = () => {
           <Route path="invest" element={<InvestPage />} /> {/* Invest Page Route */}
           <Route path="withdraw" element={<WithdrawPage />} /> {/* Withdraw Page Route */}
           <Route path="buyProperties" element={<BuyPropertiesPage />} /> {/* Buy Properties Page Route */}
-          <Route path="settings" element={<SettingsPage />} /> {/* Add this route */}
+          <Route path="settings" element={<SettingsPage />} /> {/* Settings Page Route */}
+          <Route path="register" element={<RegisterPage />} /> {/* Register Page Route */}
         </Route>
         <Route path="*" element={<NotFound />} /> {/* Not Found Route */}
       </Routes>
