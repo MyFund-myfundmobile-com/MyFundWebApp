@@ -88,7 +88,7 @@ const RegisterPage: React.FC = () => {
       setIsLoading(true);
       setErrorMessage("");
 
-      const response = await axios.post("/api/signup", formData);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/signup`, formData);
 
       if (response.status === 201) {
         setIsLoading(false);

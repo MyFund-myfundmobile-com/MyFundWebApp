@@ -79,6 +79,8 @@ const Testimonials = () => {
         <Image
           src={currentTestimonial.image}
           alt={currentTestimonial.name}
+          width={0}
+          height={0}
           className="object-cover w-full h-full"
         />
       </div>
