@@ -58,7 +58,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={mailOutline} style={{ fontSize: '20px', marginRight: 10 }} />
+                  <IonIcon icon={mailOutline} style={{ fontSize: '25px', marginRight: 10 }} />
                 ),
               }}
             />
@@ -73,7 +73,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '20px', marginRight: 10 }} />
+                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '25px', marginRight: 10 }} />
                 ),
               }}
             />
@@ -88,7 +88,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '20px', marginRight: 10 }} />
+                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '25px', marginRight: 10 }} />
                 ),
               }}
             />
@@ -104,8 +104,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
         isOpen={showSuccessModal}
         onClose={handleCloseSuccessModal}
         header="Password Reset Successful"
-        body={<p>Your password has been successfully reset!</p>}
-        buttonText="Close"
+        body={<p>Your password has been successfully reset! Click the button below to return to the login screen to login with your new password</p>}
+        buttonText="OK, RETURN TO LOGIN"
         onButtonClick={handleCloseSuccessModal}
         modalIcon={checkmarkCircleOutline} // Add success icon
         iconColor="#4CAF50" // Green color for success
