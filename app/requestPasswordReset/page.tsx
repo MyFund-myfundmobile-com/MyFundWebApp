@@ -42,7 +42,7 @@ const RequestPasswordResetPage: React.FC = () => {
 
       console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/request-password-reset/`, payload);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/request-password-reset/`, payload);
 
       setIsLoading(false);
       setSnackbarSeverity('success');
@@ -54,7 +54,7 @@ const RequestPasswordResetPage: React.FC = () => {
       }, 2000);
     } catch (error) {
       setIsLoading(false);
-      let errorMsg = 'Something went wrong. Please try again.';
+      let errorMsg = 'Network error. Please check your internet connection and try again.';
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {
           errorMsg = error.response.data.email
