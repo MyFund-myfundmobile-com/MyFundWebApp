@@ -124,9 +124,14 @@ const LoginPage = () => {
                   required
                 />
               </div>
+              
+              
               <div className="text-right mb-4">
-                <a href="#" className="text-sm text-[#276EF1]">Forgot Password?</a>
+                <a href="/requestPasswordReset" 
+                className="text-sm text-[#276EF1]">Forgot Password?</a>
               </div>
+
+
               <div className="flex mb-4 justify-center items-center">
                 <button
                   className="mr-5 inline-block rounded-xl px-8 py-4 text-center cursor-pointer font-semibold text-white"
