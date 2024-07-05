@@ -4,6 +4,7 @@ import { TextField, CircularProgress } from '@mui/material';
 import Modal from '@/app/components/modal'; // Ensure the import path is correct
 import { IonIcon } from '@ionic/react';
 import { lockClosedOutline, mailOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import Subtitle from '../components/subtitle';
 
 interface ResetPasswordModalProps {
   isOpen: boolean;
@@ -46,6 +47,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
         header="Reset Password"
         body={
           <>
+          <Subtitle style={{ marginBottom: 10}}>Enter the OTP we just sent to your email to complete your password reset.</Subtitle>
             <TextField
               label="Enter OTP"
               variant="outlined"
