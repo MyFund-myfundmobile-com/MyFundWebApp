@@ -125,7 +125,7 @@ const EmailsPage: React.FC = () => {
           <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {templateCards.map((card) => (
               <div key={card.id} className="relative border bg-purple-100 border-gray-300 rounded-lg overflow-hidden" style={{ width: '250px', height: '300px' }}>
-                <Image src="/images/tempreview.png" alt="Template Preview" className="w-full h-48 object-cover" />
+                <Image src="/images/tempreview.png" height={720} width={720} alt="Template Preview" className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <Title style={{ fontSize: 22, marginTop: -3 }}>{card.title.toUpperCase()}</Title>
                   <Subtitle style={{ fontSize: 11, color: 'grey' }}>{formatDate(card.createdAt)}</Subtitle>

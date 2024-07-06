@@ -71,8 +71,10 @@ interface BuyPropertyModalProps {
                 <Image width={80} height={80} src={property.image} alt={property.title} style={{ width: '50%', marginRight: 16 }} />
                 <div style={{ flex: 1 }}>
                   <h3>{property.title}</h3>
-                  <p>Cost: <span style={{color: '#4C28BC'}}>&#8358;{property.cost.toLocaleString()}</span>/unit</p>
-                  <p>Earnings: <span style={{color: 'green'}}>&#8358;{property.earnings.toLocaleString()}</span> p.a.</p>
+                  <p><span style={{fontSize: 13, color: 'grey', marginBottom: -8}}>Cost:</span><br/>
+                  <span className='font-bold' style={{color: '#4C28BC', fontSize: 22}}><strong>&#8358;{property.cost.toLocaleString()}</strong></span>/unit</p>
+                  <p><span style={{fontSize: 13, color: 'grey', marginBottom: -8}}>Earnings:</span><br/>
+                  <span className='font-bold' style={{color: 'green', fontSize: 22}}><strong>&#8358;{property.earnings.toLocaleString()}</strong></span> p.a.</p>
                 </div>
               </div>
               <div className="mt-4 mb-4">

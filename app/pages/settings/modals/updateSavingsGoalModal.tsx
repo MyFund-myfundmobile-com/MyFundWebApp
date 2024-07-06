@@ -5,13 +5,14 @@ import { ArrowUpward, Close } from '@mui/icons-material';
 import Modal from '@/app/components/modal';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 import Confetti from 'react-confetti';
+import CustomSnackbar from '@/app/components/snackbar';
 
 interface UpdateSavingsGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUpdate: (preferredAsset: string, amount: number, duration: number) => void;
   firstname: string;
-  setUpdatedSavingsGoal: (message: string) => void; // Add this prop
+  setUpdatedSavingsGoal: (message: string) => void;
 }
 
 const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen, onClose, onUpdate, firstname, setUpdatedSavingsGoal }) => {
@@ -24,7 +25,11 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
   const [successMessage, setSuccessMessage] = useState(''); // Message to display in success modal
   const [showConfetti, setShowConfetti] = useState(false); // State to control confetti display
 
-  
+  // Snackbar states
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
   const formatAmount = (value: string) => {
     const regex = /\B(?=(\d{3})+(?!\d))/g;
     return value.replace(regex, ',');
@@ -36,7 +41,7 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
       setAlertMessage('Invalid Amount: The minimum amount is ₦1,000,000. Please try again and enter a valid amount.');
       return;
     }
-  
+
     setIsUpdating(true);
     setTimeout(() => {
       onUpdate(preferredAsset, amountNum, parseInt(duration));
@@ -48,16 +53,22 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
       setSuccessMessage(savingsGoalMessage);
       setShowSuccessModal(true);
       setShowConfetti(true); // Activate confetti on success
-      setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
-  
+
+      // Show Snackbar for success
+      setOpenSnackbar(true);
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Savings goal updated successfully!');
+
+      setTimeout(() => {
+        setShowConfetti(false);
+        setOpenSnackbar(false); // Close Snackbar after some time
+      }, 6000); // Adjust duration as needed
+
       // Pass the success message to SettingsExtension
       setUpdatedSavingsGoal(savingsGoalMessage);
       onClose();
     }, 2000);
   };
-  
-
-  
 
   const handleClearAmount = () => {
     setAmount('');
@@ -183,6 +194,14 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({ isOpen,
           </div>
         )}
       </Modal>
+
+      {/* Snackbar for success */}
+      <CustomSnackbar
+        open={openSnackbar}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={() => setOpenSnackbar(false)}
+      />
     </>
   );
 };

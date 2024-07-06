@@ -2,7 +2,6 @@
 
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { IonIcon } from '@ionic/react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   startIcon?: React.ReactNode;

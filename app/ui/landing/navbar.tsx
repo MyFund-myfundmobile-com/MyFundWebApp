@@ -3,17 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
-import { CircularProgress } from '@mui/material';
-import { IonIcon } from '@ionic/react';
-import { arrowDownOutline } from 'ionicons/icons';
-import MenuIcon from '@mui/icons-material/Menu';
-
+import { CircularProgress } from "@mui/material";
+import { IonIcon } from "@ionic/react";
+import { arrowDownOutline } from "ionicons/icons";
+import MenuIcon from "@mui/icons-material/Menu";
+import { ClassNames } from "@emotion/react";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isHostelsHovered, setIsHostelsHovered] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   const handleDownloadClick = () => {
     setIsDownloading(true);
@@ -22,6 +24,24 @@ const NavBar = () => {
     setTimeout(() => {
       setIsDownloading(false);
     }, 3000);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoggingIn(true);
+
+    // Simulate login process
+    setTimeout(() => {
+      setIsLoggingIn(false);
+    }, 1000);
+  };
+
+  const handleCreateAccountClick = () => {
+    setIsCreatingAccount(true);
+
+    // Simulate create account process
+    setTimeout(() => {
+      setIsCreatingAccount(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -98,10 +118,8 @@ const NavBar = () => {
               {isHostelsHovered && (
                 <div className="absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-10">
                   {isDownloading ? (
-                    <div 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#F7F5FF] hover:text-[#4c28bc] rounded-lg"
-                    >
-                      <IonIcon icon={arrowDownOutline} style={{marginRight: 5, marginBottom: -2}}/>
+                    <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#F7F5FF] hover:text-[#4c28bc] rounded-lg">
+                      <IonIcon icon={arrowDownOutline} style={{ marginRight: 5, marginBottom: -2 }} />
                       Downloading...
                       <CircularProgress size={20} color="inherit" />
                     </div>
@@ -112,7 +130,7 @@ const NavBar = () => {
                       download="MyFundPackages.pdf"
                       onClick={handleDownloadClick}
                     >
-                      <IonIcon icon={arrowDownOutline} style={{marginRight: 5, marginBottom: -2}}/>
+                      <IonIcon icon={arrowDownOutline} style={{ marginRight: 5, marginBottom: -2 }} />
                       Download Package
                     </a>
                   )}
@@ -152,10 +170,10 @@ const NavBar = () => {
             } transition-all ease-in`}
             style={{ marginTop: 5, marginBottom: -15 }}
           >
-            {/* <Link href="/login">
+            <Link href="/login">
               <PrimaryButton
                 className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-                onClick={() => console.log("Sign Up button clicked")}
+                onClick={handleLoginClick}
                 background="#fff"
                 color="#4C28BC"
                 borderWidth="2px"
@@ -165,25 +183,29 @@ const NavBar = () => {
                 hoverBorderWidth="2px"
                 hoverBorderColor="#351265"
                 startIcon={
-                  <svg
-                    fill="currentColor"
-                    className="h-4 w-4 mr-2"
-                    viewBox="0 0 20 21"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Arrow Right</title>
-                    <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
-                  </svg>
+                  isLoggingIn ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    <svg
+                      fill="currentColor"
+                      className="h-4 w-4 mr-2"
+                      viewBox="0 0 20 21"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>Arrow Right</title>
+                      <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
+                    </svg>
+                  )
                 }
               >
-                LOG IN
+                {isLoggingIn ? "LOG IN..." : "LOG IN"}
               </PrimaryButton>
             </Link>
 
             <Link href="/register">
               <PrimaryButton
                 className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-                onClick={() => console.log("Create Free Account button clicked")}
+                onClick={handleCreateAccountClick}
                 background="#4C28BC"
                 hoverBackgroundColor="#351265"
                 borderColor="#4C28BC"
@@ -191,136 +213,29 @@ const NavBar = () => {
                 color="#fff"
                 hoverColor="white"
               >
-                CREATE FREE ACCOUNT
+                   {isCreatingAccount ? (
+                  <>
+                   <CircularProgress size={17} color="inherit" style={{ marginRight: 10 }} />
+                    CREATE FREE ACCOUNT
+                  </>
+                ) : (
+                  "CREATE FREE ACCOUNT"
+                )}
               </PrimaryButton>
-            </Link> */}
-
-              <a
-               download
-               href="/myFund-Enterprise-App.apk">
-              <PrimaryButton
-                className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-[#F7F5FF] hover:text-[#4c28bc]"
-                onClick={() => console.log("Create Free Account button clicked")}
-                background="#4C28BC"
-                hoverBackgroundColor="#351265"
-                borderColor="#4C28BC"
-                hoverBorderColor="#351265"
-                color="#fff"
-                hoverColor="#fff"
-                startIcon=""
-              >
-                DOWNLOAD THE MOBILE APP
-              </PrimaryButton>
-              </a>
+            </Link>
           </div>
 
-           
-          <a
-            href="#"
-            className="absolute  right-5 lg:hidden"
-            onClick={toggleSidebar}
-          >
-            <div className="bg-purple2 p-2 rounded-full">
-              <MenuIcon color="inherit" style={{ color: '#4C28BC' }} />
-            </div>
-          </a>
-
+          <div className="relative flex items-center lg:hidden">
+            <button
+              className="text-[#4c28bc] text-2xl p-1"
+              onClick={toggleSidebar}
+              aria-label="Toggle Sidebar"
+            >
+              <MenuIcon />
+            </button>
+          </div>
         </div>
       </nav>
-
-
-
-   {/* Sidebar */}
-          <div>
-            <div
-              className={`fixed top-0 left-0 w-64 h-full bg-purple1 shadow-lg z-50 transform ${
-                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-              } transition-transform duration-300 ease-in-out`}
-            >
-              <div className="p-4">
-                {/* MyFund Logo */}
-                <div className="flex justify-center mb-10 mt-5">
-                  <Image
-                    src="/images/myfund.png"
-                    alt="MyFund Logo"
-                    width={120}
-                    height={120}
-                  />
-                </div>
-                <div className="flex flex-col space-y-4 mt-4">
-                  <Link href="/" onClick={toggleSidebar} className="text-sm font-bold text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-white rounded-lg px-4 py-2">
-                    HOME
-                  </Link>
-                  <Link href="/about" onClick={toggleSidebar} className="text-sm font-bold text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-white rounded-lg px-4 py-2">
-                    OUR HOSTELS
-                  </Link>
-                  <Link href="http://medium.com/@myfundmobile" onClick={toggleSidebar} className="text-sm font-bold text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-white rounded-lg px-4 py-2">
-                    BLOG
-                  </Link>
-                  <Link href="/about" onClick={toggleSidebar} className="text-sm font-bold text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-white rounded-lg px-4 py-2">
-                    ABOUT
-                  </Link>
-                  <Link href="/faq" onClick={toggleSidebar} className="text-sm font-bold text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-white rounded-lg px-4 py-2">
-                    FAQs
-                  </Link>
-
-                  <Link href="/login" onClick={toggleSidebar}>
-                    <PrimaryButton
-                      className="text-center w-full rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-[#4c28bc]"
-                      onClick={() => console.log("Log In button clicked")}
-                      background="#fff"
-                      color="#4C28BC"
-                      borderWidth="2px"
-                      borderColor="#4C28BC"
-                      hoverColor="#351265"
-                      hoverBackgroundColor="#FBFAFF"
-                      hoverBorderWidth="2px"
-                      hoverBorderColor="#fff"
-                      style={{marginBottom: -5}}
-                      startIcon={
-                        <svg
-                          fill="currentColor"
-                          className="h-4 w-4 mr-2"
-                          viewBox="0 0 20 21"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <title>Arrow Right</title>
-                          <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
-                        </svg>
-                      }
-                    >
-                      LOG IN
-                    </PrimaryButton>
-                  </Link>
-                  <Link href="/register" onClick={toggleSidebar}>
-                    <PrimaryButton
-                      className="text-center w-full rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-white hover:bg-gray-300 hover:bg-opacity-30 hover:text-[#4c28bc]"
-                      onClick={() => console.log("Create Free Account button clicked")}
-                      background="#351265"
-                      hoverBackgroundColor="#351265"
-                      borderColor="#4C28BC"
-                      hoverBorderColor="#351265"
-                      color="#fff"
-                      hoverColor="#fff"
-                      style={{marginTop: -1}}
-                    >
-                      CREATE FREE ACCOUNT
-                    </PrimaryButton>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Backdrop */}
-            {isSidebarOpen && (
-              <div
-                className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40"
-                onClick={toggleSidebar}
-              ></div>
-            )}
-          </div>
-
-
     </div>
   );
 };
