@@ -42,7 +42,7 @@ const RequestPasswordResetPage: React.FC = () => {
 
       console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/request-password-reset/`, payload);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/request-password-reset/`, payload);
 
       setIsLoading(false);
       setSnackbarSeverity('success');
@@ -73,9 +73,35 @@ const RequestPasswordResetPage: React.FC = () => {
     }
   };
 
-  const handleResetPassword = (data: any) => {
-    console.log('Reset password data:', data);
-    // Implement the logic for handling the reset password data
+  const handleResetPassword = async (data: { newPassword: string; token: string }) => {
+    setIsLoading(true);
+    try {
+      const payload = { new_password: data.newPassword, token: data.token };
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/reset-password/`, payload);
+
+      setIsLoading(false);
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Password reset successfully!');
+      setSnackbarOpen(true);
+      setIsResetPasswordModalOpen(false);
+    } catch (error) {
+      setIsLoading(false);
+      let errorMsg = 'Network error. Please check your internet connection and try again.';
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          errorMsg = 'Invalid or expired reset token.';
+        } else if (error.response?.status === 500) {
+          errorMsg = 'Internal server error. Please try again later.';
+        } else {
+          errorMsg = error.response?.data.detail || errorMsg;
+        }
+      }
+      setErrorMessage(errorMsg);
+      setSnackbarSeverity('error');
+      setSnackbarMessage(errorMsg);
+      setSnackbarOpen(true);
+    }
   };
 
   return (
