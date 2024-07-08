@@ -1,42 +1,127 @@
-"use client";
-import React, { useState } from 'react';
-import { TextField, CircularProgress } from '@mui/material';
-import Modal from '@/app/components/modal'; // Ensure the import path is correct
-import { IonIcon } from '@ionic/react';
-import { lockClosedOutline, mailOutline, checkmarkCircleOutline } from 'ionicons/icons';
-import Subtitle from '../components/subtitle';
+import React, { useState } from "react";
+import {
+  TextField,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import Modal from "@/app/components/modal"; // Ensure the import path is correct
+import { IonIcon } from "@ionic/react";
+import {
+  lockClosedOutline,
+  checkmarkCircleOutline,
+  eyeOutline,
+  eyeOffOutline,
+  keyOutline,
+} from "ionicons/icons";
+import Subtitle from "../components/subtitle";
+import axios from "axios";
+import CustomSnackbar from "../components/snackbar";
+import Confetti from "react-confetti";
 
 interface ResetPasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onResetPassword: (data: any) => void;
+  email: string;
+  otpToken: string; // Add OTP token prop
 }
 
-const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose, onResetPassword }) => {
-  const [otp, setOtp] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
+  isOpen,
+  onClose,
+  email,
+  otpToken, // Destructure OTP token from props
+}) => {
+  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleResetPassword = () => {
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const isResetButtonDisabled = () => {
+    return (
+      resetting || loading || otp.length < 6 || password !== confirmPassword
+    );
+  };
+
+  const handleResetPassword = async () => {
+    if (password !== confirmPassword) {
+      setSnackbarMessage("Passwords do not match");
+      return;
+    }
+
     setResetting(true);
-    // Simulate API call or any asynchronous operation
-    setTimeout(() => {
-      // Replace with actual reset password logic
-      onResetPassword({
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        email,
         otp,
         password,
-        confirmPassword,
-      });
-      setResetting(false);
-      setShowSuccessModal(true);
-    }, 1000); // Simulated reset time
+        confirm_password: confirmPassword, // Match backend field name
+      };
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}api/reset-password/?token=${otpToken}`, // Include OTP token in URL
+        payload
+      );
+
+      setLoading(false);
+
+      if (response.status === 200) {
+        setShowSuccessModal(true);
+        setSnackbarMessage("Password reset successful!"); // Update success snackbar message
+      } else {
+        setSnackbarMessage("Password reset failed");
+      }
+    } catch (error) {
+      setLoading(false);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          console.error("Error response:", error.response);
+          setSnackbarMessage(
+            `${
+              error.response.data.detail ||
+              "An error occurred while resetting password"
+            }`
+          );
+        } else if (error.request) {
+          // Request was made but no response was received
+          console.error("Error request:", error.request);
+          setSnackbarMessage("No response received from server");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error message:", error.message);
+          setSnackbarMessage("An error occurred while setting up the request");
+        }
+      } else {
+        console.error("Error:", error);
+        setSnackbarMessage("An unexpected error occurred");
+      }
+    }
+
+    setResetting(false);
   };
 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
     onClose();
+    window.location.href = "/login";
   };
 
   return (
@@ -47,7 +132,11 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
         header="Reset Password"
         body={
           <>
-          <Subtitle style={{ marginBottom: 10}}>Enter the OTP we just sent to your email to complete your password reset.</Subtitle>
+            <Subtitle style={{ marginBottom: 10 }}>
+              Enter the OTP we just sent to{" "}
+              <span style={{ color: "black" }}>{email}</span> to complete your
+              password reset.
+            </Subtitle>
             <TextField
               label="Enter OTP"
               variant="outlined"
@@ -58,7 +147,10 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={mailOutline} style={{ fontSize: '25px', marginRight: 10 }} />
+                  <IonIcon
+                    icon={keyOutline}
+                    style={{ fontSize: "25px", marginRight: 10 }}
+                  />
                 ),
               }}
             />
@@ -66,14 +158,26 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               label="New Password"
               variant="outlined"
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mb-4 mt-4"
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '25px', marginRight: 10 }} />
+                  <IonIcon
+                    icon={lockClosedOutline}
+                    style={{ fontSize: "25px", marginRight: 10 }}
+                  />
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleTogglePasswordVisibility}>
+                      <IonIcon
+                        icon={showPassword ? eyeOffOutline : eyeOutline}
+                      />
+                    </IconButton>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -81,14 +185,26 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
               label="Confirm Password"
               variant="outlined"
               fullWidth
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="mb-4 mt-4"
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
-                  <IonIcon icon={lockClosedOutline} style={{ fontSize: '25px', marginRight: 10 }} />
+                  <IonIcon
+                    icon={lockClosedOutline}
+                    style={{ fontSize: "25px", marginRight: 10 }}
+                  />
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                      <IonIcon
+                        icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
+                      />
+                    </IconButton>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -96,21 +212,35 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ isOpen, onClose
         }
         buttonText={resetting ? "Resetting Password..." : "Reset Password"}
         onButtonClick={handleResetPassword}
-        startIcon={resetting ? <CircularProgress size={20} color="inherit" /> : null}
+        startIcon={
+          loading ? <CircularProgress size={20} color="inherit" /> : null
+        }
         zIndex={100}
-        buttonDisabled={resetting} // Disable button when resetting
+        buttonDisabled={isResetButtonDisabled()}
       />
       <Modal
         isOpen={showSuccessModal}
         onClose={handleCloseSuccessModal}
         header="Password Reset Successful"
-        body={<p>Your password has been successfully reset! Click the button below to return to the login screen to login with your new password</p>}
+        body={
+          <p>
+            Your password has been successfully reset! Click the button below to
+            return to the login screen to login with your new password
+          </p>
+        }
         buttonText="OK, RETURN TO LOGIN"
         onButtonClick={handleCloseSuccessModal}
-        modalIcon={checkmarkCircleOutline} // Add success icon
-        iconColor="#4CAF50" // Green color for success
+        modalIcon={checkmarkCircleOutline}
+        iconColor="#4CAF50"
         zIndex={100}
-        confettiAnimation={true} // Add confetti animation on success
+        confettiAnimation={true} // Enable confetti animation
+      />
+
+      <CustomSnackbar
+        open={!!snackbarMessage}
+        message={snackbarMessage}
+        severity="success" // Change severity to success
+        handleClose={() => setSnackbarMessage("")}
       />
     </>
   );
