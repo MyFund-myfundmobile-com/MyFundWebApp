@@ -1,12 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { CircularProgress } from '@mui/material'; 
-import { IonIcon } from '@ionic/react';
+import { CircularProgress } from "@mui/material";
+import { IonIcon } from "@ionic/react";
 import Testimonials from "../register/testimonials";
-import { mailOutline, lockClosedOutline, eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import {
+  mailOutline,
+  lockClosedOutline,
+  eyeOutline,
+  eyeOffOutline,
+} from "ionicons/icons";
 import Subtitle from "../components/subtitle";
-import axios from 'axios';
+import axios from "axios";
 import CustomSnackbar from "../components/snackbar";
+import { useDispatch } from "react-redux";
+import { loginSuccess, fetchUserProfile } from "../store/authSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,61 +21,82 @@ const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success'); // Severity for Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  ); // Severity for Snackbar
 
+  /*
+
+
+const handleLogin = async (credentials) => {
+  const response = await axios.post('/login', credentials);
+  const { token, userId } = response.data;
+
+  dispatch(loginSuccess({ token, userId }));
+  dispatch(fetchUserProfile(token));
+};
+  */
 
   useEffect(() => {
-    document.body.style.backgroundColor = '#351265';
+    document.body.style.backgroundColor = "#351265";
     return () => {
-      document.body.style.backgroundColor = ''; // Reset background color when component unmounts
+      document.body.style.backgroundColor = ""; // Reset background color when component unmounts
     };
   }, []);
-  
+
   const handleLogin = async () => {
     setIsLoading(true);
     try {
       const payload = {
         username: email,
-        password: password
+        password: password,
       };
-  
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`, payload); // Adjust endpoint as per your API
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`,
+        payload
+      ); // Adjust endpoint as per your API
       setIsLoading(false);
-      
+
       // Assuming successful login returns a status code or data
       if (response.status === 200) {
         setOpenSnackbar(true);
-        setSnackbarSeverity('success');
-        setSnackbarMessage('Login successful!');
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Login successful!");
         playLoginSound(); // Function to play login sound
         setTimeout(() => {
           window.location.href = "/App"; // Redirect to the home page after login
         }, 1000); // Optional: Delay before redirecting
       } else {
         setOpenSnackbar(true);
-        setSnackbarSeverity('error');
-        setSnackbarMessage('Login failed. Please ensure you entered the correct username/password.');
+        setSnackbarSeverity("error");
+        setSnackbarMessage(
+          "Login failed. Please ensure you entered the correct username/password."
+        );
       }
-    } catch (error: any) { // Use type assertion or any type for error
+    } catch (error: any) {
+      // Use type assertion or any type for error
       setIsLoading(false);
       setOpenSnackbar(true);
-      setSnackbarSeverity('error');
-  
+      setSnackbarSeverity("error");
+
       if (error.message === "Network Error") {
-        setSnackbarMessage('No internet connection. Please check your network.');
+        setSnackbarMessage(
+          "No internet connection. Please check your network."
+        );
       } else if (error.response && error.response.status === 401) {
-        setSnackbarMessage('Invalid username or password. Please try again.');
+        setSnackbarMessage("Invalid username or password. Please try again.");
       } else {
-        setSnackbarMessage('Wrong username or password. Please check and try again.');
+        setSnackbarMessage(
+          "Wrong username or password. Please check and try again."
+        );
       }
     }
   };
-  
-  
 
   const playLoginSound = () => {
-    const audio = new Audio('/audios/warm_login.mp3');
+    const audio = new Audio("/audios/warm_login.mp3");
     audio.play();
   };
 
@@ -82,13 +110,16 @@ const LoginPage = () => {
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
             <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">
-              <span style={{ color: '#BB9CE8' }}>Welcome</span> Back
+              <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
             </h2>
-            <Subtitle style={{ color: "#4C28BC", marginBottom: 25}}> 
+            <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
               Earn 20% p.a. every January and July. {"\n"}
               Own properties and earn a lifetime rent. Jump right back in!
             </Subtitle>
-            <form className="mx-auto mb-4 max-w-lg pb-4" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="mx-auto mb-4 max-w-lg pb-4"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <div className="relative mb-4">
                 <IonIcon
                   icon={mailOutline}
@@ -115,7 +146,7 @@ const LoginPage = () => {
                   onClick={() => setPasswordVisible(!passwordVisible)}
                 />
                 <input
-                  type={passwordVisible ? 'text' : 'password'}
+                  type={passwordVisible ? "text" : "password"}
                   name="password"
                   placeholder="Password"
                   className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-sm text-[#333333] rounded-md"
@@ -124,28 +155,35 @@ const LoginPage = () => {
                   required
                 />
               </div>
-              
-              
-              <div className="text-right mb-4">
-                <a href="/requestPasswordReset" 
-                className="text-sm text-[#276EF1]">Forgot Password?</a>
-              </div>
 
+              <div className="text-right mb-4">
+                <a
+                  href="/requestPasswordReset"
+                  className="text-sm text-[#276EF1]"
+                >
+                  Forgot Password?
+                </a>
+              </div>
 
               <div className="flex mb-4 justify-center items-center">
                 <button
                   className="mr-5 inline-block rounded-xl px-8 py-4 text-center cursor-pointer font-semibold text-white"
                   style={{
-                    boxShadow: '6px 6px #351265',
-                    backgroundColor: isLoading ? 'black' : '#4C28BC'
+                    boxShadow: "6px 6px #351265",
+                    backgroundColor: isLoading ? "black" : "#4C28BC",
                   }}
                   onClick={handleLogin}
                   disabled={isLoading}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <CircularProgress size={20} color="inherit" className="mr-2" />
-                      <span>LOGGING IN...
+                      <CircularProgress
+                        size={20}
+                        color="inherit"
+                        className="mr-2"
+                      />
+                      <span>
+                        LOGGING IN...
                         <svg
                           fill="currentColor"
                           className="h-4 w-4 ml-2 inline-block"
@@ -176,7 +214,9 @@ const LoginPage = () => {
             </form>
             <p className="text-[#636262]">
               New to MyFund?{" "}
-              <a href="/register" className="text-[#276EF1]">Create Free Account</a>
+              <a href="/register" className="text-[#276EF1]">
+                Create Free Account
+              </a>
             </p>
           </div>
         </div>

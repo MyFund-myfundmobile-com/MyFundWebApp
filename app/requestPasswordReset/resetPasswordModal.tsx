@@ -75,7 +75,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       };
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}api/reset-password/?token=${otpToken}`, // Include OTP token in URL
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/reset-password/?token=${otpToken}`, // Include OTP token in URL
         payload
       );
 

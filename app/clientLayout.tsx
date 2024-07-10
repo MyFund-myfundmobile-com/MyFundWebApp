@@ -12,6 +12,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     "/register",
     "/admin",
     "/requestPasswordReset",
+    "/faq",
   ].includes(pathname); // Define the routes where NavBar should be shown
 
   return (

@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from 'react';
-import { CircularProgress } from '@mui/material';
-import Modal from '@/app/components/modal';
-import { logOutOutline } from 'ionicons/icons';
-import axios from 'axios';
-import CustomSnackbar from '@/app/components/snackbar';
+import React, { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import Modal from "@/app/components/modal";
+import { logOutOutline } from "ionicons/icons";
+import axios from "axios";
+import CustomSnackbar from "@/app/components/snackbar";
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -12,14 +12,13 @@ interface LogoutModalProps {
 }
 
 const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
-  const [loggingOutButtonText, setLoggingOutButtonText] = useState<React.ReactNode>("Yes, Logout");
+  const [loggingOutButtonText, setLoggingOutButtonText] =
+    useState<React.ReactNode>("Yes, Logout");
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-
-
-
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const handleLogoutConfirm = async () => {
     setLoggingOutButtonText(
@@ -28,36 +27,42 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
         LOGGING OUT...
       </div>
     ); // Change button text to "LOGGING OUT..."
-  
+
     try {
-      console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}api/logout/`, {});
-  
+      console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/logout/`,
+        {}
+      );
+
       if (response.status === 200) {
+        setSnackbarMessage("Logout successful!");
+        setSnackbarSeverity("success");
+        setOpenSnackbar(true);
 
-
-        setSnackbarMessage('Logout successful!');
-        setSnackbarSeverity('success');
-        setOpenSnackbar(true); 
-        
         sessionStorage.clear();
         localStorage.clear();
         document.cookie.split(";").forEach((c) => {
-          document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(
+              /=.*/,
+              "=;expires=" + new Date().toUTCString() + ";path=/"
+            );
         });
-  
+
         // Redirect to login page
         window.location.href = "/login";
       } else {
-        throw new Error('Logout failed');
+        throw new Error("Logout failed");
       }
     } catch (error) {
-      setSnackbarMessage('Logout failed. Please try again.');
-      setSnackbarSeverity('error');
+      setSnackbarMessage("Logout failed. Please try again.");
+      setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
   };
-  
+
   return (
     <>
       <Modal
