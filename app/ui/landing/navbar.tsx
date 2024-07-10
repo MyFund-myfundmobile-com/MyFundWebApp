@@ -354,7 +354,7 @@ const NavBar = () => {
               hoverBorderColor="#DCD1FF"
               color="#fff"
               hoverColor="#4C28BC"
-              style={{ marginTop: -10 }}
+              style={{ marginTop: -11 }}
             >
               {isCreatingAccount ? (
                 <>
