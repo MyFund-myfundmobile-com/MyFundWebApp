@@ -36,7 +36,7 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
       );
 
       if (response.status === 200) {
-        setSnackbarMessage("Logout successful!");
+        setSnackbarMessage("Logging you out...");
         setSnackbarSeverity("success");
         setOpenSnackbar(true);
 

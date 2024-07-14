@@ -60,8 +60,8 @@ const NavBar = () => {
   };
 
   return (
-    <div className="bg-[#fff] w-full fixed top-0 left-0 right-0 z-50 shadow-md">
-      <nav className="mx-auto h-auto w-full max-w-[1600px] lg:relative lg:top-0">
+    <div className="bg-[#fff] w-full fixed top-0 left-0 right-0 z-50 shadow-md ">
+      <nav className="mx-auto h-auto w-full max-w-[1600px] lg:relative lg:top-0 animate-floatIn">
         <div
           className="flex flex-row items-center justify-between py-4"
           style={{ marginRight: 90 }}
@@ -232,9 +232,17 @@ const NavBar = () => {
             </Link>
           </div>
 
-          <div className="relative flex items-center lg:hidden">
+          <div
+            className="relative flex items-end lg:hidden"
+            style={{ marginRight: -10 }}
+          >
             <button
-              className="text-[#4c28bc] text-2xl p-1"
+              className="text-[#4c28bc] text-2xl p-1 items-end"
+              style={{
+                alignSelf: "flex-end",
+                alignItems: "flex-end",
+                marginRight: -70,
+              }}
               onClick={toggleSidebar}
               aria-label="Toggle Sidebar"
             >
@@ -354,7 +362,7 @@ const NavBar = () => {
               hoverBorderColor="#DCD1FF"
               color="#fff"
               hoverColor="#4C28BC"
-              style={{ marginTop: -10 }}
+              style={{ marginTop: -11 }}
             >
               {isCreatingAccount ? (
                 <>

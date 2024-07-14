@@ -2,6 +2,8 @@
 
 import React from "react";
 import { usePathname } from "next/navigation"; // Import usePathname
+import { Provider } from "react-redux";
+import store from "./store/store";
 import NavBar from "./ui/landing/navbar";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
@@ -16,10 +18,12 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   ].includes(pathname); // Define the routes where NavBar should be shown
 
   return (
-    <>
-      {showNavBar && <NavBar />} {/* Conditionally render NavBar */}
-      <main>{children}</main>
-    </>
+    <Provider store={store}>
+      <>
+        {showNavBar && <NavBar />} {/* Conditionally render NavBar */}
+        <main>{children}</main>
+      </>
+    </Provider>
   );
 };
 

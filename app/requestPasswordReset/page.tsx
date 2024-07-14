@@ -94,26 +94,10 @@ const RequestPasswordResetPage: React.FC = () => {
   return (
     <section className="bg-customPurple">
       <div className="bg-customPurple flex flex-col items-center justify-center h-screen">
-        <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32 bg-white rounded-lg shadow-lg">
-          <div
-            className="items-center"
-            style={{
-              alignContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              alignSelf: "center",
-            }}
-          >
-            <Image
-              height={60}
-              width={60}
-              src="/images/logo.png"
-              alt="Company Logo"
-              className="mb-18 text-center items-center"
-              style={{ alignSelf: "center", marginTop: -45 }}
-            />
-          </div>
-          <Title>Reset Password</Title>
+        <div className="max-w-xl px-5 py-5 text-center md:px-10 md:py-10 lg:py-10 bg-white rounded-lg shadow-lg">
+          <Title>
+            <span style={{ color: "#BB9CE8" }}>Reset</span> Password
+          </Title>
           <Subtitle>
             Enter the email address you use for MyFund, and we&apos;ll help you
             create a new password.

@@ -1,4 +1,5 @@
-"use client";
+"use client"; // Ensure this component is treated as a Client Component
+
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
@@ -10,10 +11,12 @@ import {
   eyeOffOutline,
 } from "ionicons/icons";
 import Subtitle from "../components/subtitle";
+import Title from "../components/title";
 import axios from "axios";
 import CustomSnackbar from "../components/snackbar";
 import { useDispatch } from "react-redux";
 import { loginSuccess, fetchUserProfile } from "../store/authSlice";
+import { AppDispatch } from "../store/store";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -24,19 +27,9 @@ const LoginPage = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
-  ); // Severity for Snackbar
+  );
 
-  /*
-
-
-const handleLogin = async (credentials) => {
-  const response = await axios.post('/login', credentials);
-  const { token, userId } = response.data;
-
-  dispatch(loginSuccess({ token, userId }));
-  dispatch(fetchUserProfile(token));
-};
-  */
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     document.body.style.backgroundColor = "#351265";
@@ -56,18 +49,35 @@ const handleLogin = async (credentials) => {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`,
         payload
-      ); // Adjust endpoint as per your API
+      );
+
       setIsLoading(false);
 
-      // Assuming successful login returns a status code or data
       if (response.status === 200) {
-        setOpenSnackbar(true);
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Login successful!");
-        playLoginSound(); // Function to play login sound
-        setTimeout(() => {
-          window.location.href = "/App"; // Redirect to the home page after login
-        }, 1000); // Optional: Delay before redirecting
+        const { access, user_id } = response.data;
+
+        if (access) {
+          localStorage.setItem("userToken", access);
+
+          dispatch(loginSuccess({ token: access, userId: user_id }));
+          dispatch(fetchUserProfile(access));
+
+          setOpenSnackbar(true);
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Login successful! Loading...");
+
+          playLoginSound();
+
+          setTimeout(() => {
+            window.location.href = "/App";
+          }, 1000);
+        } else {
+          setOpenSnackbar(true);
+          setSnackbarSeverity("error");
+          setSnackbarMessage(
+            "Login failed. Please ensure you entered the correct username/password."
+          );
+        }
       } else {
         setOpenSnackbar(true);
         setSnackbarSeverity("error");
@@ -76,7 +86,6 @@ const handleLogin = async (credentials) => {
         );
       }
     } catch (error: any) {
-      // Use type assertion or any type for error
       setIsLoading(false);
       setOpenSnackbar(true);
       setSnackbarSeverity("error");
@@ -105,13 +114,13 @@ const handleLogin = async (credentials) => {
   };
 
   return (
-    <section className="bg-customPurple">
+    <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">
+            <Title>
               <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
-            </h2>
+            </Title>
             <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
               Earn 20% p.a. every January and July. {"\n"}
               Own properties and earn a lifetime rent. Jump right back in!
@@ -129,7 +138,7 @@ const handleLogin = async (credentials) => {
                   type="email"
                   name="email"
                   placeholder="Email Address"
-                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-sm text-[#333333] rounded-md"
+                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -149,7 +158,7 @@ const handleLogin = async (credentials) => {
                   type={passwordVisible ? "text" : "password"}
                   name="password"
                   placeholder="Password"
-                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-sm text-[#333333] rounded-md"
+                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -159,7 +168,7 @@ const handleLogin = async (credentials) => {
               <div className="text-right mb-4">
                 <a
                   href="/requestPasswordReset"
-                  className="text-sm text-[#276EF1]"
+                  className="text-sm text-[#4C28BC]"
                 >
                   Forgot Password?
                 </a>
@@ -214,13 +223,13 @@ const handleLogin = async (credentials) => {
             </form>
             <p className="text-[#636262]">
               New to MyFund?{" "}
-              <a href="/register" className="text-[#276EF1]">
+              <a href="/register" className="text-[#4C28BC]">
                 Create Free Account
               </a>
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg">
+        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn">
           <Testimonials />
         </div>
       </div>
