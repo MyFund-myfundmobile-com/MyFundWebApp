@@ -37,7 +37,6 @@ const Layout = () => {
   return (
     <Provider store={store}>
       {" "}
-      {/* Wrap your entire application with Provider */}
       <div className="flex h-screen w-full">
         <Sidebar
           onToggle={handleSidebarToggle}
@@ -57,7 +56,7 @@ const Layout = () => {
             className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full"
             style={{ backgroundColor: "#F7F5FF" }}
           >
-            <Outlet /> {/* This is where the nested routes will be rendered */}
+            <Outlet />
           </main>
         </div>
       </div>

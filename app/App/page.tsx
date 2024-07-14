@@ -27,26 +27,18 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />{" "}
-          {/* Root path redirects to login */}
           <Route path="/login" element={<LoginPage />} />{" "}
-          {/* Login Page Route */}
           <Route path="/App" element={<Navigate to="/App/home" />} />{" "}
-          {/* Redirect /App to /App/home */}
           <Route path="/App/*" element={<Layout />}>
-            <Route path="home" element={<HomePage />} /> {/* Home Page Route */}
-            <Route path="save" element={<SavePage />} /> {/* Save Page Route */}
+            <Route path="home" element={<HomePage />} />
+            <Route path="save" element={<SavePage />} />
             <Route path="invest" element={<InvestPage />} />{" "}
-            {/* Invest Page Route */}
             <Route path="withdraw" element={<WithdrawPage />} />{" "}
-            {/* Withdraw Page Route */}
             <Route path="buyProperties" element={<BuyPropertiesPage />} />{" "}
-            {/* Buy Properties Page Route */}
             <Route path="settings" element={<SettingsPage />} />{" "}
-            {/* Settings Page Route */}
             <Route path="register" element={<RegisterPage />} />{" "}
-            {/* Register Page Route */}
           </Route>
-          <Route path="*" element={<NotFound />} /> {/* Not Found Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </Provider>
