@@ -1,7 +1,8 @@
-"use client";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "@/app/store/store";
 
+// Define the structure of the user profile data
 interface UserProfile {
   firstName: string;
   lastName: string;
@@ -13,6 +14,7 @@ interface UserProfile {
   time_period: number;
 }
 
+// Define the initial state for authentication
 interface AuthState {
   isAuthenticated: boolean;
   userToken: string | null;
@@ -27,10 +29,11 @@ const initialState: AuthState = {
   userProfile: null,
 };
 
-export const fetchUserProfile = createAsyncThunk(
+// Async thunk to fetch user profile data
+export const fetchUserProfile = createAsyncThunk<UserProfile, string>(
   "auth/fetchUserProfile",
   async (token: string) => {
-    console.log("token inside authSlice......:", token);
+    console.log("Token inside fetchUserProfile thunk:", token);
     try {
       const response = await axios.get<UserProfile>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
@@ -40,19 +43,21 @@ export const fetchUserProfile = createAsyncThunk(
           },
         }
       );
-      console.log("User profile response:", response.data);
-      return response.data;
+      console.log("Fetched user profile data:", response.data);
+      return response.data; // This will trigger the fulfilled action
     } catch (error) {
       console.error("Error fetching user profile:", error);
-      throw error;
+      throw error; // This will trigger the rejected action
     }
   }
 );
 
+// Create the auth slice with initial state and reducers
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    // Action for successful login
     loginSuccess(
       state,
       action: PayloadAction<{ token: string; userId: string }>
@@ -62,17 +67,25 @@ const authSlice = createSlice({
       state.userId = action.payload.userId;
       console.log("Token set in loginSuccess:", action.payload.token);
     },
+    // Action to set user profile
     setUserProfile(state, action: PayloadAction<UserProfile>) {
       state.userProfile = action.payload;
+      console.log(
+        "User profile set in setUserProfile reducer:",
+        action.payload
+      );
     },
+    // Action for logging out
     logout(state) {
       state.isAuthenticated = false;
       state.userToken = null;
       state.userId = null;
       state.userProfile = null;
+      console.log("Logged out successfully");
     },
   },
   extraReducers: (builder) => {
+    // Handle the fulfilled case for fetchUserProfile
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
       state.userProfile = action.payload;
       console.log("User profile set in extraReducer:", action.payload);

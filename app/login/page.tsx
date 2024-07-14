@@ -119,7 +119,7 @@ const LoginPage = () => {
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
             <Title>
-              <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
+              <span style={{ color: "#BB9CE8" }}>Welcome</span> Back!
             </Title>
             <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
               Earn 20% p.a. every January and July. {"\n"}

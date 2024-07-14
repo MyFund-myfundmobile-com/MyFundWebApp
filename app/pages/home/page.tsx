@@ -94,15 +94,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const greetings = [
-      "Hey",
-      "Hi",
-      "Hello",
-      "Hallo",
-      "Hola",
-      "Salut",
-      "Bonjour",
-    ];
+    const greetings = ["Hey", "Hi", "Hello", "Hallo", "Hola", "Bonjour"];
     const randomIndex = Math.floor(Math.random() * greetings.length);
     setGreeting(greetings[randomIndex]);
   }, []);

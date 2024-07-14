@@ -13,7 +13,6 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 
 config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
 
-
 const RequestPasswordResetPage: React.FC = () => {
   useEffect(() => {
     console.log("Setting background color...");
@@ -100,7 +99,9 @@ const RequestPasswordResetPage: React.FC = () => {
     <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple flex flex-col items-center justify-center h-screen">
         <div className="max-w-xl px-5 py-6 text-center md:px-10 md:py-24 lg:py-12 bg-white rounded-lg shadow-lg">
-          <Title>Reset Password</Title>
+          <Title>
+            <span style={{ color: "#BB9CE8" }}>Reset</span> Password
+          </Title>
           <Subtitle>
             Enter the email address you use for MyFund, and we&apos;ll help you
             create a new password.
