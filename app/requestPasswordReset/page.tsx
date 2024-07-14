@@ -8,13 +8,18 @@ import { mailOutline, checkmarkCircleOutline } from "ionicons/icons";
 import CustomSnackbar from "../components/snackbar";
 import Title from "../components/title";
 import Subtitle from "../components/subtitle";
-import Image from "next/image";
 import ResetPasswordModal from "./resetPasswordModal";
+import { config } from "@fortawesome/fontawesome-svg-core";
+
+config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
+
 
 const RequestPasswordResetPage: React.FC = () => {
   useEffect(() => {
+    console.log("Setting background color...");
     document.body.style.backgroundColor = "#351265";
     return () => {
+      console.log("Cleaning up background color...");
       document.body.style.backgroundColor = "";
     };
   }, []);
@@ -92,27 +97,9 @@ const RequestPasswordResetPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-customPurple">
+    <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple flex flex-col items-center justify-center h-screen">
-        <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32 bg-white rounded-lg shadow-lg">
-          <div
-            className="items-center"
-            style={{
-              alignContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              alignSelf: "center",
-            }}
-          >
-            <Image
-              height={60}
-              width={60}
-              src="/images/logo.png"
-              alt="Company Logo"
-              className="mb-18 text-center items-center"
-              style={{ alignSelf: "center", marginTop: -45 }}
-            />
-          </div>
+        <div className="max-w-xl px-5 py-6 text-center md:px-10 md:py-24 lg:py-12 bg-white rounded-lg shadow-lg">
           <Title>Reset Password</Title>
           <Subtitle>
             Enter the email address you use for MyFund, and we&apos;ll help you

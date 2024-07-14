@@ -15,7 +15,7 @@ import Image from 'next/image';
 interface SidebarProps {
   onToggle: () => void;
   isRetracted: boolean;
-  onMenuItemClick: (item: string) => void; // Add this prop
+  onMenuItemClick: (item: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onToggle, isRetracted: initialRetracted, onMenuItemClick }) => { // Destructure the new prop

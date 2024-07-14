@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   TextField,
@@ -17,7 +18,7 @@ import {
 import Subtitle from "../components/subtitle";
 import axios from "axios";
 import CustomSnackbar from "../components/snackbar";
-import Confetti from "react-confetti";
+import styles from "../ui/landing/Header.module.css";
 
 interface ResetPasswordModalProps {
   isOpen: boolean;

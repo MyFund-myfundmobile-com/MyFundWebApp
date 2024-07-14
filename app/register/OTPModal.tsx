@@ -1,12 +1,12 @@
 "use client";
-import 'dotenv/config';
-import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-import CustomSnackbar from '@/app/components/snackbar';
-import { CircularProgress } from '@mui/material';
-import { IonIcon } from '@ionic/react';
-import { closeOutline } from 'ionicons/icons';
-import { PrimaryButton } from '@/app/components/Buttons/MainButtons';
+import "dotenv/config";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
+import CustomSnackbar from "@/app/components/snackbar";
+import { CircularProgress } from "@mui/material";
+import { IonIcon } from "@ionic/react";
+import { closeOutline } from "ionicons/icons";
+import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 
 interface OTPModalProps {
   email: string;
@@ -15,12 +15,19 @@ interface OTPModalProps {
   onClose: () => void;
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose }) => {
-  const [otp, setOTP] = useState<string>('');
+const OTPModal: React.FC<OTPModalProps> = ({
+  email,
+  password,
+  isOpen,
+  onClose,
+}) => {
+  const [otp, setOTP] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
@@ -31,24 +38,27 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose })
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
-  
+
     const newOTP = [...otp];
     newOTP[index] = value;
-    setOTP(newOTP.join('').slice(0, 6));
+    setOTP(newOTP.join("").slice(0, 6));
 
     if (value && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    const pasteData = e.clipboardData.getData('Text').slice(0, 6);
+    const pasteData = e.clipboardData.getData("Text").slice(0, 6);
     if (/^\d{6}$/.test(pasteData)) {
       setOTP(pasteData);
       inputRefs.current[5].focus();
@@ -60,46 +70,67 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose })
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/confirm-otp/`, {
-        otp: otp,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/confirm-otp/`,
+        {
+          otp: otp,
+        }
+      );
 
       if (response.status === 200) {
         setIsLoading(false);
-        console.log('OTP Verification Successful');
+        console.log("OTP Verification Successful");
 
         try {
-          const loginResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`, {
-            username: email,
-            password: password,
-          });
+          const loginResponse = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`,
+            {
+              username: email,
+              password: password,
+            }
+          );
 
           if (loginResponse.status === 200) {
             const { access, refresh, user_id } = loginResponse.data;
-            handleSnackbarOpen('success', "We've confirmed it's you! Welcome to MyFund...");
-            console.log('Login Successful');
+            handleSnackbarOpen(
+              "success",
+              "We've confirmed it's you! Welcome to MyFund..."
+            );
+            console.log("Login Successful");
             window.location.href = "/App"; // Redirect to your desired page upon successful login
           } else {
-            console.error('Login API Error:', loginResponse.data);
-            handleSnackbarOpen('error', 'An error occurred while logging in. Please try again.');
+            console.error("Login API Error:", loginResponse.data);
+            handleSnackbarOpen(
+              "error",
+              "An error occurred while logging in. Please try again."
+            );
           }
         } catch (loginError) {
-          console.error('Login API Error:', loginError);
-          handleSnackbarOpen('error', 'An error occurred while logging in. Please try again.');
+          console.error("Login API Error:", loginError);
+          handleSnackbarOpen(
+            "error",
+            "An error occurred while logging in. Please try again."
+          );
         }
       } else {
-        console.error('OTP Verification Failed:', response.data);
-        handleSnackbarOpen('error', 'OTP Verification Failed. Please check and try again.');
+        console.error("OTP Verification Failed:", response.data);
+        handleSnackbarOpen(
+          "error",
+          "OTP Verification Failed. Please check and try again."
+        );
       }
     } catch (error) {
-      console.error('API Error:', error);
-      handleSnackbarOpen('error', 'An error occurred. Please try again later.');
+      console.error("API Error:", error);
+      handleSnackbarOpen("error", "An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSnackbarOpen = (severity: 'success' | 'error', message: string) => {
+  const handleSnackbarOpen = (
+    severity: "success" | "error",
+    message: string
+  ) => {
     setSnackbarSeverity(severity);
     setSnackbarMessage(message);
     setSnackbarOpen(true);
@@ -117,16 +148,26 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose })
         message={snackbarMessage}
         handleClose={handleSnackbarClose}
       />
-      <div className={`fixed inset-0 flex items-center justify-center ${isOpen ? '' : 'hidden'}`}>
+      <div
+        className={`fixed inset-0 animate-floatIn flex items-center justify-center ${
+          isOpen ? "" : "hidden"
+        }`}
+      >
         <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         <div className="relative bg-white rounded-lg p-8 w-full max-w-md z-50">
-          <button onClick={onClose} className="absolute top-4 right-4 text-gray-600">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-600"
+          >
             <IonIcon icon={closeOutline} className="w-6 h-6" />
           </button>
-          <h2 className="md:text-2xl text-xl tracking-tight text-purple1 font-proxima font-bold mb-2 text-left">Confirm Signup</h2>
+          <h2 className="md:text-2xl text-xl tracking-tight text-purple1 font-proxima font-bold mb-2 text-left">
+            Confirm Signup
+          </h2>
           <hr className="border-gray-300 mb-4" />
           <p className="font-karla tracking-tight text-black mb-6">
-            Enter or paste the 6-digit OTP we just sent to <b>{email}</b> to complete your signup
+            Enter or paste the 6-digit OTP we just sent to <b>{email}</b> to
+            complete your signup
           </p>
           <div className="flex justify-center items-center space-x-2 mb-8">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -134,11 +175,13 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose })
                 key={index}
                 type="text"
                 maxLength={1}
-                value={otp[index] || ''}
+                value={otp[index] || ""}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
-                ref={(el: HTMLInputElement | null) => { if (el) inputRefs.current[index] = el; }}
+                ref={(el: HTMLInputElement | null) => {
+                  if (el) inputRefs.current[index] = el;
+                }}
                 className="w-12 h-12 text-2xl border border-gray-300 rounded text-center focus:outline-none"
               />
             ))}
@@ -151,12 +194,16 @@ const OTPModal: React.FC<OTPModalProps> = ({ email, password, isOpen, onClose })
               hoverBackgroundColor="#351265"
               color="#fff"
               hoverColor="#fff"
-              style={{ width: '95%' }}
+              style={{ width: "95%" }}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <span>VERIFYING...</span>
-                  <CircularProgress size={24} color="inherit" className="ml-2" />
+                  <CircularProgress
+                    size={24}
+                    color="inherit"
+                    className="ml-2"
+                  />
                 </div>
               ) : (
                 <span>CONFIRM</span>

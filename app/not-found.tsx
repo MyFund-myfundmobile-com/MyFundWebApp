@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,7 +7,7 @@ const NotFound = () => {
     <section>
       {" "}
       {/* Container */}{" "}
-      <div className="px-5 py-16 md:px-10 md:py-24 lg:py-32">
+      <div className="px-5 py-16 md:px-10 md:py-24 lg:py-32 animate-floatIn">
         {" "}
         {/* Component */}{" "}
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">

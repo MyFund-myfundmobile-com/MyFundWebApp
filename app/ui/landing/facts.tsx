@@ -7,13 +7,12 @@ import {
   SparklesIcon,
 } from "@heroicons/react/16/solid";
 import Image from "next/image";
-import { IoEyeOutline, IoBusinessOutline } from 'react-icons/io5';
-
+import { IoEyeOutline, IoBusinessOutline } from "react-icons/io5";
 
 const Facts = () => {
   return (
     <section>
-      <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32 flex flex-col items-center">
+      <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32 flex flex-col items-center animate-floatIn">
         {" "}
         <h1 className="mb-4 text-3xl md:text-5xl font-proxima font-bold text-center">
           What We{" "}
@@ -23,7 +22,9 @@ const Facts = () => {
         </h1>
         <div className="mb-6 w-full lg:w-3/4 md:mb-10 lg:mb-12 font-product-sans text-center">
           <p className="text-lg text-[#636262]">
-          MyFund helps working- and retiring-class people save towards properties. Unlike the currently available solutions, MyFund offers lifetime rental income via our national hostel project.
+            MyFund helps working- and retiring-class people save towards
+            properties. Unlike the currently available solutions, MyFund offers
+            lifetime rental income via our national hostel project.
           </p>
         </div>{" "}
         {/* Component */}{" "}
@@ -50,7 +51,9 @@ const Facts = () => {
               </div>
               <p className="mb-4 font-semibold">Vision</p>
               <p className="text-sm text-[#636262]">
-                To become the go-to platform in the country for the working-class people for real estate investments with 1 million financially free families by 2035.
+                To become the go-to platform in the country for the
+                working-class people for real estate investments with 1 million
+                financially free families by 2035.
               </p>
             </div>
             {/* Feature Item */}
@@ -61,10 +64,10 @@ const Facts = () => {
               </div>
               <p className="mb-4 font-semibold">Mission</p>
               <p className="text-sm text-[#636262]">
-                To provide working- and retiring-class people the opportunity to earn passive income from real estate.
+                To provide working- and retiring-class people the opportunity to
+                earn passive income from real estate.
               </p>
-            </div>
-{" "}
+            </div>{" "}
             {/* Feature Item */}{" "}
             <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
@@ -73,19 +76,23 @@ const Facts = () => {
               </div>
               <p className="mb-4 font-semibold">Lifetime Rental Income</p>
               <p className="text-sm text-[#636262]">
-                Earn lifetime rental income from owning fractions of any of our hostels across campuses across the country by growing your funds on the platform towards it</p>
+                Earn lifetime rental income from owning fractions of any of our
+                hostels across campuses across the country by growing your funds
+                on the platform towards it
+              </p>
             </div>{" "}
-
-
             {/* Feature Item */}{" "}
-              <div className="flex flex-col p-2">
+            <div className="flex flex-col p-2">
               <div className="relative mb-4 flex h-14 w-14 flex-col items-center justify-center rounded-full border border-solid border-[#9b9b9b] [box-shadow:rgb(0,_0,_0)_0px_3px]">
-              <ArchiveBoxIcon className="relative z-[1] inline-block h-6" />
+                <ArchiveBoxIcon className="relative z-[1] inline-block h-6" />
                 <div className="absolute z-0 h-8 w-8 rounded-full border border-[#DCD1FF] bg-[#DCD1FF]"></div>
               </div>
               <p className="mb-4 font-semibold">Monthly Cashflow Game</p>
               <p className="text-sm text-[#636262]">
-                The free monthly cashflow game stengthens our community to learn to become financially free with fake money. And each month we get a new winner that we spotlight on our platforms. Join us every second Sunday of the month, 8pm on Google Meet.
+                The free monthly cashflow game stengthens our community to learn
+                to become financially free with fake money. And each month we
+                get a new winner that we spotlight on our platforms. Join us
+                every second Sunday of the month, 8pm on Google Meet.
               </p>
             </div>{" "}
             {/* <div className="flex flex-col p-2">
@@ -126,9 +133,6 @@ const Facts = () => {
                 solutions.
               </p>
             </div>  */}
-            
-
-
           </div>
         </div>
       </div>

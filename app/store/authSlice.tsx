@@ -1,3 +1,4 @@
+"use client";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -28,16 +29,23 @@ const initialState: AuthState = {
 
 export const fetchUserProfile = createAsyncThunk(
   "auth/fetchUserProfile",
-  async (token: string, { dispatch }) => {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    dispatch(setUserProfile(response.data));
+  async (token: string) => {
+    console.log("token inside authSlice......:", token);
+    try {
+      const response = await axios.get<UserProfile>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("User profile response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      throw error;
+    }
   }
 );
 
@@ -52,6 +60,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.userToken = action.payload.token;
       state.userId = action.payload.userId;
+      console.log("Token set in loginSuccess:", action.payload.token);
     },
     setUserProfile(state, action: PayloadAction<UserProfile>) {
       state.userProfile = action.payload;
@@ -62,6 +71,12 @@ const authSlice = createSlice({
       state.userId = null;
       state.userProfile = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+      state.userProfile = action.payload;
+      console.log("User profile set in extraReducer:", action.payload);
+    });
   },
 });
 
