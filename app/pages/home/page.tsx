@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
 
-  const dispatch = useDispatch<AppDispatch>(); // Use the typed dispatch
+  const dispatch = useDispatch<AppDispatch>();
 
   const token = useSelector((state: RootState) => state.auth.userToken);
   const userProfile = useSelector((state: RootState) => state.auth.userProfile);
@@ -94,14 +94,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const greetings = [
-      "Hey",
-      "Hi",
-      "Hello",
-      "Hallo",
-      "Hola",
-      "Bonjour",
-    ];
+    const greetings = ["Hey", "Hi", "Hello", "Hallo", "Hola", "Bonjour"];
     const randomIndex = Math.floor(Math.random() * greetings.length);
     setGreeting(greetings[randomIndex]);
   }, []);
