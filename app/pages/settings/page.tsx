@@ -196,47 +196,59 @@ const SettingsPage: React.FC = () => {
         {/* User Details */}
         <div className="flex flex-col lg:w-2/3 ml-0 lg:ml-6 mt-4 lg:mt-0">
           <div className="flex flex-wrap justify-between">
-            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-center">
+            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-left">
               <IonIcon icon={personOutline} className="mr-2 text-gray-600" />
               <div>
-                <p className="text-sm italic font-karla text-gray-600">
+                <p
+                  className="text-sm italic font-karla text-gray-600"
+                  style={{ fontSize: 12 }}
+                >
                   Full Name
                 </p>
                 <p className="font-semibold font-proxima text-purple1">
-                  Tolulope Ahmed
+                  {userInfo?.firstName} {userInfo?.lastName}
                 </p>
               </div>
             </div>
-            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-center">
+            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-left">
               <IonIcon icon={callOutline} className="mr-2 text-gray-600" />
               <div>
-                <p className="text-sm italic font-karla text-gray-600">
+                <p
+                  className="text-sm italic font-karla text-gray-600"
+                  style={{ fontSize: 12 }}
+                >
                   Mobile Number
                 </p>
                 <p className="font-semibold font-proxima text-purple1">
-                  +2348033924595
+                  {userInfo?.mobileNumber}
                 </p>
               </div>
             </div>
-            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-center">
+            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-left">
               <IonIcon icon={mailOutline} className="mr-2 text-gray-600" />
               <div>
-                <p className="text-sm italic font-karla text-gray-600">
+                <p
+                  className="text-sm italic font-karla text-gray-600"
+                  style={{ fontSize: 12 }}
+                >
                   Email/Username
                 </p>
                 <p className="font-semibold font-proxima text-purple1">
-                  tolulopeahmed@gmail.com
+                  {userInfo?.email}
                 </p>
               </div>
             </div>
-            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-center">
+            <div className="w-full sm:w-1/2 lg:w-auto mb-2 p-2 border border-purple-400 rounded flex items-left">
               <IonIcon icon={cashOutline} className="mr-2 text-gray-600" />
               <div>
-                <p className="text-sm italic font-karla text-gray-600">
+                <p
+                  className="text-sm italic font-karla text-gray-600"
+                  style={{ fontSize: 12 }}
+                >
                   Financial Level
                 </p>
                 <p className="font-semibold font-proxima text-purple1">
-                  Level 3: SURPLUS
+                  {/* Level 3: {currentStage ? currentStage.text.toUpperCase() : "Unknown"} */}
                 </p>
               </div>
             </div>

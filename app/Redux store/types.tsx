@@ -13,6 +13,7 @@ export interface User {
   bankRecords: any[]; // Adjust type as needed
   cards: any[]; // Adjust type as needed
   top_saver_percentage: number;
+  profile_picture?: string; // Add this line
 }
 
 export interface AuthState {

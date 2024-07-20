@@ -23,6 +23,7 @@ const initialState: AuthState = {
     bankRecords: [],
     cards: [],
     top_saver_percentage: 0,
+    profile_picture: "", // Add this line
   },
   error: null,
 };
@@ -33,20 +34,20 @@ const authReducer = (
 ): AuthState => {
   switch (action.type) {
     case SET_USER_TOKEN:
-      console.log("Reducer: SET_USER_TOKEN", action.payload); // Add this log
+      console.log("Reducer: SET_USER_TOKEN", action.payload);
       return {
         ...state,
         token: action.payload,
       };
     case SET_USER_INFO:
-      console.log("Reducer: SET_USER_INFO", action.payload); // Add this log
+      console.log("Reducer: SET_USER_INFO", action.payload);
       return {
         ...state,
         userInfo: action.payload,
         error: null,
       };
     case SET_USER_INFO_ERROR:
-      console.log("Reducer: SET_USER_INFO_ERROR", action.payload); // Add this log
+      console.log("Reducer: SET_USER_INFO_ERROR", action.payload);
       return {
         ...state,
         error: action.payload,

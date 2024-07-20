@@ -116,13 +116,13 @@ const HomePage: React.FC = () => {
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src="/images/DrTsquare.png"
+            src={userInfo.profile_picture || "/Profile1.png"}
             width={120}
             height={120}
             alt="Profile"
             className="w-24 h-24 rounded-full border-2 border-purple-400"
           />
-          <Tooltip title="My WealthMap" placement="right">
+          <Tooltip title="My Financial Status (WealthMap)" placement="right">
             <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">
               3
             </div>
