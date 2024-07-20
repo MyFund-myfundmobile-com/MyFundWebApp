@@ -1,16 +1,12 @@
-// app/_app.tsx
-import React from "react";
-import { Provider } from "react-redux";
-import store from "./store/store";
+// _app.tsx
 import { AppProps } from "next/app";
-import "../styles/globals.css";
+import { Provider } from "react-redux";
+import store from "./Redux store/store";
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
-};
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <Provider store={store}>
+    <Component {...pageProps} />
+  </Provider>
+);
 
 export default MyApp;

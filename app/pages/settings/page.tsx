@@ -32,9 +32,10 @@ import UpdateProfileModal from "./modals/updateProfileModal";
 import Image from "next/image";
 import Cropper from "react-cropper"; // Import react-cropper
 import "cropperjs/dist/cropper.css"; // Import cropper CSS
-import { fetchUserProfile } from "../../store/authSlice";
+// import { fetchUserData } from "../../Redux store/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
+import { RootState, AppDispatch } from "@/app/Redux store/store";
+import { fetchUserInfo } from "@/app/Redux store/actions";
 
 const SettingsPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string | null>(
@@ -48,20 +49,18 @@ const SettingsPage: React.FC = () => {
   const settingsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null); // Add ref for file input
 
-  const dispatch = useDispatch<AppDispatch>();
-  const token = useSelector((state: RootState) => state.auth.userToken);
-  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
-    console.log("Token inside useEffect:", token);
     if (token) {
-      console.log("Dispatching fetchUserProfile with token:", token);
-      dispatch(fetchUserProfile(token));
+      dispatch(fetchUserInfo(token));
     }
-  }, [dispatch, token]);
+  }, [token, dispatch]);
 
   console.log("Token inside settings:", token);
-  console.log("User profile inside settings:", userProfile);
+  console.log("User profile inside settings:", userInfo);
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
@@ -149,32 +148,46 @@ const SettingsPage: React.FC = () => {
       <div className="flex flex-col lg:flex-row mb-4 mt-5">
         <div className="flex flex-col lg:flex-row lg:w-1/3 items-start">
           {/* Profile Image */}
-          <div className="relative">
-            <Image
-              src={profileImage}
-              width={120}
-              height={120}
-              alt="Profile"
-              className="w-36 h-36 rounded-full border-2 border-purple-400"
-            />
-            <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <Edit
-                className="text-white active cursor-pointer"
-                onClick={handleProfileImageClick}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                accept="image/*"
-                onChange={handleProfileImageChange}
-              />
+          <div className="flex flex-col lg:flex-row items-center lg:items-start">
+            <div className="relative">
+              <div className="w-36 h-36 relative aspect-w-1 aspect-h-1">
+                <Image
+                  src={profileImage}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="Profile"
+                  className="rounded-full border-2 border-purple-400"
+                />
+              </div>
+              <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                <Edit
+                  className="text-white active cursor-pointer"
+                  onClick={handleProfileImageClick}
+                />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleProfileImageChange}
+                />
+              </div>
             </div>
-          </div>
-          {/* Name and Email */}
-          <div className="ml-4 mt-4 lg:mt-0">
-            <Title>{userProfile?.firstName}</Title>
-            <Subtitle>{userProfile?.email}</Subtitle>
+
+            <div className="mt-4 lg:mt-0 lg:ml-4 flex flex-col items-center lg:items-start">
+              <Title
+                className="text-center lg:text-left"
+                style={{ marginRight: 10 }}
+              >
+                {userInfo?.firstName}
+              </Title>
+              <Subtitle
+                className="text-center lg:text-left text-xs"
+                style={{ fontSize: 12, marginRight: 10 }}
+              >
+                {userInfo?.email}
+              </Subtitle>
+            </div>
           </div>
         </div>
 

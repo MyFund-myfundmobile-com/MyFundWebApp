@@ -13,9 +13,10 @@ import TopSaversSection from "./topSavers";
 import WealthMapSection from "./wealthMap";
 import { useNavigate } from "react-router-dom";
 import Image from "next/image";
-import { fetchUserProfile } from "../../store/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
+import { RootState } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserInfo } from "@/app/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -25,21 +26,18 @@ const HomePage: React.FC = () => {
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const token = useSelector((state: RootState) => state.auth.userToken);
-  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
-    console.log("Token inside useEffect:", token);
     if (token) {
-      console.log("Dispatching fetchUserProfile with token:", token);
-      dispatch(fetchUserProfile(token));
+      dispatch(fetchUserInfo(token));
     }
-  }, [dispatch, token]);
+  }, [token, dispatch]);
 
   console.log("Token inside Homepage:", token);
-  console.log("User profile inside Homepage:", userProfile);
+  console.log("User profile inside Homepage:", userInfo);
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -133,10 +131,11 @@ const HomePage: React.FC = () => {
         <div className="ml-4">
           <Title>
             <span style={{ color: "#BB9CE8" }}>{greeting}</span>{" "}
-            {userProfile?.firstName},
+            {userInfo?.firstName && `${userInfo.firstName},`}
           </Title>
           <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
         </div>
+
         <div className="ml-auto flex items-center">
           {typeof window !== "undefined" && window.innerWidth >= 900 && (
             <span

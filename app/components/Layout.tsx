@@ -1,16 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Provider } from "react-redux"; // Import Provider from react-redux
-import store from "../store/store";
+import { Provider, useSelector } from "react-redux"; // Import useSelector
+import store from "../Redux store/store";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import { RootState } from "../Redux store/store"; // Import RootState
 
 const Layout = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState(
     window.innerWidth < 768
   );
   const [activeItem, setActiveItem] = useState("DASHBOARD");
+
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  console.log("User info in Layout:", userInfo); // Log user info
 
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);
@@ -51,6 +55,7 @@ const Layout = () => {
           <Header
             isSidebarRetracted={isSidebarRetracted}
             activeItem={activeItem}
+            userInfo={userInfo} // Pass user info to Header
           />
           <main
             className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full"

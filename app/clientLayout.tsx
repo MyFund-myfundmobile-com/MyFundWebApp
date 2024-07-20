@@ -3,7 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation"; // Import usePathname
 import { Provider } from "react-redux";
-import store from "./store/store";
+import store from "./Redux store/store";
 import NavBar from "./ui/landing/navbar";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {

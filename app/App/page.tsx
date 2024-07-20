@@ -9,7 +9,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import store from "../store/store";
+import store from "../Redux store/store";
 import Layout from "../components/Layout";
 import HomePage from "../pages/home/page";
 import SavePage from "../pages/save/page";

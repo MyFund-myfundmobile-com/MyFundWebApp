@@ -143,7 +143,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               fullWidth
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="mb-4 mt-4"
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
@@ -161,7 +161,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mb-4 mt-4"
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
@@ -188,7 +188,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mb-4 mt-4"
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
               style={{ marginBottom: 15 }}
               InputProps={{
                 startAdornment: (
