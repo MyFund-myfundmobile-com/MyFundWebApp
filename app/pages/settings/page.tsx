@@ -330,7 +330,6 @@ const SettingsPage: React.FC = () => {
       <UpdateProfileModal
         isOpen={isUpdateProfileModalOpen}
         onClose={() => setUpdateProfileModalOpen(false)}
-        onUpdate={handleUpdateProfile}
       />
     </div>
   );

@@ -26,6 +26,7 @@ export interface AuthState {
 export const SET_USER_TOKEN = "SET_USER_TOKEN";
 export const SET_USER_INFO = "SET_USER_INFO";
 export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
+export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE"; // Add this line
 
 interface SetUserTokenAction {
   type: typeof SET_USER_TOKEN;
@@ -42,7 +43,13 @@ interface SetUserInfoErrorAction {
   payload: string;
 }
 
+export interface UpdateUserProfileAction {
+  type: typeof UPDATE_USER_PROFILE;
+  payload: Partial<User>;
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
-  | SetUserInfoErrorAction;
+  | SetUserInfoErrorAction
+  | UpdateUserProfileAction; // Add this line

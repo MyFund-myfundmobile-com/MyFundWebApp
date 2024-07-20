@@ -5,6 +5,7 @@ import {
   SET_USER_TOKEN,
   SET_USER_INFO,
   SET_USER_INFO_ERROR,
+  UPDATE_USER_PROFILE,
   User,
 } from "./types";
 
@@ -51,3 +52,8 @@ export const fetchUserInfo = (token: string) => {
     }
   };
 };
+
+export const updateUserProfile = (updatedProfile: any) => ({
+  type: UPDATE_USER_PROFILE,
+  payload: updatedProfile,
+});
