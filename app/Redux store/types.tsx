@@ -22,11 +22,12 @@ export interface AuthState {
   error: string | null;
 }
 
-// Actions types
+// Action types
 export const SET_USER_TOKEN = "SET_USER_TOKEN";
 export const SET_USER_INFO = "SET_USER_INFO";
 export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
-export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE"; // Add this line
+export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";
+export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL"; // Add this line
 
 interface SetUserTokenAction {
   type: typeof SET_USER_TOKEN;
@@ -48,8 +49,14 @@ export interface UpdateUserProfileAction {
   payload: Partial<User>;
 }
 
+interface UpdateSavingsGoalAction {
+  type: typeof UPDATE_SAVINGS_GOAL;
+  payload: Partial<User>;
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
   | SetUserInfoErrorAction
-  | UpdateUserProfileAction; // Add this line
+  | UpdateUserProfileAction
+  | UpdateSavingsGoalAction;

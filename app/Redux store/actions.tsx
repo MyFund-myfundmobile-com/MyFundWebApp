@@ -1,3 +1,5 @@
+// actions.tsx
+
 import axios from "axios";
 import { Dispatch } from "redux";
 import {
@@ -6,6 +8,7 @@ import {
   SET_USER_INFO,
   SET_USER_INFO_ERROR,
   UPDATE_USER_PROFILE,
+  UPDATE_SAVINGS_GOAL, // Import the new action type
   User,
 } from "./types";
 
@@ -56,4 +59,13 @@ export const fetchUserInfo = (token: string) => {
 export const updateUserProfile = (updatedProfile: any) => ({
   type: UPDATE_USER_PROFILE,
   payload: updatedProfile,
+});
+
+export const updateSavingsGoal = (updatedGoal: {
+  preferred_asset?: string;
+  savings_goal_amount?: string;
+  time_period?: string;
+}): AuthActionTypes => ({
+  type: UPDATE_SAVINGS_GOAL,
+  payload: updatedGoal,
 });

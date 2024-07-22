@@ -1,3 +1,5 @@
+// reducers.tsx
+
 import {
   AuthState,
   AuthActionTypes,
@@ -5,6 +7,7 @@ import {
   SET_USER_INFO,
   SET_USER_INFO_ERROR,
   UPDATE_USER_PROFILE,
+  UPDATE_SAVINGS_GOAL, // Import the new action type
 } from "./types";
 
 const initialState: AuthState = {
@@ -57,6 +60,15 @@ const authReducer = (
           ...action.payload,
         },
       };
+    case UPDATE_SAVINGS_GOAL:
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          ...action.payload,
+        },
+      };
+
     default:
       return state;
   }

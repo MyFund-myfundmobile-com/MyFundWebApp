@@ -17,12 +17,28 @@ const config: Config = {
       },
       keyframes: {
         floatIn: {
-          '0%': { opacity: '0', transform: 'translateX(30px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
+          "0%": { opacity: "0", transform: "translateX(30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
         },
       },
       animation: {
-        floatIn: 'floatIn 0.5s ease-out',
+        floatIn: "floatIn 0.5s ease-out",
+      },
+      borderRadius: {
+        arrow: "1rem", // Custom border radius for arrow effect
+      },
+      boxShadow: {
+        arrow: "0 0 0 5px rgba(0,0,0,0.1)", // Custom shadow if needed
+      },
+      // Custom arrow size and position
+      width: {
+        "arrow-large": "24px", // Adjust size as needed
+      },
+      height: {
+        "arrow-large": "24px", // Adjust size as needed
+      },
+      translate: {
+        "arrow-left": "-8px", // Move arrow to the left
       },
       colors: {
         purple1: "#4C28BC",

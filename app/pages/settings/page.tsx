@@ -43,7 +43,7 @@ const SettingsPage: React.FC = () => {
   );
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isUpdateProfileModalOpen, setUpdateProfileModalOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState("/images/DrTsquare.png"); // Add state for profile image
+  const [profileImage, setProfileImage] = useState("/images/Profile1.png"); // Add state for profile image
   const [cropImage, setCropImage] = useState<string | null>(null); // Add state for crop image
   const [cropper, setCropper] = useState<any>(); // Add state for cropper instance
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -281,7 +281,10 @@ const SettingsPage: React.FC = () => {
       <Section>SETTINGS</Section>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         <div className="md:col-span-1">
-          <SettingsButtonsSection onMenuSelect={handleMenuSelect} />
+          <SettingsButtonsSection
+            onMenuSelect={handleMenuSelect}
+            selectedButton={selectedMenu}
+          />
         </div>
         <div className="md:col-span-2" ref={settingsRef}>
           {selectedMenu !== "Log Out" && selectedMenu !== null && (
