@@ -116,7 +116,7 @@ const HomePage: React.FC = () => {
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src={userInfo.profile_picture || "/Profile1.png"}
+            src={userInfo?.profile_picture || "/Profile1.png"}
             width={120}
             height={120}
             alt="Profile"

@@ -20,6 +20,7 @@ export const setUserToken = (token: string): AuthActionTypes => {
   };
 };
 
+// Action to fetch user information
 export const fetchUserInfo = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
     console.log("Fetching user info with token:", token);
@@ -34,10 +35,18 @@ export const fetchUserInfo = (token: string) => {
       );
 
       if (response.status === 200) {
-        console.log("User info fetched successfully:", response.data);
+        const profileData = response.data;
+        console.log("User info fetched successfully:", profileData);
+
         dispatch({
           type: SET_USER_INFO,
-          payload: response.data,
+          payload: {
+            ...profileData,
+            id: profileData.id,
+            profileImageUrl: profileData.profile_picture
+              ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${profileData.profile_picture}`
+              : null,
+          },
         });
       } else {
         console.error("Failed to fetch user info, status:", response.status);

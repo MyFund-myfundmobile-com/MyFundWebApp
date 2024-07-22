@@ -30,12 +30,15 @@ import SavingsGoal from "./subsettings/savingsGoal";
 import SettingsExtension from "./settingsExtension"; // Ensure this import is added
 import UpdateProfileModal from "./modals/updateProfileModal";
 import Image from "next/image";
-import Cropper from "react-cropper"; // Import react-cropper
 import "cropperjs/dist/cropper.css"; // Import cropper CSS
-// import { fetchUserData } from "../../Redux store/actions";
+import Cropper, { ReactCropperElement } from "react-cropper"; // Ensure this import
+
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/Redux store/store";
 import { fetchUserInfo } from "@/app/Redux store/actions";
+
+import axios from "axios";
+import CustomSnackbar from "@/app/components/snackbar";
 
 const SettingsPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string | null>(
@@ -43,21 +46,70 @@ const SettingsPage: React.FC = () => {
   );
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isUpdateProfileModalOpen, setUpdateProfileModalOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState("/images/Profile1.png"); // Add state for profile image
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+
+  const [profileImage, setProfileImage] = useState(
+    userInfo?.profile_picture || "/images/Profile1.png"
+  );
   const [cropImage, setCropImage] = useState<string | null>(null); // Add state for crop image
-  const [cropper, setCropper] = useState<any>(); // Add state for cropper instance
   const settingsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null); // Add ref for file input
+  const [uploading, setUploading] = useState(false); // Add state for uploading
+
+  // Handler to trigger file input click
+  const handleProfileImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const [cropper, setCropper] = useState<Cropper | null>(null);
+
+  const handleCropperRef = (c: ReactCropperElement | null) => {
+    if (c) {
+      setCropper(c.cropper); // Set the Cropper instance
+    } else {
+      setCropper(null);
+    }
+  };
+
+  const handleProfileImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target && typeof e.target.result === "string") {
+          setCropImage(e.target.result); // Set the crop image
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
-  const token = useSelector((state: RootState) => state.auth.token);
-  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const token = useSelector((state: RootState) => state.auth.token || "");
 
   useEffect(() => {
     if (token) {
       dispatch(fetchUserInfo(token));
     }
-  }, [token, dispatch]);
+
+    if (userInfo?.profile_picture) {
+      setProfileImage(userInfo.profile_picture);
+    }
+  }, [token, dispatch, userInfo]);
 
   console.log("Token inside settings:", token);
   console.log("User profile inside settings:", userInfo);
@@ -78,37 +130,68 @@ const SettingsPage: React.FC = () => {
     setUpdateProfileModalOpen(true);
   };
 
-  const handleUpdateProfile = (data: any) => {
-    // Replace with actual update logic
-    console.log("Updating profile with:", data);
-    // Show success modal or toast message here
-  };
-
-  const handleProfileImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleProfileImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && typeof e.target.result === "string") {
-          setCropImage(e.target.result); // Set the crop image
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleCrop = () => {
+  // Update profile image URL upon successful upload
+  const handleCrop = async () => {
     if (cropper) {
-      setProfileImage(cropper.getCroppedCanvas().toDataURL()); // Update profile image state with cropped image
-      setCropImage(null); // Clear the crop image
+      try {
+        const canvas = cropper.getCroppedCanvas();
+        const croppedImage = canvas.toDataURL();
+
+        const dataURLtoBlob = (dataurl: string) => {
+          const arr = dataurl.split(",");
+          const mimeMatch = arr[0].match(/:(.*?);/);
+          const mime = mimeMatch ? mimeMatch[1] : "";
+          const bstr = atob(arr[1]);
+          const n = bstr.length;
+          const u8arr = new Uint8Array(n);
+          for (let i = 0; i < n; i++) {
+            u8arr[i] = bstr.charCodeAt(i);
+          }
+          return new Blob([u8arr], { type: mime });
+        };
+
+        const formData = new FormData();
+        formData.append(
+          "profile_picture",
+          dataURLtoBlob(croppedImage),
+          "profile_picture.jpg"
+        );
+
+        setUploading(true);
+
+        const response = await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/profile-picture-update/`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setProfileImage(response.data.updatedProfileImageUrl); // Ensure your API returns the updated image URL
+          dispatch(fetchUserInfo(token));
+          setSnackbarMessage("Profile picture updated successfully!");
+          setSnackbarSeverity("success");
+        } else {
+          setSnackbarMessage(
+            response.data.message || "Error updating profile picture."
+          );
+          setSnackbarSeverity("error");
+        }
+        setSnackbarOpen(true);
+      } catch (error) {
+        setSnackbarMessage("An error occurred while updating profile picture.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      } finally {
+        setCropImage(null);
+        setUploading(false);
+      }
+    } else {
+      console.error("Cropper instance not available");
     }
   };
 
@@ -297,27 +380,38 @@ const SettingsPage: React.FC = () => {
 
       {/* Crop Image Modal */}
       {cropImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-4 rounded-lg w-full max-w-md">
             <Cropper
               src={cropImage}
               style={{ height: 400, width: "100%" }}
+              initialAspectRatio={1}
               aspectRatio={1}
               guides={false}
-              viewMode={1}
-              minCropBoxHeight={10}
-              minCropBoxWidth={10}
-              background={false}
-              responsive={true}
-              autoCropArea={1}
-              checkOrientation={false}
-              onInitialized={(instance) => setCropper(instance)}
+              ref={handleCropperRef} // Updated ref
             />
-            <div className="flex justify-end mt-4">
-              <button onClick={() => setCropImage(null)} className="mr-4">
+
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded flex items-center"
+                onClick={handleCrop}
+                disabled={uploading} // Disable button during upload
+              >
+                {uploading ? (
+                  <>
+                    <span>Uploading Image</span>
+                    <div className="ml-2 border-t-2 border-white border-solid w-4 h-4 rounded-full animate-spin"></div>
+                  </>
+                ) : (
+                  "Crop & Save"
+                )}
+              </button>
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                onClick={() => setCropImage(null)}
+              >
                 Cancel
               </button>
-              <button onClick={handleCrop}>Crop</button>
             </div>
           </div>
         </div>
@@ -333,6 +427,13 @@ const SettingsPage: React.FC = () => {
       <UpdateProfileModal
         isOpen={isUpdateProfileModalOpen}
         onClose={() => setUpdateProfileModalOpen(false)}
+      />
+
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={handleCloseSnackbar}
       />
     </div>
   );
