@@ -29,12 +29,19 @@ const HomePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUserInfo(token));
+      dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
     }
-  }, [token, dispatch]);
+  }, [dispatch, token]);
+
+  const formatAmount = (amount: number) => {
+    return amount < 10 ? `0${amount}` : `${amount}`;
+  };
 
   console.log("Token inside Homepage:", token);
   console.log("User profile inside Homepage:", userInfo);
@@ -121,6 +128,7 @@ const HomePage: React.FC = () => {
             height={120}
             alt="Profile"
             className="w-24 h-24 rounded-full border-2 border-purple-400"
+            onClick={() => navigate("/App/settings")}
           />
           <Tooltip title="My Financial Status (WealthMap)" placement="right">
             <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">
@@ -211,7 +219,7 @@ const HomePage: React.FC = () => {
             label="SAVINGS"
             rate="13% p.a."
             currency="₦"
-            amount={showBalances ? "1,234,567.89" : "****"}
+            amount={showBalances ? `${accountBalances.savings}` : "****"}
             buttonText="QuickSave"
             buttonIcon="save-outline"
             onButtonClick={handleQuickSaveClick}
@@ -221,7 +229,7 @@ const HomePage: React.FC = () => {
             label="INVESTMENTS"
             rate="20% p.a."
             currency="₦"
-            amount={showBalances ? "2,345,678.90" : "****"}
+            amount={showBalances ? `${accountBalances.investment}` : "****"}
             buttonText="QuickInvest"
             buttonIcon="trending-up-outline"
             onButtonClick={handleQuickInvestClick}
@@ -231,7 +239,9 @@ const HomePage: React.FC = () => {
             label="PROPERTIES"
             rate="yearly rent"
             currency=""
-            amount={showBalances ? "02" : "**"}
+            amount={
+              showBalances ? formatAmount(accountBalances.properties) : "**"
+            }
             buttonText="Buy Properties"
             buttonIcon="home-outline"
           />
@@ -240,7 +250,7 @@ const HomePage: React.FC = () => {
             label="WALLET"
             rate="(My Earnings)"
             currency="₦"
-            amount={showBalances ? "265,500.50" : "****"}
+            amount={showBalances ? `${accountBalances.wallet}` : "****"}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
           />

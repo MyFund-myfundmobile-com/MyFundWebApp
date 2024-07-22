@@ -10,15 +10,21 @@ export interface User {
   preferred_asset: string;
   savings_goal_amount: string;
   time_period: string;
-  bankRecords: any[]; // Adjust type as needed
-  cards: any[]; // Adjust type as needed
+  bankRecords: any[];
+  cards: any[];
   top_saver_percentage: number;
-  profile_picture?: string; // Add this line
+  profile_picture?: string;
 }
 
 export interface AuthState {
   token: string | null;
   userInfo: User;
+  accountBalances: {
+    savings: number;
+    investment: number;
+    properties: number;
+    wallet: number;
+  };
   error: string | null;
 }
 
@@ -27,7 +33,8 @@ export const SET_USER_TOKEN = "SET_USER_TOKEN";
 export const SET_USER_INFO = "SET_USER_INFO";
 export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
 export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";
-export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL"; // Add this line
+export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL";
+export const UPDATE_ACCOUNT_BALANCES = "UPDATE_ACCOUNT_BALANCES";
 
 interface SetUserTokenAction {
   type: typeof SET_USER_TOKEN;
@@ -54,9 +61,20 @@ interface UpdateSavingsGoalAction {
   payload: Partial<User>;
 }
 
+interface UpdateAccountBalancesAction {
+  type: typeof UPDATE_ACCOUNT_BALANCES;
+  payload: {
+    savings: number;
+    investment: number;
+    properties: number;
+    wallet: number;
+  };
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
   | SetUserInfoErrorAction
   | UpdateUserProfileAction
-  | UpdateSavingsGoalAction;
+  | UpdateSavingsGoalAction
+  | UpdateAccountBalancesAction;

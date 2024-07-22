@@ -18,7 +18,6 @@ import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
-import { updateSavingsGoal } from "@/app/Redux store/actions";
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
@@ -37,12 +36,15 @@ const SavePage = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUserInfo(token));
+      dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
     }
-  }, [token, dispatch]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (location.state?.quickSaveModalActive) {
@@ -300,7 +302,7 @@ const SavePage = () => {
             label="SAVINGS"
             rate="13% p.a."
             currency="₦"
-            amount={showBalances ? "2,300,000.50" : "****"}
+            amount={showBalances ? `${accountBalances.savings}` : "****"}
             buttonText="QuickSave"
             buttonIcon="save-outline"
             onButtonClick={() => handleOpenQuickSaveModal()} // Pass the function here without preset amount

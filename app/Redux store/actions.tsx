@@ -1,5 +1,3 @@
-// actions.tsx
-
 import axios from "axios";
 import { Dispatch } from "redux";
 import {
@@ -8,7 +6,8 @@ import {
   SET_USER_INFO,
   SET_USER_INFO_ERROR,
   UPDATE_USER_PROFILE,
-  UPDATE_SAVINGS_GOAL, // Import the new action type
+  UPDATE_SAVINGS_GOAL,
+  UPDATE_ACCOUNT_BALANCES,
   User,
 } from "./types";
 
@@ -20,7 +19,6 @@ export const setUserToken = (token: string): AuthActionTypes => {
   };
 };
 
-// Action to fetch user information
 export const fetchUserInfo = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
     console.log("Fetching user info with token:", token);
@@ -48,6 +46,9 @@ export const fetchUserInfo = (token: string) => {
               : null,
           },
         });
+
+        // Fetch account balances after user info is fetched
+        dispatch(fetchAccountBalances(token) as any); // Type assertion to any to avoid type error
       } else {
         console.error("Failed to fetch user info, status:", response.status);
         dispatch({
@@ -61,6 +62,36 @@ export const fetchUserInfo = (token: string) => {
         type: SET_USER_INFO_ERROR,
         payload: "Failed to fetch user info",
       });
+    }
+  };
+};
+
+// Action to fetch account balances
+export const fetchAccountBalances = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-account-balances/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: UPDATE_ACCOUNT_BALANCES,
+          payload: response.data,
+        });
+      } else {
+        console.error(
+          "Failed to fetch account balances, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching account balances:", error);
     }
   };
 };

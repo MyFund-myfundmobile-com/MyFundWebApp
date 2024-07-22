@@ -1,5 +1,3 @@
-// reducers.tsx
-
 import {
   AuthState,
   AuthActionTypes,
@@ -7,7 +5,8 @@ import {
   SET_USER_INFO,
   SET_USER_INFO_ERROR,
   UPDATE_USER_PROFILE,
-  UPDATE_SAVINGS_GOAL, // Import the new action type
+  UPDATE_SAVINGS_GOAL,
+  UPDATE_ACCOUNT_BALANCES,
 } from "./types";
 
 const initialState: AuthState = {
@@ -27,7 +26,13 @@ const initialState: AuthState = {
     bankRecords: [],
     cards: [],
     top_saver_percentage: 0,
-    profile_picture: "", // Ensure this matches your interface
+    profile_picture: "",
+  },
+  accountBalances: {
+    savings: 0,
+    investment: 0,
+    properties: 0,
+    wallet: 0,
   },
   error: null,
 };
@@ -68,7 +73,11 @@ const authReducer = (
           ...action.payload,
         },
       };
-
+    case UPDATE_ACCOUNT_BALANCES:
+      return {
+        ...state,
+        accountBalances: action.payload,
+      };
     default:
       return state;
   }

@@ -55,13 +55,8 @@ const SettingsPage: React.FC = () => {
   const settingsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null); // Add ref for file input
   const [uploading, setUploading] = useState(false); // Add state for uploading
-
-  // Handler to trigger file input click
-  const handleProfileImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  const [loading, setLoading] = useState(false);
+  const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
 
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -123,6 +118,20 @@ const SettingsPage: React.FC = () => {
         // Assuming 768px is the mobile breakpoint
         settingsRef.current.scrollIntoView({ behavior: "smooth" });
       }
+    }
+  };
+
+  // Handler to trigger file input click
+  const handleProfileImageClick = () => {
+    setLoading(true); // Set loading to true when edit icon is clicked
+
+    setTimeout(() => {
+      setLoading(false); // Stop loading after 3 seconds
+      setShowFileInput(true); // Show file input after loading
+    }, 3000); // 3 seconds delay
+
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Trigger file input click
     }
   };
 
@@ -243,16 +252,22 @@ const SettingsPage: React.FC = () => {
                 />
               </div>
               <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
-                <Edit
-                  className="text-white active cursor-pointer"
-                  onClick={handleProfileImageClick}
-                />
+                {loading ? (
+                  <div className="w-6 h-6 border-t-2 border-white border-solid rounded-full animate-spin"></div>
+                ) : (
+                  <Edit
+                    className="text-white active cursor-pointer"
+                    onClick={handleProfileImageClick}
+                  />
+                )}
                 <input
                   type="file"
                   ref={fileInputRef}
                   style={{ display: "none" }}
                   accept="image/*"
-                  onChange={handleProfileImageChange}
+                  onChange={(event) => {
+                    handleProfileImageChange(event);
+                  }}
                 />
               </div>
             </div>
