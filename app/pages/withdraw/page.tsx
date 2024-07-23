@@ -131,6 +131,21 @@ const WithdrawPage = () => {
     }
   };
 
+  const getRateColor = (label: string) => {
+    switch (label) {
+      case "SAVINGS":
+        return "text-orange-600"; // or 'text-orange-600'
+      case "INVESTMENTS":
+        return "text-orange-600"; // or 'text-orange-600'
+      case "PROPERTY":
+        return "text-orange-600"; // or 'text-orange-600'
+      case "WALLET":
+        return "text-green-200"; // Bright green for free
+      default:
+        return "text-white"; // Default color
+    }
+  };
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="mb-5 flex items-center">
@@ -196,43 +211,65 @@ const WithdrawPage = () => {
           <AccountCard
             icon="save-outline"
             label="SAVINGS"
-            rate="13% p.a."
+            rate="10% charge"
             currency="₦"
-            amount={showBalances ? `${accountBalances.savings}` : "****"}
+            amount={
+              showBalances
+                ? `${accountBalances.savings.toLocaleString()}`
+                : "****"
+            }
+            rateColor={getRateColor("SAVINGS")}
             buttonText="Withdraw"
             buttonIcon="save-outline"
-            onButtonClick={() => handleWithdrawClick("Savings", 1234567.89)} // Pass the amount
+            onButtonClick={() =>
+              handleWithdrawClick("Savings", accountBalances.savings)
+            } // Pass the amount
           />
           <AccountCard
             icon="trending-up-outline"
             label="INVESTMENTS"
-            rate="20% p.a."
+            rate="15% charge"
             currency="₦"
-            amount={showBalances ? `${accountBalances.investment}` : "****"}
+            amount={
+              showBalances
+                ? `${accountBalances.investment.toLocaleString()}`
+                : "****"
+            }
+            rateColor={getRateColor("INVESTMENTS")}
             buttonText="Withdraw"
             buttonIcon="trending-up-outline"
-            onButtonClick={() => handleWithdrawClick("Investment", 2345678.9)} // Pass the amount
+            onButtonClick={() =>
+              handleWithdrawClick("Investment", accountBalances.investment)
+            } // Pass the amount
           />
           <AccountCard
             icon="home-outline"
             label="PROPERTY"
-            rate="yearly rent"
+            rate="5% charge"
             currency=""
             amount={
-              showBalances ? formatAmount(accountBalances.properties) : "****"
+              showBalances ? formatAmount(accountBalances.properties) : "**"
             }
+            rateColor={getRateColor("PROPERTY")}
             buttonText="Sell Property"
             buttonIcon="home-outline"
           />
           <AccountCard
             icon="wallet-outline"
             label="WALLET"
-            rate="(My Earnings)"
+            rate="Free"
             currency="₦"
-            amount={showBalances ? `${accountBalances.wallet}` : "****"}
+            amount={
+              showBalances
+                ? `${accountBalances.wallet.toLocaleString()}`
+                : "****"
+            }
+            rateColor={getRateColor("WALLET")}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
-            onButtonClick={() => handleWithdrawClick("Wallet", 265500.5)} // Pass the amount
+            onButtonClick={() =>
+              handleWithdrawClick("Wallet", accountBalances.wallet)
+            } // Pass the amount
           />
         </div>
 

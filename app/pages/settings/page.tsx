@@ -32,10 +32,11 @@ import UpdateProfileModal from "./modals/updateProfileModal";
 import Image from "next/image";
 import "cropperjs/dist/cropper.css"; // Import cropper CSS
 import Cropper, { ReactCropperElement } from "react-cropper"; // Ensure this import
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/Redux store/store";
-import { fetchUserInfo } from "@/app/Redux store/actions";
+import { fetchUserInfo, updateWealthStage } from "@/app/Redux store/actions";
 
 import axios from "axios";
 import CustomSnackbar from "@/app/components/snackbar";
@@ -57,6 +58,7 @@ const SettingsPage: React.FC = () => {
   const [uploading, setUploading] = useState(false); // Add state for uploading
   const [loading, setLoading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
+  const location = useLocation(); // Initialize useLocation
 
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -95,6 +97,9 @@ const SettingsPage: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token || "");
+  const currentWealthStage = useSelector(
+    (state: RootState) => state.auth.currentWealthStage
+  );
 
   useEffect(() => {
     if (token) {
@@ -105,6 +110,13 @@ const SettingsPage: React.FC = () => {
       setProfileImage(userInfo.profile_picture);
     }
   }, [token, dispatch, userInfo]);
+
+  // Fetch the current wealth stage and dispatch it only once when the component mounts
+  useEffect(() => {
+    if (currentWealthStage) {
+      dispatch(updateWealthStage(currentWealthStage));
+    }
+  }, [dispatch, currentWealthStage]);
 
   console.log("Token inside settings:", token);
   console.log("User profile inside settings:", userInfo);
@@ -120,6 +132,12 @@ const SettingsPage: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (location.state && location.state.triggerKYC) {
+      handleMenuSelect("Update KYC");
+    }
+  }, [location.state]);
 
   // Handler to trigger file input click
   const handleProfileImageClick = () => {
@@ -345,8 +363,31 @@ const SettingsPage: React.FC = () => {
                 >
                   Financial Level
                 </p>
-                <p className="font-semibold font-proxima text-purple1">
-                  {/* Level 3: {currentStage ? currentStage.text.toUpperCase() : "Unknown"} */}
+                <p
+                  className={`font-semibold font-proxima ${
+                    currentWealthStage?.stage === 1
+                      ? "text-[#BF0000]"
+                      : currentWealthStage?.stage === 2
+                      ? "text-[#BF3F00]"
+                      : currentWealthStage?.stage === 3
+                      ? "text-[#BF7F00]"
+                      : currentWealthStage?.stage === 4
+                      ? "text-[#BF9F00]"
+                      : currentWealthStage?.stage === 5
+                      ? "text-[#BFBF00]"
+                      : currentWealthStage?.stage === 6
+                      ? "text-[#9FBF00]"
+                      : currentWealthStage?.stage === 7
+                      ? "text-[#6FBF00]"
+                      : currentWealthStage?.stage === 8
+                      ? "text-[#3FBF00]"
+                      : currentWealthStage?.stage === 9
+                      ? "text-[#005F00]"
+                      : "text-black" // Default color if stage is unknown
+                  }`}
+                >
+                  Level {currentWealthStage?.stage}:{" "}
+                  {currentWealthStage?.text.toUpperCase() || "UNKNOWN"}
                 </p>
               </div>
             </div>

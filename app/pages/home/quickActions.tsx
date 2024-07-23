@@ -21,6 +21,10 @@ const QuickActionsSection = () => {
     navigate("/App/invest", { state: { autoInvestModalActive: true } }); // Navigate to SavePage with state
   };
 
+  const handleKYCUpdate = () => {
+    navigate("/App/settings", { state: { triggerKYC: true } });
+  };
+
   const autoSaveSettings = { active: false }; // Update this based on your state
   const autoInvestSettings = { active: false }; // Update this based on your state
   const kycStatus = "Not yet started"; // Update this based on your state
@@ -88,7 +92,10 @@ const QuickActionsSection = () => {
           <span className="text-xs text-green-600">₦1000 EACH</span>
         </button>
 
-        <button className="flex items-center p-2 border rounded-lg bg-white transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]">
+        <button
+          className="flex items-center p-2 border rounded-lg bg-white transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]"
+          onClick={handleKYCUpdate} // Update the onClick handler
+        >
           <IonIcon icon={personAddOutline} className="text-xl text-black" />
           <span className="ml-3 flex-1 text-left text-sm">Update KYC:</span>
           <span className="text-xs text-green-600">Not yet started</span>

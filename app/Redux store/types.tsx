@@ -26,6 +26,13 @@ export interface AuthState {
     wallet: number;
   };
   error: string | null;
+  currentWealthStage: WealthStage; 
+}
+
+export interface WealthStage {
+  stage: number;
+  text: string;
+  description: string;
 }
 
 // Action types
@@ -35,10 +42,16 @@ export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
 export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";
 export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL";
 export const UPDATE_ACCOUNT_BALANCES = "UPDATE_ACCOUNT_BALANCES";
+export const UPDATE_WEALTH_STAGE = "UPDATE_WEALTH_STAGE";
 
 interface SetUserTokenAction {
   type: typeof SET_USER_TOKEN;
   payload: string;
+}
+
+interface UpdateWealthStageAction {
+  type: typeof UPDATE_WEALTH_STAGE;
+  payload: WealthStage;
 }
 
 interface SetUserInfoAction {
@@ -77,4 +90,5 @@ export type AuthActionTypes =
   | SetUserInfoErrorAction
   | UpdateUserProfileAction
   | UpdateSavingsGoalAction
-  | UpdateAccountBalancesAction;
+  | UpdateAccountBalancesAction
+  | UpdateWealthStageAction;

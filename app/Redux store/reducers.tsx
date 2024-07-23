@@ -7,10 +7,12 @@ import {
   UPDATE_USER_PROFILE,
   UPDATE_SAVINGS_GOAL,
   UPDATE_ACCOUNT_BALANCES,
+  UPDATE_WEALTH_STAGE, // Add this
 } from "./types";
 
 const initialState: AuthState = {
   token: null,
+
   userInfo: {
     is_first_time_signup: false,
     id: "",
@@ -35,6 +37,11 @@ const initialState: AuthState = {
     wallet: 0,
   },
   error: null,
+  currentWealthStage: {
+    stage: 0,
+    text: "Unknown",
+    description: "Unknown",
+  },
 };
 
 const authReducer = (
@@ -77,6 +84,11 @@ const authReducer = (
       return {
         ...state,
         accountBalances: action.payload,
+      };
+    case UPDATE_WEALTH_STAGE:
+      return {
+        ...state,
+        currentWealthStage: action.payload,
       };
     default:
       return state;

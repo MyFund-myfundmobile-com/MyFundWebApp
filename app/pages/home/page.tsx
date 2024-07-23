@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Image from "next/image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserInfo } from "@/app/Redux store/actions";
+import { fetchUserInfo, updateWealthStage } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
 
 const HomePage: React.FC = () => {
@@ -32,6 +32,9 @@ const HomePage: React.FC = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const currentWealthStage = useSelector(
+    (state: RootState) => state.auth.currentWealthStage
+  );
 
   useEffect(() => {
     if (token) {
@@ -39,9 +42,29 @@ const HomePage: React.FC = () => {
     }
   }, [dispatch, token]);
 
+  // Fetch the current wealth stage and dispatch it only once when the component mounts
+  useEffect(() => {
+    if (currentWealthStage) {
+      dispatch(updateWealthStage(currentWealthStage));
+    }
+  }, [dispatch, currentWealthStage]);
+
   const formatAmount = (amount: number) => {
     return amount < 10 ? `0${amount}` : `${amount}`;
   };
+
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedSavings = formatAmountWithCommas(accountBalances.savings);
+  const formattedInvestment = formatAmountWithCommas(
+    accountBalances.investment
+  );
+  const formattedWallet = formatAmountWithCommas(accountBalances.wallet);
 
   console.log("Token inside Homepage:", token);
   console.log("User profile inside Homepage:", userInfo);
@@ -118,6 +141,34 @@ const HomePage: React.FC = () => {
     setGetGreeting(getGreeting());
   }, []);
 
+  const getBadgeColorClass = (stage: number) => {
+    switch (stage) {
+      case 1:
+        return "#BF0000";
+      case 2:
+        return "#BF3F00";
+      case 3:
+        return "#BF7F00";
+      case 4:
+        return "#BF9F00";
+      case 5:
+        return "#BFBF00";
+      case 6:
+        return "#9FBF00";
+      case 7:
+        return "#6FBF00";
+      case 8:
+        return "#3FBF00";
+      case 9:
+        return "#005F00";
+      default:
+        return "purple";
+    }
+  };
+
+  // Get the dynamic badge color class
+  const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
@@ -127,12 +178,18 @@ const HomePage: React.FC = () => {
             width={120}
             height={120}
             alt="Profile"
-            className="w-24 h-24 rounded-full border-2 border-purple-400"
+            className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
+            style={{ borderColor: `${badgeColorClass}` }}
             onClick={() => navigate("/App/settings")}
           />
-          <Tooltip title="My Financial Status (WealthMap)" placement="right">
-            <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">
-              3
+          <Tooltip
+            title={`My Financial Status: ${currentWealthStage.text.toUpperCase()}`}
+            placement="right"
+          >
+            <div
+              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm bg-[${badgeColorClass}]`}
+            >
+              {currentWealthStage.stage}
             </div>
           </Tooltip>
         </div>
@@ -219,7 +276,7 @@ const HomePage: React.FC = () => {
             label="SAVINGS"
             rate="13% p.a."
             currency="₦"
-            amount={showBalances ? `${accountBalances.savings}` : "****"}
+            amount={showBalances ? formattedSavings : "****"}
             buttonText="QuickSave"
             buttonIcon="save-outline"
             onButtonClick={handleQuickSaveClick}
@@ -229,7 +286,7 @@ const HomePage: React.FC = () => {
             label="INVESTMENTS"
             rate="20% p.a."
             currency="₦"
-            amount={showBalances ? `${accountBalances.investment}` : "****"}
+            amount={showBalances ? formattedInvestment : "****"}
             buttonText="QuickInvest"
             buttonIcon="trending-up-outline"
             onButtonClick={handleQuickInvestClick}
@@ -250,7 +307,11 @@ const HomePage: React.FC = () => {
             label="WALLET"
             rate="(My Earnings)"
             currency="₦"
-            amount={showBalances ? `${accountBalances.wallet}` : "****"}
+            amount={
+              showBalances
+                ? formatAmountWithCommas(accountBalances.wallet)
+                : "****"
+            }
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
           />

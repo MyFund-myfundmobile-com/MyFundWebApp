@@ -388,10 +388,12 @@ const SavePage = () => {
         isOpen={isQuickSaveModalOpen}
         onClose={() => setIsQuickSaveModalOpen(false)}
         initialAmount={amount}
+        className="animate-floatIn"
       />
       <AutoSaveModal
         isOpen={isAutoSaveModalOpen}
         onClose={() => setIsAutoSaveModalOpen(false)}
+        className="animate-floatIn"
       />
     </div>
   );

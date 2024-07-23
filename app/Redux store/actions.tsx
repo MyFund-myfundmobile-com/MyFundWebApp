@@ -8,6 +8,8 @@ import {
   UPDATE_USER_PROFILE,
   UPDATE_SAVINGS_GOAL,
   UPDATE_ACCOUNT_BALANCES,
+  UPDATE_WEALTH_STAGE, // Add this
+  WealthStage, // Add this
   User,
 } from "./types";
 
@@ -108,4 +110,11 @@ export const updateSavingsGoal = (updatedGoal: {
 }): AuthActionTypes => ({
   type: UPDATE_SAVINGS_GOAL,
   payload: updatedGoal,
+});
+
+export const updateWealthStage = (
+  wealthStage: WealthStage
+): AuthActionTypes => ({
+  type: UPDATE_WEALTH_STAGE,
+  payload: wealthStage,
 });
