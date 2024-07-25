@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import authReducer from "./reducers"; // Make sure this path is correct
-import { fetchUserInfo } from "./actions"; // Import fetchUserInfo action
 import {
-  updateUserProfile,
+  fetchUserInfo,
   fetchUserBankAccounts,
   setUserToken,
+  updateUserProfile,
+  addCard,
+  getCards,
 } from "./actions";
 
 const rootReducer = combineReducers({
@@ -19,11 +21,13 @@ const store = configureStore({
 });
 
 const token = localStorage.getItem("userToken"); // Use "userToken" to match the login
+
 if (token) {
   store.dispatch(fetchUserInfo(token)); // Dispatch fetchUserInfo action
   store.dispatch(setUserToken(token)); // Updated to setUserToken
-  store.dispatch(updateUserProfile(token)); // Dispatch fetchUserInfo action
+  store.dispatch(updateUserProfile({ token })); // Updated to pass profile data if needed
   store.dispatch(fetchUserBankAccounts(token)); // Dispatch fetchUserBankAccounts action
+  store.dispatch(getCards(token)); // Pass token to getCards
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

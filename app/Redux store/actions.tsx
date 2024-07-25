@@ -15,6 +15,10 @@ import {
   ADD_BANK_ACCOUNT,
   DELETE_BANK_ACCOUNT,
   BankAccount,
+  ADD_CARD,
+  GET_CARDS,
+  DELETE_CARD,
+  Card,
   User,
 } from "./types";
 
@@ -167,6 +171,56 @@ export const deleteBankAccount = (accountNumber: string) => {
     }
   };
 };
+
+export const addCard = (card: Card) => ({
+  type: "ADD_CARD",
+  payload: card,
+});
+
+export const getCards = (token: string) => async (dispatch: Dispatch) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-cards/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Use token here
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      dispatch({
+        type: GET_CARDS,
+        payload: response.data,
+      });
+    } else {
+      console.error("Failed to fetch cards, status:", response.status);
+    }
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+  }
+};
+
+export const deleteCard =
+  (cardId: string) => async (dispatch: Dispatch, getState: () => RootState) => {
+    const token = getState().auth.token; // Get token from state
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cards/${cardId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Use token here
+          },
+        }
+      );
+      dispatch({
+        type: DELETE_CARD,
+        payload: cardId,
+      });
+    } catch (error) {
+      console.error("Failed to delete card", error);
+    }
+  };
 
 export const updateUserProfile = (updatedProfile: any) => ({
   type: UPDATE_USER_PROFILE,

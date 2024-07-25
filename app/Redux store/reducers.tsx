@@ -11,11 +11,17 @@ import {
   ADD_BANK_ACCOUNT,
   DELETE_BANK_ACCOUNT,
   SET_BANK_ACCOUNTS,
+  ADD_CARD,
+  GET_CARDS,
+  DELETE_CARD,
+  Card,
 } from "./types";
 
 const initialState: AuthState = {
   token: null,
   bankAccounts: [],
+  cards: [], // initial state for cards
+
   userInfo: {
     is_first_time_signup: false,
     id: "",
@@ -109,6 +115,21 @@ const authReducer = (
       return {
         ...state,
         bankAccounts: action.payload,
+      };
+    case ADD_CARD:
+      return {
+        ...state,
+        cards: [...state.cards, action.payload],
+      };
+    case GET_CARDS:
+      return {
+        ...state,
+        cards: action.payload,
+      };
+    case DELETE_CARD:
+      return {
+        ...state,
+        cards: state.cards.filter((card) => card.id !== action.payload),
       };
     default:
       return state;

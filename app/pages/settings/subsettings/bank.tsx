@@ -320,7 +320,7 @@ const BankSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
         startIcon={
           <IonIcon
             icon={trashOutline}
-            style={{ fontSize: "20px", marginRight: 5 }}
+            style={{ fontSize: "20px", marginRight: 5, color: 'red' }}
           />
         }
       />

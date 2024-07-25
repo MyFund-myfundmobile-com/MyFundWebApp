@@ -159,7 +159,7 @@ const HomePage: React.FC = () => {
       case 9:
         return "#005F00";
       default:
-        return "purple";
+        return "#4c28BC";
     }
   };
 
@@ -183,7 +183,10 @@ const HomePage: React.FC = () => {
             placement="right"
           >
             <div
-              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm bg-[${badgeColorClass}]`}
+              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center border-${badgeColorClass} justify-center font-proxima text-sm cursor-pointer`}
+              style={{
+                backgroundColor: badgeColorClass ? badgeColorClass : "#4c28BC",
+              }}
             >
               {currentWealthStage.stage}
             </div>

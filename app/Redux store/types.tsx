@@ -8,8 +8,10 @@ export const UPDATE_ACCOUNT_BALANCES = "UPDATE_ACCOUNT_BALANCES";
 export const UPDATE_WEALTH_STAGE = "UPDATE_WEALTH_STAGE";
 export const ADD_BANK_ACCOUNT = "ADD_BANK_ACCOUNT";
 export const SET_BANK_ACCOUNTS = "SET_BANK_ACCOUNTS";
-export const FETCH_USER_BANK_ACCOUNTS = "FETCH_USER_BANK_ACCOUNTS";
 export const DELETE_BANK_ACCOUNT = "DELETE_BANK_ACCOUNT";
+export const ADD_CARD = "ADD_CARD";
+export const GET_CARDS = "GET_CARDS";
+export const DELETE_CARD = "DELETE_CARD";
 
 export interface User {
   is_first_time_signup?: boolean;
@@ -24,7 +26,7 @@ export interface User {
   savings_goal_amount: string;
   time_period: string;
   bankRecords: any[];
-  cards: any[];
+  cards: Card[];
   top_saver_percentage: number;
   profile_picture?: string;
 }
@@ -32,6 +34,7 @@ export interface User {
 export interface AuthState {
   token: string | null;
   bankAccounts: BankAccount[];
+  cards: Card[];
   userInfo: User;
   accountBalances: {
     savings: number;
@@ -51,12 +54,21 @@ export interface WealthStage {
 
 export interface BankAccount {
   id: string;
-  bank_name: string; // Update to match your API response keys
+  bank_name: string;
   account_number: string;
   account_name: string;
   is_default: boolean;
-  bankColor?: string; // Add this line
-  bank_code: string; // Add this line to include bank_code
+  bankColor?: string;
+  bank_code: string;
+}
+
+export interface Card {
+  bankName: string;
+  cardNumber: string;
+  expiryDate: string;
+  id: any;
+  bankColor: any;
+  cardHolderName: string;
 }
 
 interface SetUserTokenAction {
@@ -64,7 +76,7 @@ interface SetUserTokenAction {
   payload: string;
 }
 
-export interface AddBankAccountAction {
+interface AddBankAccountAction {
   type: typeof ADD_BANK_ACCOUNT;
   payload: BankAccount;
 }
@@ -89,12 +101,12 @@ interface SetUserInfoErrorAction {
   payload: string;
 }
 
-export interface UpdateUserProfileAction {
+interface UpdateUserProfileAction {
   type: typeof UPDATE_USER_PROFILE;
   payload: Partial<User>;
 }
 
-export interface DeleteBankAccountAction {
+interface DeleteBankAccountAction {
   type: typeof DELETE_BANK_ACCOUNT;
   payload: string;
 }
@@ -114,6 +126,21 @@ interface UpdateAccountBalancesAction {
   };
 }
 
+interface AddCardAction {
+  type: typeof ADD_CARD;
+  payload: Card;
+}
+
+interface GetCardsAction {
+  type: typeof GET_CARDS;
+  payload: Card[];
+}
+
+interface DeleteCardAction {
+  type: typeof DELETE_CARD;
+  payload: string;
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
@@ -124,4 +151,7 @@ export type AuthActionTypes =
   | UpdateAccountBalancesAction
   | UpdateWealthStageAction
   | DeleteBankAccountAction
-  | SetBankAccountsAction;
+  | SetBankAccountsAction
+  | AddCardAction
+  | GetCardsAction
+  | DeleteCardAction;
