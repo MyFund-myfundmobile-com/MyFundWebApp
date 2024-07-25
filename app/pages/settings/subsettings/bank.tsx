@@ -156,13 +156,12 @@ const BankSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
             Return to...
           </span>
           <Box
-            className="relative bg-purple-500 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer mt-5"
+            className="relative bg-purple-500 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer mt-5 transform transition-transform duration-200 hover:scale-105"
             onClick={() => onNavigate("Card and Bank Settings")}
             style={{ letterSpacing: 0.5, marginTop: 1 }}
           >
-            <span>MY BANK ACCOUNTS</span>
             <div
-              className="absolute top-0 left-0 h-full w-8 bg-purple-500 rounded-l-full"
+              className="absolute top-0 left-0 h-full w-8 bg-purple-500 rounded-l-full transition-colors duration-200"
               style={{
                 clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
                 marginLeft: -10,

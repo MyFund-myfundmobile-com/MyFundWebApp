@@ -77,7 +77,7 @@ const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
             Go to...
           </span>
           <Box
-            className="relative bg-purple-500 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer mt-5"
+            className="relative bg-purple-500 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer mt-5 transform transition-transform duration-200 hover:scale-105"
             onClick={() => onNavigate("Bank Settings")}
             style={{ letterSpacing: 0.5, marginTop: 1 }}
           >
