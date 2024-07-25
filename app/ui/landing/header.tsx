@@ -13,15 +13,34 @@ import {
 import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import { shieldCheckmarkOutline } from "ionicons/icons";
+import { useState } from "react";
+import Image from "next/image";
+import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
+import styles from "./Header.module.css";
+import { IoLogoApple, IoLogoAndroid, IoCheckmarkCircle } from "react-icons/io5";
+import { CircularProgress } from "@mui/material";
+import { IonIcon } from "@ionic/react";
+import { shieldCheckmarkOutline } from "ionicons/icons";
 
 const Header = () => {
   const [downloading, setDownloading] = useState(false);
+  const [downloadingPlatform, setDownloadingPlatform] = useState<string | null>(
+    null
+  );
 
   const handleDownload = () => {
     // Simulate downloading process
     setDownloading(true);
     setTimeout(() => {
       setDownloading(false);
+    }, 4000);
+  };
+  const handleDownload = (platform: string) => {
+    setDownloading(true);
+    setDownloadingPlatform(platform);
+    setTimeout(() => {
+      setDownloading(false);
+      setDownloadingPlatform(null);
     }, 4000);
   };
 
@@ -32,6 +51,8 @@ const Header = () => {
       <div
         className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}
       >
+    <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24">
+      <div className="mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%]">
         <div className="max-w-[720px] lg:max-w-[842px]">
           <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter animate-float-up animate-floatIn">
             <span>
@@ -101,37 +122,66 @@ const Header = () => {
                 </a>
               )}
             </div>
+            <div className={`${styles.buttonContainer} flex mb-4`}>
+              <a
+                download
+                href="/myFund-Enterprise-App.apk"
+                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
+                style={{ boxShadow: "6px 6px #351265" }}
+                onClick={() => handleDownload("app")}
+              >
+                {downloading && downloadingPlatform === "app" ? (
+                  <>
+                    <CircularProgress size={24} />
+                    Downloading MyFund Mobile App...
+                  </>
+                ) : (
+                  "Download The Mobile App"
+                )}
+              </a>
+            </div>
 
             <div className={styles.buttonGroup}>
               <PrimaryButton
                 className={`text-center animate-floatIn w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
-                onClick={() => console.log("Get it on iPhone button clicked")}
+                onClick={() => handleDownload("iphone")}
                 background="#fff"
                 color="grey"
                 borderWidth="2px"
                 borderColor="silver"
-                // hoverColor="#fff"
-                // hoverBackgroundColor="black"
-                // hoverBorderWidth="2px"
-                // hoverBorderColor="#4C28BC"
                 startIcon={<IoLogoApple className="h-6 w-6 mr-2" />}
               >
-                Get it on iPhone
+                <a download href="/myFund-Enterprise-App.apk">
+                  {downloading && downloadingPlatform === "iphone" ? (
+                    <>
+                      Downloading...
+                      <CircularProgress size={16} className="ml-2" />
+                    </>
+                  ) : (
+                    "Get it on iPhone"
+                  )}
+                </a>
               </PrimaryButton>
+
               <PrimaryButton
                 className={`text-center w-auto animate-floatIn rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
-                onClick={() => console.log("Get it on Android button clicked")}
+                onClick={() => handleDownload("android")}
                 background="#fff"
                 color="grey"
                 borderWidth="2px"
                 borderColor="silver"
-                // hoverColor="#fff"
-                // hoverBackgroundColor="black"
-                // hoverBorderWidth="2px"
-                // hoverBorderColor="#4C28BC"
                 startIcon={<IoLogoAndroid className="h-6 w-6 mr-2" />}
               >
-                Get it on Android
+                <a download href="/myFund-Enterprise-App.apk">
+                  {downloading && downloadingPlatform === "android" ? (
+                    <>
+                      Downloading...
+                      <CircularProgress size={16} className="ml-2" />
+                    </>
+                  ) : (
+                    "Get it on Android"
+                  )}
+                </a>
               </PrimaryButton>
             </div>
           </div>

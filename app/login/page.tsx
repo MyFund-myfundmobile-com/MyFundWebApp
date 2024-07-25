@@ -15,8 +15,8 @@ import Title from "../components/title";
 import axios from "axios";
 import CustomSnackbar from "../components/snackbar";
 import { useDispatch } from "react-redux";
-import { loginSuccess, fetchUserProfile } from "../store/authSlice";
-import { AppDispatch } from "../store/store";
+import { fetchUserInfo, setUserToken } from "../Redux store/actions";
+import { AppDispatch } from "../Redux store/store";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -54,13 +54,12 @@ const LoginPage = () => {
       setIsLoading(false);
 
       if (response.status === 200) {
-        const { access, user_id } = response.data;
+        const { access } = response.data;
 
         if (access) {
           localStorage.setItem("userToken", access);
-
-          dispatch(loginSuccess({ token: access, userId: user_id }));
-          dispatch(fetchUserProfile(access));
+          dispatch(setUserToken(access));
+          dispatch(fetchUserInfo(access)); // Ensure this is dispatched
 
           setOpenSnackbar(true);
           setSnackbarSeverity("success");
@@ -86,20 +85,26 @@ const LoginPage = () => {
         );
       }
     } catch (error: any) {
+      // Assert error type as 'any'
       setIsLoading(false);
       setOpenSnackbar(true);
       setSnackbarSeverity("error");
 
-      if (error.message === "Network Error") {
-        setSnackbarMessage(
-          "No internet connection. Please check your network."
-        );
-      } else if (error.response && error.response.status === 401) {
-        setSnackbarMessage("Invalid username or password. Please try again.");
+      if (axios.isAxiosError(error)) {
+        // Check if error is an AxiosError
+        if (error.message === "Network Error") {
+          setSnackbarMessage(
+            "No internet connection. Please check your network."
+          );
+        } else if (error.response && error.response.status === 401) {
+          setSnackbarMessage("Invalid username or password. Please try again.");
+        } else {
+          setSnackbarMessage(
+            "Wrong username or password. Please check and try again."
+          );
+        }
       } else {
-        setSnackbarMessage(
-          "Wrong username or password. Please check and try again."
-        );
+        setSnackbarMessage("An unexpected error occurred. Please try again.");
       }
     }
   };
@@ -119,7 +124,7 @@ const LoginPage = () => {
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
             <Title>
-              <span style={{ color: "#BB9CE8" }}>Welcome</span> Back!
+              <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
             </Title>
             <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
               Earn 20% p.a. every January and July. {"\n"}

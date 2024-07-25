@@ -1,41 +1,92 @@
 "use client";
-import React, { useState } from 'react';
-import { TextField, CircularProgress } from '@mui/material';
-import Modal from '@/app/components/modal'; // Make sure the import path is correct
-import { IonIcon } from '@ionic/react';
-import { arrowUpOutline } from 'ionicons/icons';
+import React, { useState } from "react";
+import { TextField, CircularProgress } from "@mui/material";
+import Modal from "@/app/components/modal";
+import { IonIcon } from "@ionic/react";
+import { arrowUpOutline, checkmarkCircleOutline } from "ionicons/icons";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { RootState } from "@/app/Redux store/store";
+import { updateUserProfile } from "@/app/Redux store/actions";
+import CustomSnackbar from "@/app/components/snackbar";
+import Confetti from "react-confetti";
 
 interface UpdateProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (data: any) => void;
 }
 
-const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ isOpen, onClose, onUpdate }) => {
-  const [fullName, setFullName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+
+  const [firstName, setFirstName] = useState(userInfo?.firstName || "");
+  const [lastName, setLastName] = useState(userInfo?.lastName || "");
+  const [phoneNumber, setPhoneNumber] = useState(userInfo?.mobileNumber || "");
   const [updating, setUpdating] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false); // State to control confetti display
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
-  const handleUpdateProfile = () => {
+  const handleUpdateProfile = async () => {
+    const updatedProfile = {
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phoneNumber,
+    };
+
     setUpdating(true);
-    // Simulate API call or any asynchronous operation
-    setTimeout(() => {
-      // Replace with actual update logic
-      onUpdate({
-        fullName,
-        lastName,
-        phoneNumber,
-      });
+
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/update-user-profile/`,
+        updatedProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(updateUserProfile(updatedProfile));
+        setShowConfetti(true); // Activate confetti on success
+        setUpdating(false);
+        setSnackbarMessage("Profile updated successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        setShowSuccessModal(true);
+      } else {
+        console.log("Profile update failed:", response.data);
+        setSnackbarMessage("Profile update failed.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+        setUpdating(false);
+      }
+    } catch (error) {
+      console.log("Profile update error:", error);
+      setSnackbarMessage("Profile update error.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
       setUpdating(false);
-      setShowSuccessModal(true);
-    }, 1000); // Simulated update time
+    }
   };
 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
     onClose();
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -47,11 +98,11 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ isOpen, onClose
         body={
           <>
             <TextField
-              label="Full Name"
+              label="First Name"
               variant="outlined"
               fullWidth
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className="mb-4 mt-4"
               style={{ marginBottom: 15 }}
             />
@@ -77,7 +128,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ isOpen, onClose
               label="Email Address"
               variant="outlined"
               fullWidth
-              value="tolulopeahmed@gmail.com" // Assuming this is displayed and not editable
+              value={userInfo?.email}
               disabled
               className="mb-4 mt-4"
               style={{ marginBottom: 15 }}
@@ -86,18 +137,42 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({ isOpen, onClose
         }
         buttonText={updating ? "Updating Profile..." : "Update"}
         onButtonClick={handleUpdateProfile}
-        startIcon={updating ? <CircularProgress size={20} color="inherit" /> : <IonIcon icon={arrowUpOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+        startIcon={
+          updating ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            <IonIcon
+              icon={arrowUpOutline}
+              style={{ fontSize: "20px", marginRight: 5 }}
+            />
+          )
+        }
         zIndex={100}
-        confettiAnimation={true} // Optional: Add confetti animation on success
+        confettiAnimation={true}
       />
       <Modal
         isOpen={showSuccessModal}
-        onClose={handleCloseSuccessModal}
-        header="Profile Updated"
-        body={<p>Your profile has been successfully updated!</p>}
-        buttonText="Close"
+        onClose={() => setShowSuccessModal(false)}
+        header="Profile Info Updated!"
+        body="Your profile information has been updated successfully!"
+        buttonText="OK"
         onButtonClick={handleCloseSuccessModal}
-        zIndex={100}
+        modalIcon={checkmarkCircleOutline} // Use checkmark icon if needed
+        iconColor="green"
+        zIndex={200}
+        confettiAnimation={true} // Add confetti animation prop if needed
+      >
+        {showConfetti && (
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          </div>
+        )}
+      </Modal>
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={handleSnackbarClose}
       />
     </>
   );

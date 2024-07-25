@@ -13,9 +13,10 @@ import TopSaversSection from "./topSavers";
 import WealthMapSection from "./wealthMap";
 import { useNavigate } from "react-router-dom";
 import Image from "next/image";
-import { fetchUserProfile } from "../../store/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
+import { RootState } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserInfo, updateWealthStage } from "@/app/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -25,21 +26,45 @@ const HomePage: React.FC = () => {
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
 
-  const dispatch = useDispatch<AppDispatch>(); // Use the typed dispatch
-
-  const token = useSelector((state: RootState) => state.auth.userToken);
-  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
+  const currentWealthStage = useSelector(
+    (state: RootState) => state.auth.currentWealthStage
+  );
 
   useEffect(() => {
-    console.log("Token inside useEffect:", token);
     if (token) {
-      console.log("Dispatching fetchUserProfile with token:", token);
-      dispatch(fetchUserProfile(token));
+      dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
     }
   }, [dispatch, token]);
 
-  console.log("Token inside Homepage:", token);
-  console.log("User profile inside Homepage:", userProfile);
+  // Fetch the current wealth stage and dispatch it only once when the component mounts
+  useEffect(() => {
+    if (currentWealthStage) {
+      dispatch(updateWealthStage(currentWealthStage));
+    }
+  }, [dispatch, currentWealthStage]);
+
+  const formatAmount = (amount: number) => {
+    return amount < 10 ? `0${amount}` : `${amount}`;
+  };
+
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedSavings = formatAmountWithCommas(accountBalances.savings);
+  const formattedInvestment = formatAmountWithCommas(
+    accountBalances.investment
+  );
+  const formattedWallet = formatAmountWithCommas(accountBalances.wallet);
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -94,7 +119,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const greetings = ["Hey", "Hi", "Hello", "Hallo", "Hola", "Bonjour"];
+    const greetings = ["Hey", "Hi", "Hello"];
     const randomIndex = Math.floor(Math.random() * greetings.length);
     setGreeting(greetings[randomIndex]);
   }, []);
@@ -113,30 +138,68 @@ const HomePage: React.FC = () => {
     setGetGreeting(getGreeting());
   }, []);
 
+  const getBadgeColorClass = (stage: number) => {
+    switch (stage) {
+      case 1:
+        return "#BF0000";
+      case 2:
+        return "#BF3F00";
+      case 3:
+        return "#BF7F00";
+      case 4:
+        return "#BF9F00";
+      case 5:
+        return "#BFBF00";
+      case 6:
+        return "#9FBF00";
+      case 7:
+        return "#6FBF00";
+      case 8:
+        return "#3FBF00";
+      case 9:
+        return "#005F00";
+      default:
+        return "#4c28BC";
+    }
+  };
+
+  const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src="/images/DrTsquare.png"
+            src={userInfo?.profile_picture || "/Profile1.png"}
             width={120}
             height={120}
             alt="Profile"
-            className="w-24 h-24 rounded-full border-2 border-purple-400"
+            className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
+            style={{ borderColor: `${badgeColorClass}` }}
+            onClick={() => navigate("/App/settings")}
           />
-          <Tooltip title="My WealthMap" placement="right">
-            <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">
-              3
+          <Tooltip
+            title={`My Financial Status: ${currentWealthStage.text.toUpperCase()}`}
+            placement="right"
+          >
+            <div
+              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center border-${badgeColorClass} justify-center font-proxima text-sm cursor-pointer`}
+              style={{
+                backgroundColor: badgeColorClass ? badgeColorClass : "#4c28BC",
+              }}
+            >
+              {currentWealthStage.stage}
             </div>
           </Tooltip>
         </div>
         <div className="ml-4">
           <Title>
             <span style={{ color: "#BB9CE8" }}>{greeting}</span>{" "}
-            {userProfile?.firstName},
+            {userInfo?.firstName && `${userInfo.firstName},`}
           </Title>
           <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
         </div>
+
         <div className="ml-auto flex items-center">
           {typeof window !== "undefined" && window.innerWidth >= 900 && (
             <span
@@ -212,8 +275,9 @@ const HomePage: React.FC = () => {
             label="SAVINGS"
             rate="13% p.a."
             currency="₦"
-            amount={showBalances ? "1,234,567.89" : "****"}
+            amount={showBalances ? formattedSavings : "****"}
             buttonText="QuickSave"
+            rateColor="#43FF8E"
             buttonIcon="save-outline"
             onButtonClick={handleQuickSaveClick}
           />
@@ -222,8 +286,9 @@ const HomePage: React.FC = () => {
             label="INVESTMENTS"
             rate="20% p.a."
             currency="₦"
-            amount={showBalances ? "2,345,678.90" : "****"}
+            amount={showBalances ? formattedInvestment : "****"}
             buttonText="QuickInvest"
+            rateColor="#43FF8E"
             buttonIcon="trending-up-outline"
             onButtonClick={handleQuickInvestClick}
           />
@@ -231,8 +296,11 @@ const HomePage: React.FC = () => {
             icon="home-outline"
             label="PROPERTIES"
             rate="yearly rent"
+            rateColor="#43FF8E"
             currency=""
-            amount={showBalances ? "02" : "**"}
+            amount={
+              showBalances ? formatAmount(accountBalances.properties) : "**"
+            }
             buttonText="Buy Properties"
             buttonIcon="home-outline"
           />
@@ -240,8 +308,13 @@ const HomePage: React.FC = () => {
             icon="wallet-outline"
             label="WALLET"
             rate="(My Earnings)"
+            rateColor="#43FF8E"
             currency="₦"
-            amount={showBalances ? "265,500.50" : "****"}
+            amount={
+              showBalances
+                ? formatAmountWithCommas(accountBalances.wallet)
+                : "****"
+            }
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
           />

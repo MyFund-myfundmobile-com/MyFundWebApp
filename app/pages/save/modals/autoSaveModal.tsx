@@ -1,29 +1,44 @@
 "use client";
-import React, { useState } from 'react';
-import { TextField, Select, MenuItem, IconButton, CircularProgress } from '@mui/material';
-import { ArrowUpward, Close, CheckCircleOutline, FileCopyOutlined } from '@mui/icons-material';
-import Modal from '@/app/components/modal';
-import Confetti from 'react-confetti';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { carOutline, checkmarkCircleOutline } from 'ionicons/icons';
-import { IonIcon } from '@ionic/react';
+import React, { useState } from "react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
+import {
+  ArrowUpward,
+  Close,
+  CheckCircleOutline,
+  FileCopyOutlined,
+} from "@mui/icons-material";
+import Modal from "@/app/components/modal";
+import Confetti from "react-confetti";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { carOutline, checkmarkCircleOutline } from "ionicons/icons";
+import { IonIcon } from "@ionic/react";
 
 interface AutoSaveModalProps {
   isOpen: boolean;
   onClose: () => void;
+  className?: string; // Add className prop
 }
 
-const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
-  const [amount, setAmount] = useState('');
-  const [selectedFrequency, setSelectedFrequency] = useState('');
-  const [selectedCard, setSelectedCard] = useState('');
+const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
+  isOpen,
+  onClose,
+  className,
+}) => {
+  const [amount, setAmount] = useState("");
+  const [selectedFrequency, setSelectedFrequency] = useState("");
+  const [selectedCard, setSelectedCard] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [showCopied, setShowCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleClearAmount = () => {
-    setAmount('');
+    setAmount("");
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +60,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
       setIsSending(false);
       setShowSuccessModal(true);
       setShowConfetti(true); // Activate confetti on success
-      setTimeout(() => setShowConfetti(false), 4000); 
+      setTimeout(() => setShowConfetti(false), 4000);
       onClose(); // Close modal after success
       // Hide confetti after 3 seconds
     }, 3000); // Adjust as needed for the simulation
@@ -67,7 +82,10 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
         body={
           <div>
             <p>
-              Automatically move funds from your local bank account to your MyFund SAVINGS account for a <span style={{ color: 'green' }}>13% p.a. ROI</span> every January and July.
+              Automatically move funds from your local bank account to your
+              MyFund SAVINGS account for a{" "}
+              <span style={{ color: "green" }}>13% p.a. ROI</span> every January
+              and July.
             </p>
             <div className="mt-4">
               <TextField
@@ -78,7 +96,9 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
                 value={amount}
                 onChange={handleAmountChange}
                 InputProps={{
-                  startAdornment: <span style={{ marginRight: 4 }}>&#8358;</span>,
+                  startAdornment: (
+                    <span style={{ marginRight: 4 }}>&#8358;</span>
+                  ),
                   endAdornment: (
                     <IconButton onClick={handleClearAmount}>
                       <Close />
@@ -92,7 +112,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
                   <button
                     key={index}
                     className="bg-[#DCD1FF] text-black rounded-md font-productSans whitespace-nowrap transform active:scale-95 active:bg-purple-600 active:text-white"
-                    style={{ height: '50px' }}
+                    style={{ height: "50px" }}
                     onClick={() => setAmount(preset.toString())}
                   >
                     {preset.toLocaleString()}
@@ -162,13 +182,24 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({ isOpen, onClose }) => {
         buttonText="OK"
         modalIcon={carOutline}
         iconColor="green"
-        startIcon={isSending ? <CircularProgress size={20} style={{color: 'green'}} /> : <IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+        startIcon={
+          isSending ? (
+            <CircularProgress size={20} style={{ color: "green" }} />
+          ) : (
+            <IonIcon
+              icon={checkmarkCircleOutline}
+              style={{ fontSize: "20px", marginRight: 5 }}
+            />
+          )
+        }
         onButtonClick={handleSuccessModalClose}
         zIndex={200}
         confettiAnimation={true}
       >
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
-          {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+          {showConfetti && (
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          )}
         </div>
       </Modal>
     </>

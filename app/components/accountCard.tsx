@@ -7,6 +7,15 @@ import {
   IoHomeOutline,
 } from "react-icons/io5";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import {
+  IoSaveOutline,
+  IoWalletOutline,
+  IoTrendingUpOutline,
+  IoHomeOutline,
+  IoArrowDownOutline,
+} from "react-icons/io5";
+import Image from "next/image";
 
 interface AccountCardProps {
   icon:
@@ -24,6 +33,12 @@ interface AccountCardProps {
     | "wallet-outline"
     | "trending-up-outline"
     | "home-outline";
+  buttonIcon:
+    | "save-outline"
+    | "wallet-outline"
+    | "trending-up-outline"
+    | "home-outline"
+    | "arrow-down-outline";
   style?: React.CSSProperties;
   isPropertyCard?: boolean;
   propertyDetails?: {
@@ -35,6 +50,7 @@ interface AccountCardProps {
   };
   image?: string;
   onButtonClick?: () => void;
+  rateColor?: string; // Add this prop
 }
 
 const AccountCard: React.FC<AccountCardProps> = ({
@@ -50,6 +66,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
   propertyDetails,
   image,
   onButtonClick,
+  rateColor,
 }) => {
   const [whole, decimal] = amount.split(".");
 
@@ -69,6 +86,37 @@ const AccountCard: React.FC<AccountCardProps> = ({
     "wallet-outline": <IoWalletOutline size={16} className="mr-1" />,
     "trending-up-outline": <IoTrendingUpOutline size={16} className="mr-1" />,
     "home-outline": <IoHomeOutline size={16} className="mr-1" />,
+    "save-outline": (
+      <IoSaveOutline
+        size={16}
+        className="mr-1 mt--1"
+        style={{ marginTop: -3 }}
+      />
+    ),
+    "wallet-outline": (
+      <IoWalletOutline
+        size={16}
+        className="mr-1 mt--1"
+        style={{ marginTop: -3 }}
+      />
+    ),
+    "trending-up-outline": (
+      <IoTrendingUpOutline
+        size={16}
+        className="mr-1 mt--1"
+        style={{ marginTop: -3 }}
+      />
+    ),
+    "home-outline": (
+      <IoHomeOutline size={16} className="mr-1" style={{ marginTop: -3 }} />
+    ),
+    "arrow-down-outline": (
+      <IoArrowDownOutline
+        size={16}
+        className="mr-1"
+        style={{ marginTop: -3 }}
+      />
+    ), // Add the down arrow icon
   };
 
   let amountColor = "text-white"; // Default color
@@ -171,6 +219,8 @@ const AccountCard: React.FC<AccountCardProps> = ({
               <span className="text-sm text-gray-400 font-karla">
                 {label}{" "}
                 <span className="text-green" style={{ color: "#43FF8E" }}>
+                {label}{" "}
+                <span className={rateColor} style={{ color: rateColor }}>
                   @{rate}
                 </span>
               </span>

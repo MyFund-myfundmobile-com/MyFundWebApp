@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { Divider, Tooltip, CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
@@ -8,6 +9,7 @@ import {
   trendingUpOutline,
   businessOutline,
   settingsOutline,
+  chatbubbleOutline,
   logOutOutline,
   chevronForwardOutline,
   chevronBackOutline,
@@ -15,9 +17,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../pages/settings/modals/logoutModals";
 import Image from "next/image";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
-import { fetchUserProfile } from "../store/authSlice";
 
 interface SidebarProps {
   onToggle: () => void;
@@ -30,6 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   isRetracted: initialRetracted,
   onMenuItemClick,
 }) => {
+  // Destructure the new prop
   const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
   const [activeItem, setActiveItem] = useState<string>("");
   const [lastSelectedItem, setLastSelectedItem] = useState<string>("DASHBOARD");
@@ -69,7 +69,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleMenuItemClickInternal = (item: string) => {
-    setActiveItem(item);
+    // Renamed to avoid naming conflict
+    setActiveItem(item); // Set the active item
     setLastSelectedItem(item);
     onMenuItemClick(item);
     if (window.innerWidth < 900) {
@@ -82,22 +83,22 @@ const Sidebar: React.FC<SidebarProps> = ({
         setIsLoggingOut(true);
         break;
       case "DASHBOARD":
-        navigate("/App/home");
+        navigate("/App/home"); // Navigate to the homepage
         break;
       case "SAVE":
-        navigate("/App/save");
+        navigate("/App/save"); // Navigate to the save page
         break;
       case "INVEST":
-        navigate("/App/invest");
+        navigate("/App/invest"); // Navigate to the invest page
         break;
       case "WITHDRAW":
-        navigate("/App/withdraw");
+        navigate("/App/withdraw"); // Navigate to the withdraw page
         break;
       case "BUY PROPERTIES":
-        navigate("/App/buyProperties");
+        navigate("/App/buyProperties"); // Navigate to the buy properties page
         break;
       case "Settings":
-        navigate("/App/settings");
+        navigate("/App/settings"); // Navigate to the buy properties page
         break;
       default:
         navigate("/App/home");
@@ -168,19 +169,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             style={{ marginBottom: 30 }}
           />
         )}
-
-        <div className="flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300">
-          {userProfile ? (
-            <>
-              <IonIcon icon={personCircleOutline} className="text-xl mr-4" />
-              <span className="tracking-wide" style={{ fontSize: 14 }}>
-                {userProfile.firstName}
-              </span>
-            </>
-          ) : (
-            <CircularProgress size={20} className="mr-4" />
-          )}
-        </div>
 
         {[
           { icon: settingsOutline, label: "Settings" },

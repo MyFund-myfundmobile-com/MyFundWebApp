@@ -3,12 +3,25 @@ import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import React, { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { Provider, useSelector } from "react-redux"; // Import useSelector
+import store from "../Redux store/store";
+import Sidebar from "./sidebar";
+import Header from "./header";
+import { RootState } from "../Redux store/store"; // Import RootState
 
 const Layout = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState(
     window.innerWidth < 768
   );
   const [activeItem, setActiveItem] = useState("DASHBOARD");
+  const [isSidebarRetracted, setIsSidebarRetracted] = useState(
+    window.innerWidth < 768
+  );
+  const [activeItem, setActiveItem] = useState("DASHBOARD");
+
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);
@@ -56,6 +69,33 @@ const Layout = () => {
         </main>
       </div>
     </div>
+    <Provider store={store}>
+      {" "}
+      <div className="flex h-screen w-full">
+        <Sidebar
+          onToggle={handleSidebarToggle}
+          isRetracted={isSidebarRetracted}
+          onMenuItemClick={handleMenuItemClick}
+        />
+        <div
+          className={`flex-grow flex flex-col transition-all duration-300 ${
+            isSidebarRetracted ? "ml-16" : "ml-80"
+          } w-full`}
+        >
+          <Header
+            isSidebarRetracted={isSidebarRetracted}
+            activeItem={activeItem}
+            userInfo={userInfo} // Pass user info to Header
+          />
+          <main
+            className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full"
+            style={{ backgroundColor: "#F7F5FF" }}
+          >
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    </Provider>
   );
 };
 

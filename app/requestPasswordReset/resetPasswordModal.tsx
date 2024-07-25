@@ -135,8 +135,14 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           <>
             <Subtitle style={{ marginBottom: 10 }}>
               Enter the OTP we just sent to{" "}
-              <span style={{ color: "black" }}>{email}</span> to complete your
-              password reset.
+              <span
+                style={{ color: "black" }}
+                className="font-proxima font-bold"
+              >
+                {email}
+              </span>{" "}
+              to complete your password reset. If you can`&apos;`t find it in
+              your Inbox, kindly check your Trash and Spam folders as well.
             </Subtitle>
             <TextField
               label="Enter OTP"
@@ -144,13 +150,21 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               fullWidth
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="mb-4 mt-4"
-              style={{ marginBottom: 15 }}
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
+              style={{
+                marginBottom: 15,
+                marginTop: 15,
+                backgroundColor: "white",
+              }}
               InputProps={{
                 startAdornment: (
                   <IonIcon
                     icon={keyOutline}
-                    style={{ fontSize: "25px", marginRight: 10 }}
+                    style={{
+                      fontSize: "25px",
+                      marginRight: 10,
+                      backgroundColor: "white",
+                    }}
                   />
                 ),
               }}
@@ -162,8 +176,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mb-4 mt-4"
-              style={{ marginBottom: 15 }}
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
+              style={{ marginBottom: 15, backgroundColor: "white" }}
               InputProps={{
                 startAdornment: (
                   <IonIcon
@@ -175,7 +189,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                   <InputAdornment position="end">
                     <IconButton onClick={handleTogglePasswordVisibility}>
                       <IonIcon
-                        icon={showPassword ? eyeOffOutline : eyeOutline}
+                        icon={showPassword ? eyeOutline : eyeOffOutline}
                       />
                     </IconButton>
                   </InputAdornment>
@@ -189,8 +203,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mb-4 mt-4"
-              style={{ marginBottom: 15 }}
+              className="mb-4 mt-4 focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
+              style={{ marginBottom: 15, backgroundColor: "white" }}
               InputProps={{
                 startAdornment: (
                   <IonIcon
@@ -202,7 +216,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                   <InputAdornment position="end">
                     <IconButton onClick={handleToggleConfirmPasswordVisibility}>
                       <IonIcon
-                        icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
+                        icon={showConfirmPassword ? eyeOutline : eyeOffOutline}
                       />
                     </IconButton>
                   </InputAdornment>

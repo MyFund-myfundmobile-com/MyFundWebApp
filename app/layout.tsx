@@ -29,10 +29,7 @@ export default function RootLayout({
         className={`${karla.variable} ${nexa.variable} ${productSans.variable} ${proxima.variable} ${nexa.className} px-6 lg:px-10 xl:px-20 h-auto`}
       >
         <Providers>
-          {" "}
-          {/* Use the Providers component */}
-          <ClientLayout>{children}</ClientLayout>{" "}
-          {/* Use the ClientLayout component */}
+          <ClientLayout>{children}</ClientLayout>
         </Providers>
       </body>
     </html>
