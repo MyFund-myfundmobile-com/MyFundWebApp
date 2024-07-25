@@ -118,8 +118,6 @@ const SettingsPage: React.FC = () => {
     }
   }, [dispatch, currentWealthStage]);
 
-
-
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
       setIsLoggingOut(true);

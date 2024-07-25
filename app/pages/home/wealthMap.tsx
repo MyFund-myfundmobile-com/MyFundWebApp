@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Section from "@/app/components/section";
 import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
@@ -11,6 +11,7 @@ import { AppDispatch } from "@/app/Redux store/store";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import { IonIcon } from "@ionic/react";
 import { trendingUpOutline } from "ionicons/icons";
+import Modal from "@/app/components/modal";
 
 const WealthMapSection = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -18,6 +19,14 @@ const WealthMapSection = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const [isModalOpen, setIsModalOpen] = useState(false); // Add state for modal
+  const handleLearnMore = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (token) {
@@ -118,7 +127,7 @@ const WealthMapSection = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,5fr] gap-4 mt-4 font-karla">
         <div style={{ position: "relative", marginTop: 10 }}>
           <Subtitle style={{ marginTop: -5, marginBottom: 1, fontSize: 13 }}>
-            Stage{" "}
+            Level{" "}
             <span className="font-proxima font-bold">{currentStage.stage}</span>
           </Subtitle>
           <Title
@@ -142,7 +151,7 @@ const WealthMapSection = () => {
           />
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm mt-7 mb-7"
-            // onClick={handleLearnMore}
+            onClick={handleLearnMore}
             background="#4C28BC"
             hoverBackgroundColor="#351265"
             color="#fff"
@@ -158,6 +167,27 @@ const WealthMapSection = () => {
             Learn More
           </PrimaryButton>
         </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          header="Wealth Map"
+          body={
+            <div className="relative w-full h-full">
+              <Image
+                src="/images/wealthMap.png" // Make sure this path is correct
+                alt="Wealth Map"
+                layout="fill" // This makes the image cover the container
+                objectFit="contain" // Adjust object-fit based on your needs
+                className="w-full h-full" // Ensure the image takes full width and height
+              />
+            </div>
+          }
+          buttonText="Go back"
+          onButtonClick={handleCloseModal}
+          zIndex={50}
+          className="w-full h-full max-w-screen max-h-screen p-4"
+        />
       </div>
     </section>
   );

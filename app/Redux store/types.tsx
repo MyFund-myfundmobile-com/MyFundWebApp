@@ -62,12 +62,14 @@ export interface BankAccount {
   bank_code: string;
 }
 
+// types.tsx
 export interface Card {
-  bankName: string;
-  cardNumber: string;
-  expiryDate: string;
-  id: any;
-  bankColor: any;
+  id: string;
+  bank_name: string;
+  expiry_date: string;
+  card_number: string;
+  bankColor?: string;
+  bank_code: string;
   cardHolderName: string;
 }
 

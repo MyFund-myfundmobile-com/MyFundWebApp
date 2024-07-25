@@ -20,7 +20,7 @@ import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
 import { addCard, getCards, deleteCard } from "@/app/Redux store/actions";
 import CustomSnackbar from "@/app/components/snackbar";
-import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import { bankOptions } from "@/app/components/bankOptions";
 
 const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
   onNavigate,
@@ -48,9 +48,14 @@ const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const cards = useSelector((state: RootState) => state.auth.cards);
 
+  const getBankColor = (bankCode: string) => {
+    const bank = bankOptions.find((option) => option.code === bankCode);
+    return bank ? bank.color : "#4c28bc"; // Default color if not found
+  };
+
   useEffect(() => {
     if (token) {
-      dispatch(getCards(token));
+      dispatch(getCards(token as string));
     }
   }, [dispatch, token]);
 
@@ -165,61 +170,58 @@ const CardSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
           AutoSave, AutoInvest, Buy Property, etc.
         </p>
       </div>
+
       <Section>LIST OF CARDS</Section>
       <Box className="mt-4">
-        {cards.map((card, index) => (
-          <Box
-            key={index}
-            className="p-4 border rounded mb-2 flex items-center justify-between"
-            style={{
-              backgroundColor: card.bankColor || "#4c28bc",
-              borderRadius: 10,
-            }}
-          >
-            <Box className="flex items-center">
-              <IonIcon
-                icon={cardOutline}
-                className="text-white mr-4 self-center"
-                style={{ fontSize: "48px" }}
-              />
-              <div>
-                <h1 className="font-karla font-bold text-white">
-                  {typeof card.cardNumber === "string"
-                    ? `**** **** **** ${card.cardNumber.slice(-4)}`
-                    : "**** **** **** ****"}
-                </h1>
-                <p className="font-karla text-sm text-gray-300">
-                  {card.bankName || "Bank Name Not Available"}
-                </p>
-                <p className="font-karla text-xs text-gray-200">
-                  {typeof card.expiryDate === "string"
-                    ? `Expiry: ${card.expiryDate}`
-                    : "Expiry: Not Available"}
-                </p>
-              </div>
-            </Box>
-            <IconButton onClick={() => handleOpenDeleteModal(card.id)}>
-              <IonIcon icon={trashOutline} style={{ color: "red" }} />
-            </IconButton>
-          </Box>
-        ))}
-
-        {cards.length === 0 && (
-          <p
-            className="text-gray-500 font-karla"
-            style={{
-              marginTop: 65,
-              marginBottom: 65,
-              alignSelf: "center",
-              alignContent: "center",
-              textAlign: "center",
-              alignItems: "center",
-            }}
-          >
-            You&apos;re yet to add any cards.
-          </p>
-        )}
+  {cards.map((card, index) => {
+    const bankColor = getBankColor(card.bank_code);
+    return (
+      <Box
+        key={index}
+        className="p-4 border rounded mb-2 flex items-center justify-between"
+        style={{
+          backgroundColor: bankColor || "#4c28bc",
+          borderRadius: 10,
+        }}
+      >
+        <Box className="flex items-center">
+          <IonIcon
+            icon={cardOutline}
+            className="text-white mr-4 self-center"
+            style={{ fontSize: "48px" }}
+          />
+          <div>
+            <h1 className="font-karla font-bold text-white">
+              {`**** **** **** ${card.card_number.slice(-4)}`}
+            </h1>
+            <p className="font-karla text-sm text-gray-300">{card.bank_name}</p>
+            <p className="font-karla text-xs text-gray-200">{`Expiry: ${card.expiry_date}`}</p>
+          </div>
+        </Box>
+        <IconButton onClick={() => handleOpenDeleteModal(card.id)}>
+          <IonIcon icon={trashOutline} style={{ color: "red" }} />
+        </IconButton>
       </Box>
+    );
+  })}
+
+  {cards.length === 0 && (
+    <p
+      className="text-gray-500 font-karla"
+      style={{
+        marginTop: 65,
+        marginBottom: 65,
+        alignSelf: "center",
+        alignContent: "center",
+        textAlign: "center",
+        alignItems: "center",
+      }}
+    >
+      You&apos;re yet to add any cards.
+    </p>
+  )}
+</Box>
+
 
       <Box className="flex justify-center mt-14">
         <PrimaryButton

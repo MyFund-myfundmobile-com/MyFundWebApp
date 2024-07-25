@@ -179,7 +179,7 @@ const HomePage: React.FC = () => {
             onClick={() => navigate("/App/settings")}
           />
           <Tooltip
-            title={`My Financial Status: ${currentWealthStage.text.toUpperCase()}`}
+            title={`My Financial Status: Level ${currentWealthStage.stage}: ${currentWealthStage.text.toUpperCase()}`}
             placement="right"
           >
             <div
