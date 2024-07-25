@@ -7,12 +7,15 @@ import {
   UPDATE_USER_PROFILE,
   UPDATE_SAVINGS_GOAL,
   UPDATE_ACCOUNT_BALANCES,
-  UPDATE_WEALTH_STAGE, // Add this
+  UPDATE_WEALTH_STAGE,
+  ADD_BANK_ACCOUNT,
+  DELETE_BANK_ACCOUNT,
+  SET_BANK_ACCOUNTS,
 } from "./types";
 
 const initialState: AuthState = {
   token: null,
-
+  bankAccounts: [],
   userInfo: {
     is_first_time_signup: false,
     id: "",
@@ -89,6 +92,23 @@ const authReducer = (
       return {
         ...state,
         currentWealthStage: action.payload,
+      };
+    case ADD_BANK_ACCOUNT:
+      return {
+        ...state,
+        bankAccounts: [...state.bankAccounts, action.payload],
+      };
+    case DELETE_BANK_ACCOUNT:
+      return {
+        ...state,
+        bankAccounts: state.bankAccounts.filter(
+          (account) => account.account_number !== action.payload
+        ),
+      };
+    case SET_BANK_ACCOUNTS:
+      return {
+        ...state,
+        bankAccounts: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { RootState } from "./store"; // Adjust the import path as needed
 import {
   AuthActionTypes,
   SET_USER_TOKEN,
@@ -9,21 +10,28 @@ import {
   UPDATE_SAVINGS_GOAL,
   UPDATE_ACCOUNT_BALANCES,
   UPDATE_WEALTH_STAGE, // Add this
-  WealthStage, // Add this
+  WealthStage,
+  SET_BANK_ACCOUNTS,
+  ADD_BANK_ACCOUNT,
+  DELETE_BANK_ACCOUNT,
+  BankAccount,
   User,
 } from "./types";
 
 export const setUserToken = (token: string): AuthActionTypes => {
-  console.log("Action: SET_USER_TOKEN", token);
   return {
     type: SET_USER_TOKEN,
     payload: token,
   };
 };
 
+export const addBankAccount = (bankAccount: BankAccount): AuthActionTypes => ({
+  type: ADD_BANK_ACCOUNT,
+  payload: bankAccount,
+});
+
 export const fetchUserInfo = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
-    console.log("Fetching user info with token:", token);
     try {
       const response = await axios.get<User>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
@@ -36,7 +44,6 @@ export const fetchUserInfo = (token: string) => {
 
       if (response.status === 200) {
         const profileData = response.data;
-        console.log("User info fetched successfully:", profileData);
 
         dispatch({
           type: SET_USER_INFO,
@@ -94,6 +101,69 @@ export const fetchAccountBalances = (token: string) => {
       }
     } catch (error) {
       console.error("Error fetching account balances:", error);
+    }
+  };
+};
+
+export const fetchUserBankAccounts = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<BankAccount[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/bank-accounts/get-bank-accounts/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_BANK_ACCOUNTS,
+          payload: response.data,
+        });
+      } else {
+        console.error(
+          "Failed to fetch bank accounts, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching bank accounts:", error);
+    }
+  };
+};
+
+export const deleteBankAccount = (accountNumber: string) => {
+  return async (
+    dispatch: Dispatch<AuthActionTypes>,
+    getState: () => RootState
+  ) => {
+    const token = getState().auth.token;
+
+    try {
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/delete-bank-account/${accountNumber}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 204) {
+        dispatch({
+          type: DELETE_BANK_ACCOUNT,
+          payload: accountNumber,
+        });
+      } else {
+        console.error(
+          "Failed to delete bank account, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting bank account:", error);
     }
   };
 };

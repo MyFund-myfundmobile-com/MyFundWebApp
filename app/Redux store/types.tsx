@@ -1,3 +1,16 @@
+// Action types
+export const SET_USER_TOKEN = "SET_USER_TOKEN";
+export const SET_USER_INFO = "SET_USER_INFO";
+export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
+export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";
+export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL";
+export const UPDATE_ACCOUNT_BALANCES = "UPDATE_ACCOUNT_BALANCES";
+export const UPDATE_WEALTH_STAGE = "UPDATE_WEALTH_STAGE";
+export const ADD_BANK_ACCOUNT = "ADD_BANK_ACCOUNT";
+export const SET_BANK_ACCOUNTS = "SET_BANK_ACCOUNTS";
+export const FETCH_USER_BANK_ACCOUNTS = "FETCH_USER_BANK_ACCOUNTS";
+export const DELETE_BANK_ACCOUNT = "DELETE_BANK_ACCOUNT";
+
 export interface User {
   is_first_time_signup?: boolean;
   id: string;
@@ -18,6 +31,7 @@ export interface User {
 
 export interface AuthState {
   token: string | null;
+  bankAccounts: BankAccount[];
   userInfo: User;
   accountBalances: {
     savings: number;
@@ -26,7 +40,7 @@ export interface AuthState {
     wallet: number;
   };
   error: string | null;
-  currentWealthStage: WealthStage; 
+  currentWealthStage: WealthStage;
 }
 
 export interface WealthStage {
@@ -35,18 +49,29 @@ export interface WealthStage {
   description: string;
 }
 
-// Action types
-export const SET_USER_TOKEN = "SET_USER_TOKEN";
-export const SET_USER_INFO = "SET_USER_INFO";
-export const SET_USER_INFO_ERROR = "SET_USER_INFO_ERROR";
-export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";
-export const UPDATE_SAVINGS_GOAL = "UPDATE_SAVINGS_GOAL";
-export const UPDATE_ACCOUNT_BALANCES = "UPDATE_ACCOUNT_BALANCES";
-export const UPDATE_WEALTH_STAGE = "UPDATE_WEALTH_STAGE";
+export interface BankAccount {
+  id: string;
+  bank_name: string; // Update to match your API response keys
+  account_number: string;
+  account_name: string;
+  is_default: boolean;
+  bankColor?: string; // Add this line
+  bank_code: string; // Add this line to include bank_code
+}
 
 interface SetUserTokenAction {
   type: typeof SET_USER_TOKEN;
   payload: string;
+}
+
+export interface AddBankAccountAction {
+  type: typeof ADD_BANK_ACCOUNT;
+  payload: BankAccount;
+}
+
+interface SetBankAccountsAction {
+  type: typeof SET_BANK_ACCOUNTS;
+  payload: BankAccount[];
 }
 
 interface UpdateWealthStageAction {
@@ -67,6 +92,11 @@ interface SetUserInfoErrorAction {
 export interface UpdateUserProfileAction {
   type: typeof UPDATE_USER_PROFILE;
   payload: Partial<User>;
+}
+
+export interface DeleteBankAccountAction {
+  type: typeof DELETE_BANK_ACCOUNT;
+  payload: string;
 }
 
 interface UpdateSavingsGoalAction {
@@ -90,5 +120,8 @@ export type AuthActionTypes =
   | SetUserInfoErrorAction
   | UpdateUserProfileAction
   | UpdateSavingsGoalAction
+  | AddBankAccountAction
   | UpdateAccountBalancesAction
-  | UpdateWealthStageAction;
+  | UpdateWealthStageAction
+  | DeleteBankAccountAction
+  | SetBankAccountsAction;

@@ -66,9 +66,6 @@ const HomePage: React.FC = () => {
   );
   const formattedWallet = formatAmountWithCommas(accountBalances.wallet);
 
-  console.log("Token inside Homepage:", token);
-  console.log("User profile inside Homepage:", userInfo);
-
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
   };
@@ -166,7 +163,6 @@ const HomePage: React.FC = () => {
     }
   };
 
-  // Get the dynamic badge color class
   const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
 
   return (
@@ -278,6 +274,7 @@ const HomePage: React.FC = () => {
             currency="₦"
             amount={showBalances ? formattedSavings : "****"}
             buttonText="QuickSave"
+            rateColor="#43FF8E"
             buttonIcon="save-outline"
             onButtonClick={handleQuickSaveClick}
           />
@@ -288,6 +285,7 @@ const HomePage: React.FC = () => {
             currency="₦"
             amount={showBalances ? formattedInvestment : "****"}
             buttonText="QuickInvest"
+            rateColor="#43FF8E"
             buttonIcon="trending-up-outline"
             onButtonClick={handleQuickInvestClick}
           />
@@ -295,6 +293,7 @@ const HomePage: React.FC = () => {
             icon="home-outline"
             label="PROPERTIES"
             rate="yearly rent"
+            rateColor="#43FF8E"
             currency=""
             amount={
               showBalances ? formatAmount(accountBalances.properties) : "**"
@@ -306,6 +305,7 @@ const HomePage: React.FC = () => {
             icon="wallet-outline"
             label="WALLET"
             rate="(My Earnings)"
+            rateColor="#43FF8E"
             currency="₦"
             amount={
               showBalances

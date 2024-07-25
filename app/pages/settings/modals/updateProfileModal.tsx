@@ -36,8 +36,6 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     "success"
   );
 
-  console.log("Token inside updateprofilemodal:", token);
-
   const handleUpdateProfile = async () => {
     const updatedProfile = {
       first_name: firstName,

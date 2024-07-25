@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
 import Section from "@/app/components/section";
@@ -39,6 +39,13 @@ const WithdrawPage = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+
+  const bottomRef = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -131,23 +138,8 @@ const WithdrawPage = () => {
     }
   };
 
-  const getRateColor = (label: string) => {
-    switch (label) {
-      case "SAVINGS":
-        return "text-orange-600"; // or 'text-orange-600'
-      case "INVESTMENTS":
-        return "text-orange-600"; // or 'text-orange-600'
-      case "PROPERTY":
-        return "text-orange-600"; // or 'text-orange-600'
-      case "WALLET":
-        return "text-green-200"; // Bright green for free
-      default:
-        return "text-white"; // Default color
-    }
-  };
-
   return (
-    <div className="px-6 max-w-full animate-floatIn">
+    <div ref={bottomRef} className="px-6 max-w-full animate-floatIn">
       <div className="mb-5 flex items-center">
         <div>
           <Title>Withdraw</Title>
@@ -218,9 +210,9 @@ const WithdrawPage = () => {
                 ? `${accountBalances.savings.toLocaleString()}`
                 : "****"
             }
-            rateColor={getRateColor("SAVINGS")}
+            rateColor="#F97316"
             buttonText="Withdraw"
-            buttonIcon="save-outline"
+            buttonIcon="arrow-down-outline"
             onButtonClick={() =>
               handleWithdrawClick("Savings", accountBalances.savings)
             } // Pass the amount
@@ -235,9 +227,9 @@ const WithdrawPage = () => {
                 ? `${accountBalances.investment.toLocaleString()}`
                 : "****"
             }
-            rateColor={getRateColor("INVESTMENTS")}
+            rateColor="#F97316"
             buttonText="Withdraw"
-            buttonIcon="trending-up-outline"
+            buttonIcon="arrow-down-outline"
             onButtonClick={() =>
               handleWithdrawClick("Investment", accountBalances.investment)
             } // Pass the amount
@@ -250,9 +242,9 @@ const WithdrawPage = () => {
             amount={
               showBalances ? formatAmount(accountBalances.properties) : "**"
             }
-            rateColor={getRateColor("PROPERTY")}
+            rateColor="#F97316"
             buttonText="Sell Property"
-            buttonIcon="home-outline"
+            buttonIcon="arrow-down-outline"
           />
           <AccountCard
             icon="wallet-outline"
@@ -264,9 +256,9 @@ const WithdrawPage = () => {
                 ? `${accountBalances.wallet.toLocaleString()}`
                 : "****"
             }
-            rateColor={getRateColor("WALLET")}
+            rateColor="#43FF8E"
             buttonText="Withdraw"
-            buttonIcon="wallet-outline"
+            buttonIcon="arrow-down-outline"
             onButtonClick={() =>
               handleWithdrawClick("Wallet", accountBalances.wallet)
             } // Pass the amount
@@ -331,7 +323,7 @@ const WithdrawPage = () => {
                   className="flex items-center"
                   style={{ alignSelf: "center" }}
                 >
-                  Referral ID: username@email.com
+                  Referral ID: {userInfo?.email}
                   <span className="flex items-center ml-2">
                     {isCopied ? (
                       <>

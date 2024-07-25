@@ -14,7 +14,6 @@ const Layout = () => {
   const [activeItem, setActiveItem] = useState("DASHBOARD");
 
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  console.log("User info in Layout:", userInfo); // Log user info
 
   const handleSidebarToggle = () => {
     setIsSidebarRetracted(!isSidebarRetracted);

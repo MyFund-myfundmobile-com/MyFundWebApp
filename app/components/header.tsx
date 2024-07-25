@@ -16,7 +16,6 @@ const Header: React.FC<HeaderProps> = ({
   activeItem,
   userInfo,
 }) => {
-  console.log("User info in Header:", userInfo); // Log user info
 
   return (
     <div

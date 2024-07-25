@@ -57,9 +57,6 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const token = useSelector((state: RootState) => state.auth.token);
 
-  console.log("UserInfo.token:", userInfo?.token);
-  console.log("token:", token);
-
   useEffect(() => {
     if (token) {
       dispatch(fetchUserInfo(token));

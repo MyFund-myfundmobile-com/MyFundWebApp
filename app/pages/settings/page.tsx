@@ -118,8 +118,7 @@ const SettingsPage: React.FC = () => {
     }
   }, [dispatch, currentWealthStage]);
 
-  console.log("Token inside settings:", token);
-  console.log("User profile inside settings:", userInfo);
+
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
