@@ -6,8 +6,8 @@ import {
   fetchUserBankAccounts,
   setUserToken,
   updateUserProfile,
-  addCard,
-  getCards,
+  fetchKYCStatus,
+    getCards,
 } from "./actions";
 
 const rootReducer = combineReducers({
@@ -28,6 +28,8 @@ if (token) {
   store.dispatch(updateUserProfile({ token })); // Updated to pass profile data if needed
   store.dispatch(fetchUserBankAccounts(token)); // Dispatch fetchUserBankAccounts action
   store.dispatch(getCards(token)); // Pass token to getCards
+  store.dispatch(fetchKYCStatus(token)); // Dispatch fetchKYCStatus action
+
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

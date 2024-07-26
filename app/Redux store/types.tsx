@@ -12,6 +12,7 @@ export const DELETE_BANK_ACCOUNT = "DELETE_BANK_ACCOUNT";
 export const ADD_CARD = "ADD_CARD";
 export const GET_CARDS = "GET_CARDS";
 export const DELETE_CARD = "DELETE_CARD";
+export const SET_KYC_STATUS = "SET_KYC_STATUS";
 
 export interface User {
   is_first_time_signup?: boolean;
@@ -36,6 +37,7 @@ export interface AuthState {
   bankAccounts: BankAccount[];
   cards: Card[];
   userInfo: User;
+  KYCStatus: KYCStatus; // Add this line
   accountBalances: {
     savings: number;
     investment: number;
@@ -62,7 +64,6 @@ export interface BankAccount {
   bank_code: string;
 }
 
-// types.tsx
 export interface Card {
   id: string;
   bank_name: string;
@@ -71,6 +72,12 @@ export interface Card {
   bankColor?: string;
   bank_code: string;
   cardHolderName: string;
+}
+
+export interface KYCStatus {
+  kycStatus?: string;
+  updated_at?: string;
+  message?: string;
 }
 
 interface SetUserTokenAction {
@@ -133,6 +140,11 @@ interface AddCardAction {
   payload: Card;
 }
 
+interface SetKYCStatusAction {
+  type: typeof SET_KYC_STATUS;
+  payload: Partial<KYCStatus>;
+}
+
 interface GetCardsAction {
   type: typeof GET_CARDS;
   payload: Card[];
@@ -156,4 +168,5 @@ export type AuthActionTypes =
   | SetBankAccountsAction
   | AddCardAction
   | GetCardsAction
-  | DeleteCardAction;
+  | DeleteCardAction
+  | SetKYCStatusAction;

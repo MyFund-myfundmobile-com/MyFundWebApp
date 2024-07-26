@@ -15,9 +15,10 @@ import {
   ADD_BANK_ACCOUNT,
   DELETE_BANK_ACCOUNT,
   BankAccount,
-  ADD_CARD,
+  SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
+  KYCStatus,
   Card,
   User,
 } from "./types";
@@ -221,6 +222,34 @@ export const deleteCard =
       console.error("Failed to delete card", error);
     }
   };
+
+export const setKYCStatus = (kycStatus: KYCStatus): AuthActionTypes => ({
+  type: SET_KYC_STATUS,
+  payload: kycStatus,
+});
+
+export const fetchKYCStatus = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<KYCStatus>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-kyc-status/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(setKYCStatus(response.data));
+      } else {
+        console.error("Failed to fetch KYC status, status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching KYC status:", error);
+    }
+  };
+};
 
 export const updateUserProfile = (updatedProfile: any) => ({
   type: UPDATE_USER_PROFILE,

@@ -12,8 +12,10 @@ import {
   DELETE_BANK_ACCOUNT,
   SET_BANK_ACCOUNTS,
   ADD_CARD,
+  SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
+  KYCStatus,
   Card,
 } from "./types";
 
@@ -21,6 +23,11 @@ const initialState: AuthState = {
   token: null,
   bankAccounts: [],
   cards: [], // initial state for cards
+
+  KYCStatus: {
+    kycStatus: "",
+    updated_at: "",
+  },
 
   userInfo: {
     is_first_time_signup: false,
@@ -130,6 +137,11 @@ const authReducer = (
       return {
         ...state,
         cards: state.cards.filter((card) => card.id !== action.payload),
+      };
+    case SET_KYC_STATUS:
+      return {
+        ...state,
+        KYCStatus: action.payload,
       };
     default:
       return state;

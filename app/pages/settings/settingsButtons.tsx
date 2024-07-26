@@ -12,6 +12,7 @@ import {
   mailOutline,
   thumbsUpOutline,
   logOutOutline,
+  shieldCheckmarkOutline,
 } from "ionicons/icons";
 
 interface SettingsButtonsSectionProps {
@@ -26,7 +27,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({
   const settings = [
     { label: "Savings Goal", icon: settingsOutline },
     { label: "Card and Bank Settings", icon: cardOutline },
-    { label: "Update KYC", icon: personOutline },
+    { label: "Update KYC", icon: shieldCheckmarkOutline },
     { label: "Update Transaction PIN", icon: keyOutline },
     { label: "Top Savers", icon: starOutline },
     { label: "FAQs", icon: helpCircleOutline },

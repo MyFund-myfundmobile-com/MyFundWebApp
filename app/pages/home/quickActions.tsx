@@ -6,9 +6,16 @@ import {
   carOutline,
   carSportOutline,
   personAddOutline,
+  checkmarkCircle,
   checkmarkCircleOutline,
+  shieldCheckmarkOutline,
 } from "ionicons/icons";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/app/Redux store/store";
+import { RootState } from "@/app/Redux store/store";
+import { setKYCStatus } from "@/app/Redux store/actions";
 
 const QuickActionsSection = () => {
   const navigate = useNavigate(); // Initialize useNavigate
@@ -29,10 +36,23 @@ const QuickActionsSection = () => {
     navigate("/App/withdraw", { state: { scrollToBottom: true } });
   };
 
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const kycStatus = useSelector((state: RootState) => state.auth.KYCStatus);
+
   const autoSaveSettings = { active: false }; // Update this based on your state
   const autoInvestSettings = { active: false }; // Update this based on your state
-  const kycStatus = "Not yet started"; // Update this based on your state
-  const currentStage = { text: "Surplus" }; // Update this based on your state
+
+  let statusColor = "text-gray-500"; // Default to gray
+  let statusText = "Not yet started"; // Default text
+
+  if (kycStatus?.kycStatus === "Pending...") {
+    statusColor = "text-green-600";
+    statusText = "In progress...";
+  } else if (kycStatus?.kycStatus === "Updated!") {
+    statusColor = "text-green-600";
+    statusText = "Updated!";
+  }
 
   return (
     <section>
@@ -100,12 +120,36 @@ const QuickActionsSection = () => {
         </button>
 
         <button
-          className="flex items-center p-2 border rounded-lg bg-white transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]"
-          onClick={handleKYCUpdate} // Update the onClick handler
+          className={`flex items-center p-2 border rounded-lg ${
+            kycStatus?.kycStatus === "Pending..." ||
+            kycStatus?.kycStatus === "Updated!"
+              ? "bg-gray-200"
+              : "bg-white"
+          } transition-all duration-300 transform ${
+            kycStatus?.kycStatus !== "Pending..." &&
+            kycStatus?.kycStatus !== "Updated!"
+              ? "hover:scale-105 hover:bg-[#DCD1FF]"
+              : ""
+          }`}
+          onClick={handleKYCUpdate}
+          // disabled={
+          //   kycStatus?.kycStatus === "Pending..." ||
+          //   kycStatus?.kycStatus === "Updated!"
+          // }
         >
-          <IonIcon icon={personAddOutline} className="text-xl text-black" />
+          <IonIcon
+            icon={shieldCheckmarkOutline}
+            className="text-xl text-black"
+          />
           <span className="ml-3 flex-1 text-left text-sm">Update KYC:</span>
-          <span className="text-xs text-green-600">Not yet started</span>
+          <span className={`text-sm ${statusColor}`}>{statusText}</span>
+          {kycStatus?.kycStatus === "Updated!" && (
+            <IonIcon
+              icon={checkmarkCircle}
+              className="text-xl text-green-600 ml-1"
+              style={{ marginBottom: -2 }}
+            />
+          )}
         </button>
 
         {/* Add more buttons as needed */}
