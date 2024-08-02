@@ -140,8 +140,22 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               >
                 {email}
               </span>{" "}
-              to complete your password reset. If you can`&apos;`t find it in
-              your Inbox, kindly check your Trash and Spam folders as well.
+              to complete your password reset. <br />
+              <br /> If you can&apos;t find it in your Inbox, kindly check your{" "}
+              <span
+                style={{ color: "black" }}
+                className="font-proxima font-bold"
+              >
+                Trash
+              </span>{" "}
+              and{" "}
+              <span
+                style={{ color: "black" }}
+                className="font-proxima font-bold"
+              >
+                Spam
+              </span>{" "}
+              folders.
             </Subtitle>
             <TextField
               label="Enter OTP"

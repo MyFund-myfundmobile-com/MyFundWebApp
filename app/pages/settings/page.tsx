@@ -59,6 +59,18 @@ const SettingsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
   const location = useLocation(); // Initialize useLocation
+  const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.triggerCardAndBankSettings) {
+        handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
+      }
+      if (location.state.triggerAddCard) {
+        setIsAddCardModalOpen(true);
+      }
+    }
+  }, [location.state]);
 
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -68,6 +80,10 @@ const SettingsPage: React.FC = () => {
     } else {
       setCropper(null);
     }
+  };
+
+  const onNavigate = (path: string) => {
+    console.log(`Navigating to ${path}`);
   };
 
   const handleProfileImageChange = (
@@ -224,7 +240,13 @@ const SettingsPage: React.FC = () => {
       case "Savings Goal":
         return <SavingsGoal />;
       case "Card and Bank Settings":
-        return <CardSettings onNavigate={handleMenuSelect} />;
+        return (
+          <CardSettings
+            onNavigate={handleMenuSelect}
+            isAddCardModalOpen={isAddCardModalOpen}
+            setIsAddCardModalOpen={setIsAddCardModalOpen}
+          />
+        );
       case "Bank Settings":
         return <BankSettings onNavigate={handleMenuSelect} />;
       case "Update KYC":
