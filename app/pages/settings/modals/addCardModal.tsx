@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { IonIcon } from "@ionic/react";
+import { cardOutline, informationCircleOutline } from "ionicons/icons";
 import {
   TextField,
   IconButton,
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import { cardOutline, informationCircleOutline } from "ionicons/icons";
 import Modal from "@/app/components/modal";
 import BankOptions from "@/app/components/bankOptions";
 import axios from "axios";

@@ -18,6 +18,10 @@ import {
   SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
+  SET_USER_TRANSACTIONS,
+  SET_TOP_SAVERS_DATA,
+  TopSaversData,
+  UserTransaction,
   KYCStatus,
   Card,
   User,
@@ -247,6 +251,60 @@ export const fetchKYCStatus = (token: string) => {
       }
     } catch (error) {
       console.error("Error fetching KYC status:", error);
+    }
+  };
+};
+
+export const fetchUserTransactions = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<UserTransaction[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user-transactions/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_USER_TRANSACTIONS,
+          payload: response.data,
+        });
+      } else {
+        console.error(
+          "Failed to fetch user transactions, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching user transactions:", error);
+    }
+  };
+};
+
+export const fetchTopSaversData = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<TopSaversData>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/top-savers/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_TOP_SAVERS_DATA,
+          payload: response.data,
+        });
+      }
+    } catch (error) {
+      console.error("Fetch Top Savers Data Error:", error);
     }
   };
 };

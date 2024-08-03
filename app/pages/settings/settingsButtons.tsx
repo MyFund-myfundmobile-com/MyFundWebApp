@@ -64,7 +64,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({
             {setting.label.includes("Refer and Earn:") ? (
               <>
                 Refer and Earn:{" "}
-                <span style={{ color: "green" }}>N1000 EACH</span>
+                <span style={{ color: "green" }}>N500 EACH</span>
               </>
             ) : (
               setting.label

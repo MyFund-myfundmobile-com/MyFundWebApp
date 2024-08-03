@@ -27,6 +27,7 @@ import CustomSnackbar from "@/app/components/snackbar";
 import { bankOptions } from "@/app/components/bankOptions";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import OTPModal from "./otpModal";
+import { fetchUserTransactions } from "@/app/Redux store/actions";
 
 interface QuickSaveModalProps {
   isOpen: boolean;
@@ -72,7 +73,8 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
 
   useEffect(() => {
     if (token) {
-      dispatch(getCards(token as string));
+      dispatch(getCards(token));
+      dispatch(fetchUserTransactions(token));
     }
   }, [dispatch, token]);
 
@@ -127,48 +129,53 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
 
       console.log("QuickSave Payload:", payload); // Log the payload
 
-      const response =
-        selectedOption === "Bank Transfer"
-          ? await axios.post(
-              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/initiate-save-transfer/`,
-              { amount: formattedAmount },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-          : await axios.post(
-              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quicksave/`,
-              payload,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+      if (typeof token === "string") {
+        const response =
+          selectedOption === "Bank Transfer"
+            ? await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/initiate-save-transfer/`,
+                { amount: formattedAmount },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+            : await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quicksave/`,
+                payload,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
 
-      if (response.status === 200 || response.status === 201) {
-        const { status, display_text, user_number, open_url } = response.data;
-        setSnackbarMessage(response.data.display_text);
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
-        setUserNumber(user_number);
-        if (status === "open_url") {
-          window.open(open_url, "_blank");
-        }
-        setTimeout(() => {
-          if (selectedOption === "Bank Transfer") {
-            setShowSuccessModal(true);
-          } else {
-            setShowOTPModal(true);
+        if (response.status === 200 || response.status === 201) {
+          const { status, display_text, user_number, open_url } = response.data;
+          setSnackbarMessage(response.data.display_text);
+          setSnackbarSeverity("success");
+          dispatch(fetchUserTransactions(token));
+          setSnackbarOpen(true);
+          setUserNumber(user_number);
+          if (status === "open_url") {
+            window.open(open_url, "_blank");
           }
-          onClose();
-        }, 1000);
+          setTimeout(() => {
+            if (selectedOption === "Bank Transfer") {
+              setShowSuccessModal(true);
+            } else {
+              setShowOTPModal(true);
+            }
+            onClose();
+          }, 1000);
+        } else {
+          throw new Error("Unexpected response status");
+        }
       } else {
-        throw new Error("Unexpected response status");
+        throw new Error("Token is not available.");
       }
     } catch (error: any) {
       console.error("QuickSave Error:", error);

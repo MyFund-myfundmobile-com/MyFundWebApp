@@ -13,6 +13,10 @@ export const ADD_CARD = "ADD_CARD";
 export const GET_CARDS = "GET_CARDS";
 export const DELETE_CARD = "DELETE_CARD";
 export const SET_KYC_STATUS = "SET_KYC_STATUS";
+export const SET_USER_TRANSACTIONS = "SET_USER_TRANSACTIONS";
+export const SET_TOP_SAVERS_DATA = "SET_TOP_SAVERS_DATA";
+export const SET_SELECTED_TOP_SAVER = "SET_SELECTED_TOP_SAVER";
+export const SET_USER_PERCENTAGE = "SET_USER_PERCENTAGE";
 
 export interface User {
   is_first_time_signup?: boolean;
@@ -32,12 +36,24 @@ export interface User {
   profile_picture?: string;
 }
 
+export interface UserTransaction {
+  id: string;
+  amount: number;
+  date: string;
+  type: "credit" | "debit";
+  description: string;
+  time: string;
+  transaction_id: string;
+  status: string;
+}
+
 export interface AuthState {
   token: string | null;
   bankAccounts: BankAccount[];
   cards: Card[];
   userInfo: User;
-  KYCStatus: KYCStatus; // Add this line
+  KYCStatus: KYCStatus;
+  userTransactions: UserTransaction[];
   accountBalances: {
     savings: number;
     investment: number;
@@ -46,6 +62,10 @@ export interface AuthState {
   };
   error: string | null;
   currentWealthStage: WealthStage;
+  isLoading: boolean;
+  topSaversData?: TopSaversData;
+  selectedTopSaver?: TopSaver;
+  userPercentage?: number;
 }
 
 export interface WealthStage {
@@ -78,6 +98,42 @@ export interface KYCStatus {
   kycStatus?: string;
   updated_at?: string;
   message?: string;
+}
+
+export interface TopSaver {
+  id: number;
+  email: string;
+  first_name: string;
+  profile_picture: string;
+  individual_percentage: number;
+}
+
+export interface TopSaversData {
+  top_savers: TopSaver[];
+  current_user: {
+    individual_percentage: number;
+  };
+}
+
+interface Saver {
+  id: number;
+  firstName: string;
+  profilePicture: string;
+}
+
+interface SetTopSaversDataAction {
+  type: typeof SET_TOP_SAVERS_DATA;
+  payload: TopSaversData;
+}
+
+interface SetSelectedTopSaverAction {
+  type: typeof SET_SELECTED_TOP_SAVER;
+  payload: TopSaver;
+}
+
+interface SetUserPercentageAction {
+  type: typeof SET_USER_PERCENTAGE;
+  payload: number;
 }
 
 interface SetUserTokenAction {
@@ -155,6 +211,11 @@ interface DeleteCardAction {
   payload: string;
 }
 
+interface SetUserTransactionsAction {
+  type: typeof SET_USER_TRANSACTIONS;
+  payload: UserTransaction[];
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
@@ -169,4 +230,8 @@ export type AuthActionTypes =
   | AddCardAction
   | GetCardsAction
   | DeleteCardAction
-  | SetKYCStatusAction;
+  | SetUserTransactionsAction
+  | SetKYCStatusAction
+  | SetTopSaversDataAction
+  | SetSelectedTopSaverAction
+  | SetUserPercentageAction;

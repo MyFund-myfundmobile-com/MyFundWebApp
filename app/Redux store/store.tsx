@@ -6,8 +6,10 @@ import {
   fetchUserBankAccounts,
   setUserToken,
   updateUserProfile,
+  fetchUserTransactions,
   fetchKYCStatus,
-    getCards,
+  getCards,
+  fetchTopSaversData,
 } from "./actions";
 
 const rootReducer = combineReducers({
@@ -29,7 +31,8 @@ if (token) {
   store.dispatch(fetchUserBankAccounts(token)); // Dispatch fetchUserBankAccounts action
   store.dispatch(getCards(token)); // Pass token to getCards
   store.dispatch(fetchKYCStatus(token)); // Dispatch fetchKYCStatus action
-
+  store.dispatch(fetchUserTransactions(token)); // Dispatch the action to fetch user transactions
+  store.dispatch(fetchTopSaversData(token) as any);
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

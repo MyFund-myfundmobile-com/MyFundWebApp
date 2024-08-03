@@ -298,9 +298,9 @@ const WithdrawPage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <div className="mb-4 mt-3">
               <Image
-                width={240}
-                height={240}
-                src="/images/refer.png"
+                width={1080}
+                height={1080}
+                src="/images/ReferAndEarn500.png"
                 alt="Refer and earn"
                 className="w-full h-auto rounded-lg"
               />

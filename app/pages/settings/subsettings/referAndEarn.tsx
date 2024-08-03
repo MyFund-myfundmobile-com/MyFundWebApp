@@ -31,7 +31,7 @@ const ReferAndEarn: React.FC = () => {
   }, [dispatch, token]);
 
   const handleCopyClick = () => {
-    navigator.clipboard.writeText("username@email.com");
+    navigator.clipboard.writeText(userInfo?.email);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 3000);
   };
@@ -63,7 +63,7 @@ const ReferAndEarn: React.FC = () => {
             <Image
               width={720}
               height={720}
-              src="/images/refer.png"
+              src="/images/ReferAndEarn500.png"
               alt="Refer and earn"
               className="w-full h-auto rounded-lg"
             />

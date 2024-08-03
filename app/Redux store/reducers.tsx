@@ -15,6 +15,12 @@ import {
   SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
+  SET_USER_TRANSACTIONS,
+  SET_TOP_SAVERS_DATA,
+  SET_SELECTED_TOP_SAVER,
+  SET_USER_PERCENTAGE,
+  TopSaversData,
+  TopSaver,
   KYCStatus,
   Card,
 } from "./types";
@@ -22,7 +28,10 @@ import {
 const initialState: AuthState = {
   token: null,
   bankAccounts: [],
-  cards: [], // initial state for cards
+  userTransactions: [],
+  isLoading: false,
+
+  cards: [],
 
   KYCStatus: {
     kycStatus: "",
@@ -142,6 +151,26 @@ const authReducer = (
       return {
         ...state,
         KYCStatus: action.payload,
+      };
+    case SET_USER_TRANSACTIONS:
+      return {
+        ...state,
+        userTransactions: action.payload,
+      };
+    case SET_TOP_SAVERS_DATA:
+      return {
+        ...state,
+        topSaversData: action.payload,
+      };
+    case SET_SELECTED_TOP_SAVER:
+      return {
+        ...state,
+        selectedTopSaver: action.payload,
+      };
+    case SET_USER_PERCENTAGE:
+      return {
+        ...state,
+        userPercentage: action.payload,
       };
     default:
       return state;

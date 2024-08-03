@@ -19,8 +19,13 @@ const WealthMapSection = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
-  const [isModalOpen, setIsModalOpen] = useState(false); // Add state for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageSrc, setModalImageSrc] = useState("");
+
   const handleLearnMore = () => {
+    const imageSrc = `/images/wealthMap.png`;
+    console.log("Setting modal image source to:", imageSrc);
+    setModalImageSrc(imageSrc);
     setIsModalOpen(true);
   };
 
@@ -175,11 +180,11 @@ const WealthMapSection = () => {
           body={
             <div className="relative w-full h-full">
               <Image
-                src="/images/wealthMap.png" // Make sure this path is correct
+                src={modalImageSrc}
                 alt="Wealth Map"
-                layout="fill" // This makes the image cover the container
-                objectFit="contain" // Adjust object-fit based on your needs
-                className="w-full h-full" // Ensure the image takes full width and height
+                fill
+                style={{ objectFit: "contain" }}
+                className="w-full h-full"
               />
             </div>
           }

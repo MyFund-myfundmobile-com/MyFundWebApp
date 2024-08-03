@@ -116,7 +116,7 @@ const QuickActionsSection = () => {
         >
           <IonIcon icon={personAddOutline} className="text-xl text-black" />
           <span className="ml-3 flex-1 text-left text-sm">Refer and Earn</span>
-          <span className="text-xs text-green-600">₦1000 EACH</span>
+          <span className="text-xs text-green-600">₦500 EACH</span>
         </button>
 
         <button
