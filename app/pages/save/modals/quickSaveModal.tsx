@@ -28,6 +28,7 @@ import { bankOptions } from "@/app/components/bankOptions";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import OTPModal from "./otpModal";
 import { fetchUserTransactions } from "@/app/Redux store/actions";
+import Image from "next/image"; // If not already imported
 
 interface QuickSaveModalProps {
   isOpen: boolean;
@@ -341,49 +342,75 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
                   </p>
                 </div>
               )}
-              {selectedOption === "My Saved Cards" &&
-                (cards.length === 0 ? (
-                  <div className="text-center text-gray-600">
-                    No cards added yet...{" "}
-                    <span
-                      className="font-bold font-proxima text-blue-500 cursor-pointer"
-                      onClick={handleNavigateToAddCard}
-                    >
-                      Add Card Now...
-                    </span>
-                  </div>
-                ) : (
-                  <Select
-                    fullWidth
-                    variant="outlined"
-                    displayEmpty
-                    className="mb-4 bg-white"
-                    placeholder="Which of your cards?"
-                    value={selectedCardId || ""}
-                    onChange={(event) => {
-                      console.log("Selected card ID:", event.target.value); // Log selected card ID
-                      setSelectedCardId(event.target.value);
-                    }}
-                  >
-                    {cards.map((card) => (
-                      <MenuItem key={card.id} value={card.id}>
-                        <div className="flex items-center">
-                          <IonIcon
-                            icon={cardIcon}
-                            style={{
-                              fontSize: "24px",
-                              color: getBankColor(card.bank_code),
-                            }}
-                          />
-                          <span className="ml-2">
-                            {card.bank_name} -{" "}
-                            {`**** ${card.card_number.slice(-4)}`}
-                          </span>
-                        </div>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ))}
+              {selectedOption === "My Saved Cards" && (
+                <div className="text-center">
+                  {cards.length === 0 ? (
+                    <div className="text-center text-gray-600">
+                      <div>
+                        No cards added yet...{" "}
+                        <span
+                          className="font-bold font-proxima text-blue-500 cursor-pointer"
+                          onClick={handleNavigateToAddCard}
+                        >
+                          Add Card Now...
+                        </span>
+                      </div>
+                      <div className="mt-7 mb--5 flex justify-center">
+                        <Image
+                          src="/images/paystack.png"
+                          alt="Paystack"
+                          width={150}
+                          height={50}
+                          className="text-center"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <Select
+                        fullWidth
+                        variant="outlined"
+                        displayEmpty
+                        className="mb-4 bg-white"
+                        placeholder="Which of your cards?"
+                        value={selectedCardId || ""}
+                        onChange={(event) => {
+                          console.log("Selected card ID:", event.target.value); // Log selected card ID
+                          setSelectedCardId(event.target.value);
+                        }}
+                      >
+                        {cards.map((card) => (
+                          <MenuItem key={card.id} value={card.id}>
+                            <div className="flex items-center">
+                              <IonIcon
+                                icon={cardIcon}
+                                style={{
+                                  fontSize: "24px",
+                                  color: getBankColor(card.bank_code),
+                                }}
+                              />
+                              <span className="ml-2">
+                                {card.bank_name} -{" "}
+                                {`**** ${card.card_number.slice(-4)}`}
+                              </span>
+                            </div>
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <div className="flex justify-center">
+                        <Image
+                          src="/images/paystack.png"
+                          alt="Paystack"
+                          width={150}
+                          height={50}
+                          className="text-center"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         }
@@ -391,7 +418,7 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
           isSending ? (
             <div className="flex items-center justify-center">
               <CircularProgress size={24} className="mr-2" />
-              Sending...
+              PROCESSING... PLEASE WAIT...
             </div>
           ) : selectedOption === "Bank Transfer" ? (
             "I'VE SENT THE PAYMENT"
