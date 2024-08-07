@@ -19,6 +19,9 @@ import {
   SET_TOP_SAVERS_DATA,
   SET_SELECTED_TOP_SAVER,
   SET_USER_PERCENTAGE,
+  SET_AUTO_SAVE_SETTINGS,
+  SET_AUTO_SAVE_OFF,
+  AutoSaveSettings,
   TopSaversData,
   TopSaver,
   KYCStatus,
@@ -30,6 +33,12 @@ const initialState: AuthState = {
   bankAccounts: [],
   userTransactions: [],
   isLoading: false,
+
+  autoSaveSettings: {
+    active: false,
+    amount: 0,
+    frequency: "",
+  },
 
   cards: [],
 
@@ -172,6 +181,21 @@ const authReducer = (
         ...state,
         userPercentage: action.payload,
       };
+
+    case SET_AUTO_SAVE_SETTINGS:
+      return {
+        ...state,
+        autoSaveSettings: action.payload,
+      };
+    case SET_AUTO_SAVE_OFF:
+      return {
+        ...state,
+        autoSaveSettings: {
+          ...state.autoSaveSettings,
+          active: false,
+        },
+      };
+
     default:
       return state;
   }

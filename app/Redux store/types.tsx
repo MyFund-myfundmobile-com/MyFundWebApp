@@ -17,6 +17,8 @@ export const SET_USER_TRANSACTIONS = "SET_USER_TRANSACTIONS";
 export const SET_TOP_SAVERS_DATA = "SET_TOP_SAVERS_DATA";
 export const SET_SELECTED_TOP_SAVER = "SET_SELECTED_TOP_SAVER";
 export const SET_USER_PERCENTAGE = "SET_USER_PERCENTAGE";
+export const SET_AUTO_SAVE_SETTINGS = "SET_AUTO_SAVE_SETTINGS";
+export const SET_AUTO_SAVE_OFF = "SET_AUTO_SAVE_OFF";
 
 export interface User {
   is_first_time_signup?: boolean;
@@ -66,6 +68,7 @@ export interface AuthState {
   topSaversData?: TopSaversData;
   selectedTopSaver?: TopSaver;
   userPercentage?: number;
+  autoSaveSettings?: AutoSaveSettings;
 }
 
 export interface WealthStage {
@@ -113,6 +116,12 @@ export interface TopSaversData {
   current_user: {
     individual_percentage: number;
   };
+}
+
+export interface AutoSaveSettings {
+  active: boolean;
+  amount?: number;
+  frequency?: string;
 }
 
 interface Saver {
@@ -216,6 +225,15 @@ interface SetUserTransactionsAction {
   payload: UserTransaction[];
 }
 
+interface SetAutoSaveSettingsAction {
+  type: typeof SET_AUTO_SAVE_SETTINGS;
+  payload: AutoSaveSettings;
+}
+
+interface SetAutoSaveOffAction {
+  type: typeof SET_AUTO_SAVE_OFF;
+}
+
 export type AuthActionTypes =
   | SetUserTokenAction
   | SetUserInfoAction
@@ -234,4 +252,6 @@ export type AuthActionTypes =
   | SetKYCStatusAction
   | SetTopSaversDataAction
   | SetSelectedTopSaverAction
-  | SetUserPercentageAction;
+  | SetUserPercentageAction
+  | SetAutoSaveSettingsAction
+  | SetAutoSaveOffAction;

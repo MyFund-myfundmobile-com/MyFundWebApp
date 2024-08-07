@@ -149,7 +149,7 @@ const HomePage: React.FC = () => {
       case 2:
         return "#aF0000";
       case 3:
-        return "#BF3F00";
+        return "#FF5722";
       case 4:
         return "#BF9F00";
       case 5:

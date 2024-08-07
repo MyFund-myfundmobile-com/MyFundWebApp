@@ -18,6 +18,7 @@ import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
+import { fetchAutoSaveSettings } from "@/app/Redux store/actions"; // Import action
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
@@ -39,10 +40,14 @@ const SavePage = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const autoSaveSettings = useSelector(
+    (state: RootState) => state.auth.autoSaveSettings
+  );
 
   useEffect(() => {
     if (token) {
       dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
+      dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action with type assertion to any
     }
   }, [dispatch, token]);
 
@@ -67,6 +72,12 @@ const SavePage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (autoSaveSettings) {
+      setIsAutoSaveOn(autoSaveSettings.active); // Set the auto save status from fetched settings
+    }
+  }, [autoSaveSettings]);
 
   useEffect(() => {
     const slideInterval = setInterval(() => {

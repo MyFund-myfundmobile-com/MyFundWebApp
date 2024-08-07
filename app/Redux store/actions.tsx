@@ -20,6 +20,9 @@ import {
   DELETE_CARD,
   SET_USER_TRANSACTIONS,
   SET_TOP_SAVERS_DATA,
+  SET_AUTO_SAVE_SETTINGS,
+  SET_AUTO_SAVE_OFF,
+  AutoSaveSettings,
   TopSaversData,
   UserTransaction,
   KYCStatus,
@@ -308,6 +311,46 @@ export const fetchTopSaversData = (token: string) => {
     }
   };
 };
+
+export const fetchAutoSaveSettings = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    // Change Dispatch type
+    if (!token) {
+      console.error("Authentication Error: User is not authenticated.");
+      return;
+    }
+
+    try {
+      const response = await axios.get<AutoSaveSettings>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-autosave-settings/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(setAutoSaveSettings(response.data));
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
+  };
+};
+
+export const setAutoSaveSettings = (
+  autoSaveSettings: AutoSaveSettings
+): AuthActionTypes => {
+  return {
+    type: SET_AUTO_SAVE_SETTINGS,
+    payload: autoSaveSettings,
+  };
+};
+
+export const setAutoSaveOff = (): AuthActionTypes => ({
+  type: SET_AUTO_SAVE_OFF,
+});
 
 export const updateUserProfile = (updatedProfile: any) => ({
   type: UPDATE_USER_PROFILE,

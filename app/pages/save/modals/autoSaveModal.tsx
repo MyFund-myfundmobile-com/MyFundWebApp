@@ -19,12 +19,16 @@ import CustomSnackbar from "@/app/components/snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
-import { fetchTopSaversData } from "@/app/Redux store/actions";
+import {
+  fetchAutoSaveSettings,
+  fetchTopSaversData,
+} from "@/app/Redux store/actions";
 import axios from "axios";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons"; // Import icons
 import { IonIcon } from "@ionic/react";
 import { bankOptions } from "@/app/components/bankOptions";
 import { useNavigate } from "react-router-dom"; // import useNavigate
+import Confetti from "react-confetti";
 
 interface AutoSaveModalProps {
   isOpen: boolean;
@@ -46,6 +50,8 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -91,6 +97,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
     return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  // Update the handleConfirmAutoSave function to show the success modal
   const handleConfirmAutoSave = async () => {
     if (!token) {
       setSnackbarMessage(
@@ -100,62 +107,31 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
       setSnackbarOpen(true);
       return;
     }
+
     try {
       setProcessing(true);
 
-      const currentDate = new Date();
-      const messageDate = currentDate.toISOString();
-      const messageTime = currentDate.toLocaleTimeString();
-
-      // Dispatch the success message with date and time properties
-      const successMessage = `Your AutoSave has been activated. You're now saving ₦${amount} ${frequency}. Well done! Keep growing your funds. 🥂`;
-      const messageData = {
-        text: successMessage,
-        date: messageDate,
-        time: messageTime,
-      };
-
-      // Dispatch the success message with date and time properties
-      // dispatch(addAlertMessage(messageData));
-
-      // Send a POST request to create an alert message associated with the user
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/create-alert-message/`,
-        {
-          text: successMessage, // The alert message text
-          date: messageDate, // The date of the alert message
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-
-      // Activate AutoSave
+      const formattedAmount = parseFloat(amount.replace(/,/g, ""));
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/activate-autosave/`,
         {
           card_id: selectedCardId,
-          amount: parseFloat(amount.replace(/,/g, "")),
+          amount: formattedAmount,
           frequency: frequency,
         },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (response.status === 200) {
-        // dispatch(fetchAutoSaveSettings());
+        dispatch(fetchAutoSaveSettings(token));
         dispatch(fetchTopSaversData(token));
         setProcessing(false);
-        setSnackbarMessage(successMessage);
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        setShowSuccessModal(true); // Show success modal
         onClose();
       } else {
         setProcessing(false);
@@ -299,6 +275,35 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
         buttonDisabled={!selectedCardId || !amount}
         zIndex={200}
       />
+
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        header="Autosave Activated!"
+        body={`You are now saving ₦${amount} ${frequency} and your next autosave will be processed in the next time interval selected.`}
+        buttonText="OK"
+        modalIcon={checkmarkCircleOutline}
+        iconColor="green"
+        startIcon={
+          processing ? (
+            <CircularProgress size={20} style={{ color: "green" }} />
+          ) : (
+            <IonIcon
+              icon={checkmarkCircleOutline}
+              style={{ fontSize: "20px", marginRight: 5 }}
+            />
+          )
+        }
+        onButtonClick={() => setShowSuccessModal(false)}
+        zIndex={200}
+        confettiAnimation={true}
+      >
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
+          {showConfetti && (
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          )}
+        </div>
+      </Modal>
 
       {/* Snackbar for notifications */}
       <CustomSnackbar
