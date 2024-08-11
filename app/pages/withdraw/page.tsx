@@ -64,6 +64,27 @@ const WithdrawPage = () => {
     });
   };
 
+  // Add this formatting function to format account balances with commas
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  // Format the account balances
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
+
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
+
   useEffect(() => {
     const container = document.getElementById(
       "withdraw-account-cards-container"
@@ -205,11 +226,7 @@ const WithdrawPage = () => {
             label="SAVINGS"
             rate="10% charge"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.savings.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedSavings : "****"}
             rateColor="#F97316"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
@@ -222,11 +239,7 @@ const WithdrawPage = () => {
             label="INVESTMENTS"
             rate="15% charge"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.investment.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedInvestment : "****"}
             rateColor="#F97316"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
@@ -251,11 +264,7 @@ const WithdrawPage = () => {
             label="WALLET"
             rate="Free"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.wallet.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedWallet : "****"}
             rateColor="#43FF8E"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
