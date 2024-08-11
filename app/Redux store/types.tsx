@@ -120,8 +120,9 @@ export interface TopSaversData {
 
 export interface AutoSaveSettings {
   active: boolean;
-  amount?: number;
-  frequency?: string;
+  amount: number; // No longer optional
+  frequency: string; // No longer optional
+  autosave_enabled?: boolean; // Optional
 }
 
 interface Saver {

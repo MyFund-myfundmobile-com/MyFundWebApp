@@ -314,14 +314,13 @@ export const fetchTopSaversData = (token: string) => {
 
 export const fetchAutoSaveSettings = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
-    // Change Dispatch type
     if (!token) {
       console.error("Authentication Error: User is not authenticated.");
       return;
     }
 
     try {
-      const response = await axios.get<AutoSaveSettings>(
+      const response = await axios.get<{ autoSaveSettings: AutoSaveSettings }>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-autosave-settings/`,
         {
           headers: {
@@ -331,7 +330,9 @@ export const fetchAutoSaveSettings = (token: string) => {
       );
 
       if (response.status === 200) {
-        dispatch(setAutoSaveSettings(response.data));
+        const { autoSaveSettings } = response.data;
+        // Dispatch the autoSaveSettings directly without nesting
+        dispatch(updateAutoSaveSettings(autoSaveSettings));
       }
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -339,12 +340,12 @@ export const fetchAutoSaveSettings = (token: string) => {
   };
 };
 
-export const setAutoSaveSettings = (
+export const updateAutoSaveSettings = (
   autoSaveSettings: AutoSaveSettings
 ): AuthActionTypes => {
   return {
     type: SET_AUTO_SAVE_SETTINGS,
-    payload: autoSaveSettings,
+    payload: autoSaveSettings, // Directly store the flat object
   };
 };
 

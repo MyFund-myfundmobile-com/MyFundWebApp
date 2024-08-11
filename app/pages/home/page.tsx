@@ -12,6 +12,7 @@ import RecentTransactionsSection from "./recentTransactions";
 import TopSaversSection from "./topSavers";
 import WealthMapSection from "./wealthMap";
 import { useNavigate } from "react-router-dom";
+import { Img } from "react-image";
 import Image from "next/image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -174,7 +175,7 @@ const HomePage: React.FC = () => {
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src={userInfo?.profile_picture || "/Profile1.png"}
+            src={userInfo?.profile_picture || `/images/Profile1.png`}
             width={120}
             height={120}
             alt="Profile"
@@ -249,7 +250,7 @@ const HomePage: React.FC = () => {
           fontSize: 15,
         }}
       >
-        <Image
+        <Img
           src="/images/logo..png"
           width={1280}
           height={1280}

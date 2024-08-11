@@ -15,13 +15,16 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
-import { setKYCStatus } from "@/app/Redux store/actions";
 
 const QuickActionsSection = () => {
   const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleActivateAutoSave = () => {
-    navigate("/App/save", { state: { autoSaveModalActive: true } }); // Navigate to SavePage with state
+  const handleActiveAutoSaveButton = () => {
+    if (isAutoSaveActive) {
+      navigate("/App/save"); // Navigate to SavePage without state
+    } else {
+      navigate("/App/save", { state: { autoSaveModalActive: true } }); // Navigate to SavePage with state
+    }
   };
 
   const handleActivateAutoInvest = () => {
@@ -39,8 +42,16 @@ const QuickActionsSection = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
   const kycStatus = useSelector((state: RootState) => state.auth.KYCStatus);
+  const autoSaveSettings = useSelector(
+    (state: RootState) => state.auth.autoSaveSettings
+  );
+  // Use autoSaveSettings.active instead of autosave_enabled
+  const isAutoSaveActive = autoSaveSettings?.active ?? false;
 
-  const autoSaveSettings = { active: false }; // Update this based on your state
+  // 2. Update the `isAutoSaveActive` condition to check if autoSaveSettings is defined and active
+  console.log("Fetched autoSaveSettings from Redux:", autoSaveSettings?.active);
+  console.log("Is AutoSave Active:", autoSaveSettings);
+
   const autoInvestSettings = { active: false }; // Update this based on your state
 
   let statusColor = "text-gray-500"; // Default to gray
@@ -62,24 +73,32 @@ const QuickActionsSection = () => {
       <div className="flex flex-col gap-2 mt-2 font-karla">
         <button
           className={`flex items-center p-2 border rounded-lg ${
-            autoSaveSettings.active ? "bg-gray-200" : "bg-white"
-          } transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]`}
-          onClick={handleActivateAutoSave}
-          disabled={autoSaveSettings.active}
+            isAutoSaveActive ? "bg-gray-200" : "bg-white"
+          } transition-all duration-300 transform ${
+            isAutoSaveActive ? "" : "hover:scale-105 hover:bg-[#DCD1FF]"
+          }`}
+          onClick={handleActiveAutoSaveButton} // Ensure click handler is always invoked
         >
           <IonIcon
             icon={carOutline}
             className={`text-xl ${
-              autoSaveSettings.active ? "text-green-500" : "text-black"
+              isAutoSaveActive ? "text-green-600 font-bold" : "text-black"
             }`}
           />
-          <span className="ml-3 flex-1 text-left text-sm">
-            {autoSaveSettings.active ? "AutoSave is ON" : "Turn ON AutoSave"}
+          <span
+            className={`ml-3 flex-1 text-left text-sm ${
+              isAutoSaveActive ? "text-green-600 font-bold" : "text-black"
+            }`}
+            style={{ letterSpacing: -0.5 }}
+          >
+            {isAutoSaveActive
+              ? `AutoSave is ON: ₦${autoSaveSettings?.amount} ${autoSaveSettings?.frequency}`
+              : "Turn ON AutoSave"}
           </span>
-          {autoSaveSettings.active && (
+          {isAutoSaveActive && (
             <IonIcon
-              icon={checkmarkCircleOutline}
-              className="text-xl text-green-500"
+              icon={checkmarkCircle}
+              className="text-xl text-green-600 font-bold"
             />
           )}
         </button>
@@ -99,7 +118,7 @@ const QuickActionsSection = () => {
           />
           <span className="ml-3 flex-1 text-left text-sm">
             {autoInvestSettings.active
-              ? "AutoInvest is ON"
+              ? `AutoInvest is ON:`
               : "Turn ON AutoInvest"}
           </span>
           {autoInvestSettings.active && (

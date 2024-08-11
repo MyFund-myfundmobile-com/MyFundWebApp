@@ -11,7 +11,7 @@ import {
 } from "ionicons/icons";
 import { Box, IconButton } from "@mui/material";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
-import Image from "next/image";
+import { Img } from "react-image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
@@ -60,7 +60,7 @@ const ReferAndEarn: React.FC = () => {
       <div className="md:col-span-6">
         <div className="bg-white p-4 rounded-lg shadow-md h-full">
           <div className="mb-4 mt-3">
-            <Image
+            <Img
               width={720}
               height={720}
               src="/images/ReferAndEarn500.png"

@@ -5,7 +5,7 @@ import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
 import { Divider } from "@mui/material";
 import Section from "@/app/components/section";
-import Image from "next/image";
+import { Img } from "react-image";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTopSaversData } from "@/app/Redux store/actions";
 import { RootState } from "@/app/Redux store/store";
@@ -81,22 +81,22 @@ const TopSaversSection: React.FC = () => {
       <div style={{ marginTop: 10 }}>
         {userPosition === -1 && (
           <Subtitle
-            className="rounded-lg p-2 sm:p-4 grid grid-cols-[auto,1fr] items-start overflow-hidden bg-[#f7f5ff] text-[12px]"
-            style={{ fontSize: 16 }}
+            className="rounded-lg p-2 sm:p-4 grid grid-cols-[auto,1fr] items-start overflow-hidden bg-[#f7f5ff]"
+            style={{ fontSize: 15.5 }}
           >
             You&apos;re yet to save this month. Save to see your position in the
             list of top savers.
           </Subtitle>
         )}
         {userPosition !== -1 && userPercentage !== undefined && (
-          <Subtitle style={{ fontSize: 16 }}>
+          <Subtitle style={{ fontSize: 15.5 }}>
             {userPercentage.toFixed(0)}% to the top
           </Subtitle>
         )}
         {userPosition !== -1 && userPosition < 3 && (
           <div
             className="rounded-lg p-2 sm:p-4 grid grid-cols-[auto,1fr] items-start overflow-hidden bg-[#f7f5ff] text-[12px]"
-            style={{ letterSpacing: "-0.4px" }}
+            style={{ letterSpacing: "-0.4px", fontSize: 15.5 }}
           >
             <FaTrophy
               className="w-8 h-8 mr-3 self-center"
@@ -113,7 +113,7 @@ const TopSaversSection: React.FC = () => {
         {userPosition !== -1 && userPosition >= 3 && (
           <div
             className="rounded-lg p-2 sm:p-4 grid grid-cols-[auto,1fr] items-start overflow-hidden bg-[#f7f5ff] font-karla text-[12px]"
-            style={{ letterSpacing: "-0.4px" }}
+            style={{ letterSpacing: "-0.4px", fontSize: 15.5 }}
           >
             <FaArrowUp
               className="w-8 h-8 mr-3 self-center"
@@ -145,12 +145,12 @@ const TopSaversSection: React.FC = () => {
           ) : (
             `${userPosition + 1}${
               userPosition + 1 === 1
-                ? "st"
+                ? "ST"
                 : userPosition + 1 === 2
-                ? "nd"
+                ? "ND"
                 : userPosition + 1 === 3
-                ? "rd"
-                : "th"
+                ? "RD"
+                : "TH"
             }`
           )}
         </Title>
@@ -173,8 +173,8 @@ const TopSaversSection: React.FC = () => {
               {index === 2}
               {index > 2}
             </span>
-            <Image
-              src={saver.profilePicture || "/images/Profile1.png"}
+            <Img
+              src={saver?.profilePicture || `/images/Profile1.png`}
               alt={saver.firstName}
               width={index === 0 ? 50 : 40} // Larger profile picture for the top saver
               height={index === 0 ? 50 : 40}

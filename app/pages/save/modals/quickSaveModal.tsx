@@ -28,7 +28,7 @@ import { bankOptions } from "@/app/components/bankOptions";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import OTPModal from "./otpModal";
 import { fetchUserTransactions } from "@/app/Redux store/actions";
-import Image from "next/image"; // If not already imported
+import { Img } from "react-image";
 
 interface QuickSaveModalProps {
   isOpen: boolean;
@@ -356,7 +356,7 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
                         </span>
                       </div>
                       <div className="mt-7 mb--5 flex justify-center">
-                        <Image
+                        <Img
                           src="/images/paystack.png"
                           alt="Paystack"
                           width={150}
@@ -399,7 +399,7 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
                       </Select>
 
                       <div className="flex justify-center">
-                        <Image
+                        <Img
                           src="/images/paystack.png"
                           alt="Paystack"
                           width={150}

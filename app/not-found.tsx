@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { Img } from "react-image";
 import Link from "next/link";
 
 const NotFound = () => {
@@ -10,7 +12,7 @@ const NotFound = () => {
         {" "}
         {/* Component */}{" "}
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-          <Image
+          <Img
             src="/images/Questions-bro.png"
             alt=""
             width={200}

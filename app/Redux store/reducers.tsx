@@ -20,12 +20,6 @@ import {
   SET_SELECTED_TOP_SAVER,
   SET_USER_PERCENTAGE,
   SET_AUTO_SAVE_SETTINGS,
-  SET_AUTO_SAVE_OFF,
-  AutoSaveSettings,
-  TopSaversData,
-  TopSaver,
-  KYCStatus,
-  Card,
 } from "./types";
 
 const initialState: AuthState = {
@@ -38,6 +32,7 @@ const initialState: AuthState = {
     active: false,
     amount: 0,
     frequency: "",
+    autosave_enabled: false,
   },
 
   cards: [],
@@ -185,15 +180,7 @@ const authReducer = (
     case SET_AUTO_SAVE_SETTINGS:
       return {
         ...state,
-        autoSaveSettings: action.payload,
-      };
-    case SET_AUTO_SAVE_OFF:
-      return {
-        ...state,
-        autoSaveSettings: {
-          ...state.autoSaveSettings,
-          active: false,
-        },
+        autoSaveSettings: action.payload, // No extra wrapping, store directly
       };
 
     default:

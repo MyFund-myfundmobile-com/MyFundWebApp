@@ -14,7 +14,7 @@ import {
   CheckCircleOutline,
 } from "@mui/icons-material";
 import Modal from "@/app/components/modal";
-import Image from "next/image";
+import { Img } from "react-image";
 import CustomSnackbar from "@/app/components/snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
@@ -52,6 +52,9 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
   );
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  const [isAutoSaveOn, setIsAutoSaveOn] = useState<boolean>(false);
+  const [tempAutoSaveState, setTempAutoSaveState] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -131,7 +134,11 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
         dispatch(fetchAutoSaveSettings(token));
         dispatch(fetchTopSaversData(token));
         setProcessing(false);
+        setSnackbarMessage("AutoSave successfully activated!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true); // Show snackbar message
         setShowSuccessModal(true); // Show success modal
+        setShowConfetti(true); // Trigger confetti
         onClose();
       } else {
         setProcessing(false);
@@ -251,7 +258,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
 
             <div className="flex justify-center my-2">
               {selectedCardId && (
-                <Image
+                <Img
                   src="/images/paystack.png"
                   alt="Paystack"
                   width={150}
@@ -278,7 +285,10 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
 
       <Modal
         isOpen={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
+        onClose={() => {
+          setShowSuccessModal(false);
+          setShowConfetti(false); // Stop confetti when closing the modal
+        }}
         header="Autosave Activated!"
         body={`You are now saving ₦${amount} ${frequency} and your next autosave will be processed in the next time interval selected.`}
         buttonText="OK"
@@ -294,9 +304,11 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
             />
           )
         }
-        onButtonClick={() => setShowSuccessModal(false)}
+        onButtonClick={() => {
+          setShowSuccessModal(false);
+          setShowConfetti(false); // Stop confetti when closing the modal
+        }}
         zIndex={200}
-        confettiAnimation={true}
       >
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (

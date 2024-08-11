@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Section from "@/app/components/section";
 import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
-import Image from "next/image";
+import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo, updateWealthStage } from "@/app/Redux store/actions";
@@ -12,6 +12,7 @@ import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import { IonIcon } from "@ionic/react";
 import { trendingUpOutline } from "ionicons/icons";
 import Modal from "@/app/components/modal";
+import Image from "next/image";
 
 const WealthMapSection = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -111,15 +112,32 @@ const WealthMapSection = () => {
     [accountBalances]
   );
 
+  // const currentStage = useMemo(() => {
+  //   return (
+  //     wealthStages.find((stage) => stage.condition) || {
+  //       stage: 0,
+  //       text: "Calculating...",
+  //       description: "Calculating your financial status...",
+  //     }
+  //   );
+  // }, [wealthStages]);
+
   const currentStage = useMemo(() => {
+    if (!accountBalances) {
+      return {
+        stage: 0,
+        text: "Calculating...",
+        description: "Calculating your financial status...",
+      };
+    }
     return (
       wealthStages.find((stage) => stage.condition) || {
-        stage: 1,
-        text: "Debt",
-        description: "Your income is less than your expenses",
+        stage: 0,
+        text: "Calculating...",
+        description: "Calculating your financial status...",
       }
     );
-  }, [wealthStages]);
+  }, [wealthStages, accountBalances]);
 
   // Dispatch the current stage to the Redux store
   useEffect(() => {
@@ -150,10 +168,15 @@ const WealthMapSection = () => {
           <Image
             width="240"
             height="240"
-            src={`/images/9steps${currentStage.stage}.png`}
+            src={
+              currentStage.stage === 0
+                ? `/images/9steps0.png`
+                : `/images/9steps${currentStage.stage}.png`
+            }
             alt="Wealth Map"
             className="w-full h-auto rounded-lg object-cover"
           />
+
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm mt-7 mb-7"
             onClick={handleLearnMore}
@@ -179,11 +202,10 @@ const WealthMapSection = () => {
           header="Wealth Map"
           body={
             <div className="relative w-full h-full">
-              <Image
-                src={modalImageSrc}
+              <Img
+                src={modalImageSrc || `/images/9steps10.png`}
                 alt="Wealth Map"
-                fill
-                style={{ objectFit: "contain" }}
+                style={{ objectFit: "contain", width: "100%", height: "100%" }}
                 className="w-full h-full"
               />
             </div>

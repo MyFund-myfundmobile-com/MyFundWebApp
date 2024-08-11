@@ -15,12 +15,12 @@ import { CircularProgress } from "@mui/material";
 import QuickInvestModal from "./modals/quickInvestModal";
 import AutoInvestModal from "./modals/autoInvestModal";
 import { useLocation } from "react-router-dom"; // Import useLocation
-import Image from "next/image";
-import TopInvestorsSection from "../home/topInvestors";
+import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
+import TopSaversSection from "../home/topSavers";
 
 const InvestPage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
@@ -84,6 +84,18 @@ const InvestPage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // Add this formatting function to format account balances with commas
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -152,7 +164,6 @@ const InvestPage = () => {
     nearestThousand(Number(userInfo.savings_goal_amount)),
     3
   );
-
 
   const slides = [
     {
@@ -305,7 +316,7 @@ const InvestPage = () => {
             label="INVESTMENT"
             rate="20% p.a."
             currency="₦"
-            amount={showBalances ? `${accountBalances.investment}` : "****"}
+            amount={showBalances ? formattedInvestment : "****"}
             buttonText="QuickInvest"
             buttonIcon="save-outline"
             onButtonClick={() => handleOpenQuickInvestModal()} // Pass the function here without preset amount
@@ -367,7 +378,7 @@ const InvestPage = () => {
           <RecentTransactionsSection />
         </div>
         <div className="md:col-span-3">
-          <TopInvestorsSection />
+          <TopSaversSection />
         </div>
         <div className="md:col-span-6">
           <div
@@ -376,7 +387,7 @@ const InvestPage = () => {
           >
             <Section>SPONSOR ONGOING PROJECTS TO EARN HIGHER ROI...</Section>
             <div className="mb-4 mt-3">
-              <Image
+              <Img
                 width={720}
                 height={720}
                 src="/images/sponsorship.png"

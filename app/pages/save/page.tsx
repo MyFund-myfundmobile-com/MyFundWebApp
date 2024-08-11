@@ -13,12 +13,17 @@ import { IonIcon } from "@ionic/react";
 import QuickSaveModal from "./modals/quickSaveModal";
 import AutoSaveModal from "./modals/autoSaveModal";
 import { useLocation } from "react-router-dom"; // Import useLocation
-import Image from "next/image";
+import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
-import { fetchAutoSaveSettings } from "@/app/Redux store/actions"; // Import action
+import {
+  fetchAutoSaveSettings,
+  updateAutoSaveSettings,
+} from "@/app/Redux store/actions"; // Import action
+import DeactivateAutoSaveModal from "./modals/deactivateAutoSaveModal";
+import { checkmarkCircle } from "ionicons/icons";
 
 const SavePage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
@@ -27,10 +32,16 @@ const SavePage = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [isAutoSaveOn, setIsAutoSaveOn] = useState<boolean>(false);
+  const [tempAutoSaveState, setTempAutoSaveState] = useState<boolean>(false);
+
   const [isQuickSaveModalOpen, setIsQuickSaveModalOpen] =
     useState<boolean>(false);
   const [isAutoSaveModalOpen, setIsAutoSaveModalOpen] =
     useState<boolean>(false); // State for AutoSave modal
+
+  const [isDeactivateAutoSaveModalOpen, setIsDeactivateAutoSaveModalOpen] =
+    useState<boolean>(false);
+
   const [amount, setAmount] = useState<string>(""); // State for selected amount
   const location = useLocation(); // Initialize useLocation
 
@@ -50,6 +61,27 @@ const SavePage = () => {
       dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action with type assertion to any
     }
   }, [dispatch, token]);
+
+  useEffect(() => {
+    if (autoSaveSettings) {
+      setIsAutoSaveOn(autoSaveSettings.active ?? false); // Update this line
+    }
+  }, [autoSaveSettings]);
+
+  const handleToggleAutoSave = () => {
+    const newAutoSaveStatus = !(autoSaveSettings?.active || false);
+    setTempAutoSaveState(isAutoSaveOn);
+    if (newAutoSaveStatus) {
+      setIsAutoSaveModalOpen(true);
+    } else {
+      if (autoSaveSettings?.active) {
+        setIsDeactivateAutoSaveModalOpen(true);
+      } else {
+        setIsAutoSaveModalOpen(true);
+      }
+    }
+    setIsAutoSaveOn(newAutoSaveStatus);
+  };
 
   useEffect(() => {
     if (location.state?.quickSaveModalActive) {
@@ -74,12 +106,6 @@ const SavePage = () => {
   }, []);
 
   useEffect(() => {
-    if (autoSaveSettings) {
-      setIsAutoSaveOn(autoSaveSettings.active); // Set the auto save status from fetched settings
-    }
-  }, [autoSaveSettings]);
-
-  useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, 7000);
@@ -91,18 +117,32 @@ const SavePage = () => {
     setShowBalances(!showBalances);
   };
 
-  const toggleAutoSave = () => {
-    setIsAutoSaveOn(!isAutoSaveOn);
-    // Optionally open AutoSave modal automatically on toggle
-    if (!isAutoSaveOn) {
-      setIsAutoSaveModalOpen(true);
-    }
+  const handleCloseDeactivateAutoSaveModal = () => {
+    setIsDeactivateAutoSaveModalOpen(false);
+  };
+
+  const handleCloseAutoSaveModal = () => {
+    setIsAutoSaveOn(tempAutoSaveState); // Revert to the original state
+    setIsAutoSaveModalOpen(false);
   };
 
   const handleOpenQuickSaveModal = (presetAmount = "") => {
     setAmount(presetAmount);
     setIsQuickSaveModalOpen(true);
   };
+
+  // Add this formatting function to format account balances with commas
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  // Format the account balances
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
 
   // Function to get the current month
   const getCurrentMonthName = () => {
@@ -313,7 +353,7 @@ const SavePage = () => {
             label="SAVINGS"
             rate="13% p.a."
             currency="₦"
-            amount={showBalances ? `${accountBalances.savings}` : "****"}
+            amount={showBalances ? formattedSavings : "****"}
             buttonText="QuickSave"
             buttonIcon="save-outline"
             onButtonClick={() => handleOpenQuickSaveModal()} // Pass the function here without preset amount
@@ -321,8 +361,8 @@ const SavePage = () => {
           {/* AutoSave Toggle using MUI Switch */}
           <div className="absolute bottom-2 left-2 flex items-center">
             <Switch
-              checked={isAutoSaveOn}
-              onChange={toggleAutoSave}
+              checked={isAutoSaveOn} // Use local state for switch
+              onChange={handleToggleAutoSave}
               color="default"
               inputProps={{ "aria-label": "toggle autosave" }}
               sx={{
@@ -334,6 +374,7 @@ const SavePage = () => {
                 },
               }}
             />
+
             <span
               className={`text-gray-500 ml-1 font-karla ${
                 isAutoSaveOn ? "text-green-500" : ""
@@ -366,9 +407,8 @@ const SavePage = () => {
           </div>
         </div>
       </div>
-
       <Divider
-        className="my-4 bg-gray-100"
+        className="my-2 bg-gray-100"
         style={{ marginTop: 20, marginBottom: 20 }}
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
@@ -382,7 +422,7 @@ const SavePage = () => {
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <Section>MEET OUR MOST RECENT TOP SAVER...</Section>
             <div className="mb-4 mt-3">
-              <Image
+              <Img
                 width={720}
                 height={720}
                 src="/images/topsaver.png"
@@ -394,7 +434,6 @@ const SavePage = () => {
           </div>
         </div>
       </div>
-
       <QuickSaveModal
         isOpen={isQuickSaveModalOpen}
         onClose={() => setIsQuickSaveModalOpen(false)}
@@ -403,8 +442,16 @@ const SavePage = () => {
       />
       <AutoSaveModal
         isOpen={isAutoSaveModalOpen}
-        onClose={() => setIsAutoSaveModalOpen(false)}
+        onClose={handleCloseAutoSaveModal}
         className="animate-floatIn"
+      />
+      <DeactivateAutoSaveModal
+        isOpen={isDeactivateAutoSaveModalOpen}
+        onClose={handleCloseDeactivateAutoSaveModal}
+        onDeactivate={() => {
+          console.log("Deactivated");
+          // Handle additional logic for deactivating AutoSave here
+        }}
       />
     </div>
   );
