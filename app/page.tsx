@@ -1,3 +1,4 @@
+"use client"
 import Facts from "./ui/landing/facts";
 import Footer from "./ui/landing/footer";
 import Header from "./ui/landing/header";

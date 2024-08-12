@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarRetracted, activeItem }) => { 
           {activeItem} {/* Display the active item */}
         </div>
         <div className="absolute right-4 top-4">
-          <IonIcon icon={notificationsOutline} className="text-purple1 text-2xl mr-4" style={{ color: '#4C28BC'}}/>
+          <IonIcon icon={notificationsOutline} className="text-purple1 text-2xl mr-4" style={{ color: '#4C28BC' }} />
         </div>
       </div>
     </div>
