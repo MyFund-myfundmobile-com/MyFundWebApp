@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Select, MenuItem, IconButton, CircularProgress } from '@mui/material';
 import { ArrowUpward, Close, CheckCircleOutline, FileCopyOutlined } from '@mui/icons-material';
 import Modal from '@/app/components/modal';
@@ -18,18 +18,35 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({ isOpen, onClose }) =>
   const [amount, setAmount] = useState('');
   const [selectedFrequency, setSelectedFrequency] = useState('');
   const [selectedCard, setSelectedCard] = useState('');
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const [isSending, setIsSending] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
 
+  //Variables for snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const handleClearAmount = () => {
     setAmount('');
   };
+  const formatAmount = (value: string) => {
+    // Remove non-digit characters
+    const cleanedValue = value.replace(/[^0-9]/g, "");
+    // Format with commas
+    return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
-  };
+    const value = event.target.value.replace(/,/g, ""); // Remove commas;
+    ; if (!isNaN(Number(value))) {
+      setAmount(formatAmount(value)); // Only set if it's a valid number
+    }
+  }
 
   const handleFrequencyChange = (event: SelectChangeEvent<string>) => {
     setSelectedFrequency(event.target.value);
@@ -46,7 +63,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({ isOpen, onClose }) =>
       setIsSending(false);
       setShowSuccessModal(true);
       setShowConfetti(true); // Activate confetti on success
-      setTimeout(() => setShowConfetti(false), 4000); 
+      setTimeout(() => setShowConfetti(false), 4000);
       onClose(); // Close modal after success
       // Hide confetti after 3 seconds
     }, 3000); // Adjust as needed for the simulation
@@ -163,7 +180,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({ isOpen, onClose }) =>
         buttonText="OK"
         modalIcon={carSportOutline}
         iconColor="green"
-        startIcon={isSending ? <CircularProgress size={20} style={{color: 'green'}} /> : <IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+        startIcon={isSending ? <CircularProgress size={20} style={{ color: 'green' }} /> : <IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
         onButtonClick={handleSuccessModalClose}
         zIndex={200}
         confettiAnimation={true}
