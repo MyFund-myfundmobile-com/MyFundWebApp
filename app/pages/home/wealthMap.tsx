@@ -112,7 +112,24 @@ const WealthMapSection = () => {
     [accountBalances]
   );
 
+  const currentStage = useMemo(() => {
+    return (
+      wealthStages.find((stage) => stage.condition) || {
+        stage: 1,
+        text: "Debt",
+        description: "Your income is less than your expenses",
+      }
+    );
+  }, [wealthStages]);
+
   // const currentStage = useMemo(() => {
+  //   if (!accountBalances) {
+  //     return {
+  //       stage: 0,
+  //       text: "Calculating...",
+  //       description: "Calculating your financial status...",
+  //     };
+  //   }
   //   return (
   //     wealthStages.find((stage) => stage.condition) || {
   //       stage: 0,
@@ -120,24 +137,7 @@ const WealthMapSection = () => {
   //       description: "Calculating your financial status...",
   //     }
   //   );
-  // }, [wealthStages]);
-
-  const currentStage = useMemo(() => {
-    if (!accountBalances) {
-      return {
-        stage: 0,
-        text: "Calculating...",
-        description: "Calculating your financial status...",
-      };
-    }
-    return (
-      wealthStages.find((stage) => stage.condition) || {
-        stage: 0,
-        text: "Calculating...",
-        description: "Calculating your financial status...",
-      }
-    );
-  }, [wealthStages, accountBalances]);
+  // }, [wealthStages, accountBalances]);
 
   // Dispatch the current stage to the Redux store
   useEffect(() => {
