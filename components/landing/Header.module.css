@@ -1,0 +1,72 @@
+
+.headerContainer {
+    background-image: url('/images/bgimage.png');
+    background-size: contain; /* Cover the entire container */
+    background-position: center; /* Center the image */
+}
+
+@keyframes hoverAnimation {
+    0% {
+        transform: translateY(0%);
+    }
+    50% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+.heroImage {
+    animation: hoverAnimation 5s linear infinite; 
+}
+
+.tracking-custom {
+    letter-spacing: 10.01px; 
+  }
+  
+
+.smallButton {
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.buttonGroup {
+    margin-top: 90px;
+    display: flex;
+    gap: 10px;
+}
+
+.buttonContainer {
+    transition: transform 0.3s ease;
+  }
+  
+  .buttonContainer:hover {
+    transform: scale(1.05);
+  }
+
+
+
+  /* Header text animation */
+  @keyframes float-up {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+  
+  .animate-float-up {
+    animation: float-up 5s linear infinite;
+  }
+  
+  
+  

@@ -2,32 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Custom CSS (can be in a global CSS file or a CSS module) */
+.arrow::before {
+  content: "";
+  position: absolute;
+  width: var(--tw-width-arrow-large);
+  height: var(--tw-height-arrow-large);
+  background-color: #333; /* Arrow color */
+  clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
+  transform: translateX(var(--tw-translate-arrow-left)) rotate(90deg); /* Pointing to the right */
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+  background-color: #f7f5ff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 0;
+  font-family: "var(--font-karla)", sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+#root {
+  display: flex;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.confetti {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  position: absolute;
+  animation: confettiAnimation 3s ease-out forwards;
+}
+
+@keyframes confettiAnimation {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
   }
 }
