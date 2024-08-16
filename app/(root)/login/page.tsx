@@ -68,7 +68,7 @@ const LoginPage = () => {
           playLoginSound();
 
           setTimeout(() => {
-            window.location.href = "/App";
+            window.location.href = "/app";
           }, 1000);
         } else {
           setOpenSnackbar(true);

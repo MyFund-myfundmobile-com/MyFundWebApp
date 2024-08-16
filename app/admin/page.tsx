@@ -32,7 +32,7 @@ const LoginPage = () => {
     // Simulate a login process with a delay
     setTimeout(() => {
       setIsLoading(false);
-      window.location.href = "/admin/App"; // Redirect to the home page after login
+      window.location.href = "/admin/dashboard"; // Redirect to the home page after login
     }, 2000); // 2-second delay for demonstration
   };
 

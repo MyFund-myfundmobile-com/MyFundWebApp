@@ -1,5 +1,5 @@
 import Sidebar from "@/components/admin/sidebar";
-import Header from "@/components/admin/header";
+import Header from "@/components/header";
 
 const AdminLayout = ({
   children,
@@ -13,10 +13,7 @@ const AdminLayout = ({
         className={`flex-grow flex flex-col transition-all duration-300 w-full`}
       >
         <Header />
-        <main
-          className="flex-grow pt-16 px-16 bg-gray-100 overflow-y-auto w-full"
-          style={{ backgroundColor: "#F7F5FF" }}
-        >
+        <main className="flex-grow pt-16 px-16 bg-gray-100 overflow-y-auto w-full">
           {children}
         </main>
       </div>

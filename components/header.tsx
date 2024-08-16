@@ -6,6 +6,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Header: React.FC = () => {
   const pathname = usePathname().split("/")[2];
+  console.log(pathname);
 
   return (
     <div
@@ -14,7 +15,7 @@ const Header: React.FC = () => {
     >
       <div className="flex justify-between items-center p-4">
         <div className=" tracking-custom1 text-center text-[12px] font-nexa text-gray-400 flex-grow uppercase">
-          {pathname}
+          {pathname ?? "Dashboard"}
         </div>
         <div className="absolute right-4 top-4">
           <IoIosNotificationsOutline className="text-purple1 text-2xl mr-4" />

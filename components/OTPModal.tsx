@@ -97,7 +97,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
               "We've confirmed it's you! Welcome to MyFund..."
             );
             console.log("Login Successful");
-            window.location.href = "/App"; // Redirect to your desired page upon successful login
+            window.location.href = "/app"; // Redirect to your desired page upon successful login
           } else {
             console.error("Login API Error:", loginResponse.data);
             handleSnackbarOpen(
