@@ -51,6 +51,9 @@ const config: Config = {
         customBackground: "#F7F5FF",
         customPurple: "#351265",
       },
+      letterSpacing: {
+        custom1: "0.5rem",
+      },
     },
   },
   plugins: [],

@@ -1,6 +1,5 @@
-"use client";
 import Link from "next/link";
-import { Img } from "react-image";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -12,22 +11,15 @@ import {
   faTiktok,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
-import { useRouter } from "next/navigation"; // Updated import
 
 const Footer = () => {
-  const router = useRouter(); // Now using the correct useRouter
-
-  const handleNavigation = (path: string) => {
-    router.push(path);
-  };
-
   return (
     <footer className="bg-[#351265] w-full">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* First Column: Logo */}
         <div className="flex flex-wrap justify-between">
           <div className="w-full sm:w-1/2 md:w-1/5 mb-6">
-            <Img
+            <Image
               src="/images/myfund.png"
               alt="MyFund Logo"
               width={120}
@@ -79,12 +71,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  onClick={() => handleNavigation("/admin")}
-                >
-                  Admin
-                </a>
+                <Link href="/admin">Admin</Link>
               </li>
             </ul>
           </div>

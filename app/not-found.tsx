@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const NotFound = () => {
+  const router = useRouter();
   return (
     <section>
       <div className="px-5 py-16 md:px-10 md:py-24 lg:py-32">
@@ -19,12 +22,12 @@ const NotFound = () => {
           <p className="mx-auto mb-5 max-w-lg text-sm text-[#636262] sm:text-base md:mb-6 lg:mb-8">
             What you are looking for does not exist or is unavailable{" "}
           </p>
-          <Link
-            href="/"
+          <button
+            onClick={() => router.back()}
             className="inline-block items-center bg-purple1 px-8 py-4 text-center font-semibold text-white"
           >
-            Back Home
-          </Link>
+            Go Back!
+          </button>
         </div>
       </div>
     </section>
