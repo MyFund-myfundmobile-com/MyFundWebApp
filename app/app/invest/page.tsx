@@ -23,9 +23,7 @@ import { AppDispatch } from "@/Redux store/store";
 import TopSaversSection from "@/components/app/topSavers";
 
 const InvestPage = () => {
-  const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
-    window.innerWidth < 900
-  );
+  const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(true);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false);

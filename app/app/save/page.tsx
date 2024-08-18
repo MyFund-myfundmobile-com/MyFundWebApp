@@ -12,7 +12,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IonIcon } from "@ionic/react";
 import QuickSaveModal from "@/components/app/modals/quickSaveModal";
 import AutoSaveModal from "@/components/app/modals/autoSaveModal";
-import { useLocation } from "react-router-dom"; // Import useLocation
 import { Img } from "react-image";
 import { RootState } from "@/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,9 +25,7 @@ import DeactivateAutoSaveModal from "@/components/app/modals/deactivateAutoSaveM
 import { useSearchParams } from "next/navigation";
 
 const SavePage = () => {
-  const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
-    window.innerWidth < 900
-  );
+  const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(true);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [isAutoSaveOn, setIsAutoSaveOn] = useState<boolean>(false);

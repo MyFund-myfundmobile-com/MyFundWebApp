@@ -17,7 +17,7 @@ import Modal from "@/components/modal";
 import { Img } from "react-image";
 import CustomSnackbar from "@/components/snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import { aDispatch } from "@/Redux store/store";
+import { AppDispatch } from "@/Redux store/store";
 import { RootState } from "@/Redux store/store";
 import {
   fetchAutoSaveSettings,
@@ -56,7 +56,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
   const [isAutoSaveOn, setIsAutoSaveOn] = useState<boolean>(false);
   const [tempAutoSaveState, setTempAutoSaveState] = useState<boolean>(false);
 
-  const dispatch = useDispatch<aDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const cards = useSelector((state: RootState) => state.auth.cards);
   const token = useSelector((state: RootState) => state.auth.token);
@@ -88,9 +88,9 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
   const { push: navigate } = useRouter();
 
   const handleNavigateToAddCard = () => {
-    navigate("/app/settings", {
-      state: { triggerAddCard: true, triggerCardAndBankSettings: true },
-    });
+    navigate(
+      "/app/settings?triggerAddCard=true&triggerCardAndBankSettings=true"
+    );
   };
 
   const formatAmount = (value: string) => {

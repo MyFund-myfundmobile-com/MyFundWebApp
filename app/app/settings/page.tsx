@@ -14,25 +14,24 @@ import { PrimaryButton } from "@/components/Buttons/MainButtons";
 import Title from "@/components/title";
 import Subtitle from "@/components/subtitle";
 import Section from "@/components/section";
-import SettingsButtonsSection from "./settingsButtons";
-import LogoutModal from "./modals/logoutModals";
-import CardSettings from "./subsettings/card";
-import BankSettings from "./subsettings/bank";
-import KYCSettings from "./subsettings/kyc";
-import TransactionPIN from "./subsettings/transactonPIN";
-import TopSaversSettings from "./subsettings/topSavers";
-import FAQs from "./subsettings/FAQs";
-import ReferAndEarnSettings from "./subsettings/referAndEarn";
-import MessageAdminSettings from "./subsettings/messageAdmin";
-import RateMyFundSettings from "./subsettings/rateMyFund";
-import PrivacyAndPolicySettings from "./subsettings/privacyAndPolicy";
-import SavingsGoal from "./subsettings/savingsGoal";
-import SettingsExtension from "./settingsExtension"; // Ensure this import is added
-import UpdateProfileModal from "./modals/updateProfileModal";
-import { Img } from "react-image";
+import SettingsButtonsSection from "@/components/app/settingsButtons";
+import LogoutModal from "@/components/app/modals/logoutModals";
+import CardSettings from "@/components/app/subsettings/card";
+import BankSettings from "@/components/app/subsettings/bank";
+import KYCSettings from "@/components/app/subsettings/kyc";
+import TransactionPIN from "@/components/app/subsettings/transactonPIN";
+import TopSaversSettings from "@/components/app/subsettings/topSavers";
+import FAQs from "@/components/app/subsettings/FAQs";
+import ReferAndEarnSettings from "@/components/app/subsettings/referAndEarn";
+import MessageAdminSettings from "@/components/app/subsettings/messageAdmin";
+import RateMyFundSettings from "@/components/app/subsettings/rateMyFund";
+import PrivacyAndPolicySettings from "@/components/app/subsettings/privacyAndPolicy";
+import SavingsGoal from "@/components/app/subsettings/savingsGoal";
+import SettingsExtension from "@/components/app/settingsExtension"; // Ensure this import is added
+import UpdateProfileModal from "@/components/app/modals/updateProfileModal";
+import Image from "next/image";
 import "cropperjs/dist/cropper.css"; // Import cropper CSS
 import Cropper, { ReactCropperElement } from "react-cropper"; // Ensure this import
-import { useLocation } from "react-router-dom"; // Import useLocation
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/Redux store/store";
@@ -40,6 +39,7 @@ import { fetchUserInfo, updateWealthStage } from "@/Redux store/actions";
 
 import axios from "axios";
 import CustomSnackbar from "@/components/snackbar";
+import { useSearchParams } from "next/navigation";
 
 const SettingsPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string | null>(
@@ -58,19 +58,21 @@ const SettingsPage: React.FC = () => {
   const [uploading, setUploading] = useState(false); // Add state for uploading
   const [loading, setLoading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
-  const location = useLocation(); // Initialize useLocation
+  const searchParams = useSearchParams();
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
 
   useEffect(() => {
-    if (location.state) {
-      if (location.state.triggerCardAndBankSettings) {
-        handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
-      }
-      if (location.state.triggerAddCard) {
-        setIsAddCardModalOpen(true);
-      }
+    const triggerCardAndBankSettings = searchParams.get(
+      "triggerCardAndBankSettings"
+    );
+    const triggerAddCard = searchParams.get("triggerAddCard");
+    if (triggerCardAndBankSettings) {
+      handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
     }
-  }, [location.state]);
+    if (triggerAddCard) {
+      setIsAddCardModalOpen(true);
+    }
+  }, [searchParams]);
 
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -147,10 +149,11 @@ const SettingsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (location.state && location.state.triggerKYC) {
+    const triggerKYC = searchParams.get("triggerKYC");
+    if (triggerKYC) {
       handleMenuSelect("Update KYC");
     }
-  }, [location.state]);
+  }, [searchParams]);
 
   // Handler to trigger file input click
   const handleProfileImageClick = () => {
@@ -240,13 +243,7 @@ const SettingsPage: React.FC = () => {
       case "Savings Goal":
         return <SavingsGoal />;
       case "Card and Bank Settings":
-        return (
-          <CardSettings
-            onNavigate={handleMenuSelect}
-            isAddCardModalOpen={isAddCardModalOpen}
-            setIsAddCardModalOpen={setIsAddCardModalOpen}
-          />
-        );
+        return <CardSettings onNavigate={handleMenuSelect} />;
       case "Bank Settings":
         return <BankSettings onNavigate={handleMenuSelect} />;
       case "Update KYC":
@@ -280,7 +277,7 @@ const SettingsPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-center lg:items-start">
             <div className="relative">
               <div className="w-36 h-36 relative aspect-w-1 aspect-h-1">
-                <Img
+                <Image
                   src={profileImage || `/images/Profile1.png`}
                   alt="Profile"
                   style={{
@@ -289,6 +286,8 @@ const SettingsPage: React.FC = () => {
                     border: "2px solid #6b46c1",
                   }}
                   className="w-full h-full"
+                  width={100}
+                  height={100}
                 />
               </div>
               <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
