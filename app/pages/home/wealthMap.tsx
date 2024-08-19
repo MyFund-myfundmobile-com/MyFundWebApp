@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Section from "@/app/components/section";
 import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
-import Image from "next/image";
+import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo, updateWealthStage } from "@/app/Redux store/actions";
@@ -11,6 +11,8 @@ import { AppDispatch } from "@/app/Redux store/store";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import { IonIcon } from "@ionic/react";
 import { trendingUpOutline } from "ionicons/icons";
+import Modal from "@/app/components/modal";
+import Image from "next/image";
 
 const WealthMapSection = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -18,6 +20,19 @@ const WealthMapSection = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageSrc, setModalImageSrc] = useState("");
+
+  const handleLearnMore = () => {
+    const imageSrc = `/images/wealthMap.png`;
+    console.log("Setting modal image source to:", imageSrc);
+    setModalImageSrc(imageSrc);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (token) {
@@ -107,6 +122,23 @@ const WealthMapSection = () => {
     );
   }, [wealthStages]);
 
+  // const currentStage = useMemo(() => {
+  //   if (!accountBalances) {
+  //     return {
+  //       stage: 0,
+  //       text: "Calculating...",
+  //       description: "Calculating your financial status...",
+  //     };
+  //   }
+  //   return (
+  //     wealthStages.find((stage) => stage.condition) || {
+  //       stage: 0,
+  //       text: "Calculating...",
+  //       description: "Calculating your financial status...",
+  //     }
+  //   );
+  // }, [wealthStages, accountBalances]);
+
   // Dispatch the current stage to the Redux store
   useEffect(() => {
     dispatch(updateWealthStage(currentStage));
@@ -118,7 +150,7 @@ const WealthMapSection = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,5fr] gap-4 mt-4 font-karla">
         <div style={{ position: "relative", marginTop: 10 }}>
           <Subtitle style={{ marginTop: -5, marginBottom: 1, fontSize: 13 }}>
-            Stage{" "}
+            Level{" "}
             <span className="font-proxima font-bold">{currentStage.stage}</span>
           </Subtitle>
           <Title
@@ -136,13 +168,18 @@ const WealthMapSection = () => {
           <Image
             width="240"
             height="240"
-            src={`/images/9steps${currentStage.stage}.png`}
+            src={
+              currentStage.stage === 0
+                ? `/images/9steps0.png`
+                : `/images/9steps${currentStage.stage}.png`
+            }
             alt="Wealth Map"
             className="w-full h-auto rounded-lg object-cover"
           />
+
           <PrimaryButton
             className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm mt-7 mb-7"
-            // onClick={handleLearnMore}
+            onClick={handleLearnMore}
             background="#4C28BC"
             hoverBackgroundColor="#351265"
             color="#fff"
@@ -158,6 +195,26 @@ const WealthMapSection = () => {
             Learn More
           </PrimaryButton>
         </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          header="Wealth Map"
+          body={
+            <div className="relative w-full h-full">
+              <Img
+                src={modalImageSrc || `/images/9steps10.png`}
+                alt="Wealth Map"
+                style={{ objectFit: "contain", width: "100%", height: "100%" }}
+                className="w-full h-full"
+              />
+            </div>
+          }
+          buttonText="Go back"
+          onButtonClick={handleCloseModal}
+          zIndex={50}
+          className="w-full h-full max-w-screen max-h-screen p-4"
+        />
       </div>
     </section>
   );

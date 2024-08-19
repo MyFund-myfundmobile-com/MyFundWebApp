@@ -15,7 +15,7 @@ import {
   IoHomeOutline,
   IoArrowDownOutline,
 } from "react-icons/io5";
-import Image from "next/image";
+import { Img } from "react-image";
 
 interface AccountCardProps {
   icon:
@@ -160,10 +160,10 @@ const AccountCard: React.FC<AccountCardProps> = ({
       {isPropertyCard ? (
         <div className="flex h-full">
           <div className="w-4/5 h-full overflow-hidden">
-            <Image
+            <Img
               width={80}
               height={80}
-              src={image ?? "/path/to/default/image.jpg"} // Fallback image
+              src={image ?? "/images/Profile1.png"} // Fallback image
               alt={propertyDetails?.name ?? "Default Alt Text"} // Fallback alt text
               className="object-cover w-full h-full rounded-l-lg"
               style={{ aspectRatio: "1 / 1", width: "100%", height: "100%" }}

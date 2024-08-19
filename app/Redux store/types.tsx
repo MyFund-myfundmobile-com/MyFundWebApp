@@ -12,10 +12,17 @@ export const DELETE_BANK_ACCOUNT = "DELETE_BANK_ACCOUNT";
 export const ADD_CARD = "ADD_CARD";
 export const GET_CARDS = "GET_CARDS";
 export const DELETE_CARD = "DELETE_CARD";
+export const SET_KYC_STATUS = "SET_KYC_STATUS";
+export const SET_USER_TRANSACTIONS = "SET_USER_TRANSACTIONS";
+export const SET_TOP_SAVERS_DATA = "SET_TOP_SAVERS_DATA";
+export const SET_SELECTED_TOP_SAVER = "SET_SELECTED_TOP_SAVER";
+export const SET_USER_PERCENTAGE = "SET_USER_PERCENTAGE";
+export const SET_AUTO_SAVE_SETTINGS = "SET_AUTO_SAVE_SETTINGS";
+export const SET_AUTO_SAVE_OFF = "SET_AUTO_SAVE_OFF";
 
 export interface User {
   is_first_time_signup?: boolean;
-  id: string;
+  id: string | number | null; // Allow for null or number
   firstName: string;
   lastName: string;
   mobileNumber: string;
@@ -31,11 +38,24 @@ export interface User {
   profile_picture?: string;
 }
 
+export interface UserTransaction {
+  id: string;
+  amount: number;
+  date: string;
+  type: "credit" | "debit";
+  description: string;
+  time: string;
+  transaction_id: string;
+  status: string;
+}
+
 export interface AuthState {
   token: string | null;
   bankAccounts: BankAccount[];
   cards: Card[];
   userInfo: User;
+  KYCStatus: KYCStatus;
+  userTransactions: UserTransaction[];
   accountBalances: {
     savings: number;
     investment: number;
@@ -44,6 +64,11 @@ export interface AuthState {
   };
   error: string | null;
   currentWealthStage: WealthStage;
+  isLoading: boolean;
+  topSaversData?: TopSaversData;
+  selectedTopSaver?: TopSaver;
+  userPercentage?: number;
+  autoSaveSettings?: AutoSaveSettings;
 }
 
 export interface WealthStage {
@@ -63,12 +88,62 @@ export interface BankAccount {
 }
 
 export interface Card {
-  bankName: string;
-  cardNumber: string;
-  expiryDate: string;
-  id: any;
-  bankColor: any;
+  id: string;
+  bank_name: string;
+  expiry_date: string;
+  card_number: string;
+  bankColor?: string;
+  bank_code: string;
   cardHolderName: string;
+}
+
+export interface KYCStatus {
+  kycStatus?: string;
+  updated_at?: string;
+  message?: string;
+}
+
+export interface TopSaver {
+  id: number;
+  email: string;
+  first_name: string;
+  profile_picture: string;
+  individual_percentage: number;
+}
+
+export interface TopSaversData {
+  top_savers: TopSaver[];
+  current_user: {
+    individual_percentage: number;
+  };
+}
+
+export interface AutoSaveSettings {
+  active: boolean;
+  amount: number; // No longer optional
+  frequency: string; // No longer optional
+  autosave_enabled?: boolean; // Optional
+}
+
+interface Saver {
+  id: number;
+  firstName: string;
+  profilePicture: string;
+}
+
+interface SetTopSaversDataAction {
+  type: typeof SET_TOP_SAVERS_DATA;
+  payload: TopSaversData;
+}
+
+interface SetSelectedTopSaverAction {
+  type: typeof SET_SELECTED_TOP_SAVER;
+  payload: TopSaver;
+}
+
+interface SetUserPercentageAction {
+  type: typeof SET_USER_PERCENTAGE;
+  payload: number;
 }
 
 interface SetUserTokenAction {
@@ -131,6 +206,11 @@ interface AddCardAction {
   payload: Card;
 }
 
+interface SetKYCStatusAction {
+  type: typeof SET_KYC_STATUS;
+  payload: Partial<KYCStatus>;
+}
+
 interface GetCardsAction {
   type: typeof GET_CARDS;
   payload: Card[];
@@ -139,6 +219,20 @@ interface GetCardsAction {
 interface DeleteCardAction {
   type: typeof DELETE_CARD;
   payload: string;
+}
+
+interface SetUserTransactionsAction {
+  type: typeof SET_USER_TRANSACTIONS;
+  payload: UserTransaction[];
+}
+
+interface SetAutoSaveSettingsAction {
+  type: typeof SET_AUTO_SAVE_SETTINGS;
+  payload: AutoSaveSettings;
+}
+
+interface SetAutoSaveOffAction {
+  type: typeof SET_AUTO_SAVE_OFF;
 }
 
 export type AuthActionTypes =
@@ -154,4 +248,11 @@ export type AuthActionTypes =
   | SetBankAccountsAction
   | AddCardAction
   | GetCardsAction
-  | DeleteCardAction;
+  | DeleteCardAction
+  | SetUserTransactionsAction
+  | SetKYCStatusAction
+  | SetTopSaversDataAction
+  | SetSelectedTopSaverAction
+  | SetUserPercentageAction
+  | SetAutoSaveSettingsAction
+  | SetAutoSaveOffAction;

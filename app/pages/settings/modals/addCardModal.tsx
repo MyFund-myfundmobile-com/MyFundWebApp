@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { IonIcon } from "@ionic/react";
+import { cardOutline, informationCircleOutline } from "ionicons/icons";
 import {
   TextField,
   IconButton,
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import { cardOutline, informationCircleOutline } from "ionicons/icons";
 import Modal from "@/app/components/modal";
 import BankOptions from "@/app/components/bankOptions";
 import axios from "axios";
@@ -112,7 +112,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 
     // Check if the card with the same number already exists
     const isCardAlreadyAdded = cards.some(
-      (card) => card.cardNumber === cardNumberWithoutSpaces
+      (card) => card.card_number === cardNumberWithoutSpaces
     );
 
     if (isCardAlreadyAdded) {
@@ -148,12 +148,13 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 
       if (response.status === 201) {
         const newCardRecord: Card = {
-          bankName: bank.name,
-          cardNumber: cardNumberWithoutSpaces,
-          expiryDate: expiry,
+          bank_name: bank.name,
+          card_number: cardNumberWithoutSpaces,
+          expiry_date: expiry,
           id: response.data.id,
-          bankColor: bank.color,
+          bankColor: bank.color, // Add this line
           cardHolderName: "",
+          bank_code: bank.code,
         };
 
         dispatch(addCard(newCardRecord));

@@ -12,19 +12,39 @@ import {
   DELETE_BANK_ACCOUNT,
   SET_BANK_ACCOUNTS,
   ADD_CARD,
+  SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
-  Card,
+  SET_USER_TRANSACTIONS,
+  SET_TOP_SAVERS_DATA,
+  SET_SELECTED_TOP_SAVER,
+  SET_USER_PERCENTAGE,
+  SET_AUTO_SAVE_SETTINGS,
 } from "./types";
 
 const initialState: AuthState = {
   token: null,
   bankAccounts: [],
-  cards: [], // initial state for cards
+  userTransactions: [],
+  isLoading: false,
+
+  autoSaveSettings: {
+    active: false,
+    amount: 0,
+    frequency: "",
+    autosave_enabled: false,
+  },
+
+  cards: [],
+
+  KYCStatus: {
+    kycStatus: "",
+    updated_at: "",
+  },
 
   userInfo: {
     is_first_time_signup: false,
-    id: "",
+    id: "", // Make sure it's an empty string or null, not undefined
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -39,6 +59,7 @@ const initialState: AuthState = {
     top_saver_percentage: 0,
     profile_picture: "",
   },
+
   accountBalances: {
     savings: 0,
     investment: 0,
@@ -66,8 +87,12 @@ const authReducer = (
     case SET_USER_INFO:
       return {
         ...state,
-        userInfo: action.payload,
+        userInfo: {
+          ...state.userInfo,
+          ...action.payload,
+        },
       };
+
     case SET_USER_INFO_ERROR:
       return {
         ...state,
@@ -131,6 +156,38 @@ const authReducer = (
         ...state,
         cards: state.cards.filter((card) => card.id !== action.payload),
       };
+    case SET_KYC_STATUS:
+      return {
+        ...state,
+        KYCStatus: action.payload,
+      };
+    case SET_USER_TRANSACTIONS:
+      return {
+        ...state,
+        userTransactions: action.payload,
+      };
+    case SET_TOP_SAVERS_DATA:
+      return {
+        ...state,
+        topSaversData: action.payload,
+      };
+    case SET_SELECTED_TOP_SAVER:
+      return {
+        ...state,
+        selectedTopSaver: action.payload,
+      };
+    case SET_USER_PERCENTAGE:
+      return {
+        ...state,
+        userPercentage: action.payload,
+      };
+
+    case SET_AUTO_SAVE_SETTINGS:
+      return {
+        ...state,
+        autoSaveSettings: action.payload, // No extra wrapping, store directly
+      };
+
     default:
       return state;
   }

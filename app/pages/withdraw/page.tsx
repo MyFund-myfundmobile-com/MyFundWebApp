@@ -5,7 +5,6 @@ import Subtitle from "@/app/components/subtitle";
 import Section from "@/app/components/section";
 import AccountCard from "@/app/components/accountCard";
 import { Divider } from "@mui/material";
-import WithdrawalTransactionsSection from "./withdrawalTransactions";
 import Referrals from "./referrals";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -17,11 +16,12 @@ import {
 } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import WithdrawModal from "./modals/withdrawModal";
-import Image from "next/image";
+import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
+import TopSaversSection from "../home/topSavers";
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -63,6 +63,27 @@ const WithdrawPage = () => {
       setTimeout(() => setIsCopied(false), 2000);
     });
   };
+
+  // Add this formatting function to format account balances with commas
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  // Format the account balances
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
+
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
 
   useEffect(() => {
     const container = document.getElementById(
@@ -205,11 +226,7 @@ const WithdrawPage = () => {
             label="SAVINGS"
             rate="10% charge"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.savings.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedSavings : "****"}
             rateColor="#F97316"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
@@ -222,11 +239,7 @@ const WithdrawPage = () => {
             label="INVESTMENTS"
             rate="15% charge"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.investment.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedInvestment : "****"}
             rateColor="#F97316"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
@@ -251,11 +264,7 @@ const WithdrawPage = () => {
             label="WALLET"
             rate="Free"
             currency="₦"
-            amount={
-              showBalances
-                ? `${accountBalances.wallet.toLocaleString()}`
-                : "****"
-            }
+            amount={showBalances ? formattedWallet : "****"}
             rateColor="#43FF8E"
             buttonText="Withdraw"
             buttonIcon="arrow-down-outline"
@@ -291,19 +300,23 @@ const WithdrawPage = () => {
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3">
-          <WithdrawalTransactionsSection />
+          <TopSaversSection />
         </div>
 
         <div className="md:col-span-6">
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <div className="mb-4 mt-3">
-              <Image
-                width={240}
-                height={240}
-                src="/images/refer.png"
+              <Img
+                src="/images/ReferAndEarn500.png"
                 alt="Refer and earn"
-                className="w-full h-auto rounded-lg"
+                style={{
+                  width: "100%", // Make the image take up the full width of its container
+                  height: "auto", // Maintain the aspect ratio
+                  objectFit: "cover", // Ensure the image covers the container
+                }}
+                className="rounded-lg"
               />
+
               <div className="flex justify-center mt-4">
                 <PrimaryButton
                   className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"

@@ -1,4 +1,4 @@
-// _app.tsx
+"use client";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import store from "./Redux store/store";

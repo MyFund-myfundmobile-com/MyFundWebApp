@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import { Img } from "react-image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
@@ -73,7 +73,7 @@ const NavBar = () => {
             aria-label="home"
             style={{ marginRight: -190 }}
           >
-            <Image
+            <Img
               src="/images/MyFundlogo.png"
               loading="lazy"
               alt="MyFund Logo"
@@ -273,7 +273,7 @@ const NavBar = () => {
             <IonIcon icon={arrowBack} />
           </button>
           <Link href="/" aria-label="home">
-            <Image
+            <Img
               src="/images/logo.png"
               loading="lazy"
               alt="MyFund Logo"

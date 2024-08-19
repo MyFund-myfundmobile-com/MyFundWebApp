@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import { IoEyeOutline, IoBusinessOutline } from "react-icons/io5";
+import { Img } from "react-image";
 
 const Facts = () => {
   return (
@@ -32,7 +33,7 @@ const Facts = () => {
           {" "}
           {/* Image Div */}{" "}
           <div className="h-full max-h-[560px] w-[85%] md:left-0 md:w-[95%] lg:w-full">
-            <Image
+            <Img
               src="/images/landlord.jpg"
               alt=""
               className="z-10 mx-auto block h-full w-full max-w-[800px] rotate-[3.5deg] rounded-2xl object-cover"

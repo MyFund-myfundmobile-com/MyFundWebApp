@@ -10,6 +10,44 @@
   box-sizing: border-box;
 }
 
+/* Animation for logos scrolling horizontally */
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Ensure logos are in grayscale */
+.logo {
+  filter: grayscale(100%);
+  width: 160px; /* Adjust to make logos smaller */
+}
+
+/* Adjust margin and positioning for the logos */
+.logo-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.logo-container img {
+  margin-right: 2rem; /* Adjust as needed */
+  margin-left: 2rem; /* Adjust as needed */
+}
+
+.logo-container img:last-child {
+  margin-right: 0;
+}
+
+.scroll {
+  display: flex;
+  animation: scroll-horizontal 10s linear infinite; /* Slower animation */
+}
+
 /* Custom CSS (can be in a global CSS file or a CSS module) */
 .arrow::before {
   content: "";

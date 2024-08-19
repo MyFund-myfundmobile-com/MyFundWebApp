@@ -29,7 +29,7 @@ import PrivacyAndPolicySettings from "./subsettings/privacyAndPolicy";
 import SavingsGoal from "./subsettings/savingsGoal";
 import SettingsExtension from "./settingsExtension"; // Ensure this import is added
 import UpdateProfileModal from "./modals/updateProfileModal";
-import Image from "next/image";
+import { Img } from "react-image";
 import "cropperjs/dist/cropper.css"; // Import cropper CSS
 import Cropper, { ReactCropperElement } from "react-cropper"; // Ensure this import
 import { useLocation } from "react-router-dom"; // Import useLocation
@@ -59,6 +59,18 @@ const SettingsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
   const location = useLocation(); // Initialize useLocation
+  const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.triggerCardAndBankSettings) {
+        handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
+      }
+      if (location.state.triggerAddCard) {
+        setIsAddCardModalOpen(true);
+      }
+    }
+  }, [location.state]);
 
   const [cropper, setCropper] = useState<Cropper | null>(null);
 
@@ -68,6 +80,10 @@ const SettingsPage: React.FC = () => {
     } else {
       setCropper(null);
     }
+  };
+
+  const onNavigate = (path: string) => {
+    console.log(`Navigating to ${path}`);
   };
 
   const handleProfileImageChange = (
@@ -117,8 +133,6 @@ const SettingsPage: React.FC = () => {
       dispatch(updateWealthStage(currentWealthStage));
     }
   }, [dispatch, currentWealthStage]);
-
-
 
   const handleMenuSelect = (menu: string) => {
     if (menu === "Log Out") {
@@ -226,7 +240,13 @@ const SettingsPage: React.FC = () => {
       case "Savings Goal":
         return <SavingsGoal />;
       case "Card and Bank Settings":
-        return <CardSettings onNavigate={handleMenuSelect} />;
+        return (
+          <CardSettings
+            onNavigate={handleMenuSelect}
+            isAddCardModalOpen={isAddCardModalOpen}
+            setIsAddCardModalOpen={setIsAddCardModalOpen}
+          />
+        );
       case "Bank Settings":
         return <BankSettings onNavigate={handleMenuSelect} />;
       case "Update KYC":
@@ -260,12 +280,15 @@ const SettingsPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-center lg:items-start">
             <div className="relative">
               <div className="w-36 h-36 relative aspect-w-1 aspect-h-1">
-                <Image
-                  src={profileImage}
-                  layout="fill"
-                  objectFit="cover"
+                <Img
+                  src={profileImage || `/images/Profile1.png`}
                   alt="Profile"
-                  className="rounded-full border-2 border-purple-400"
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    border: "2px solid #6b46c1",
+                  }}
+                  className="w-full h-full"
                 />
               </div>
               <div className="absolute bottom-0 right-0 bg-purple1 text-white rounded-full w-10 h-10 flex items-center justify-center">
@@ -438,7 +461,7 @@ const SettingsPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-4 rounded-lg w-full max-w-md">
             <Cropper
-              src={cropImage}
+              src={cropImage || `/images/Profile1.png`}
               style={{ height: 400, width: "100%" }}
               initialAspectRatio={1}
               aspectRatio={1}

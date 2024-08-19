@@ -12,6 +12,7 @@ import RecentTransactionsSection from "./recentTransactions";
 import TopSaversSection from "./topSavers";
 import WealthMapSection from "./wealthMap";
 import { useNavigate } from "react-router-dom";
+import { Img } from "react-image";
 import Image from "next/image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,11 +61,15 @@ const HomePage: React.FC = () => {
     });
   };
 
-  const formattedSavings = formatAmountWithCommas(accountBalances.savings);
-  const formattedInvestment = formatAmountWithCommas(
-    accountBalances.investment
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
   );
-  const formattedWallet = formatAmountWithCommas(accountBalances.wallet);
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
@@ -141,11 +146,11 @@ const HomePage: React.FC = () => {
   const getBadgeColorClass = (stage: number) => {
     switch (stage) {
       case 1:
-        return "#BF0000";
+        return "#dF0000";
       case 2:
-        return "#BF3F00";
+        return "#aF0000";
       case 3:
-        return "#BF7F00";
+        return "#FF5722";
       case 4:
         return "#BF9F00";
       case 5:
@@ -170,7 +175,7 @@ const HomePage: React.FC = () => {
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src={userInfo?.profile_picture || "/Profile1.png"}
+            src={userInfo?.profile_picture || `/images/Profile1.png`}
             width={120}
             height={120}
             alt="Profile"
@@ -179,7 +184,9 @@ const HomePage: React.FC = () => {
             onClick={() => navigate("/App/settings")}
           />
           <Tooltip
-            title={`My Financial Status: ${currentWealthStage.text.toUpperCase()}`}
+            title={`My Financial Status: Level ${
+              currentWealthStage.stage
+            }: ${currentWealthStage.text.toUpperCase()}`}
             placement="right"
           >
             <div
@@ -240,10 +247,10 @@ const HomePage: React.FC = () => {
           backgroundColor: "#DCD1FF",
           color: "black",
           fontFamily: "karla",
-          fontSize: 14,
+          fontSize: 15,
         }}
       >
-        <Image
+        <Img
           src="/images/logo..png"
           width={1280}
           height={1280}
@@ -310,11 +317,7 @@ const HomePage: React.FC = () => {
             rate="(My Earnings)"
             rateColor="#43FF8E"
             currency="₦"
-            amount={
-              showBalances
-                ? formatAmountWithCommas(accountBalances.wallet)
-                : "****"
-            }
+            amount={showBalances ? formattedWallet : "****"}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
           />

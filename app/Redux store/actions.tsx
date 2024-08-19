@@ -15,9 +15,17 @@ import {
   ADD_BANK_ACCOUNT,
   DELETE_BANK_ACCOUNT,
   BankAccount,
-  ADD_CARD,
+  SET_KYC_STATUS,
   GET_CARDS,
   DELETE_CARD,
+  SET_USER_TRANSACTIONS,
+  SET_TOP_SAVERS_DATA,
+  SET_AUTO_SAVE_SETTINGS,
+  SET_AUTO_SAVE_OFF,
+  AutoSaveSettings,
+  TopSaversData,
+  UserTransaction,
+  KYCStatus,
   Card,
   User,
 } from "./types";
@@ -35,7 +43,15 @@ export const addBankAccount = (bankAccount: BankAccount): AuthActionTypes => ({
 });
 
 export const fetchUserInfo = (token: string) => {
-  return async (dispatch: Dispatch<AuthActionTypes>) => {
+  return async (dispatch: Dispatch<AuthActionTypes>, getState: any) => {
+    const userInfo = getState().auth.userInfo;
+
+    // Check if userInfo is defined and contains the token property
+    if (!userInfo || !userInfo.token) {
+      console.error("Authentication Error: User is not authenticated.");
+      return;
+    }
+
     try {
       const response = await axios.get<User>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
@@ -49,6 +65,11 @@ export const fetchUserInfo = (token: string) => {
       if (response.status === 200) {
         const profileData = response.data;
 
+        console.log("Fetched Profile Data:", profileData);
+        console.log("Profile ID:", profileData.id);
+
+        const topSaverPercentage = profileData.top_saver_percentage * 100; // Convert to percentage if applicable
+
         dispatch({
           type: SET_USER_INFO,
           payload: {
@@ -57,11 +78,13 @@ export const fetchUserInfo = (token: string) => {
             profileImageUrl: profileData.profile_picture
               ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${profileData.profile_picture}`
               : null,
+            top_saver_percentage: topSaverPercentage, // Ensure this transformation is consistent if needed
           },
         });
 
-        // Fetch account balances after user info is fetched
-        dispatch(fetchAccountBalances(token) as any); // Type assertion to any to avoid type error
+        // Dispatch other actions as needed
+        dispatch(fetchAccountBalances(token) as any);
+        // Add more actions if necessary, like in the mobile app
       } else {
         console.error("Failed to fetch user info, status:", response.status);
         dispatch({
@@ -221,6 +244,129 @@ export const deleteCard =
       console.error("Failed to delete card", error);
     }
   };
+
+export const setKYCStatus = (kycStatus: KYCStatus): AuthActionTypes => ({
+  type: SET_KYC_STATUS,
+  payload: kycStatus,
+});
+
+export const fetchKYCStatus = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<KYCStatus>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-kyc-status/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch(setKYCStatus(response.data));
+      } else {
+        console.error("Failed to fetch KYC status, status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching KYC status:", error);
+    }
+  };
+};
+
+export const fetchUserTransactions = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<UserTransaction[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user-transactions/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_USER_TRANSACTIONS,
+          payload: response.data,
+        });
+      } else {
+        console.error(
+          "Failed to fetch user transactions, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching user transactions:", error);
+    }
+  };
+};
+
+export const fetchTopSaversData = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<TopSaversData>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/top-savers/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_TOP_SAVERS_DATA,
+          payload: response.data,
+        });
+      }
+    } catch (error) {
+      console.error("Fetch Top Savers Data Error:", error);
+    }
+  };
+};
+
+export const fetchAutoSaveSettings = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    if (!token) {
+      console.error("Authentication Error: User is not authenticated.");
+      return;
+    }
+
+    try {
+      const response = await axios.get<{ autoSaveSettings: AutoSaveSettings }>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-autosave-settings/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const { autoSaveSettings } = response.data;
+        // Dispatch the autoSaveSettings directly without nesting
+        dispatch(updateAutoSaveSettings(autoSaveSettings));
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
+  };
+};
+
+export const updateAutoSaveSettings = (
+  autoSaveSettings: AutoSaveSettings
+): AuthActionTypes => {
+  return {
+    type: SET_AUTO_SAVE_SETTINGS,
+    payload: autoSaveSettings, // Directly store the flat object
+  };
+};
+
+export const setAutoSaveOff = (): AuthActionTypes => ({
+  type: SET_AUTO_SAVE_OFF,
+});
 
 export const updateUserProfile = (updatedProfile: any) => ({
   type: UPDATE_USER_PROFILE,
