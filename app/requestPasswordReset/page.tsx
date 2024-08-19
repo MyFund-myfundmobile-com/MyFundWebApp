@@ -8,13 +8,17 @@ import { mailOutline, checkmarkCircleOutline } from "ionicons/icons";
 import CustomSnackbar from "../components/snackbar";
 import Title from "../components/title";
 import Subtitle from "../components/subtitle";
-import Image from "next/image";
 import ResetPasswordModal from "./resetPasswordModal";
+import { config } from "@fortawesome/fontawesome-svg-core";
+
+config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
 
 const RequestPasswordResetPage: React.FC = () => {
   useEffect(() => {
+    console.log("Setting background color...");
     document.body.style.backgroundColor = "#351265";
     return () => {
+      console.log("Cleaning up background color...");
       document.body.style.backgroundColor = "";
     };
   }, []);
@@ -92,7 +96,7 @@ const RequestPasswordResetPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-customPurple">
+    <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple flex flex-col items-center justify-center h-screen">
         <div className="max-w-xl px-5 py-5 text-center md:px-10 md:py-10 lg:py-10 bg-white rounded-lg shadow-lg">
           <Title>

@@ -5,7 +5,6 @@ import Header from "./ui/landing/header";
 import NavBar from "./ui/landing/navbar";
 import HowItWorks from "./ui/landing/steps";
 
-
 const Home = () => {
   return (
     <>

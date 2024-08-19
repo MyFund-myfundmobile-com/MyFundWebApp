@@ -21,7 +21,7 @@ import { Img } from "react-image";
 interface SidebarProps {
   onToggle: () => void;
   isRetracted: boolean;
-  onMenuItemClick: (item: string) => void; // Add this prop
+  onMenuItemClick: (item: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -36,6 +36,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const dispatch = useDispatch<AppDispatch>(); // Use the typed dispatch
+  const token = useSelector((state: RootState) => state.auth.userToken);
+  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+
   useEffect(() => {
     setIsRetracted(initialRetracted);
     if (initialRetracted) {
@@ -44,6 +48,15 @@ const Sidebar: React.FC<SidebarProps> = ({
       setActiveItem(lastSelectedItem);
     }
   }, [initialRetracted, lastSelectedItem]);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserProfile(token)); // Dispatch fetchUserProfile with token
+    }
+  }, [dispatch, token]);
+
+  console.log("Token in sidebar:", token);
+  console.log("Profile in sidebar:", userProfile);
 
   const handleToggleSidebar = () => {
     if (isRetracted) {
@@ -59,13 +72,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     // Renamed to avoid naming conflict
     setActiveItem(item); // Set the active item
     setLastSelectedItem(item);
-    onMenuItemClick(item); // Call the function passed from Layout
+    onMenuItemClick(item);
     if (window.innerWidth < 900) {
       setIsRetracted(true);
       onToggle();
     }
 
-    // Navigate after setting the active item
     switch (item) {
       case "Log Out":
         setIsLoggingOut(true);
