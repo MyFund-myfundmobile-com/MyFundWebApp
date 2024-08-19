@@ -28,7 +28,7 @@ import { Img } from "react-image";
 import CustomSnackbar from "@/app/components/snackbar";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
 import axios from "axios";
-import OTPModal from "../modals/autoInvestModal";
+// import OTPModal from "../modals/autoInvestModal";
 
 interface QuickInvestModalProps {
   isOpen: boolean;
