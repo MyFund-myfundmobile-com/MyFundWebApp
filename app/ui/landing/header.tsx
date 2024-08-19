@@ -1,17 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState } from "react";
+import { Img } from "react-image";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import styles from "./Header.module.css";
-import {
-  IoLogoApple,
-  IoLogoAndroid,
-  IoCheckmarkCircle,
-  IoCheckmark,
-} from "react-icons/io5";
+import { IoLogoApple, IoLogoAndroid, IoCheckmarkCircle } from "react-icons/io5";
 import { CircularProgress } from "@mui/material";
-import { Img } from "react-image";
 import { IonIcon } from "@ionic/react";
 import { shieldCheckmarkOutline } from "ionicons/icons";
 import { Tooltip } from "@mui/material";
@@ -23,7 +17,6 @@ const Header = () => {
     null
   );
 
-
   const handleDownload = (platform: string) => {
     setDownloading(true);
     setDownloadingPlatform(platform);
@@ -34,12 +27,6 @@ const Header = () => {
   };
 
   return (
-    <div
-      className={`mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24"`}
-    >
-      <div
-        className={`mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] `}
-      >
     <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24">
       <div className="mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] animate-floatIn">
         <div className="max-w-[720px] lg:max-w-[842px] animate-floatIn">
@@ -86,29 +73,6 @@ const Header = () => {
             </p>
           </div>
           <div className="flex flex-col">
-            <div className={`${styles.buttonContainer} flex mb-4`}>
-              {downloading ? (
-                <a
-                  download
-                  href="/myFund-Enterprise-App.apk"
-                  className="mr-5 inline-block rounded-xl bg-[#351265] px-8 py-4 text-center font-semibold text-white [box-shadow:rgb(76,_40,188)_6px_6px] md:mr-6"
-                  onClick={handleDownload}
-                >
-                  <CircularProgress size={24} /> Downloading MyFund Mobile
-                  App...
-                </a>
-              ) : (
-                <a
-                  download
-                  href="/myFund-Enterprise-App.apk"
-                  className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
-                  style={{ boxShadow: "6px 6px #351265" }}
-                  onClick={handleDownload}
-                >
-                  Download The Mobile App
-                </a>
-              )}
-            </div>
             <div className={`${styles.buttonContainer} flex mb-4`}>
               <a
                 download
