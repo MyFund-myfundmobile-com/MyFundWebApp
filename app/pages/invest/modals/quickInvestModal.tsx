@@ -16,14 +16,19 @@ import {
 import Modal from "@/app/components/modal";
 import Confetti from "react-confetti";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { checkmarkCircleOutline } from "ionicons/icons";
+import { bankOptions } from "@/app/components/bankOptions";
 import { IonIcon } from "@ionic/react";
-
+import { useNavigate } from "react-router-dom";
+import { getCards, deleteCard } from "@/app/Redux store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
-
+import { fetchUserTransactions } from "@/app/Redux store/actions";
+import { Img } from "react-image";
 import CustomSnackbar from "@/app/components/snackbar";
+import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
+import axios from "axios";
+import OTPModal from "../modals/autoInvestModal";
 
 interface QuickInvestModalProps {
   isOpen: boolean;
@@ -42,17 +47,31 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
-
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [userNumber, setUserNumber] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
   const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const cards = useSelector((state: RootState) => state.auth.cards);
 
+  useEffect(() => {
+    if (token) {
+      dispatch(getCards(token));
+      dispatch(fetchUserTransactions(token));
+    }
+  }, [dispatch, token]);
   const handleClearAmount = () => {
     setAmount("");
+  };
+  const getBankColor = (bankCode: string) => {
+    const bank = bankOptions.find((option) => option.code === bankCode);
+    return bank ? bank.color : "#4c28bc"; // Default color if not found
   };
 
   useEffect(() => {
@@ -67,22 +86,106 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(formatAmount(event.target.value));
+    const value = event.target.value.replace(/,/g, ""); // Remove commas
+    if (!isNaN(Number(value))) {
+      setAmount(formatAmount(value)); // Only set if it's a valid number
+    }
   };
+  useEffect(() => {
+    if (cards.length > 0) {
+      setSelectedCardId(cards[0].id); // Set the default selected card to the first one
+    }
+  }, [cards]);
 
-  const handleSendPayment = () => {
+  const handleSendPayment = async () => {
     setIsSending(true);
-    // Simulate sending payment process
-    setTimeout(() => {
-      setIsSending(false);
-      setShowSuccessModal(true);
-      setShowConfetti(true); // Activate confetti on success
-      setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
+    // Investment data sending
+    const cardId = selectedCardId || (cards.length > 0 ? cards[0].id : null);
+    const formattedAmount = parseFloat(amount.replace(/,/g, ""));
+    try {
 
-      onClose(); // Close modal after success
-    }, 3000); // Adjust as needed for the simulation
+      if (!formattedAmount || isNaN(formattedAmount) || formattedAmount < 100000) {
+        throw new Error("Invalid amount. Please enter a valid amount to Invest.");
+      };
+
+      const payload = {
+        card_id: cardId,
+        amount: formattedAmount,
+      };
+
+      if (typeof token === "string") {
+        const response =
+          selectedOption === "Bank Transfer"
+            ? await axios.post(
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/initiate-invest-transfer/`,
+              { amount: formattedAmount },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            : await axios.post(
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quickinvest/`,
+              payload,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+        if (response.status === 200 || response.status === 201) {
+          const { status, display_text, user_number, open_url } = response.data;
+          setSnackbarMessage(response.data.display_text);
+          setSnackbarSeverity("success");
+          dispatch(fetchUserTransactions(token));
+          setSnackbarOpen(true);
+          setUserNumber(user_number);
+          if (status === "open_url") {
+            window.open(open_url, "_blank");
+          }
+          setTimeout(() => {
+            if (selectedOption === "Bank Transfer") {
+              setShowSuccessModal(true);
+            } else {
+              setShowOTPModal(true);
+              console.log("Error");
+
+            }
+            onClose();
+            setShowConfetti(true)
+          }, 1000);
+        } else {
+          throw new Error("Unexpected response status");
+        }
+      } else {
+        throw new Error("Token is not available.");
+      }
+    } catch (error: any) {
+      console.error("QuickInvest Error:", error);
+      console.log("Error details:", error.response?.data); // Log the error details
+      setSnackbarMessage(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    } finally {
+      setIsSending(false);
+    }
   };
 
+  //     setTimeout(() => {
+  //       setIsSending(false);
+  //       setShowSuccessModal(true);
+  //       setShowConfetti(true); // Activate confetti on success
+  //       setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
+
+  //       onClose(); // Close modal after success
+  //     }, 3000); // Adjust as needed for the simulation
+  //   };
+  // }
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     setSelectedOption(event.target.value);
   };
@@ -96,8 +199,15 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
       setShowCopied(false);
     }, 3000);
   };
+  const navigate = useNavigate(); // useNavigate hook
 
-  const presetAmounts = [5000, 10000, 15000, 20000, 40000, 100000];
+  const handleNavigateToAddCard = () => {
+    navigate("/App/settings", {
+      state: { triggerAddCard: true, triggerCardAndBankSettings: true },
+    });
+  };
+
+  const presetAmounts = [100000, 200000, 500000, 1000000, 200000, 5000000];
 
   return (
     <>
@@ -105,10 +215,11 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         header="QuickInvest"
+        className="animate-floatIn"
         body={
           <div>
             <p>
-              Manually move funds from your local bank account into your{" "}
+              Manually move funds from your savings into your{" "}
               <span style={{ color: "#4C28BC" }}>INVESTMENT</span> account with
               a few clicks.
             </p>
@@ -117,7 +228,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                 fullWidth
                 variant="outlined"
                 className="bg-white"
-                label="Enter or Select an amount"
+                label="QuickInvest..."
                 value={amount}
                 onChange={handleAmountChange}
                 InputProps={{
@@ -130,7 +241,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                     </IconButton>
                   ),
                 }}
-                placeholder="Enter or Select an amount"
+                placeholder="Minimum amount is ₦100,000"
               />
               <div className="grid grid-cols-3 gap-2 mt-4 mb-4">
                 {presetAmounts.map((preset, index) => (
@@ -197,36 +308,88 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                 </div>
               )}
               {selectedOption === "My Saved Cards" && (
-                <Select
-                  fullWidth
-                  variant="outlined"
-                  displayEmpty
-                  className="mb-4 bg-white"
-                  placeholder="Which of your cards?"
-                >
-                  {/* List of saved cards from settings/subsettings/card.tsx */}
-                  <MenuItem value="" disabled>
-                    No cards added yet. Use Transfer or... Add Cards Now!
-                  </MenuItem>
-                  {/* Render saved cards here */}
-                </Select>
+                <div className="text-center">
+                  {cards.length === 0 ? (
+                    <div className="text-center text-gray-600">
+                      <div>
+                        No cards added yet...{" "}
+                        <span
+                          className="font-bold font-proxima text-blue-500 cursor-pointer"
+                          onClick={handleNavigateToAddCard}
+                        >
+                          Add Card Now...
+                        </span>
+                      </div>
+                      <div className="mt-7 mb--5 flex justify-center">
+                        <Img
+                          src="/images/paystack.png"
+                          alt="Paystack"
+                          width={150}
+                          height={50}
+                          className="text-center"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <Select
+                        fullWidth
+                        variant="outlined"
+                        displayEmpty
+                        className="mb-4 bg-white"
+                        placeholder="Which of your cards?"
+                        value={selectedCardId || ""}
+                        onChange={(event) => {
+                          console.log("Selected card ID:", event.target.value); // Log selected card ID
+                          setSelectedCardId(event.target.value);
+                        }}
+                      >
+                        {cards.map((card) => (
+                          <MenuItem key={card.id} value={card.id}>
+                            <div className="flex items-center">
+                              <IonIcon
+                                icon={cardIcon}
+                                style={{
+                                  fontSize: "24px",
+                                  color: getBankColor(card.bank_code),
+                                }}
+                              />
+                              <span className="ml-2">
+                                {card.bank_name} -
+                                {" "}
+                                {`**** ${card.card_number.slice(-4)}`}
+                              </span>
+                            </div>
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <div className="flex justify-center">
+                        <Img
+                          src="/images/paystack.png"
+                          alt="Paystack"
+                          width={150}
+                          height={50}
+                          className="text-center"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
         }
         buttonText={
           isSending ? (
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               <CircularProgress size={24} className="mr-2" />
-              Sending Payment...
+              PROCESSING... PLEASE WAIT...
             </div>
-          ) : (
-            <>
-              <ArrowUpward className="mr-2" />
-              {selectedOption === "Bank Transfer"
-                ? "I've Sent The Payment"
-                : "QuickInvest Now!"}
-            </>
+          ) : selectedOption === "Bank Transfer" ? (
+            "I'VE SENT THE PAYMENT"
+          ) : ("QuickInvest Now!"
+
           )
         }
         onButtonClick={handleSendPayment}
@@ -264,8 +427,24 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
           )}
         </div>
       </Modal>
+
+      {/* <OTPModal
+        isOpen={showOTPModal}
+        onClose={() => setShowOTPModal(false)}
+        userInfo={userInfo}
+        number={userNumber}
+      /> */}
+
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={() => setSnackbarOpen(false)}
+      />
     </>
   );
 };
 
 export default QuickInvestModal;
+
+
