@@ -141,8 +141,6 @@ const RegisterPage: React.FC = () => {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {
           errorMsg = error.response.data.email
-            ? "Kindly fill in all required fields..."
-            : "Please fill in all required fields to create your account.";
             ? "A user with this email already exists. If in doubt, click Forget Password on the login page"
             : "Please fill in all required fields to create your account.";
         } else if (error.response?.status === 500) {
@@ -256,11 +254,6 @@ const RegisterPage: React.FC = () => {
                 </span>
               </label>
 
-              {/* {errorMessage && <p className="text-red-500 mb-5">{errorMessage}</p>} */}
-
-              <div
-                className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}
-              >
               <div
                 className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}
               >
