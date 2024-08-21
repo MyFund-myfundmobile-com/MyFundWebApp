@@ -76,7 +76,7 @@ const Header = () => {
             <div className={`${styles.buttonContainer} flex mb-4`}>
               <a
                 download
-                href="/myFund-Enterprise-App.apk"
+                href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68&pli=1"
                 className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
                 style={{ boxShadow: "6px 6px #351265" }}
                 onClick={() => handleDownload("app")}
@@ -123,7 +123,10 @@ const Header = () => {
                 borderColor="silver"
                 startIcon={<IoLogoAndroid className="h-6 w-6 mr-2" />}
               >
-                <a download href="/myFund-Enterprise-App.apk">
+                <a
+                  download
+                  href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68&pli=1"
+                >
                   {downloading && downloadingPlatform === "android" ? (
                     <>
                       Downloading...
