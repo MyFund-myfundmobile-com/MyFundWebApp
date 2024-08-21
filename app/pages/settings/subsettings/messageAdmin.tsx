@@ -109,9 +109,12 @@ const MessageAdmin: React.FC = () => {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
+      // Show the success modal and confetti
+      setShowSuccessModal(true);
+      setShowConfetti(true);
+
       setMessage(""); // Clear the message field
     } catch (error) {
-      // Handle error
       setSnackbarMessage("Failed to send message. Please try again.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
