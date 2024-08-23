@@ -21,7 +21,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "@types/axios": "^0.14.0",
     "@types/redux-thunk": "^2.1.32",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "cropperjs": "^1.6.2",
     "dotenv": "^16.4.5",
     "emoji-picker-react": "^4.11.1",
