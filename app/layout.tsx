@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { karla, nexa, productSans, proxima } from "../lib/font";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "@/Redux store/store";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import StyledComponentsRegistry from "@/lib/registry";
 import ReduxProvider from "@/components/ReduxProvider";
 
@@ -24,6 +24,8 @@ export default function RootLayout({
       >
         <StyledComponentsRegistry>
           <ReduxProvider>{children}</ReduxProvider>
+          <Analytics />
+          <SpeedInsights />
         </StyledComponentsRegistry>
       </body>
     </html>

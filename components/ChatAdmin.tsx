@@ -3,7 +3,7 @@ import { Tooltip } from "@mui/material";
 
 const ChatAdmin = () => {
   return (
-    <span className="fixed bottom-20 right-20 z-50 flex flex-col items-center">
+    <div className="fixed bottom-20 right-20 z-50 flex flex-col items-center">
       <Tooltip
         title="Live Chat Admin"
         placement="top"
@@ -25,7 +25,10 @@ const ChatAdmin = () => {
           />
         </a>
       </Tooltip>
-    </span>
+      <span className="text-xs font-karla italic text-gray-600 mt-2">
+        Chat Admin...
+      </span>
+    </div>
   );
 };
 

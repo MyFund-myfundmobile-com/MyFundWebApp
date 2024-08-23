@@ -90,7 +90,7 @@ const AddBankModal: React.FC<AddBankModalProps> = ({
         `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PAYSTACK_LIVE_KEY}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_KEY}`,
           },
         }
       );

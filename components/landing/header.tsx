@@ -76,7 +76,7 @@ const Header = () => {
             <div className={`${styles.buttonContainer} flex mb-4`}>
               <a
                 download
-                href="/myFund-Enterprise-App.apk"
+                href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
                 className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
                 style={{ boxShadow: "6px 6px #351265" }}
                 onClick={() => handleDownload("app")}
@@ -104,7 +104,7 @@ const Header = () => {
               >
                 <a
                   download
-                  href="/myFund-Enterprise-App.apk"
+                  href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
                 >
                   {downloading && downloadingPlatform === "iphone" ? (
                     <>
@@ -131,7 +131,7 @@ const Header = () => {
               >
                 <a
                   download
-                  href="/myFund-Enterprise-App.apk"
+                  href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
                 >
                   {downloading && downloadingPlatform === "android" ? (
                     <>
@@ -148,6 +148,69 @@ const Header = () => {
               </PrimaryButton>
             </div>
           </div>
+          <div className="mt-10 flex justify-start items-center">
+            <div className="logo-container">
+              <div className="scroll">
+                <Image
+                  src="/images/tef.png"
+                  alt="TEF"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/fgn.png"
+                  alt="FGN"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/ocn.png"
+                  alt="OCN"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/fate2.png"
+                  alt="FATE"
+                  className="h-12 w-auto object-contain logo"
+                  width={100}
+                  height={12}
+                />
+                {/* Duplicate the logos for continuous scrolling */}
+                <Image
+                  src="/images/tef.png"
+                  alt="TEF"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/fgn.png"
+                  alt="FGN"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/ocn.png"
+                  alt="OCN"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+                <Image
+                  src="/images/fate.png"
+                  alt="FATE"
+                  className="h-12 w-auto object-contain logo"
+                  height={12}
+                  width={100}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div
@@ -162,7 +225,6 @@ const Header = () => {
           />
         </div>
       </div>
-      {/* Floating WhatsApp Icon with Tooltip */}
     </div>
   );
 };

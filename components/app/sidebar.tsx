@@ -119,7 +119,7 @@ const Sidebar: React.FC = () => {
           >
             <div
               className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${
-                activeItem === item.label
+                activeItem === item.href
                   ? "bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold"
                   : "hover:bg-opacity-10 hover:bg-gray-300"
               }`}

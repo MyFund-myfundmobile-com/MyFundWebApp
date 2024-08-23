@@ -43,7 +43,15 @@ export const addBankAccount = (bankAccount: BankAccount): AuthActionTypes => ({
 });
 
 export const fetchUserInfo = (token: string) => {
-  return async (dispatch: Dispatch<AuthActionTypes>) => {
+  return async (dispatch: Dispatch<AuthActionTypes>, getState: any) => {
+    const userInfo = getState().auth.userInfo;
+
+    // Check if userInfo is defined and contains the token property
+    if (!userInfo || !userInfo.token) {
+      console.error("Authentication Error: User is not authenticated.");
+      return;
+    }
+
     try {
       const response = await axios.get<User>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-user-profile/`,
@@ -57,6 +65,11 @@ export const fetchUserInfo = (token: string) => {
       if (response.status === 200) {
         const profileData = response.data;
 
+        console.log("Fetched Profile Data:", profileData);
+        console.log("Profile ID:", profileData.id);
+
+        const topSaverPercentage = profileData.top_saver_percentage * 100; // Convert to percentage if applicable
+
         dispatch({
           type: SET_USER_INFO,
           payload: {
@@ -65,11 +78,13 @@ export const fetchUserInfo = (token: string) => {
             profileImageUrl: profileData.profile_picture
               ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${profileData.profile_picture}`
               : null,
+            top_saver_percentage: topSaverPercentage, // Ensure this transformation is consistent if needed
           },
         });
 
-        // Fetch account balances after user info is fetched
-        dispatch(fetchAccountBalances(token) as any); // Type assertion to any to avoid type error
+        // Dispatch other actions as needed
+        dispatch(fetchAccountBalances(token) as any);
+        // Add more actions if necessary, like in the mobile app
       } else {
         console.error("Failed to fetch user info, status:", response.status);
         dispatch({

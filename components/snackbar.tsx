@@ -13,12 +13,24 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   // Conditional rendering based on severity
   if (severity === "success") {
     return (
-      <MuiAlert elevation={6} ref={ref} variant="filled" {...other}>
+      <MuiAlert
+        elevation={6}
+        ref={ref}
+        variant="filled"
+        {...other}
+      >
         {props.children}
       </MuiAlert>
     );
   } else {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    return (
+      <MuiAlert
+        elevation={6}
+        ref={ref}
+        variant="filled"
+        {...props}
+      />
+    );
   }
 });
 
@@ -35,7 +47,13 @@ const SlideTransition = React.forwardRef(function SlideTransition(
   },
   ref: React.Ref<unknown>
 ) {
-  return <Slide {...props} direction="right" ref={ref} />;
+  return (
+    <Slide
+      {...props}
+      direction="right"
+      ref={ref}
+    />
+  );
 });
 
 const CustomSnackbar: React.FC<SnackbarProps> = ({

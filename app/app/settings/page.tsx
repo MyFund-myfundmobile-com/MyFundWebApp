@@ -66,6 +66,8 @@ const SettingsPage: React.FC = () => {
       "triggerCardAndBankSettings"
     );
     const triggerAddCard = searchParams.get("triggerAddCard");
+
+    console.log(triggerCardAndBankSettings, triggerAddCard, "here!!!");
     if (triggerCardAndBankSettings) {
       handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
     }
@@ -82,10 +84,6 @@ const SettingsPage: React.FC = () => {
     } else {
       setCropper(null);
     }
-  };
-
-  const onNavigate = (path: string) => {
-    console.log(`Navigating to ${path}`);
   };
 
   const handleProfileImageChange = (
@@ -254,7 +252,7 @@ const SettingsPage: React.FC = () => {
         return <TopSaversSettings />;
       case "FAQs":
         return <FAQs />;
-      case "Refer and Earn: N1000 EACH":
+      case "Refer and Earn: N500 EACH":
         return <ReferAndEarnSettings />;
       case "Message Admin":
         return <MessageAdminSettings />;
