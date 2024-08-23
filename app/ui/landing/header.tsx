@@ -75,26 +75,29 @@ const Header = () => {
           <div className="flex flex-col">
             <div className={`${styles.buttonContainer} flex mb-4`}>
               <a
-                download
-                href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
-                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
+                href="/register"
+                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-bold text-white"
                 style={{ boxShadow: "6px 6px #351265" }}
                 onClick={() => handleDownload("app")}
               >
                 {downloading && downloadingPlatform === "app" ? (
                   <>
-                    <CircularProgress size={24} />
-                    Downloading MyFund Mobile App...
+                    CREATE FREE ACCOUNT...
+                    <CircularProgress
+                      size={16}
+                      className="ml-2"
+                      style={{ color: "white" }}
+                    />
                   </>
                 ) : (
-                  "Download The Mobile App"
+                  "CREATE FREE ACCOUNT"
                 )}
               </a>
             </div>
 
             <div className={styles.buttonGroup}>
               <PrimaryButton
-                className={`text-center animate-floatIn w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                className={`text-center animate-floatIn w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-gray-200 hover:shadow-lg transition-shadow ${styles.smallButton}`}
                 onClick={() => handleDownload("iphone")}
                 background="#fff"
                 color="grey"
@@ -108,7 +111,7 @@ const Header = () => {
                 >
                   {downloading && downloadingPlatform === "iphone" ? (
                     <>
-                      Downloading...
+                      Get it on iPhone...
                       <CircularProgress size={16} className="ml-2" />
                     </>
                   ) : (
@@ -118,7 +121,7 @@ const Header = () => {
               </PrimaryButton>
 
               <PrimaryButton
-                className={`text-center w-auto animate-floatIn rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                className={`text-center w-auto animate-floatIn rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-gray-200 hover:shadow-lg transition-shadow ${styles.smallButton}`}
                 onClick={() => handleDownload("android")}
                 background="#fff"
                 color="grey"
@@ -132,7 +135,7 @@ const Header = () => {
                 >
                   {downloading && downloadingPlatform === "android" ? (
                     <>
-                      Downloading...
+                      Get it on Android...
                       <CircularProgress size={16} className="ml-2" />
                     </>
                   ) : (
@@ -195,7 +198,7 @@ const Header = () => {
           className={`mt-20 ml--30 relative left-4 h-full max-h-[1400px] animate-floatIn max-w-[2680px] w-full lg:left-0 lg:w-full ${styles.heroImage}`}
         >
           <Img
-            src="/images/hero1.png" // Only show hero1.png
+            src="/images/hero.png" // Only show hero1.png
             width={2900}
             height={1400}
             alt=""
@@ -203,6 +206,7 @@ const Header = () => {
           />
         </div>
       </div>
+      {/* Floating WhatsApp Icon with Tooltip */}
       {/* Floating WhatsApp Icon with Tooltip */}
       <div className="fixed bottom-10 right-10 z-50 flex flex-col items-center">
         <Tooltip title="Live Chat Admin" placement="top" arrow>
@@ -220,6 +224,9 @@ const Header = () => {
             />
           </a>
         </Tooltip>
+        <span className="text-xs font-karla italic text-gray-600 mt-2">
+          Chat Admin...
+        </span>
       </div>
     </div>
   );
