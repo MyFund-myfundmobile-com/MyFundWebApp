@@ -76,8 +76,14 @@ const Header = () => {
             <div className={`${styles.buttonContainer} flex mb-4`}>
               <a
                 href="/register"
-                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-bold text-white"
-                style={{ boxShadow: "6px 6px #351265" }}
+                className="mr-5 inline-block rounded-xl px-8 py-4 text-center font-bold text-white justify-center"
+                style={{
+                  boxShadow: "6px 6px #351265",
+                  backgroundColor:
+                    downloading && downloadingPlatform === "app"
+                      ? "green"
+                      : "#4C28BC",
+                }}
                 onClick={() => handleDownload("app")}
               >
                 {downloading && downloadingPlatform === "app" ? (

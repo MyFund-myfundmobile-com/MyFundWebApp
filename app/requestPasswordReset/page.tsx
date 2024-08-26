@@ -34,7 +34,12 @@ const RequestPasswordResetPage: React.FC = () => {
   );
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false); // State to track email validity
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const buttonBackgroundColor = isLoading
+    ? "green"
+    : !isEmailValid
+    ? "gray"
+    : "#4C28BC";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -130,10 +135,12 @@ const RequestPasswordResetPage: React.FC = () => {
 
             <div className="flex mb-4 justify-center items-center">
               <a
-                className={`block rounded-xl bg-[#4C28BC] w-full py-4 text-center cursor-pointer font-semibold text-white ${
-                  !isEmailValid ? "opacity-50 pointer-events-none" : ""
-                }`} // Disable button if email is not valid
-                style={{ boxShadow: "6px 6px #351265" }}
+                className={`block rounded-xl w-full py-4 text-center cursor-pointer font-semibold text-white`}
+                style={{
+                  backgroundColor: buttonBackgroundColor,
+                  boxShadow: "6px 6px #351265",
+                  pointerEvents: !isEmailValid ? "none" : "auto", // Disable pointer events if email is invalid
+                }}
                 onClick={handlePasswordResetRequest}
               >
                 {isLoading ? (
