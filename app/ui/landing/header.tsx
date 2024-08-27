@@ -73,10 +73,10 @@ const Header = () => {
             </p>
           </div>
           <div className="flex flex-col">
-            <div className={`${styles.buttonContainer} flex mb-4`}>
+            <div className={`flex mb-4`}>
               <a
                 href="/register"
-                className="mr-5 inline-block rounded-xl px-8 py-4 text-center font-bold text-white justify-center"
+                className={`${styles.buttonContainer} mr-5 inline-block rounded-xl px-8 py-4 text-center font-bold text-white justify-center`}
                 style={{
                   boxShadow: "6px 6px #351265",
                   backgroundColor:

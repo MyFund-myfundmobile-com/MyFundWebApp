@@ -21,11 +21,7 @@ import {
 } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../pages/settings/modals/logoutModals";
-<<<<<<< HEAD
-import Image from "next/image";
-=======
 import { Img } from "react-image";
->>>>>>> staging
 
 interface SidebarProps {
   onToggle: () => void;
@@ -118,11 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           />
           {!isRetracted && (
             <Tooltip title="Go to the home page" placement="right">
-<<<<<<< HEAD
-              <Image
-=======
               <Img
->>>>>>> staging
                 src="/images/myfund.png"
                 width="104"
                 height="32"
