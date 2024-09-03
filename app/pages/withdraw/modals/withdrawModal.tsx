@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { TextField, Select, MenuItem, IconButton, CircularProgress, InputLabel, FormControl } from '@mui/material';
 import { Close, CheckCircleOutline } from '@mui/icons-material';
@@ -137,7 +138,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
         header="Withdraw"
         body={
           <div>
-            <p>Move money from Savings to Investment or to your bank.</p><br/>
+            <p>Move money from Savings to Investment or to your bank.</p><br />
 
             <p>
               Immediate Withdrawal to <span style={{ color: 'green', fontWeight: 'bold' }}>Bank Account</span> attracts...
@@ -146,11 +147,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
                 <li><span style={{ color: 'brown', fontWeight: 'bold' }}>15%</span> charge if from <span style={{ color: '#4C28BC', fontWeight: 'bold' }}>INVESTMENT</span></li>
                 <li><span style={{ color: 'green', fontWeight: 'bold' }}>0%</span> charge if from <span style={{ color: '#4C28BC', fontWeight: 'bold' }}>WALLET</span></li>
               </ul>
-              <br/>
+              <br />
 
               To schedule a withdrawal without charges, message admin with the withdrawal request.
             </p>
-            <br/>
+            <br />
             <Select
               fullWidth
               value={withdrawFrom}

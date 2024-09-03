@@ -23,6 +23,9 @@ import {
   SET_AUTO_SAVE_SETTINGS,
   SET_AUTO_SAVE_OFF,
   AutoSaveSettings,
+  SET_AUTO_INVEST_SETTINGS,
+  SET_AUTO_INVEST_OFF,
+  AutoInvestSettings,
   TopSaversData,
   UserTransaction,
   KYCStatus,
@@ -351,6 +354,47 @@ export const updateAutoSaveSettings = (
 
 export const setAutoSaveOff = (): AuthActionTypes => ({
   type: SET_AUTO_SAVE_OFF,
+});
+//invest related actions
+export const fetchAutoInvestSettings = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    if (!token) {
+      console.error("Authentication Error: User is not authenticated.");
+      return;
+    }
+
+    try {
+      const response = await axios.get<{ autoInvestSettings: AutoInvestSettings }>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-autoinvest-settings/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const { autoInvestSettings } = response.data;
+        // Dispatch the autoSaveSettings directly without nesting
+        dispatch(updateAutoInvestSettings(autoInvestSettings));
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
+  };
+};
+
+export const updateAutoInvestSettings = (
+  autoInvestSettings: AutoInvestSettings
+): AuthActionTypes => {
+  return {
+    type: SET_AUTO_INVEST_SETTINGS,
+    payload: autoInvestSettings, // Directly store the flat object
+  };
+};
+
+export const setAutoInvestOff = (): AuthActionTypes => ({
+  type: SET_AUTO_INVEST_OFF,
 });
 
 export const updateUserProfile = (updatedProfile: any) => ({

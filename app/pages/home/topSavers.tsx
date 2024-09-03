@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Title from "@/app/components/title";
 import Subtitle from "@/app/components/subtitle";
@@ -143,14 +142,13 @@ const TopSaversSection: React.FC = () => {
           {userPosition === -1 ? (
             <span className="ml-5">-</span>
           ) : (
-            `${userPosition + 1}${
-              userPosition + 1 === 1
-                ? "ST"
-                : userPosition + 1 === 2
+            `${userPosition + 1}${userPosition + 1 === 1
+              ? "ST"
+              : userPosition + 1 === 2
                 ? "ND"
                 : userPosition + 1 === 3
-                ? "RD"
-                : "TH"
+                  ? "RD"
+                  : "TH"
             }`
           )}
         </Title>

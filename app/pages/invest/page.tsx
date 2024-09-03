@@ -18,23 +18,34 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserInfo } from "@/app/Redux store/actions";
+import { fetchAutoInvestSettings, fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
 import TopSaversSection from "../home/topSavers";
-
+import DeactivateAutoInvestModal from "./modals/deactivateAutoInvest";
 const InvestPage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(
     window.innerWidth < 900
   );
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
-  const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [amount, setAmount] = useState<string>("");
-  const [showQuickInvestModal, setShowQuickInvestModal] =
+  const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false);//
+  const [tempAutoInvestState, setTempAutoInvestState] = useState<boolean>(false);//
+  const [isQuickInvestModalOpen, setIsQuickInvestModalOpen] =
     useState<boolean>(false);
-  const [showAutoInvestModal, setShowAutoInvestModal] =
-    useState<boolean>(false);
+  const [isAutoInvestModalOpen, setIsAutoInvestModalOpen] =
+    useState<boolean>(false); // State for AutoSave modal
+
+
+  // const [showQuickInvestModal, setShowQuickInvestModal] =
+  //  useState<boolean>(false);
+  // const [showAutoInvestModal, setShowAutoInvestModal] =
+  //   useState<boolean>(false);
+
+  // const [isAutoInvestModalOpen, setIsAutoInvestModalOpen] =
+  //   useState<boolean>(false);
+  const [isDeactivateAutoInvestModalOpen, setIsDeactivateAutoInvestModalOpen] = useState<boolean>(false);
   const location = useLocation(); // Initialize useLocation
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -43,33 +54,45 @@ const InvestPage = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const autoInvestSettings = useSelector(
+    (state: RootState) => state.auth.autoInvestSettings
+  );
 
   useEffect(() => {
     if (token) {
       dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
+      dispatch(fetchAutoInvestSettings(token) as any);
     }
   }, [dispatch, token]);
+  useEffect(() => {
+    if (autoInvestSettings) {
+      setIsAutoInvestOn(autoInvestSettings.active ?? false);
+    }
+  }, [autoInvestSettings]);
+
+  const handleToggleAutoInvest = () => {
+    const newAutoInvestStatus = !(autoInvestSettings?.active || false);
+    setTempAutoInvestState(isAutoInvestOn);
+
+    if (newAutoInvestStatus) {
+      setIsAutoInvestModalOpen(true);
+    }
+    else {
+      if (autoInvestSettings?.active) { setIsDeactivateAutoInvestModalOpen(true); }
+      else {
+        setIsAutoInvestModalOpen(true);
+      }
+    }
+    setIsAutoInvestOn(newAutoInvestStatus);
+  };
 
   useEffect(() => {
     if (location.state?.quickInvestModalActive) {
-      setShowQuickInvestModal(true); // Open modal if quickSaveModalActive is true
+      setIsAutoInvestModalOpen(true); // Open modal if quickInvestModalActive is true
     } else if (location.state?.autoInvestModalActive) {
-      setShowAutoInvestModal(true); // Open modal if quickSaveModalActive is true
+      setIsAutoInvestModalOpen(true); // Open modal if quickSaveModalActive is true
     }
   }, [location.state]);
-
-  const handleDownloadClick = () => {
-    setIsDownloading(true);
-    setTimeout(() => {
-      setIsDownloading(false);
-      const link = document.createElement("a");
-      link.href = "/MyFundPackages.pdf";
-      link.download = "MyFundPackages.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 5000);
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,6 +107,36 @@ const InvestPage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleDownloadClick = () => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      setIsDownloading(false);
+      const link = document.createElement("a");
+      link.href = "/MyFundPackages.pdf";
+      link.download = "MyFundPackages.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 5000);
+  };
+
+
+
+  const handleCloseDeactivateAutoInvestModal = () => {
+    setIsDeactivateAutoInvestModalOpen(false);
+  }
+
+  const handleCloseAutoInvestModal = () => {
+    setIsAutoInvestOn(tempAutoInvestState); // Revert to the original state
+    setIsAutoInvestModalOpen(false);
+  };
+
+  const handleOpenQuickInvestModal = (presetAmount = "") => {
+    setAmount(presetAmount);
+    setIsQuickInvestModalOpen(true);
+  };
+
 
   // Add this formatting function to format account balances with commas
   const formatAmountWithCommas = (amount: number) => {
@@ -105,22 +158,13 @@ const InvestPage = () => {
     return () => clearInterval(slideInterval);
   });
 
-  const handleOpenQuickInvestModal = (presetAmount = "") => {
-    setAmount(presetAmount);
-    setShowQuickInvestModal(true);
-  };
+
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
   };
 
-  const toggleAutoInvest = () => {
-    setIsAutoInvestOn(!isAutoInvestOn);
-    // Optionally open AutoSave modal automatically on toggle
-    if (!isAutoInvestOn) {
-      setShowAutoInvestModal(true);
-    }
-  };
+
 
   // Function to get the current month
   const getCurrentMonthName = () => {
@@ -233,9 +277,8 @@ const InvestPage = () => {
         {slides.map((_, index) => (
           <div
             key={index}
-            className={`w-2 h-2 mx-1 rounded-full ${
-              index === currentSlide ? "bg-purple-500" : "bg-gray-300"
-            }`}
+            className={`w-2 h-2 mx-1 rounded-full ${index === currentSlide ? "bg-purple-500" : "bg-gray-300"
+              }`}
           ></div>
         ))}
       </div>
@@ -325,7 +368,7 @@ const InvestPage = () => {
           <div className="absolute bottom-2 left-2 flex items-center">
             <Switch
               checked={isAutoInvestOn}
-              onChange={toggleAutoInvest}
+              onChange={handleToggleAutoInvest}
               color="default"
               inputProps={{ "aria-label": "toggle autoinvest" }}
               sx={{
@@ -338,9 +381,8 @@ const InvestPage = () => {
               }}
             />
             <span
-              className={`text-gray-500 font-karla ${
-                isAutoInvestOn ? "text-green-500" : ""
-              }`}
+              className={`text-gray-500 font-karla ${isAutoInvestOn ? "text-green-500" : ""
+                }`}
               style={{ fontSize: 12 }}
             >
               {isAutoInvestOn ? "AutoInvest is ON" : "AutoInvest is OFF"}
@@ -429,13 +471,21 @@ const InvestPage = () => {
 
       {/* Modals */}
       <QuickInvestModal
-        isOpen={showQuickInvestModal}
-        onClose={() => setShowQuickInvestModal(false)}
+        isOpen={isAutoInvestModalOpen}
+        onClose={() => setIsQuickInvestModalOpen(false)}
         initialAmount={amount}
       />
       <AutoInvestModal
-        isOpen={showAutoInvestModal}
-        onClose={() => setShowAutoInvestModal(false)}
+        isOpen={isAutoInvestModalOpen}
+        onClose={handleCloseAutoInvestModal}
+      />
+      <DeactivateAutoInvestModal
+        isOpen={isDeactivateAutoInvestModalOpen}
+        onClose={handleCloseDeactivateAutoInvestModal}
+        onDeactivate={() => {
+          console.log("Deactivated");
+          // Handle additional logic for deactivating AutoSave here
+        }}
       />
     </div>
   );

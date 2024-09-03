@@ -20,6 +20,8 @@ import {
   SET_SELECTED_TOP_SAVER,
   SET_USER_PERCENTAGE,
   SET_AUTO_SAVE_SETTINGS,
+  SET_AUTO_INVEST_SETTINGS,
+  // SET_AUTO_INVEST_OFF
 } from "./types";
 
 const initialState: AuthState = {
@@ -40,6 +42,12 @@ const initialState: AuthState = {
   KYCStatus: {
     kycStatus: "",
     updated_at: "",
+  },
+  autoInvestSettings: {
+    active: false,
+    amount: 0,
+    frequency: '',
+    autoinvest_enabled: false,
   },
 
   userInfo: {
@@ -128,7 +136,7 @@ const authReducer = (
       return {
         ...state,
         bankAccounts: state.bankAccounts.filter(
-          (account) => account.account_number !== action.payload
+          (account: any) => account.account_number !== action.payload
         ),
       };
     case SET_BANK_ACCOUNTS:
@@ -182,7 +190,21 @@ const authReducer = (
         ...state,
         autoSaveSettings: action.payload, // No extra wrapping, store directly
       };
-
+    case SET_AUTO_INVEST_SETTINGS:
+      return {
+        ...state,
+        autoInvestSettings: {
+          ...action.payload,
+        }, // No extra wrapping, store directly
+      };
+    // case SET_AUTO_INVEST_OFF:
+    //   return {
+    //     ...state,
+    //     autoInvestSettings: {
+    //       ...state.autoInvestSettings,
+    //       active: false,
+    //     },
+    //   };
     default:
       return state;
   }

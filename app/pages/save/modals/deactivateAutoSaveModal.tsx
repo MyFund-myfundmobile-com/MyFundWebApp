@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import Modal from "@/app/components/modal";
 import { IonIcon } from "@ionic/react";
