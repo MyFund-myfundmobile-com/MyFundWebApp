@@ -31,6 +31,7 @@ import CustomSnackbar from "@/app/components/snackbar";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
 import axios from "axios";
 import OTPModal from "./otpInvestModal";
+// import { useRouter } from 'next/router';
 
 interface QuickInvestModalProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const cards = useSelector((state: RootState) => state.auth.cards);
   const accountSavedBalance = useSelector((state: RootState) => state.auth.accountBalances.savings);
-
+  // const router = useRouter();
 
   useEffect(() => {
     if (token) {
@@ -295,6 +296,10 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   //     }, 3000); // Adjust as needed for the simulation
   //   };
   // }
+  //       onClose(); // Close modal after success
+  //     }, 3000); // Adjust as needed for the simulation
+  //   };
+  // }
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     setSelectedOption(event.target.value);
   };
@@ -325,10 +330,12 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         onClose={onClose}
         header="QuickInvest"
         className="animate-floatIn"
+
         body={
           <div>
             <p>
               Manually move funds from your savings into your{" "}
+
               <span style={{ color: "#4C28BC" }}>INVESTMENT</span> account with
               a few clicks.
             </p>
@@ -498,21 +505,26 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         buttonText={
           isSending ? (
             <div className="flex items-center justify-center">
+
               <CircularProgress size={24} className="mr-2" />
               PROCESSING... PLEASE WAIT...
             </div>
           ) : selectedOption === "Bank Transfer" ? (
             "I'VE SENT THE PAYMENT"
-          ) : selectedOption === "My Savings" ? ("Moving Funds to Investment")
-            : ("QuickInvest Now!"
-
+          ) : selectedOption === "My Savings" ? (
+            "Moving Funds to Investment")
+            : (
+              "QuickInvest Now!"
             )
         }
+
         onButtonClick={selectedOption === "My Savings" ? handleInvestTransfer : handleQuickInvest}
         buttonDisabled={!selectedOption || !amount}
         zIndex={200}
         modalIcon={undefined}
+
       />
+
 
       {/* Success Modal */}
       <Modal

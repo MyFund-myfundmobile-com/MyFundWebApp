@@ -102,6 +102,13 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
       setSnackbarOpen(true);
       return;
     }
+    if (formattedAmount < 100000) {
+      setSnackbarOpen(true);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
+      );
+      return;
+    }
     try {
       setProcessing(true);
       const response = await axios.post(
