@@ -1,7 +1,7 @@
 const PrivacyAndPolicyPage = () => {
   return (
     <section>
-      <div className="flex flex-col items-center justify-center px-5 md:px-10">
+      <div className="flex flex-col animate-floatIn items-center justify-center px-5 md:px-10">
         {/* Title Container */}
         <div className="flex h-auto min-w-[100vw] flex-col items-center justify-end bg-[#f2f2f7] py-6 md:h-64">
           <div className="flex flex-col items-center gap-y-4 py-5">

@@ -21,7 +21,7 @@ import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
-import TopSaversSection from "../home/topSavers";
+import RecentTransactionsSection from "../home/recentTransactions";
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -299,8 +299,12 @@ const WithdrawPage = () => {
         style={{ marginTop: 20, marginBottom: 20 }}
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
+        <div className="md:col-span-3" style={{ alignSelf: "flex-start" }}>
+          <RecentTransactionsSection />
+        </div>
+
         <div className="md:col-span-3">
-          <TopSaversSection />
+          <Referrals />
         </div>
 
         <div className="md:col-span-6">
@@ -354,10 +358,6 @@ const WithdrawPage = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="md:col-span-3">
-          <Referrals />
         </div>
       </div>
       <WithdrawModal

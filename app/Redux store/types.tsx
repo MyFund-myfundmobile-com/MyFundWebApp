@@ -26,7 +26,7 @@ export const SET_AUTO_INVEST_OFF = "SET_AUTO_INVEST_OFF";
 
 export interface User {
   is_first_time_signup?: boolean;
-  id: string;
+  id: string | number | null; // Allow for null or number
   firstName: string;
   lastName: string;
   mobileNumber: string;

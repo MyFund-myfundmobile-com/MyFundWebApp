@@ -134,25 +134,25 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
         const response =
           selectedOption === "Bank Transfer"
             ? await axios.post(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/initiate-save-transfer/`,
-                { amount: formattedAmount },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              )
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/initiate-save-transfer/`,
+              { amount: formattedAmount },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
             : await axios.post(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quicksave/`,
-                payload,
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quicksave/`,
+              payload,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
 
         if (response.status === 200 || response.status === 201) {
           const { status, display_text, user_number, open_url } = response.data;

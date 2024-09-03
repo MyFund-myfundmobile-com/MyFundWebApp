@@ -8,13 +8,17 @@ import { mailOutline, checkmarkCircleOutline } from "ionicons/icons";
 import CustomSnackbar from "../components/snackbar";
 import Title from "../components/title";
 import Subtitle from "../components/subtitle";
-import Image from "next/image";
 import ResetPasswordModal from "./resetPasswordModal";
+import { config } from "@fortawesome/fontawesome-svg-core";
+
+config.autoAddCss = false; // Prevent Font Awesome from adding CSS automatically
 
 const RequestPasswordResetPage: React.FC = () => {
   useEffect(() => {
+    console.log("Setting background color...");
     document.body.style.backgroundColor = "#351265";
     return () => {
+      console.log("Cleaning up background color...");
       document.body.style.backgroundColor = "";
     };
   }, []);
@@ -30,7 +34,12 @@ const RequestPasswordResetPage: React.FC = () => {
   );
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false); // State to track email validity
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const buttonBackgroundColor = isLoading
+    ? "green"
+    : !isEmailValid
+    ? "gray"
+    : "#4C28BC";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -92,7 +101,7 @@ const RequestPasswordResetPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-customPurple">
+    <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple flex flex-col items-center justify-center h-screen">
         <div className="max-w-xl px-5 py-5 text-center md:px-10 md:py-10 lg:py-10 bg-white rounded-lg shadow-lg">
           <Title>
@@ -126,10 +135,12 @@ const RequestPasswordResetPage: React.FC = () => {
 
             <div className="flex mb-4 justify-center items-center">
               <a
-                className={`block rounded-xl bg-[#4C28BC] w-full py-4 text-center cursor-pointer font-semibold text-white ${
-                  !isEmailValid ? "opacity-50 pointer-events-none" : ""
-                }`} // Disable button if email is not valid
-                style={{ boxShadow: "6px 6px #351265" }}
+                className={`block rounded-xl w-full py-4 text-center cursor-pointer font-semibold text-white`}
+                style={{
+                  backgroundColor: buttonBackgroundColor,
+                  boxShadow: "6px 6px #351265",
+                  pointerEvents: !isEmailValid ? "none" : "auto", // Disable pointer events if email is invalid
+                }}
                 onClick={handlePasswordResetRequest}
               >
                 {isLoading ? (

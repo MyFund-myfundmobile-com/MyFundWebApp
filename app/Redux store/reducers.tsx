@@ -52,7 +52,7 @@ const initialState: AuthState = {
 
   userInfo: {
     is_first_time_signup: false,
-    id: "",
+    id: "", // Make sure it's an empty string or null, not undefined
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -67,6 +67,7 @@ const initialState: AuthState = {
     top_saver_percentage: 0,
     profile_picture: "",
   },
+
   accountBalances: {
     savings: 0,
     investment: 0,
@@ -94,8 +95,12 @@ const authReducer = (
     case SET_USER_INFO:
       return {
         ...state,
-        userInfo: action.payload,
+        userInfo: {
+          ...state.userInfo,
+          ...action.payload,
+        },
       };
+
     case SET_USER_INFO_ERROR:
       return {
         ...state,

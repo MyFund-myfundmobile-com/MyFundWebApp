@@ -6,13 +6,14 @@ import {
   PrinterIcon,
   SparklesIcon,
 } from "@heroicons/react/16/solid";
-import { Img } from "react-image";
+import Image from "next/image";
 import { IoEyeOutline, IoBusinessOutline } from "react-icons/io5";
+import { Img } from "react-image";
 
 const Facts = () => {
   return (
     <section>
-      <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32 flex flex-col items-center">
+      <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32 flex flex-col items-center animate-floatIn">
         {" "}
         <h1 className="mb-4 text-3xl md:text-5xl font-proxima font-bold text-center">
           What We{" "}

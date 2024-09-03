@@ -63,13 +63,14 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
     const bank = bankOptions.find((option) => option.code === bankCode);
     return bank ? bank.color : "#4c28bc"; // Default color if not found
   };
-
   const formatAmount = (value: string) => {
     // Remove non-digit characters
     const cleanedValue = value.replace(/[^0-9]/g, "");
     // Format with commas
     return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace(/,/g, ""); // Remove commas
     if (!isNaN(Number(value))) {

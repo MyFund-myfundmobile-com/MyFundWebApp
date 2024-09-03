@@ -18,7 +18,7 @@ import {
 import Subtitle from "../components/subtitle";
 import axios from "axios";
 import CustomSnackbar from "../components/snackbar";
-import Confetti from "react-confetti";
+import styles from "../ui/landing/Header.module.css";
 
 interface ResetPasswordModalProps {
   isOpen: boolean;
@@ -57,13 +57,20 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     );
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !isResetButtonDisabled()) {
+      handleResetPassword();
+    }
+  };
+
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
       setSnackbarMessage("Passwords do not match");
       return;
     }
 
-    setResetting(true);
+    setLoading(true); // Set loading to true when the process starts
+    setResetting(true); // Optionally keep this for handling reset-specific logic
 
     try {
       setLoading(true);
@@ -116,6 +123,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     }
 
     setResetting(false);
+    setLoading(true); // Set loading to true when the process starts
   };
 
   const handleCloseSuccessModal = () => {
@@ -169,6 +177,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
                 marginTop: 15,
                 backgroundColor: "white",
               }}
+              onKeyDown={handleKeyDown} // Add this line
               InputProps={{
                 startAdornment: (
                   <IonIcon
@@ -245,6 +254,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         }
         zIndex={100}
         buttonDisabled={isResetButtonDisabled()}
+        buttonBackgroundColor={loading ? "green" : "#4C28BC"}
       />
       <Modal
         isOpen={showSuccessModal}

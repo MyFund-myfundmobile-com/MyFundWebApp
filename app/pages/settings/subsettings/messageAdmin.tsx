@@ -19,26 +19,109 @@ import {
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
 import Modal from "@/app/components/modal";
 import Confetti from "react-confetti";
+import Image from "next/image";
+import CustomSnackbar from "@/app/components/snackbar";
+import axios from "axios";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/Redux store/store";
+import { fetchUserInfo } from "@/app/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
+import { closeCircleOutline, attachOutline, helpOutline } from "ionicons/icons";
+import EmojiPicker from "emoji-picker-react"; // or the correct path if using a custom component
 
 const MessageAdmin: React.FC = () => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // New state for showing emoji picker
+  const [attachmentImage, setAttachmentImage] = useState<{
+    uri: string;
+  } | null>(null);
+
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
+    }
+  }, [dispatch, token]);
+
+  const handleEmojiClick = (emojiData: any) => {
+    setMessage((prevMessage) => prevMessage + emojiData.emoji);
+    setShowEmojiPicker(false);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setAttachmentImage({ uri: reader.result as string });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSendClick = () => {
-    setSending(true);
-    // Simulate sending message process
-    setTimeout(() => {
-      setSending(false);
-      setShowSuccessModal(true);
-      setShowConfetti(true);
-      setTimeout(() => {
-        setShowSuccessModal(false);
-      }, 6000);
-      console.log("Message sent: ", message);
-    }, 2000);
+    if (message.split(" ").length < 5) {
+      setSnackbarMessage("Message must contain at least 5 words.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    setShowConfirmationModal(true);
   };
+
+  const handleConfirmSend = async () => {
+    setShowConfirmationModal(false);
+    setSending(true);
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/message-admin/`,
+        {
+          message: message,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setSnackbarMessage("Message sent successfully!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+
+      setMessage(""); // Clear the message field
+    } catch (error) {
+      // Handle error
+      setSnackbarMessage("Failed to send message. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      console.error("Error sending message:", error);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  console.log("Message typed:", message);
 
   return (
     <Box
@@ -53,11 +136,23 @@ const MessageAdmin: React.FC = () => {
           </Subtitle>
         </div>
         <div className="flex items-center">
-          <IonIcon
-            icon={chatbubbleEllipsesOutline}
-            className="text-purple1"
-            style={{ fontSize: "32px" }}
-          />
+          {/* Updated WhatsApp Button */}
+          <a
+            href="http://wa.me/2349032719396"
+            target="_blank" // Opens in a new window
+            rel="noopener noreferrer"
+            className="flex items-center bg-green-600 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:bg-green-700"
+            style={{ letterSpacing: 0.5, marginTop: 1 }}
+          >
+            <Image
+              src="/images/whatsapp.png"
+              alt="WhatsApp Icon"
+              width={24}
+              height={24}
+              className="mr-2"
+            />
+            <span>Live Chat Admin Instead</span>
+          </a>
         </div>
       </div>
 
@@ -85,6 +180,7 @@ const MessageAdmin: React.FC = () => {
 
       <TextField
         label="Message"
+        placeholder="At least 5 words..."
         fullWidth
         multiline
         rows={4}
@@ -95,7 +191,7 @@ const MessageAdmin: React.FC = () => {
           style: { backgroundColor: "#F7F5FF" },
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton>
+              <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
                 <IonIcon icon={happyOutline} />
               </IconButton>
             </InputAdornment>
@@ -103,12 +199,34 @@ const MessageAdmin: React.FC = () => {
         }}
       />
 
+      {showEmojiPicker && (
+        <div style={{ position: "absolute", zIndex: 1000 }}>
+          <EmojiPicker onEmojiClick={handleEmojiClick} />
+        </div>
+      )}
+
+      {attachmentImage && (
+        <Box className="mt-2">
+          <Image
+            src={attachmentImage.uri}
+            alt="Attachment"
+            width={100}
+            height={100}
+          />
+          <IconButton onClick={() => setAttachmentImage(null)}>
+            <IonIcon icon={closeCircleOutline} />
+          </IconButton>
+        </Box>
+      )}
+
       <Box className="flex justify-center mt-4">
         <PrimaryButton
           className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
           onClick={handleSendClick}
-          background="#4C28BC"
-          hoverBackgroundColor="#351265"
+          background={message.split(" ").length >= 5 ? "#4C28BC" : "#CCC"}
+          hoverBackgroundColor={
+            message.split(" ").length >= 5 ? "#351265" : "#CCC"
+          }
           color="#fff"
           hoverColor="#fff"
           startIcon={
@@ -126,6 +244,7 @@ const MessageAdmin: React.FC = () => {
             )
           }
           style={{ width: "95%", letterSpacing: 0.5, marginTop: 5 }}
+          disabled={message.split(" ").length < 5}
         >
           {sending ? "Sending..." : "Send Message"}
         </PrimaryButton>
@@ -150,6 +269,25 @@ const MessageAdmin: React.FC = () => {
           </div>
         )}
       </Modal>
+
+      <Modal
+        isOpen={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+        header="Confirm Send Message"
+        body="Are you sure you want to send this message to the admin?"
+        buttonText="Yes, Message Admin"
+        onButtonClick={handleConfirmSend}
+        modalIcon={helpOutline}
+        iconColor="blue"
+        zIndex={200}
+      />
+
+      <CustomSnackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        handleClose={() => setSnackbarOpen(false)}
+      />
     </Box>
   );
 };

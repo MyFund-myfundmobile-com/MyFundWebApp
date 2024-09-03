@@ -330,12 +330,10 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         onClose={onClose}
         header="QuickInvest"
         className="animate-floatIn"
-
         body={
           <div>
             <p>
               Manually move funds from your savings into your{" "}
-
               <span style={{ color: "#4C28BC" }}>INVESTMENT</span> account with
               a few clicks.
             </p>
@@ -505,7 +503,6 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         buttonText={
           isSending ? (
             <div className="flex items-center justify-center">
-
               <CircularProgress size={24} className="mr-2" />
               PROCESSING... PLEASE WAIT...
             </div>

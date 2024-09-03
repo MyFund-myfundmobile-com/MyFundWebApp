@@ -9,6 +9,7 @@ import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import { shieldCheckmarkOutline } from "ionicons/icons";
 import { Tooltip } from "@mui/material";
+import Section from "@/app/components/section";
 
 const Header = () => {
   const [downloading, setDownloading] = useState(false);
@@ -27,8 +28,8 @@ const Header = () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-16 lg:py-24">
-      <div className="mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%]">
-        <div className="max-w-[720px] lg:max-w-[842px]">
+      <div className="mt-10 grid grid-cols-1 gap-12 sm:gap-20 lg:grid-cols-2 items-center justify-center max-h-[100%] w-[100%] animate-floatIn">
+        <div className="max-w-[720px] lg:max-w-[842px] animate-floatIn">
           <h1 className="mb-4 mt-20 text-4xl md:text-6xl font-proxima font-bold tracking-tighter animate-float-up animate-floatIn">
             <span>
               The{" "}
@@ -54,7 +55,6 @@ const Header = () => {
               />
             </div>
           </h1>
-
           <div className="mb-6 animate-floatIn max-w-[528px] md:mb-10 lg:mb-12 font-product-sans animate-fade-left-delay">
             <p className="text-xl text-[#636262]">
               <IoCheckmarkCircle className="inline text-green-500 mr-2" />
@@ -72,30 +72,38 @@ const Header = () => {
               via our hostels.
             </p>
           </div>
-
           <div className="flex flex-col">
-            <div className={`${styles.buttonContainer} flex mb-4`}>
+            <div className={`flex mb-4`}>
               <a
-                download
-                href="/myFund-Enterprise-App.apk"
-                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
-                style={{ boxShadow: "6px 6px #351265" }}
+                href="/register"
+                className={`${styles.buttonContainer} mr-5 inline-block rounded-xl px-8 py-4 text-center font-bold text-white justify-center`}
+                style={{
+                  boxShadow: "6px 6px #351265",
+                  backgroundColor:
+                    downloading && downloadingPlatform === "app"
+                      ? "green"
+                      : "#4C28BC",
+                }}
                 onClick={() => handleDownload("app")}
               >
                 {downloading && downloadingPlatform === "app" ? (
                   <>
-                    <CircularProgress size={24} />
-                    Downloading MyFund Mobile App...
+                    CREATE FREE ACCOUNT...
+                    <CircularProgress
+                      size={16}
+                      className="ml-2"
+                      style={{ color: "white" }}
+                    />
                   </>
                 ) : (
-                  "Download The Mobile App"
+                  "CREATE FREE ACCOUNT"
                 )}
               </a>
             </div>
 
             <div className={styles.buttonGroup}>
               <PrimaryButton
-                className={`text-center animate-floatIn w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                className={`text-center animate-floatIn w-auto rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-gray-200 hover:shadow-lg transition-shadow ${styles.smallButton}`}
                 onClick={() => handleDownload("iphone")}
                 background="#fff"
                 color="grey"
@@ -103,10 +111,13 @@ const Header = () => {
                 borderColor="silver"
                 startIcon={<IoLogoApple className="h-6 w-6 mr-2" />}
               >
-                <a download href="/myFund-Enterprise-App.apk">
+                <a
+                  download
+                  href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
+                >
                   {downloading && downloadingPlatform === "iphone" ? (
                     <>
-                      Downloading...
+                      Get it on iPhone...
                       <CircularProgress size={16} className="ml-2" />
                     </>
                   ) : (
@@ -116,7 +127,7 @@ const Header = () => {
               </PrimaryButton>
 
               <PrimaryButton
-                className={`text-center w-auto animate-floatIn rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-black hover:text-white ${styles.smallButton}`}
+                className={`text-center w-auto animate-floatIn rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400 hover:bg-gray-200 hover:shadow-lg transition-shadow ${styles.smallButton}`}
                 onClick={() => handleDownload("android")}
                 background="#fff"
                 color="grey"
@@ -124,10 +135,13 @@ const Header = () => {
                 borderColor="silver"
                 startIcon={<IoLogoAndroid className="h-6 w-6 mr-2" />}
               >
-                <a download href="/myFund-Enterprise-App.apk">
+                <a
+                  download
+                  href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
+                >
                   {downloading && downloadingPlatform === "android" ? (
                     <>
-                      Downloading...
+                      Get it on Android...
                       <CircularProgress size={16} className="ml-2" />
                     </>
                   ) : (
@@ -137,22 +151,70 @@ const Header = () => {
               </PrimaryButton>
             </div>
           </div>
+          <div className="mt-10 flex justify-start items-center">
+            <div className="logo-container">
+              <div className="scroll">
+                <Img
+                  src="/images/tef.png"
+                  alt="TEF"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/fgn.png"
+                  alt="FGN"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/ocn.png"
+                  alt="OCN"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/fate2.png"
+                  alt="FATE"
+                  className="h-12 w-auto object-contain logo"
+                />
+                {/* Duplicate the logos for continuous scrolling */}
+                <Img
+                  src="/images/tef.png"
+                  alt="TEF"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/fgn.png"
+                  alt="FGN"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/ocn.png"
+                  alt="OCN"
+                  className="h-12 w-auto object-contain logo"
+                />
+                <Img
+                  src="/images/fate.png"
+                  alt="FATE"
+                  className="h-12 w-auto object-contain logo"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div
-          className={`mt-20 ml--30 relative left-4 h-full max-h-[1680px] animate-floatIn max-w-[2680px] w-full lg:left-0 lg:w-full ${styles.heroImage}`}
+          className={`mt-20 ml--30 relative left-4 h-full max-h-[1400px] animate-floatIn max-w-[2680px] w-full lg:left-0 lg:w-full ${styles.heroImage}`}
         >
           <Img
-            src="/images/hero1.png" // Only show hero1.png
+            src="/images/hero.png" // Only show hero1.png
             width={2900}
-            height={1680}
+            height={1400}
             alt=""
             className="ml--10 relative h-full w-full max-w-none rounded-2xl object-cover border-1"
           />
         </div>
       </div>
       {/* Floating WhatsApp Icon with Tooltip */}
-      <div className="fixed bottom-20 right-20 z-50 flex flex-col items-center">
+      {/* Floating WhatsApp Icon with Tooltip */}
+      <div className="fixed bottom-10 right-10 z-50 flex flex-col items-center">
         <Tooltip title="Live Chat Admin" placement="top" arrow>
           <a
             href="http://wa.me/+2349032719396"
@@ -168,6 +230,9 @@ const Header = () => {
             />
           </a>
         </Tooltip>
+        <span className="text-xs font-karla italic text-gray-600 mt-2">
+          Chat Admin...
+        </span>
       </div>
     </div>
   );

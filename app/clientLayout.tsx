@@ -1,4 +1,4 @@
-"use client"; // This file is a Client Component
+"use client";
 
 import React from "react";
 import { usePathname } from "next/navigation"; // Import usePathname
