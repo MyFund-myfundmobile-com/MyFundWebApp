@@ -1,12 +1,24 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { TextField, Select, MenuItem, IconButton, CircularProgress, InputLabel, FormControl } from '@mui/material';
-import { Close, CheckCircleOutline } from '@mui/icons-material';
-import Modal from '@/app/components/modal';
-import Confetti from 'react-confetti';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { IonIcon } from '@ionic/react';
-import { arrowDownOutline, checkmarkCircleOutline } from 'ionicons/icons';
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  IconButton,
+  CircularProgress,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import { Close, CheckCircleOutline } from "@mui/icons-material";
+import Modal from "@/app/components/modal";
+import Confetti from "react-confetti";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { IonIcon } from "@ionic/react";
+import { arrowDownOutline, checkmarkCircleOutline } from "ionicons/icons";
+
+import { RootState } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/app/Redux store/store";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -14,7 +26,11 @@ interface WithdrawModalProps {
   defaultWithdrawFrom: string;
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultWithdrawFrom }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({
+  isOpen,
+  onClose,
+  defaultWithdrawFrom,
+}) => {
   const [amount, setAmount] = useState<string>("");
   const [withdrawFrom, setWithdrawFrom] = useState<string>(defaultWithdrawFrom);
   const [withdrawTo, setWithdrawTo] = useState<string>("");
@@ -23,22 +39,44 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string>("");
 
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
+
   useEffect(() => {
     setWithdrawFrom(defaultWithdrawFrom);
   }, [defaultWithdrawFrom]);
 
   const handleClearAmount = () => {
-    setAmount('');
+    setAmount("");
   };
 
   const formatAmount = (value: string) => {
-    const cleanedValue = value.replace(/[^0-9]/g, ''); // Remove non-digit characters
-    return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Format with commas
+    const cleanedValue = value.replace(/[^0-9]/g, ""); // Remove non-digit characters
+    return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Format with commas
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(formatAmount(event.target.value));
   };
+
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
 
   const handleWithdraw = () => {
     setIsSending(true);
@@ -54,8 +92,8 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
 
   const handleWithdrawFromChange = (event: SelectChangeEvent<string>) => {
     setWithdrawFrom(event.target.value);
-    setWithdrawTo(''); // Reset withdrawTo when withdrawFrom changes
-    setUserEmail(''); // Reset user email when withdrawFrom changes
+    setWithdrawTo(""); // Reset withdrawTo when withdrawFrom changes
+    setUserEmail(""); // Reset user email when withdrawFrom changes
   };
 
   const handleWithdrawToChange = (event: SelectChangeEvent<string>) => {
@@ -64,16 +102,16 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
 
   const getWithdrawToOptions = () => {
     switch (withdrawFrom) {
-      case 'Savings':
+      case "Savings":
         return (
           <>
             <MenuItem value="Investment">Investment</MenuItem>
             <MenuItem value="Bank Account">Bank Account</MenuItem>
           </>
         );
-      case 'Investment':
+      case "Investment":
         return <MenuItem value="Bank Account">Bank Account</MenuItem>;
-      case 'Wallet':
+      case "Wallet":
         return (
           <>
             <MenuItem value="Savings">Savings</MenuItem>
@@ -88,7 +126,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
   };
 
   const renderAdditionalFields = () => {
-    if (withdrawTo === 'Bank Account') {
+    if (withdrawTo === "Bank Account") {
       return (
         <FormControl fullWidth variant="outlined" className="mb-4 bg-white">
           <InputLabel>Which of Your Bank Accounts</InputLabel>
@@ -98,7 +136,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
             variant="outlined"
             displayEmpty
             className="mb-4 bg-white"
-            inputProps={{ 'aria-label': 'Without label' }}
+            inputProps={{ "aria-label": "Without label" }}
           >
             <MenuItem value="" disabled>
               Which of Your Bank Accounts...
@@ -112,12 +150,12 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
           </Select>
         </FormControl>
       );
-    } else if (withdrawTo === 'Another User') {
+    } else if (withdrawTo === "Another User") {
       return (
         <TextField
           fullWidth
           variant="outlined"
-          className='bg-white mb-4'
+          className="bg-white mb-4"
           label="Enter User's Email"
           value={userEmail}
           onChange={(e) => setUserEmail(e.target.value)}
@@ -138,18 +176,45 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
         header="Withdraw"
         body={
           <div>
-            <p>Move money from Savings to Investment or to your bank.</p><br />
+            <p>Move money from Savings to Investment or to your bank.</p>
+            <br />
 
             <p>
-              Immediate Withdrawal to <span style={{ color: 'green', fontWeight: 'bold' }}>Bank Account</span> attracts...
+              Immediate Withdrawal to{" "}
+              <span style={{ color: "green", fontWeight: "bold" }}>
+                Bank Account
+              </span>{" "}
+              attracts...
               <ul>
-                <li><span style={{ color: 'brown', fontWeight: 'bold' }}>10%</span> charge if from <span style={{ color: '#4C28BC', fontWeight: 'bold' }}>SAVINGS</span></li>
-                <li><span style={{ color: 'brown', fontWeight: 'bold' }}>15%</span> charge if from <span style={{ color: '#4C28BC', fontWeight: 'bold' }}>INVESTMENT</span></li>
-                <li><span style={{ color: 'green', fontWeight: 'bold' }}>0%</span> charge if from <span style={{ color: '#4C28BC', fontWeight: 'bold' }}>WALLET</span></li>
+                <li>
+                  <span style={{ color: "brown", fontWeight: "bold" }}>
+                    10%
+                  </span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    SAVINGS
+                  </span>
+                </li>
+                <li>
+                  <span style={{ color: "brown", fontWeight: "bold" }}>
+                    15%
+                  </span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    INVESTMENT
+                  </span>
+                </li>
+                <li>
+                  <span style={{ color: "green", fontWeight: "bold" }}>0%</span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    WALLET
+                  </span>
+                </li>
               </ul>
               <br />
-
-              To schedule a withdrawal without charges, message admin with the withdrawal request.
+              To schedule a withdrawal without charges, message admin with the
+              withdrawal request.
             </p>
             <br />
             <Select
@@ -159,12 +224,12 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
               displayEmpty
               variant="outlined"
               className="mb-4 bg-white"
-              inputProps={{ 'aria-label': 'Without label' }}
+              inputProps={{ "aria-label": "Without label" }}
             >
               <MenuItem value="" disabled>
                 Withdraw from...
               </MenuItem>
-              <MenuItem value="Savings">Savings (N30,546)</MenuItem>
+              <MenuItem value="Savings">Savings ({formattedSavings})</MenuItem>
               <MenuItem value="Investment">Investment (N4,370,000)</MenuItem>
               <MenuItem value="Wallet">Wallet (N199,000)</MenuItem>
             </Select>
@@ -177,7 +242,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
                 displayEmpty
                 variant="outlined"
                 className="mb-4 bg-white"
-                inputProps={{ 'aria-label': 'Without label' }}
+                inputProps={{ "aria-label": "Without label" }}
               >
                 <MenuItem value="" disabled>
                   Withdraw to...
@@ -191,7 +256,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
             <TextField
               fullWidth
               variant="outlined"
-              className='bg-white'
+              className="bg-white"
               label="Amount"
               value={amount}
               onChange={handleAmountChange}
@@ -201,10 +266,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
                   <IconButton onClick={handleClearAmount}>
                     <Close />
                   </IconButton>
-                )
+                ),
               }}
               placeholder={
-                withdrawFrom === 'Savings' && withdrawTo === 'Investment'
+                withdrawFrom === "Savings" && withdrawTo === "Investment"
                   ? "Minimum amount is N100,000"
                   : "e.g. N20,000"
               }
@@ -215,7 +280,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
                 <button
                   key={index}
                   className="bg-[#DCD1FF] text-black rounded-md font-productSans whitespace-nowrap transform active:scale-95 active:bg-purple-600 active:text-white"
-                  style={{ height: '50px' }}
+                  style={{ height: "50px" }}
                   onClick={() => setAmount(formatAmount(preset.toString()))}
                 >
                   {preset.toLocaleString()}
@@ -252,7 +317,16 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, defaultW
         buttonText="OK"
         modalIcon={checkmarkCircleOutline}
         iconColor="green"
-        startIcon={isSending ? <CircularProgress size={20} style={{ color: 'green' }} /> : <IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+        startIcon={
+          isSending ? (
+            <CircularProgress size={20} style={{ color: "green" }} />
+          ) : (
+            <IonIcon
+              icon={checkmarkCircleOutline}
+              style={{ fontSize: "20px", marginRight: 5 }}
+            />
+          )
+        }
         onButtonClick={() => setShowSuccessModal(false)}
         zIndex={200}
         confettiAnimation={true}
