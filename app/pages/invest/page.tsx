@@ -38,13 +38,11 @@ const InvestPage = () => {
     useState<boolean>(false); // State for AutoSave modal
 
 
-  // const [showQuickInvestModal, setShowQuickInvestModal] =
-  //  useState<boolean>(false);
-  // const [showAutoInvestModal, setShowAutoInvestModal] =
-  //   useState<boolean>(false);
+  const [showQuickInvestModal, setShowQuickInvestModal] =
+    useState<boolean>(false);
+  const [showAutoInvestModal, setShowAutoInvestModal] =
+    useState<boolean>(false);
 
-  // const [isAutoInvestModalOpen, setIsAutoInvestModalOpen] =
-  //   useState<boolean>(false);
   const [isDeactivateAutoInvestModalOpen, setIsDeactivateAutoInvestModalOpen] = useState<boolean>(false);
   const location = useLocation(); // Initialize useLocation
 
@@ -471,7 +469,7 @@ const InvestPage = () => {
 
       {/* Modals */}
       <QuickInvestModal
-        isOpen={isAutoInvestModalOpen}
+        isOpen={isQuickInvestModalOpen}
         onClose={() => setIsQuickInvestModalOpen(false)}
         initialAmount={amount}
       />
