@@ -11,6 +11,7 @@ import {
   getCards,
   fetchTopSaversData,
   fetchAutoSaveSettings,
+  fetchAutoInvestSettings,
 } from "./actions";
 
 const rootReducer = combineReducers({
@@ -35,6 +36,7 @@ if (token) {
   store.dispatch(fetchUserTransactions(token)); // Dispatch the action to fetch user transactions
   store.dispatch(fetchTopSaversData(token) as any);
   store.dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action
+  store.dispatch(fetchAutoInvestSettings(token) as any); // Dispatch fetchAutoInvestSettings action
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

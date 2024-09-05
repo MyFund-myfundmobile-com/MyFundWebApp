@@ -23,12 +23,15 @@ import { getCards, deleteCard } from "@/app/Redux store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
-import { fetchUserTransactions } from "@/app/Redux store/actions";
+import {
+  fetchUserTransactions, fetchAccountBalances
+} from "@/app/Redux store/actions";
 import { Img } from "react-image";
 import CustomSnackbar from "@/app/components/snackbar";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
 import axios from "axios";
-// import OTPModal from "../modals/autoInvestModal";
+import OTPModal from "./otpInvestModal";
+// import { useRouter } from 'next/router';
 
 interface QuickInvestModalProps {
   isOpen: boolean;
@@ -59,6 +62,8 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   const token = useSelector((state: RootState) => state.auth.token);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const cards = useSelector((state: RootState) => state.auth.cards);
+  const accountSavedBalance = useSelector((state: RootState) => state.auth.accountBalances.savings);
+  // const router = useRouter();
 
   useEffect(() => {
     if (token) {
@@ -74,7 +79,6 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
     return bank ? bank.color : "#4c28bc"; // Default color if not found
   };
 
-
   useEffect(() => {
     setAmount(initialAmount); // Update the amount when initialAmount changes
   }, [initialAmount]);
@@ -86,30 +90,43 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
     return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/,/g, ""); // Remove commas
-    if (!isNaN(Number(value))) {
-      setAmount(formatAmount(value)); // Only set if it's a valid number
-    }
-  };
+
   useEffect(() => {
     if (cards.length > 0) {
       setSelectedCardId(cards[0].id); // Set the default selected card to the first one
     }
   }, [cards]);
 
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.replace(/,/g, ""); // Remove commas
+    if (!isNaN(Number(value))) {
+      setAmount(formatAmount(value)); // Only set if it's a valid number
 
-  const handleSendPayment = async () => {
+    };
+
+  };
+  const handleQuickInvest = async () => {
     setIsSending(true);
     // Investment data sending
     const cardId = selectedCardId || (cards.length > 0 ? cards[0].id : null);
     const formattedAmount = parseFloat(amount.replace(/,/g, ""));
     try {
 
-
-      if (!formattedAmount || isNaN(formattedAmount) || formattedAmount < 100000) {
-        throw new Error("Invalid amount. Please enter a valid amount to Invest.");
+      if (!formattedAmount || isNaN(formattedAmount)) {
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Invalid amount. Please enter a valid amount to Invest.");
+        return
       };
+      if (formattedAmount < 100000) {
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage("The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
+        );
+        return;
+      }
+
+
 
       const payload = {
         card_id: cardId,
@@ -139,11 +156,16 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                 },
               }
             );
+
         if (response.status === 200 || response.status === 201) {
-          const { status, display_text, user_number, open_url } = response.data;
-          setSnackbarMessage(response.data.display_text);
+          const { status, display_text, user_number, open_url, amount } = response.data;
+          //attempted for the savings updatecomenting this section now
+          // dispatch(fetchAccountBalances(response.data.amount));
+          setSnackbarOpen(true);
           setSnackbarSeverity("success");
+          setSnackbarMessage("QuickInvest Request Successful.");//response.data.status.display_text
           dispatch(fetchUserTransactions(token));
+          dispatch(fetchAccountBalances(response.data.newAccountBalances));
           setSnackbarOpen(true);
           setUserNumber(user_number);
           if (status === "open_url") {
@@ -152,13 +174,13 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
           setTimeout(() => {
             if (selectedOption === "Bank Transfer") {
               setShowSuccessModal(true);
+              setShowConfetti(true);
             } else {
               setShowOTPModal(true);
-              console.log("Error");
 
             }
             onClose();
-            setShowConfetti(true)
+
           }, 1000);
         } else {
           throw new Error("Unexpected response status");
@@ -178,6 +200,91 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
       setIsSending(false);
     }
   };
+  //need to update the savings amount with the investment transaction removed
+  const handleInvestTransfer = async () => {
+    try {
+      setIsSending(true);
+      const formattedAmount = parseFloat(amount.replace(/,/g, ""));
+
+      if (!formattedAmount || isNaN(formattedAmount)) {
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Invalid amount. Please enter a valid amount to invest.");
+        return;
+      }
+      if (formattedAmount < 100000) {
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage("The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
+        );
+        return;
+      }
+      if (accountSavedBalance < formattedAmount) {
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage("You do not have enough balance in your SAVINGS account for this transfer."
+        );
+        return;
+      }
+      const payload = { amount: formattedAmount }
+      if (typeof token === "string") {
+        const response = selectedOption === "My Savings" ?
+          await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/savings-to-investment/`,
+            { amount: formattedAmount },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ) : await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/quickinvest/`,
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        if (response.status === 200 || response.status === 201) {
+          // Dispatch the necessary actions
+          const { status, display_text, user_number, open_url, amount } = response.data;
+
+          setSnackbarOpen(true);
+          setSnackbarSeverity("success");
+          setSnackbarMessage("QuickInvest Request Successful.");
+          ;
+          dispatch(fetchAccountBalances(response.data.newAccountBalances));
+          dispatch(fetchUserTransactions(token));
+          if (status === "open_url") {
+            window.open(open_url, "_blank");
+          }
+          setTimeout(() => {
+            if (selectedOption === "My Savings") {
+              setShowSuccessModal(true);
+              setShowConfetti(true);
+            } else {
+              throw new Error("Transaction failed")
+
+            }
+            onClose();
+
+          }, 1000);
+
+        }
+      }
+      else {
+        throw new Error("Failed to process request");
+      }
+    }
+    catch (error: any) {
+      console.error("Error fetching account balances:");
+    }
+    finally { setIsSending(false); }
+  }
+
 
   //     setTimeout(() => {
   //       setIsSending(false);
@@ -185,6 +292,10 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   //       setShowConfetti(true); // Activate confetti on success
   //       setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
 
+  //       onClose(); // Close modal after success
+  //     }, 3000); // Adjust as needed for the simulation
+  //   };
+  // }
   //       onClose(); // Close modal after success
   //     }, 3000); // Adjust as needed for the simulation
   //   };
@@ -209,7 +320,6 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
       state: { triggerAddCard: true, triggerCardAndBankSettings: true },
     });
   };
-
 
   const presetAmounts = [100000, 200000, 500000, 1000000, 200000, 5000000];
 
@@ -273,6 +383,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                 </MenuItem>
                 <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
                 <MenuItem value="My Saved Cards">My Saved Cards</MenuItem>
+                <MenuItem value="My Savings">{`Savings (₦${Math.floor(accountSavedBalance).toLocaleString()})`}</MenuItem>
               </Select>
               {selectedOption === "Bank Transfer" && (
                 <div
@@ -344,7 +455,6 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                         placeholder="Which of your cards?"
                         value={selectedCardId || ""}
                         onChange={(event) => {
-                          console.log("Selected card ID:", event.target.value); // Log selected card ID
                           setSelectedCardId(event.target.value);
                         }}
                       >
@@ -381,6 +491,12 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
                   )}
                 </div>
               )}
+              {/* adding Investment option from savings */}
+              {selectedOption === "My Savings" && (
+                <div className="text-center">
+
+                </div>
+              )}
             </div>
           </div>
         }
@@ -392,14 +508,18 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
             </div>
           ) : selectedOption === "Bank Transfer" ? (
             "I'VE SENT THE PAYMENT"
-          ) : ("QuickInvest Now!"
-
-          )
+          ) : selectedOption === "My Savings" ? (
+            "Moving Funds to Investment")
+            : (
+              "QuickInvest Now!"
+            )
         }
-        onButtonClick={handleSendPayment}
+
+        onButtonClick={selectedOption === "My Savings" ? handleInvestTransfer : handleQuickInvest}
         buttonDisabled={!selectedOption || !amount}
         zIndex={200}
         modalIcon={undefined}
+
       />
 
 
@@ -433,12 +553,12 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         </div>
       </Modal>
 
-      {/* <OTPModal
+      <OTPModal
         isOpen={showOTPModal}
         onClose={() => setShowOTPModal(false)}
         userInfo={userInfo}
         number={userNumber}
-      /> */}
+      />
 
       <CustomSnackbar
         open={snackbarOpen}
@@ -451,3 +571,5 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
 };
 
 export default QuickInvestModal;
+
+

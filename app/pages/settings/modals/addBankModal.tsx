@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { TextField, InputAdornment, CircularProgress } from "@mui/material";
 import Modal from "@/app/components/modal";

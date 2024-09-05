@@ -103,9 +103,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
           // Server responded with a status other than 2xx
           console.error("Error response:", error.response);
           setSnackbarMessage(
-            `${
-              error.response.data.detail ||
-              "An error occurred while resetting password"
+            `${error.response.data.detail ||
+            "An error occurred while resetting password"
             }`
           );
         } else if (error.request) {

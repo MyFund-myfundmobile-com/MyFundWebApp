@@ -141,7 +141,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
             <MenuItem value="" disabled>
               Which of Your Bank Accounts...
             </MenuItem>
-            {/* Replace with actual list of saved bank accounts */}
             <MenuItem value="bank1">Bank 1 - 123456789</MenuItem>
             <MenuItem value="bank2">Bank 2 - 987654321</MenuItem>
             <MenuItem value="no_bank">
