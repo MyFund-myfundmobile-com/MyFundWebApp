@@ -48,10 +48,22 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
     setWithdrawFrom(defaultWithdrawFrom);
   }, [defaultWithdrawFrom]);
 
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(fetchUserTransactions(token));
+  //     dispatch(fetchAccountBalances(token));
+  //   }
+  // }, [dispatch, token]);
+
   const handleClearAmount = () => {
     setAmount("");
   };
-
+  useEffect(() => {
+    if (showConfetti) {
+      const timer = setTimeout(() => setShowConfetti(false), 3000); // Hides confetti after 3 seconds
+      return () => clearTimeout(timer); // Cleanup on unmount or when showConfetti changes
+    }
+  }, [showConfetti]);
   const formatAmount = (value: string) => {
     const cleanedValue = value.replace(/[^0-9]/g, ""); // Remove non-digit characters
     return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Format with commas
@@ -79,8 +91,21 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   );
 
   const handleWithdraw = () => {
-    setIsSending(true);
-    // Simulate withdraw process
+    //   setIsSending(true);
+    //   // Simulate withdraw process
+    //   if (withdrawFrom === "savings" && withdrawTo === "Investment") {
+    //     handleTransferSavingstoInvest();
+    //   } else if (withdrawFrom === "investment" && withdrawTo === "Savings") {
+    //     handleTransferInvesttoSavings();
+    //   } else if (withdrawFrom === "wallet" && withdrawTo === "Savings") {
+    //     handleWalletToSavingsTransfer();
+    //   } else if (withdrawFrom === "wallet" && withdrawTo === "Investment") {
+    //     handleWalletToInvestmentTransfer();
+    //   } else if (withdrawFrom === "wallet" && withdrawTo === "Another User") {
+    //     handleTransferToWallet();
+    //   } else {
+    //     handleTransferToBankAccount();
+    //   }
     setTimeout(() => {
       setIsSending(false);
       setShowSuccessModal(true);
@@ -97,10 +122,14 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   };
 
   const handleWithdrawToChange = (event: SelectChangeEvent<string>) => {
+    console.log("Selected Withdraw To:", event.target.value);
     setWithdrawTo(event.target.value);
+    // setWithdrawFrom('');
+    // setUserEmail('');
   };
 
   const getWithdrawToOptions = () => {
+    console.log("Withdraw From Value:", withdrawFrom); // Debugging log
     switch (withdrawFrom) {
       case "Savings":
         return (
@@ -246,7 +275,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
                 <MenuItem value="" disabled>
                   Withdraw to...
                 </MenuItem>
-                {getWithdrawToOptions()}
+
+                <MenuItem value="Investment">Investment</MenuItem>
+                <MenuItem value="Bank Account">Bank Account</MenuItem>
+                <MenuItem value="Savings">Savings</MenuItem>
+                <MenuItem value="Another User">Another User</MenuItem>
               </Select>
             )}
 
