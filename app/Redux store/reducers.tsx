@@ -21,15 +21,17 @@ import {
   SET_USER_PERCENTAGE,
   SET_AUTO_SAVE_SETTINGS,
   SET_AUTO_INVEST_SETTINGS,
-  // SET_AUTO_INVEST_OFF
+  SET_ALL_USERS,
+  SET_USERS_BY_DATE_RANGE,
+  SET_EMAIL_TEMPLATES,
 } from "./types";
 
 const initialState: AuthState = {
   token: null,
   bankAccounts: [],
   userTransactions: [],
+  emailTemplates: [],
   isLoading: false,
-
   autoSaveSettings: {
     active: false,
     amount: 0,
@@ -46,7 +48,7 @@ const initialState: AuthState = {
   autoInvestSettings: {
     active: false,
     amount: 0,
-    frequency: '',
+    frequency: "",
     autoinvest_enabled: false,
   },
 
@@ -200,16 +202,24 @@ const authReducer = (
         ...state,
         autoInvestSettings: {
           ...action.payload,
-        }, // No extra wrapping, store directly
+        },
       };
-    // case SET_AUTO_INVEST_OFF:
-    //   return {
-    //     ...state,
-    //     autoInvestSettings: {
-    //       ...state.autoInvestSettings,
-    //       active: false,
-    //     },
-    //   };
+    case SET_ALL_USERS:
+      return {
+        ...state,
+        allUsers: action.payload,
+      };
+
+    case SET_USERS_BY_DATE_RANGE:
+      return {
+        ...state,
+        allUsers: action.payload,
+      };
+    case SET_EMAIL_TEMPLATES:
+      return {
+        ...state,
+        emailTemplates: action.payload, // Set fetched templates
+      };
     default:
       return state;
   }

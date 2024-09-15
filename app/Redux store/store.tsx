@@ -12,6 +12,8 @@ import {
   fetchTopSaversData,
   fetchAutoSaveSettings,
   fetchAutoInvestSettings,
+  fetchAllUsers,
+  fetchEmailTemplates,
 } from "./actions";
 
 const rootReducer = combineReducers({
@@ -27,16 +29,17 @@ const store = configureStore({
 const token = localStorage.getItem("userToken"); // Use "userToken" to match the login
 
 if (token) {
-  store.dispatch(fetchUserInfo(token)); // Dispatch fetchUserInfo action
-  store.dispatch(setUserToken(token)); // Updated to setUserToken
-  store.dispatch(updateUserProfile({ token })); // Updated to pass profile data if needed
-  store.dispatch(fetchUserBankAccounts(token)); // Dispatch fetchUserBankAccounts action
-  store.dispatch(getCards(token)); // Pass token to getCards
-  store.dispatch(fetchKYCStatus(token)); // Dispatch fetchKYCStatus action
-  store.dispatch(fetchUserTransactions(token)); // Dispatch the action to fetch user transactions
+  store.dispatch(fetchUserInfo(token));
+  store.dispatch(setUserToken(token));
+  store.dispatch(updateUserProfile({ token }));
+  store.dispatch(fetchUserBankAccounts(token));
+  store.dispatch(getCards(token));
+  store.dispatch(fetchKYCStatus(token));
+  store.dispatch(fetchUserTransactions(token));
   store.dispatch(fetchTopSaversData(token) as any);
-  store.dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action
-  store.dispatch(fetchAutoInvestSettings(token) as any); // Dispatch fetchAutoInvestSettings action
+  store.dispatch(fetchAutoSaveSettings(token) as any);
+  store.dispatch(fetchAllUsers(token));
+  store.dispatch(fetchEmailTemplates(token)); // Add this to fetch templates
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

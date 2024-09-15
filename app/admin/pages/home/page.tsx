@@ -7,7 +7,18 @@ import AccountCard from "@/app/components/accountCard";
 import { Divider, Tooltip } from "@mui/material";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Img } from "react-image";
+import Image from "next/image";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/Redux store/store";
+import {
+  fetchUserInfo,
+  updateWealthStage,
+  fetchAllUsers,
+} from "@/app/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
+
+import { useLocation, useNavigate } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -17,8 +28,43 @@ const HomePage: React.FC = () => {
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
 
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const totalUsers = useSelector(
+    (state: RootState) => state.auth.allUsers?.length || 0
+  );
+  const currentWealthStage = useSelector(
+    (state: RootState) => state.auth.currentWealthStage
+  );
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserInfo(token) as any);
+      dispatch(fetchAllUsers(token) as any).finally(() => setLoading(false));
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    console.log("All users have been fetched successfully:", totalUsers); // Add this line
+  }, [totalUsers]);
+
+  useEffect(() => {
+    if (currentWealthStage) {
+      dispatch(updateWealthStage(currentWealthStage));
+    }
+  }, [dispatch, currentWealthStage]);
+
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
+  };
+
+  const handleEmailClick = () => {
+    navigate("/admin/App/emails", { state: { isModalOpen: true } });
   };
 
   useEffect(() => {
@@ -79,28 +125,71 @@ const HomePage: React.FC = () => {
     setGetGreeting(getGreeting);
   }, []);
 
+  const getBadgeColorClass = (stage: number) => {
+    switch (stage) {
+      case 1:
+        return "#dF0000";
+      case 2:
+        return "#aF0000";
+      case 3:
+        return "#FF5722";
+      case 4:
+        return "#BF9F00";
+      case 5:
+        return "#BFBF00";
+      case 6:
+        return "#9FBF00";
+      case 7:
+        return "#6FBF00";
+      case 8:
+        return "#3FBF00";
+      case 9:
+        return "#005F00";
+      default:
+        return "#4c28BC";
+    }
+  };
+
+  const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
-          <Img
-            src="/images/DrTsquare.png"
+          <Image
+            src={userInfo?.profile_picture || `/images/Profile1.png`}
             width={120}
             height={120}
             alt="Profile"
-            className="w-24 h-24 rounded-full border-2 border-purple-400"
+            className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
+            style={{ borderColor: `${badgeColorClass}` }}
+            onClick={() => navigate("/admin/App/settings")}
           />
-          <Tooltip title="My WealthMap" placement="right">
-            <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-proxima text-sm">
-              3
+
+          <Tooltip
+            title={`My Financial Status: Level ${
+              currentWealthStage.stage
+            }: ${currentWealthStage.text.toUpperCase()}`}
+            placement="right"
+          >
+            <div
+              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center border-${badgeColorClass} justify-center font-proxima text-sm cursor-pointer`}
+              style={{
+                backgroundColor: badgeColorClass ? badgeColorClass : "#4c28BC",
+              }}
+            >
+              {currentWealthStage.stage}
             </div>
           </Tooltip>
         </div>
         <div className="ml-4">
           <Title>
-            <span style={{ color: "#BB9CE8" }}>{greeting}</span> Tolulope,
+            <span style={{ color: "#BB9CE8" }}>{greeting}</span>{" "}
+            {userInfo?.firstName && `${userInfo.firstName},`}
           </Title>
-          <Subtitle>{getGreeting}, Welcome to MyFund Admin Page 👋🏼</Subtitle>
+          <Subtitle>
+            {getGreeting}, Welcome to the MyFund Admin Page 👋🏼
+          </Subtitle>
         </div>
         <div className="ml-auto flex items-center">
           {typeof window !== "undefined" && window.innerWidth >= 900 && (
@@ -157,12 +246,23 @@ const HomePage: React.FC = () => {
             icon="trending-up-outline"
             label="TOTAL USERS"
             rate="-2%"
-            currency=""
-            amount={showBalances ? "857" : "****"}
+            currency={
+              loading ? (
+                <span className="text-gray-500 animate-shimmer">
+                  Loading...
+                </span>
+              ) : (
+                ""
+              )
+            }
+            amount={
+              loading ? "" : showBalances ? totalUsers.toString() : "****"
+            }
             buttonText="View List"
             buttonIcon="trending-up-outline"
             style={{ transition: "opacity 0.3s ease" }}
           />
+
           <AccountCard
             icon="home-outline"
             label="TOTAL USER SAVINGS"
@@ -219,6 +319,27 @@ const HomePage: React.FC = () => {
         <div className="md:col-span-3"></div>
 
         <div className="md:col-span-6"></div>
+      </div>
+
+      <div className="fixed bottom-20 right-20 z-50 flex flex-col items-center">
+        <Tooltip title="Send Emails" placement="top" arrow>
+          <div
+            className="relative group cursor-pointer"
+            onClick={handleEmailClick}
+          >
+            <div className="w-16 h-16 rounded-full bg-purple-500 shadow-lg flex items-center justify-center transition-transform transform group-hover:scale-110 group-hover:bg-purple-700">
+              <Image
+                src="/images/email.png"
+                alt="Email"
+                width={42}
+                height={42}
+              />
+            </div>
+          </div>
+        </Tooltip>
+        <span className="text-xs font-karla italic text-gray-600 mt-2">
+          Send Emails
+        </span>
       </div>
     </div>
   );

@@ -37,13 +37,13 @@ const SavePage = () => {
   const [isQuickSaveModalOpen, setIsQuickSaveModalOpen] =
     useState<boolean>(false);
   const [isAutoSaveModalOpen, setIsAutoSaveModalOpen] =
-    useState<boolean>(false); // State for AutoSave modal
+    useState<boolean>(false);
 
   const [isDeactivateAutoSaveModalOpen, setIsDeactivateAutoSaveModalOpen] =
     useState<boolean>(false);
 
-  const [amount, setAmount] = useState<string>(""); // State for selected amount
-  const location = useLocation(); // Initialize useLocation
+  const [amount, setAmount] = useState<string>(""); 
+  const location = useLocation(); 
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
@@ -57,8 +57,8 @@ const SavePage = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
-      dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action with type assertion to any
+      dispatch(fetchUserInfo(token) as any); 
+      dispatch(fetchAutoSaveSettings(token) as any); 
     }
   }, [dispatch, token]);
 
@@ -122,7 +122,7 @@ const SavePage = () => {
   };
 
   const handleCloseAutoSaveModal = () => {
-    setIsAutoSaveOn(tempAutoSaveState); // Revert to the original state
+    setIsAutoSaveOn(tempAutoSaveState); 
     setIsAutoSaveModalOpen(false);
   };
 

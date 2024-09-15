@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
 import {
-  fetchUserTransactions, fetchAccountBalances
+  fetchUserTransactions, fetchAccountBalances, fetchTopSaversData
 } from "@/app/Redux store/actions";
 import { Img } from "react-image";
 import CustomSnackbar from "@/app/components/snackbar";
@@ -159,13 +159,12 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
 
         if (response.status === 200 || response.status === 201) {
           const { status, display_text, user_number, open_url, amount } = response.data;
-          //attempted for the savings updatecomenting this section now
-          // dispatch(fetchAccountBalances(response.data.amount));
           setSnackbarOpen(true);
           setSnackbarSeverity("success");
-          setSnackbarMessage("QuickInvest Request Successful.");//response.data.status.display_text
+          setSnackbarMessage("QuickInvest Request Successful.");
           dispatch(fetchUserTransactions(token));
           dispatch(fetchAccountBalances(response.data.newAccountBalances));
+          dispatch(fetchTopSaversData(token));
           setSnackbarOpen(true);
           setUserNumber(user_number);
           if (status === "open_url") {

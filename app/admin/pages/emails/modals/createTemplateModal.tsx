@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
-import { createOutline } from 'ionicons/icons';
+import React, { useEffect, useRef } from "react";
+import { createOutline } from "ionicons/icons";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
-import Modal from '@/app/components/modal';
+import Modal from "@/app/components/modal";
+
+// Define the TemplateCard type
+interface TemplateCard {
+  title: string;
+}
 
 interface CreateTemplateModalProps {
   isOpen: boolean;
@@ -12,6 +17,7 @@ interface CreateTemplateModalProps {
   onTitleChange: (title: string) => void;
   title: string;
   onCreateTemplateDesign: () => void;
+  templateCards: TemplateCard[]; // Add templateCards as a prop
 }
 
 const CreateTemplateModal: React.FC<CreateTemplateModalProps> = ({
@@ -21,18 +27,28 @@ const CreateTemplateModal: React.FC<CreateTemplateModalProps> = ({
   onTitleChange,
   title,
   onCreateTemplateDesign,
+  templateCards,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const isButtonDisabled = title.length < 3;
 
+  // Check if the title is a duplicate
+  const isDuplicate = templateCards.some(
+    (card: TemplateCard) => card.title.toLowerCase() === title.toLowerCase()
+  );
+
+  // Disable the button if the title is too short or duplicate
+  const isButtonDisabled = title.length < 3 || isDuplicate;
+
+  // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isOpen]);
 
+  // Handle pressing "Enter" to submit
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !isButtonDisabled) {
+    if (event.key === "Enter" && !isButtonDisabled) {
       onCreate();
       onCreateTemplateDesign();
     }
@@ -64,7 +80,7 @@ const CreateTemplateModal: React.FC<CreateTemplateModalProps> = ({
       modalIcon={createOutline}
       iconColor="#4C28BC"
       buttonDisabled={isButtonDisabled}
-      zIndex={100} 
+      zIndex={100}
     />
   );
 };

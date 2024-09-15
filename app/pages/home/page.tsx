@@ -43,7 +43,6 @@ const HomePage: React.FC = () => {
     }
   }, [dispatch, token]);
 
-  // Fetch the current wealth stage and dispatch it only once when the component mounts
   useEffect(() => {
     if (currentWealthStage) {
       dispatch(updateWealthStage(currentWealthStage));

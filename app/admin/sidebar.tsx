@@ -74,25 +74,26 @@ const Sidebar: React.FC<SidebarProps> = ({
     switch (item) {
       case "Log Out":
         setIsLoggingOut(true);
+        navigate("/admin");
         break;
       case "DASHBOARD":
-        navigate("/admin/App/home"); // Navigate to the homepage
+        navigate("/admin/App/home");
         break;
       case "USERS":
-        navigate("/admin/App/users"); // Navigate to the emails page
+        navigate("/admin/App/users");
         break;
       case "ADMINS":
-        navigate("/admin/App/users"); // Navigate to the emails page
+        navigate("/admin/App/users");
         break;
       case "EMAILS":
-        navigate("/admin/App/emails"); // Navigate to the emails page
+        navigate("/admin/App/emails");
         break;
       case "TRANSACTIONS":
-        navigate("/admin/App/transactions"); // Navigate to the transactions page
+        navigate("/admin/App/transactions");
         break;
 
       case "Settings":
-        navigate("/admin/App/settings"); // Navigate to the transactions page
+        navigate("/admin/App/settings");
         break;
       default:
         break;

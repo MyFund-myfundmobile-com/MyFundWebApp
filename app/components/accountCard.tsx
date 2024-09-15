@@ -17,7 +17,7 @@ interface AccountCardProps {
     | "home-outline";
   label: string;
   rate: string;
-  currency: string;
+  currency: React.ReactNode;
   amount: string;
   buttonText: string;
   buttonIcon:
