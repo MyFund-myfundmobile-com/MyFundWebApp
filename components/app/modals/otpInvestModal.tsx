@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import CustomSnackbar from "@/components/snackbar";
-import Modal from "@/components/modal";
+import CustomSnackbar from "@/app/components/snackbar";
+import Modal from "@/app/components/modal";
 import Confetti from "react-confetti";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/Redux store/store";
-import { RootState } from "@/Redux store/store";
-import { fetchUserInfo } from "@/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
+import { RootState } from "@/app/Redux store/store";
+import { fetchUserInfo } from "@/app/Redux store/actions";
 
 interface OTPModalProps {
   isOpen: boolean;
@@ -153,7 +153,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, number }) => {
               <br />
               Kindly enter the OTP sent to your registered phone number{" "}
               <span className="font-bold font-proxima">{number}</span> to
-              complete your QuickSave.
+              complete your QuickInvest.
             </p>
             <div className="flex justify-center items-center space-x-2 mb-8">
               {Array.from({ length: 6 }).map((_, index) => (
@@ -193,7 +193,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, number }) => {
                 <Confetti />
               </div>
               <p className="font-karla text-black mb-4">
-                Your QuickSave has been successfully processed!
+                Your QuickInvest has been successfully processed!
               </p>
             </div>
           }

@@ -5,7 +5,7 @@ import Title from "@/components/title";
 import Subtitle from "@/components/subtitle";
 import { Divider } from "@mui/material";
 import Section from "@/components/section";
-import { Img } from "react-image";
+import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTopSaversData } from "@/Redux store/actions";
 import { RootState } from "@/Redux store/store";
@@ -182,7 +182,7 @@ const TopSaversSection: React.FC = () => {
               {index === 2}
               {index > 2}
             </span>
-            <Img
+            <Image
               src={saver?.profilePicture || `/images/Profile1.png`}
               alt={saver.firstName}
               width={index === 0 ? 50 : 40} // Larger profile picture for the top saver

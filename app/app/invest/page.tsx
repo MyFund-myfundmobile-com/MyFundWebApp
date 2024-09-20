@@ -15,12 +15,13 @@ import { CircularProgress } from "@mui/material";
 import QuickInvestModal from "@/components/app/modals/quickInvestModal";
 import AutoInvestModal from "@/components/app/modals/autoInvestModal";
 import { useSearchParams } from "next/navigation";
-import { Img } from "react-image";
+import Image from "next/image";
 import { RootState } from "@/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserInfo } from "@/Redux store/actions";
+import { fetchAutoInvestSettings, fetchUserInfo } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import TopSaversSection from "@/components/app/topSavers";
+import DeactivateAutoInvestModal from "@/components/app/modals/deactivareAutoInvest";
 
 const InvestPage = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(true);
@@ -33,6 +34,14 @@ const InvestPage = () => {
     useState<boolean>(false);
   const [showAutoInvestModal, setShowAutoInvestModal] =
     useState<boolean>(false);
+  const [isDeactivateAutoInvestModalOpen, setIsDeactivateAutoInvestModalOpen] =
+    useState<boolean>(false);
+  const [isAutoInvestModalOpen, setIsAutoInvestModalOpen] =
+    useState<boolean>(false);
+  const [isQuickInvestModalOpen, setIsQuickInvestModalOpen] =
+    useState<boolean>(false);
+  const [tempAutoInvestState, setTempAutoInvestState] =
+    useState<boolean>(false);
   const searchParams = useSearchParams(); // Initialize useLocation
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -42,11 +51,38 @@ const InvestPage = () => {
     (state: RootState) => state.auth.accountBalances
   );
 
+  const autoInvestSettings = useSelector(
+    (state: RootState) => state.auth.autoInvestSettings
+  );
+
   useEffect(() => {
     if (token) {
       dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
+      dispatch(fetchAutoInvestSettings(token) as any);
     }
   }, [dispatch, token]);
+
+  useEffect(() => {
+    if (autoInvestSettings) {
+      setIsAutoInvestOn(autoInvestSettings.active ?? false);
+    }
+  }, [autoInvestSettings]);
+
+  const handleToggleAutoInvest = () => {
+    const newAutoInvestStatus = !(autoInvestSettings?.active || false);
+    setTempAutoInvestState(isAutoInvestOn);
+
+    if (newAutoInvestStatus) {
+      setIsAutoInvestModalOpen(true);
+    } else {
+      if (autoInvestSettings?.active) {
+        setIsDeactivateAutoInvestModalOpen(true);
+      } else {
+        setIsAutoInvestModalOpen(true);
+      }
+    }
+    setIsAutoInvestOn(newAutoInvestStatus);
+  };
 
   useEffect(() => {
     const quickInvestActive = searchParams.get("quickInvestModalActive");
@@ -72,6 +108,19 @@ const InvestPage = () => {
     }, 5000);
   };
 
+  const handleCloseDeactivateAutoInvestModal = () => {
+    setIsDeactivateAutoInvestModalOpen(false);
+  };
+
+  const handleCloseAutoInvestModal = () => {
+    setIsAutoInvestOn(tempAutoInvestState); // Revert to the original state
+    setIsAutoInvestModalOpen(false);
+  };
+
+  const handleOpenQuickInvestModal = (presetAmount = "") => {
+    setAmount(presetAmount);
+    setIsQuickInvestModalOpen(true);
+  };
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) {
@@ -106,21 +155,8 @@ const InvestPage = () => {
     return () => clearInterval(slideInterval);
   });
 
-  const handleOpenQuickInvestModal = (presetAmount = "") => {
-    setAmount(presetAmount);
-    setShowQuickInvestModal(true);
-  };
-
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
-  };
-
-  const toggleAutoInvest = () => {
-    setIsAutoInvestOn(!isAutoInvestOn);
-    // Optionally open AutoSave modal automatically on toggle
-    if (!isAutoInvestOn) {
-      setShowAutoInvestModal(true);
-    }
   };
 
   // Function to get the current month
@@ -326,7 +362,7 @@ const InvestPage = () => {
           <div className="absolute bottom-2 left-2 flex items-center">
             <Switch
               checked={isAutoInvestOn}
-              onChange={toggleAutoInvest}
+              onChange={handleToggleAutoInvest}
               color="default"
               inputProps={{ "aria-label": "toggle autoinvest" }}
               sx={{
@@ -391,7 +427,7 @@ const InvestPage = () => {
           >
             <Section>SPONSOR ONGOING PROJECTS TO EARN HIGHER ROI...</Section>
             <div className="mb-4 mt-3">
-              <Img
+              <Image
                 width={720}
                 height={720}
                 src="/images/sponsorship.png"
@@ -433,13 +469,21 @@ const InvestPage = () => {
 
       {/* Modals */}
       <QuickInvestModal
-        isOpen={showQuickInvestModal}
-        onClose={() => setShowQuickInvestModal(false)}
+        isOpen={isAutoInvestModalOpen}
+        onClose={() => setIsQuickInvestModalOpen(false)}
         initialAmount={amount}
       />
       <AutoInvestModal
-        isOpen={showAutoInvestModal}
-        onClose={() => setShowAutoInvestModal(false)}
+        isOpen={isAutoInvestModalOpen}
+        onClose={handleCloseAutoInvestModal}
+      />
+      <DeactivateAutoInvestModal
+        isOpen={isDeactivateAutoInvestModalOpen}
+        onClose={handleCloseDeactivateAutoInvestModal}
+        onDeactivate={() => {
+          console.log("Deactivated");
+          // Handle additional logic for deactivating AutoSave here
+        }}
       />
     </div>
   );

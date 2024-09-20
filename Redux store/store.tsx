@@ -37,6 +37,7 @@ const store = configureStore({
 //   store.dispatch(fetchUserTransactions(token)); // Dispatch the action to fetch user transactions
 //   store.dispatch(fetchTopSaversData(token) as any);
 //   store.dispatch(fetchAutoSaveSettings(token) as any); // Dispatch fetchAutoSaveSettings action
+// store.dispatch(fetchAutoInvestSettings(token) as any);
 // }
 
 export type RootState = ReturnType<typeof rootReducer>;
