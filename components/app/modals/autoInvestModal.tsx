@@ -9,19 +9,20 @@ import {
 } from "@mui/material";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import Modal from "@/components/modal";
+import CustomSnackbar from "@/components/snackbar";
 import Confetti from "react-confetti";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { carSportOutline, checkmarkCircleOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
-import { bankOptions } from "@/app/components/bankOptions";
+import { bankOptions } from "@/components/bankOptions";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAutoInvestSettings,
   fetchTopSaversData,
-} from "@/app/Redux store/actions";
-import { AppDispatch } from "@/app/Redux store/store";
-import { RootState } from "@/app/Redux store/store";
+} from "@/Redux store/actions";
+import { AppDispatch } from "@/Redux store/store";
+import { RootState } from "@/Redux store/store";
 import { useRouter } from "next/navigation";
 
 interface AutoInvestModalProps {
@@ -109,6 +110,13 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({
       );
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
+      return;
+    }
+    if (formattedAmount < 100000) {
+      setSnackbarOpen(true);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
+      );
       return;
     }
     try {
