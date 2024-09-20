@@ -9,6 +9,7 @@ import { AppDispatch } from "@/Redux store/store";
 import iconMapping from "./iconMapping";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Subtitle from "@/components/subtitle";
 
 interface Transaction {
   description: string;
@@ -51,19 +52,105 @@ const RecentTransactionsSection: React.FC = () => {
     <section className="mt-4">
       <Section>MY RECENT TRANSACTIONS</Section>
       <div className="overflow-x-auto">
-        {isLoading
-          ? // Skeleton loader
-            Array.from({ length: 5 }).map((_, index) => (
+        {isLoading ? (
+          // Skeleton loader
+          Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex mt-2 items-center justify-between bg-white rounded-lg p-2 mb-2 transition-colors duration-300 hover:bg-gray-100 text-sm"
+            >
+              {/* Start icon */}
+              <div className="flex items-start p-2 bg-[#f7f5ff] rounded-lg border border-gray-300">
+                <Skeleton
+                  circle={true}
+                  height={28}
+                  width={28}
+                />
+              </div>
+              {/* Description, Date & Time, Transaction ID */}
+              <div className="flex-1 ml-3">
+                <div
+                  className="text-sm font-semibold"
+                  style={{
+                    marginBottom: -2,
+                    marginTop: 2,
+                    fontSize: 17,
+                    color: "#4c28BC",
+                    fontFamily: "Karla",
+                    letterSpacing: "-1.5px",
+                  }}
+                >
+                  <Skeleton width={150} />
+                </div>
+                <div
+                  className="text-xs text-gray-400 mt-1"
+                  style={{ fontSize: 8, marginTop: -5, fontFamily: "Karla" }}
+                >
+                  <Skeleton width={100} />
+                </div>
+                <div
+                  className="text-xs mt-1"
+                  style={{
+                    fontSize: 8,
+                    marginTop: -5,
+                    color: "#4c28BC",
+                    fontFamily: "Karla",
+                  }}
+                >
+                  <Skeleton width={60} />
+                </div>
+              </div>
+              {/* Amount */}
+              <div
+                className="text-sm font-medium"
+                style={{ fontFamily: "Karla" }}
+              >
+                <Skeleton width={80} />
+              </div>
+            </div>
+          ))
+        ) : userTransactions.length === 0 ? (
+          <div
+            style={{ minHeight: "250px" }}
+            className="flex justify-center items-center text-gray-500 h-full"
+          >
+            <Subtitle>You&apos;re yet to make any transactions</Subtitle>
+          </div>
+        ) : (
+          userTransactions.map((transaction, index) => {
+            const iconName =
+              iconMapping[transaction.description] || "arrow-down-outline";
+            const isFailed = transaction.description
+              .toLowerCase()
+              .includes("failed");
+            const amountClass = isFailed
+              ? "text-red-600"
+              : transaction.status === "pending" ||
+                transaction.description.toLowerCase().includes("pending")
+              ? "text-gray-400"
+              : transaction.type === "debit"
+              ? "text-red-600"
+              : "text-green-600";
+            const iconClass = isFailed
+              ? "text-red-600"
+              : transaction.status === "pending" ||
+                transaction.description.toLowerCase().includes("pending")
+              ? "text-gray-400"
+              : transaction.type === "debit"
+              ? "text-red-600"
+              : "text-green-600";
+            return (
               <div
                 key={index}
                 className="flex mt-2 items-center justify-between bg-white rounded-lg p-2 mb-2 transition-colors duration-300 hover:bg-gray-100 text-sm"
               >
                 {/* Start icon */}
-                <div className="flex items-start p-2 bg-[#f7f5ff] rounded-lg border border-gray-300">
-                  <Skeleton
-                    circle={true}
-                    height={28}
-                    width={28}
+                <div
+                  className={`flex items-start p-2 bg-[#f7f5ff] rounded-lg border border-gray-300 ${iconClass}`}
+                >
+                  <IonIcon
+                    icon={iconName}
+                    style={{ fontSize: "30px" }}
                   />
                 </div>
                 {/* Description, Date & Time, Transaction ID */}
@@ -79,13 +166,17 @@ const RecentTransactionsSection: React.FC = () => {
                       letterSpacing: "-1.5px",
                     }}
                   >
-                    <Skeleton width={150} />
+                    {transaction.description}
                   </div>
                   <div
                     className="text-xs text-gray-400 mt-1"
-                    style={{ fontSize: 8, marginTop: -5, fontFamily: "Karla" }}
+                    style={{
+                      fontSize: 8,
+                      marginTop: -5,
+                      fontFamily: "Karla",
+                    }}
                   >
-                    <Skeleton width={100} />
+                    {formatDate(transaction.date)}
                   </div>
                   <div
                     className="text-xs mt-1"
@@ -96,121 +187,40 @@ const RecentTransactionsSection: React.FC = () => {
                       fontFamily: "Karla",
                     }}
                   >
-                    <Skeleton width={60} />
+                    ID: {transaction.transaction_id}
                   </div>
                 </div>
                 {/* Amount */}
                 <div
-                  className="text-sm font-medium"
+                  className={`text-sm font-medium ${amountClass}`}
                   style={{ fontFamily: "Karla" }}
                 >
-                  <Skeleton width={80} />
+                  <span style={{ fontSize: "9px" }}>₦</span>
+                  <span
+                    style={{
+                      letterSpacing: "-1px",
+                      fontFamily: "Karla",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {
+                      Number(transaction.amount)
+                        .toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                        .split(".")[0]
+                    }
+                  </span>
+
+                  <span style={{ fontSize: "9px", letterSpacing: "-1px" }}>
+                    .{Number(transaction.amount).toFixed(2).split(".")[1]}
+                  </span>
                 </div>
               </div>
-            ))
-          : userTransactions.map((transaction, index) => {
-              const iconName =
-                iconMapping[transaction.description] || "arrow-down-outline";
-              const isFailed = transaction.description
-                .toLowerCase()
-                .includes("failed");
-              const amountClass = isFailed
-                ? "text-red-600"
-                : transaction.status === "pending" ||
-                  transaction.description.toLowerCase().includes("pending")
-                ? "text-gray-400"
-                : transaction.type === "debit"
-                ? "text-red-600"
-                : "text-green-600";
-              const iconClass = isFailed
-                ? "text-red-600"
-                : transaction.status === "pending" ||
-                  transaction.description.toLowerCase().includes("pending")
-                ? "text-gray-400"
-                : transaction.type === "debit"
-                ? "text-red-600"
-                : "text-green-600";
-              return (
-                <div
-                  key={index}
-                  className="flex mt-2 items-center justify-between bg-white rounded-lg p-2 mb-2 transition-colors duration-300 hover:bg-gray-100 text-sm"
-                >
-                  {/* Start icon */}
-                  <div
-                    className={`flex items-start p-2 bg-[#f7f5ff] rounded-lg border border-gray-300 ${iconClass}`}
-                  >
-                    <IonIcon
-                      icon={iconName}
-                      style={{ fontSize: "30px" }}
-                    />
-                  </div>
-                  {/* Description, Date & Time, Transaction ID */}
-                  <div className="flex-1 ml-3">
-                    <div
-                      className="text-sm font-semibold"
-                      style={{
-                        marginBottom: -2,
-                        marginTop: 2,
-                        fontSize: 17,
-                        color: "#4c28BC",
-                        fontFamily: "Karla",
-                        letterSpacing: "-1.5px",
-                      }}
-                    >
-                      {transaction.description}
-                    </div>
-                    <div
-                      className="text-xs text-gray-400 mt-1"
-                      style={{
-                        fontSize: 8,
-                        marginTop: -5,
-                        fontFamily: "Karla",
-                      }}
-                    >
-                      {formatDate(transaction.date)}
-                    </div>
-                    <div
-                      className="text-xs mt-1"
-                      style={{
-                        fontSize: 8,
-                        marginTop: -5,
-                        color: "#4c28BC",
-                        fontFamily: "Karla",
-                      }}
-                    >
-                      ID: {transaction.transaction_id}
-                    </div>
-                  </div>
-                  {/* Amount */}
-                  <div
-                    className={`text-sm font-medium ${amountClass}`}
-                    style={{ fontFamily: "Karla" }}
-                  >
-                    <span style={{ fontSize: "9px" }}>₦</span>
-                    <span
-                      style={{
-                        letterSpacing: "-1px",
-                        fontFamily: "Karla",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {
-                        Number(transaction.amount)
-                          .toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                          .split(".")[0]
-                      }
-                    </span>
-
-                    <span style={{ fontSize: "9px", letterSpacing: "-1px" }}>
-                      .{Number(transaction.amount).toFixed(2).split(".")[1]}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+            );
+          })
+        )}
       </div>
     </section>
   );

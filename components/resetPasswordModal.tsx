@@ -56,12 +56,19 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     );
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !isResetButtonDisabled()) {
+      handleResetPassword();
+    }
+  };
+
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
       setSnackbarMessage("Passwords do not match");
       return;
     }
 
+    setLoading(true);
     setResetting(true);
 
     try {
@@ -116,6 +123,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
     }
 
     setResetting(false);
+    setLoading(true);
   };
 
   const handleCloseSuccessModal = () => {
@@ -250,6 +258,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         }
         zIndex={100}
         buttonDisabled={isResetButtonDisabled()}
+        buttonBackgroundColor={loading ? "green" : "#4C28BC"}
       />
       <Modal
         isOpen={showSuccessModal}

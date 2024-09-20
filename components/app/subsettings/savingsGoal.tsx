@@ -30,18 +30,26 @@ const SavingsGoal: React.FC = () => {
 
   useEffect(() => {
     if (userInfo) {
-      const { preferred_asset, savings_goal_amount, time_period } = userInfo;
-      setPreferredAsset(preferred_asset || "Real Estate");
-      setAmountNum(parseInt(savings_goal_amount) || 1000000);
-      setDuration(parseInt(time_period) || 5);
-      const calculatedSavingsPerMonth =
-        parseInt(savings_goal_amount) / (parseInt(time_period) * 12);
-      setSavingsPerMonth(
-        Math.round(Number(calculatedSavingsPerMonth.toPrecision(3)))
+      const {
+        preferred_asset = "Real Estate",
+        savings_goal_amount = "1000000",
+        time_period = "5",
+      } = userInfo;
+      setPreferredAsset(preferredAsset);
+      const amount = parseInt(savings_goal_amount, 10);
+      setAmountNum(amount);
+      const period = parseInt(time_period, 10);
+      setDuration(period);
+
+      const calculatedSavingsPerMonth = amount / (period * 12);
+      const roundedSavingsPerMonth = Math.round(
+        Number(calculatedSavingsPerMonth.toPrecision(3))
       );
+      setSavingsPerMonth(roundedSavingsPerMonth);
+
       setSavingsGoalMessage(
-        `You should be saving ₦${calculatedSavingsPerMonth.toLocaleString()} per month to reach ₦${savings_goal_amount.toLocaleString()} for your ${preferred_asset} investment in ${time_period} ${
-          parseInt(time_period) > 1 ? "years" : "year"
+        `You should be saving ₦${roundedSavingsPerMonth.toLocaleString()} per month to reach ₦${savings_goal_amount.toLocaleString()} for your ${preferred_asset} investment in ${time_period} ${
+          period > 1 ? "years" : "year"
         }. Keep saving to reach your goal.`
       );
     }
@@ -119,7 +127,10 @@ const SavingsGoal: React.FC = () => {
           marginBottom: "16px",
         }}
       >
-        <p className="overflow-auto" style={{ wordWrap: "break-word" }}>
+        <p
+          className="overflow-auto"
+          style={{ wordWrap: "break-word" }}
+        >
           <span className="font-bold text-purple1">
             You should be saving...
           </span>

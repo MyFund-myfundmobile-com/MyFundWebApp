@@ -20,6 +20,7 @@ interface ModalProps {
   children?: React.ReactNode;
   startIcon?: React.ReactNode; // Add startIcon prop
   className?: string; // Add className prop
+  buttonBackgroundColor: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -37,6 +38,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
   startIcon, // Add startIcon prop to the destructuring
   className, // Add className prop to the destructuring
+  buttonBackgroundColor = "#4C28BC",
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -94,12 +96,12 @@ const Modal: React.FC<ModalProps> = ({
             <PrimaryButton
               className={`text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm ${
                 buttonDisabled
-                  ? "bg-gray-300 cursor-not-allowed"
+                  ? "bg-gray-500"
                   : "bg-purple-600 hover:bg-purple-700"
               }`}
               onClick={onButtonClick}
-              background={buttonDisabled ? "#d1d5db" : "#4C28BC"}
-              hoverBackgroundColor={buttonDisabled ? "#d1d5db" : "#351265"}
+              background={buttonDisabled ? "grey" : buttonBackgroundColor}
+              hoverBackgroundColor={buttonDisabled ? "#696969" : "#351265"}
               color="#fff"
               hoverColor="#fff"
               style={{ width: "95%", letterSpacing: 0.5 }}

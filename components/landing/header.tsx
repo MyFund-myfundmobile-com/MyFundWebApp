@@ -73,11 +73,11 @@ const Header = () => {
           </div>
 
           <div className="flex flex-col">
-            <div className={`${styles.buttonContainer} flex mb-4`}>
+            <div className={`flex mb-4`}>
               <a
                 download
                 href="https://play.google.com/store/apps/details?id=com.tolulopeahmed.MyFundMobile&hl=en-US&ah=8tHkpMJsIEBoT8L1QltL5TBTQ68"
-                className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white"
+                className={`${styles.buttonContainer} mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center font-semibold text-white`}
                 style={{ boxShadow: "6px 6px #351265" }}
                 onClick={() => handleDownload("app")}
               >
