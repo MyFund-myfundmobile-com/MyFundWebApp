@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   TextField,
@@ -14,6 +15,9 @@ import Confetti from "react-confetti";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { IonIcon } from "@ionic/react";
 import { arrowDownOutline, checkmarkCircleOutline } from "ionicons/icons";
+import { RootState } from "@/Redux store/store";
+import { useDispatch, UseDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/Redux store/store";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -34,6 +38,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string>("");
 
+  const dispatch = useDispatch<AppDispatch>();
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
+
   useEffect(() => {
     setWithdrawFrom(defaultWithdrawFrom);
   }, [defaultWithdrawFrom]);
@@ -50,6 +59,23 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(formatAmount(event.target.value));
   };
+
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
+  const fomrattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
 
   const handleWithdraw = () => {
     setIsSending(true);
@@ -212,7 +238,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
               >
                 Withdraw from...
               </MenuItem>
-              <MenuItem value="Savings">Savings (N30,546)</MenuItem>
+              <MenuItem value="Savings">Savings ({formattedSavings})</MenuItem>
               <MenuItem value="Investment">Investment (N4,370,000)</MenuItem>
               <MenuItem value="Wallet">Wallet (N199,000)</MenuItem>
             </Select>
