@@ -469,7 +469,7 @@ const InvestPage = () => {
 
       {/* Modals */}
       <QuickInvestModal
-        isOpen={isAutoInvestModalOpen}
+        isOpen={isQuickInvestModalOpen}
         onClose={() => setIsQuickInvestModalOpen(false)}
         initialAmount={amount}
       />

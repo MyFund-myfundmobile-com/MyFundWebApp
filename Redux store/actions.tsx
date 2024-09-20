@@ -24,7 +24,7 @@ import {
   SET_AUTO_SAVE_OFF,
   SET_AUTO_INVEST_SETTINGS,
   SET_AUTO_INVEST_OFF,
-  AutoInvestSettings
+  AutoInvestSettings,
   AutoSaveSettings,
   TopSaversData,
   UserTransaction,
@@ -379,7 +379,9 @@ export const fetchAutoInvestSettings = (token: string) => {
     }
 
     try {
-      const response = await axios.get<{ autoInvestSettings: AutoInvestSettings }>(
+      const response = await axios.get<{
+        autoInvestSettings: AutoInvestSettings;
+      }>(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-autoinvest-settings/`,
         {
           headers: {

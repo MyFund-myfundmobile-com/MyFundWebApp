@@ -26,6 +26,7 @@ import { RootState } from "@/Redux store/store";
 import {
   fetchUserTransactions,
   fetchAccountBalances,
+  fetchTopSaversData,
 } from "@/Redux store/actions";
 import Image from "next/image";
 import CustomSnackbar from "@/components/snackbar";
@@ -161,6 +162,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
           setSnackbarSeverity("success");
           dispatch(fetchUserTransactions(token));
           dispatch(fetchAccountBalances(response.data.newAccountBalances));
+          dispatch(fetchTopSaversData(token));
           setSnackbarOpen(true);
           setUserNumber(user_number);
           if (status === "open_url") {
