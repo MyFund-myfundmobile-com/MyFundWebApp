@@ -28,7 +28,7 @@ import Image from "next/image";
 import CustomSnackbar from "@/components/snackbar";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
 import axios from "axios";
-// import OTPModal from "../modals/autoInvestModal";
+import OTPModal from "../modals/autoInvestModal";
 
 interface QuickInvestModalProps {
   isOpen: boolean;
@@ -207,7 +207,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
 
   const handleNavigateToAddCard = () => {
     navigate(
-      "/App/settings?triggerAddCard=true&triggerCardAndBankSettings=true"
+      "/app/settings?triggerAddCard=true&triggerCardAndBankSettings=true"
     );
   };
 
