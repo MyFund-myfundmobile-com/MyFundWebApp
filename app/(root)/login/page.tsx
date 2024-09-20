@@ -17,6 +17,8 @@ import CustomSnackbar from "../../../components/snackbar";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo, setUserToken } from "../../../Redux store/actions";
 import { AppDispatch } from "../../../Redux store/store";
+import styles from "../../../components/landing/Header.module.css";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +30,13 @@ const LoginPage = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const isButtonDisabled = !email.includes("@") || password.length < 4;
+
+  const buttonBackgroundColor = isLoading
+    ? "green"
+    : isButtonDisabled
+    ? "grey"
+    : "#4C28BC";
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -170,7 +179,7 @@ const LoginPage = () => {
                 />
               </div>
 
-              <div className="text-right mb-4">
+              <div className="text-right text-sm mb-4">
                 <a
                   href="/requestPasswordReset"
                   className="text-sm text-[#4C28BC]"
@@ -179,15 +188,17 @@ const LoginPage = () => {
                 </a>
               </div>
 
-              <div className="flex mb-4 justify-center items-center">
+              <div
+                className={`${styles.buttonContainer} flex mb-4 justify-center items-center`}
+              >
                 <button
                   className="mr-5 inline-block rounded-xl px-8 py-4 text-center cursor-pointer font-semibold text-white"
                   style={{
                     boxShadow: "6px 6px #351265",
-                    backgroundColor: isLoading ? "black" : "#4C28BC",
+                    backgroundColor: buttonBackgroundColor,
                   }}
                   onClick={handleLogin}
-                  disabled={isLoading}
+                  disabled={isButtonDisabled}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -226,14 +237,14 @@ const LoginPage = () => {
                 </button>
               </div>
             </form>
-            <p className="text-[#636262]">
+            <p className="text-sm text-[#636262]">
               New to MyFund?{" "}
-              <a
+              <Link
                 href="/register"
-                className="text-[#4C28BC]"
+                className="text-sm font-bold text-purple1"
               >
                 Create Free Account
-              </a>
+              </Link>
             </p>
           </div>
         </div>

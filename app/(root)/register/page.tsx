@@ -90,6 +90,20 @@ const RegisterPage: React.FC = () => {
     "success"
   );
 
+  const isButtonDisabled =
+    !formData.firstName ||
+    !formData.lastName ||
+    !formData.email.includes("@") ||
+    !formData.phone ||
+    formData.password.length < 8 ||
+    !formData.howDidYouHear;
+
+  const buttonBackgroundColor = isLoading
+    ? "green"
+    : isButtonDisabled
+    ? "grey"
+    : "#4C28BC";
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -179,6 +193,7 @@ const RegisterPage: React.FC = () => {
               className="mx-auto mb-4 max-w-lg pb-4"
               name="wf-form-register"
               method="get"
+              onSubmit={(e) => e.preventDefault()}
             >
               {fields.map(({ placeholder, name, type, icon }) => (
                 <div
@@ -264,26 +279,49 @@ const RegisterPage: React.FC = () => {
               </label>
 
               <div
-                className={`${styles.buttonContainer} flex mb-4 flex justify-center items-center `}
+                className={`${styles.buttonContainer} flex mb-4  justify-center items-center `}
               >
-                <a
+                <button
                   className="mr-5 inline-block rounded-xl bg-[#4C28BC] px-8 py-4 text-center  cursor-pointer font-semibold text-white"
                   style={{ boxShadow: "6px 6px #351265" }}
                   onClick={handleSignup}
+                  disabled={isButtonDisabled}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <span>CREATING ACCOUNT...</span>
                       <CircularProgress
-                        size={24}
+                        size={20}
                         color="inherit"
-                        className="ml-2"
+                        className="mr-2"
                       />
+                      <span>
+                        CREATING ACCOUNT...
+                        <svg
+                          fill="currentColor"
+                          className="h-4 w-4 ml-2 inline-block"
+                          viewBox="0 0 20 21"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <title>Arrow Right</title>
+                          <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
+                        </svg>
+                      </span>
                     </div>
                   ) : (
-                    <span>CREATE FREE ACCOUNT</span>
+                    <span>
+                      CREATE ACCOUNT
+                      <svg
+                        fill="currentColor"
+                        className="h-4 w-4 ml-2 inline-block"
+                        viewBox="0 0 20 21"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Arrow Right</title>
+                        <polygon points="16.172 9 10.101 2.929 11.515 1.515 20 10 19.293 10.707 11.515 18.485 10.101 17.071 16.172 11 0 11 0 9"></polygon>
+                      </svg>
+                    </span>
                   )}
-                </a>
+                </button>
               </div>
             </form>
             <p className="text-sm text-[#636262]">
