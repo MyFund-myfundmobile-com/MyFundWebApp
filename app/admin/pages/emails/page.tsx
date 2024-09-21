@@ -44,6 +44,8 @@ const EmailsPage: React.FC = () => {
   }>({});
 
   const [editorHtml, setEditorHtml] = useState<string>("");
+  const [editorJson, setEditorJson] = useState<string>("");
+  const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
@@ -116,8 +118,11 @@ const EmailsPage: React.FC = () => {
 
   const handleConfirmDelete = async () => {
     if (templateToDelete) {
-      setIsLoading(true); // Set loading state
+      setIsLoading(true);
       try {
+        // Check if the ID is being passed correctly
+        console.log("Deleting template with ID:", templateToDelete);
+
         const response = await axios.delete(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/delete-template/${templateToDelete}`,
           {
@@ -134,10 +139,12 @@ const EmailsPage: React.FC = () => {
           setSnackbarMessage("Template deleted successfully.");
           setSnackbarSeverity("success");
         } else {
+          console.error("Failed to delete template:", response);
           setSnackbarMessage("Failed to delete template. Please try again.");
           setSnackbarSeverity("error");
         }
       } catch (error) {
+        console.error("Error occurred while deleting template:", error);
         setSnackbarMessage(
           "An error occurred while deleting the template. Please try again later."
         );
@@ -162,10 +169,9 @@ const EmailsPage: React.FC = () => {
 
   const handleEditTemplate = async (id: string) => {
     setIsEditLoading((prevState) => ({ ...prevState, [id]: true }));
-
+    setEditMode(true);
+  
     try {
-      console.log("SECOND design before modal opens...:", editorHtml);
-
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/edit-template/${id}`,
         {
@@ -174,19 +180,22 @@ const EmailsPage: React.FC = () => {
           },
         }
       );
-
+  
       if (response.status === 200) {
         const template = response.data;
+        console.log("Fetched template from API:", template); // Will show both JSON and HTML
+  
         setUnlayerModalTitle(template.title);
         setIsUnlayerModalOpen(true);
-        setEditorHtml(template.design);
-        console.log("saved design before modal opens...:", template.design);
+        setEditorHtml(template.design_html);  // Now passing the HTML version to the editor
+        setEditorJson(template.design);  // You can also manage the JSON version here if needed
       } else {
         setSnackbarMessage("Failed to load template. Please try again.");
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
       }
     } catch (error) {
+      console.error("Error while loading template:", error);
       setSnackbarMessage("An error occurred while loading the template.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
@@ -194,6 +203,7 @@ const EmailsPage: React.FC = () => {
       setIsEditLoading((prevState) => ({ ...prevState, [id]: false }));
     }
   };
+  
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -217,7 +227,6 @@ const EmailsPage: React.FC = () => {
       id: Math.random().toString(),
       title: title,
       createdAt: new Date().toISOString(),
-      // imageData: '/images/DrTsquare.png', // Adjusted to match your desired image
     };
 
     setTemplateCards([...templateCards, newTemplate]);
@@ -361,6 +370,8 @@ const EmailsPage: React.FC = () => {
           onSend={() => {}}
           title={unlayerModalTitle || "Create Template"}
           editorHtml={editorHtml} // Pass editorHtml directly
+          editorJson={editorJson} // Pass editorHtml directly
+          editMode={editMode} // Pass editMode to modal
         />
       )}
 

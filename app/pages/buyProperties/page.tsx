@@ -7,6 +7,7 @@ import AccountCard from "@/app/components/accountCard";
 import { Divider } from "@mui/material";
 import BuyPropertyModal from "./modals/buyPropertyModal";
 import { Img } from "react-image";
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 const properties = [
   {
@@ -60,14 +61,21 @@ const properties = [
 ];
 
 const BuyPropertiesPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.buyPropertyModalActive) {
+      setIsModalOpen(true);
+    }
+  }, [location.state]);
+
   const [selectedProperty, setSelectedProperty] = useState<{
     image: string;
     title: string;
     cost: number;
     earnings: number;
   } | null>(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = (property: {
     image: string;

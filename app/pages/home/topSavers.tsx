@@ -10,6 +10,7 @@ import { fetchTopSaversData } from "@/app/Redux store/actions";
 import { RootState } from "@/app/Redux store/store";
 import { FaTrophy, FaArrowUp } from "react-icons/fa";
 import { AppDispatch } from "@/app/Redux store/store";
+import Modal from "@/app/components/modal";
 
 interface Saver {
   id: number;
@@ -18,8 +19,11 @@ interface Saver {
 }
 
 const TopSaversSection: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const dispatch = useDispatch<AppDispatch>();
   const token = useSelector((state: RootState) => state.auth.token);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const topSaversData = useSelector(
     (state: RootState) => state.auth.topSaversData
@@ -38,7 +42,6 @@ const TopSaversSection: React.FC = () => {
       dispatch(fetchTopSaversData(token));
     }
 
-    // Get the current month name
     const monthNames = [
       "January",
       "February",
@@ -57,23 +60,22 @@ const TopSaversSection: React.FC = () => {
     setCurrentMonth(monthNames[current.getMonth()]);
   }, [dispatch, token]);
 
-  const topSavers: Saver[] =
-    topSaversData?.top_savers?.slice(0, 10).map((saver) => ({
+  const topSavers: Saver[] = (topSaversData?.top_savers?.slice(0, 5) || []).map(
+    (saver) => ({
       id: saver.id,
       firstName: saver.first_name,
       profilePicture: saver.profile_picture,
-    })) || [];
+    })
+  );
 
-  // Find user's position
   const userPosition =
     topSaversData?.top_savers?.findIndex(
       (saver) => saver.email === userEmail
     ) ?? -1;
 
   return (
-    <section className="border border-gray-300 bg-white p-4 rounded-lg w-full h-[calc(10*4rem)]">
-      {" "}
-      {/* Ensure height accommodates 10 savers */}
+    <section className="border border-gray-300 bg-white p-4 rounded-lg w-full">
+      {/* Container height will adjust based on content */}
       <Section style={{ marginTop: -1 }}>
         TOP SAVERS IN {currentMonth.toUpperCase()}
       </Section>
@@ -142,13 +144,14 @@ const TopSaversSection: React.FC = () => {
           {userPosition === -1 ? (
             <span className="ml-5">-</span>
           ) : (
-            `${userPosition + 1}${userPosition + 1 === 1
-              ? "ST"
-              : userPosition + 1 === 2
+            `${userPosition + 1}${
+              userPosition + 1 === 1
+                ? "ST"
+                : userPosition + 1 === 2
                 ? "ND"
                 : userPosition + 1 === 3
-                  ? "RD"
-                  : "TH"
+                ? "RD"
+                : "TH"
             }`
           )}
         </Title>
@@ -158,8 +161,8 @@ const TopSaversSection: React.FC = () => {
         {topSavers.map((saver, index) => (
           <li
             key={saver.id}
-            className="flex items-center space-x-3 justify-between" // Align trophies to end
-            style={{ height: "3rem" }} // Adjust height for consistency
+            className="flex items-center space-x-3 justify-between"
+            style={{ height: "3rem" }}
           >
             <span
               className="text-lg font-nexa"
@@ -174,20 +177,94 @@ const TopSaversSection: React.FC = () => {
             <Img
               src={saver?.profilePicture || `/images/Profile1.png`}
               alt={saver.firstName}
-              width={index === 0 ? 50 : 40} // Larger profile picture for the top saver
+              width={index === 0 ? 50 : 40}
               height={index === 0 ? 50 : 40}
-              className="w-12 h-12 rounded-full object-cover" // Larger size for the top saver
+              className="w-12 h-12 rounded-full object-cover"
             />
             <span className="text-base font-product-sans">
               {saver.firstName}
             </span>
-            <div className="flex-grow" /> {/* Push trophies to the end */}
+            <div className="flex-grow" />
             {index === 0 && <FaTrophy className="text-yellow-500" />}
             {index === 1 && <FaTrophy className="text-gray-400" />}
             {index === 2 && <FaTrophy className="text-orange-500" />}
           </li>
         ))}
       </ul>
+
+      <div className="mt-4 text-center">
+        <a
+          href="#"
+          className="text-sm uppercase font-semibold text-gray-500"
+          onClick={openModal}
+        >
+          View TOP SAVERS
+        </a>
+      </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        header="Top Savers List"
+        body={
+          <>
+            <Subtitle style={{ marginTop: 10, marginBottom: 1, fontSize: 13 }}>
+              My Position
+            </Subtitle>
+            <Title style={{ color: "silver", marginTop: 0, fontSize: 70 }}>
+              {userPosition === -1 ? (
+                <span className="ml-5">-</span>
+              ) : (
+                `${userPosition + 1}${
+                  userPosition + 1 === 1
+                    ? "ST"
+                    : userPosition + 1 === 2
+                    ? "ND"
+                    : userPosition + 1 === 3
+                    ? "RD"
+                    : "TH"
+                }`
+              )}
+            </Title>
+            {/* Scrollable list container */}
+            <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <ul className="space-y-3">
+                {topSaversData?.top_savers?.map((saver, index) => (
+                  <li
+                    key={saver.id}
+                    className="flex items-center space-x-3 justify-between"
+                    style={{ height: "3rem" }}
+                  >
+                    <span
+                      className="text-lg font-nexa"
+                      style={{ textAlign: "center", alignSelf: "center" }}
+                    >
+                      {index + 1}
+                    </span>
+                    <Img
+                      src={saver.profile_picture || `/images/Profile1.png`}
+                      alt={saver.first_name}
+                      width={index === 0 ? 50 : 40}
+                      height={index === 0 ? 50 : 40}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <span className="text-base font-product-sans">
+                      {saver.first_name}
+                    </span>
+                    <div className="flex-grow" />
+                    {index === 0 && <FaTrophy className="text-yellow-500" />}
+                    {index === 1 && <FaTrophy className="text-gray-400" />}
+                    {index === 2 && <FaTrophy className="text-orange-500" />}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        }
+        buttonText="Close"
+        onButtonClick={closeModal}
+        zIndex={1000}
+      />
     </section>
   );
 };

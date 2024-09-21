@@ -70,6 +70,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
       dispatch(fetchUserTransactions(token));
     }
   }, [dispatch, token]);
+  
   const handleClearAmount = () => {
     setAmount("");
   };

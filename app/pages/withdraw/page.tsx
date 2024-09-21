@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
 import RecentTransactionsSection from "../home/recentTransactions";
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -39,6 +40,7 @@ const WithdrawPage = () => {
   const accountBalances = useSelector(
     (state: RootState) => state.auth.accountBalances
   );
+  const location = useLocation();
 
   const bottomRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -52,6 +54,12 @@ const WithdrawPage = () => {
       dispatch(fetchUserInfo(token) as any); // Dispatch fetchUserInfo action with type assertion to any
     }
   }, [dispatch, token]);
+
+  useEffect(() => {
+    if (location.state?.withdrawModalActive) {
+      setIsWithdrawModalOpen(true); // Open modal if withdrawModal is true
+    }
+  }, [location.state]);
 
   const formatAmount = (amount: number) => {
     return amount < 10 ? `0${amount}` : `${amount}`;

@@ -1,16 +1,31 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { TextField, Select, MenuItem, IconButton, CircularProgress } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import CustomSnackbar from "@/app/components/snackbar";
-import { ArrowUpward, Close, CheckCircleOutline, FileCopyOutlined } from '@mui/icons-material';
-import Modal from '@/app/components/modal';
-import Confetti from 'react-confetti';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { carSportOutline, checkmarkCircleOutline, card as cardIcon } from 'ionicons/icons';
-import { IonIcon } from '@ionic/react';
-import { bankOptions } from '@/app/components/bankOptions';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  ArrowUpward,
+  Close,
+  CheckCircleOutline,
+  FileCopyOutlined,
+} from "@mui/icons-material";
+import Modal from "@/app/components/modal";
+import Confetti from "react-confetti";
+import { SelectChangeEvent } from "@mui/material/Select";
+import {
+  carSportOutline,
+  checkmarkCircleOutline,
+  card as cardIcon,
+} from "ionicons/icons";
+import { IonIcon } from "@ionic/react";
+import { bankOptions } from "@/app/components/bankOptions";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAutoInvestSettings,
   fetchTopSaversData,
@@ -24,11 +39,11 @@ interface AutoInvestModalProps {
   onClose: () => void;
 }
 
-const AutoInvestModal: React.FC<AutoInvestModalProps> = (
-  { isOpen,
-    onClose
-  }) => {
-  const [amount, setAmount] = useState('');
+const AutoInvestModal: React.FC<AutoInvestModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [amount, setAmount] = useState("");
   const [selectedFrequency, setSelectedFrequency] = useState("daily");
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
@@ -39,9 +54,11 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
 
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success");
+    "success"
+  );
   const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false);
-  const [tempAutoInvestState, setTempAutoInvestState] = useState<boolean>(false);
+  const [tempAutoInvestState, setTempAutoInvestState] =
+    useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const cards = useSelector((state: RootState) => state.auth.cards);
@@ -70,7 +87,6 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
     return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace(/,/g, ""); // Remove commas
     if (!isNaN(Number(value))) {
@@ -91,9 +107,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
     setSelectedCard(event.target.value);
   };
 
-
   const handleSendActivation = async () => {
-
     const formattedAmount = parseFloat(amount.replace(/,/g, ""));
     if (!token) {
       setSnackbarMessage(
@@ -106,7 +120,8 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
     if (formattedAmount < 100000) {
       setSnackbarOpen(true);
       setSnackbarSeverity("error");
-      setSnackbarMessage("The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
+      setSnackbarMessage(
+        "The minimum amount is 100,000. Please enter a valid amount or select a preset amount."
       );
       return;
     }
@@ -125,7 +140,6 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
             Authorization: `Bearer ${token}`,
           },
         }
-
       );
       if (response.status === 200) {
         dispatch(fetchAutoInvestSettings(token));
@@ -137,16 +151,14 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
         setShowSuccessModal(true); // Show success modal
         setShowConfetti(true); // Trigger confetti
         onClose();
-      }
-      else {
+      } else {
         setProcessing(false);
         setSnackbarMessage(
-          "Auto Invest Activation Failed. Please try again later.");
+          "Auto Invest Activation Failed. Please try again later."
+        );
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
-
       }
-
     } catch (error) {
       setProcessing(false);
       setSnackbarMessage(
@@ -154,11 +166,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
       );
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-
-
     }
-
-
   };
 
   // const handleSuccessModalClose = () => {
@@ -177,7 +185,10 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
         body={
           <div>
             <p>
-              Automatically move funds from your local bank account to your MyFund INVESTMENT account for a <span style={{ color: 'green' }}>20% p.a. ROI</span> every January and July.
+              Automatically move funds from your local bank account to your
+              MyFund INVESTMENT account for a{" "}
+              <span style={{ color: "green" }}>20% p.a. ROI</span> every January
+              and July.
             </p>
             <div className="mt-4">
               <TextField
@@ -188,14 +199,10 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
                 value={amount}
                 onChange={handleAmountChange}
                 InputProps={{
-                  startAdornment: <span style={{ marginRight: 4 }}>&#8358;</span>,
+                  startAdornment: (
+                    <span style={{ marginRight: 4 }}>&#8358;</span>
+                  ),
                 }}
-                // endAdornment: (
-                //   <IconButton onClick={handleClearAmount}>
-                //   <Close />
-                // </IconButton>
-                //   ),
-                // }}
                 placeholder="Enter or Select an amount"
               />
               <div className="grid grid-cols-3 gap-2 mt-4 mb-4">
@@ -203,7 +210,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
                   <button
                     key={index}
                     className="bg-[#DCD1FF] text-black rounded-md font-productSans whitespace-nowrap transform active:scale-95 active:bg-purple-600 active:text-white"
-                    style={{ height: '50px' }}
+                    style={{ height: "50px" }}
                     onClick={() => setAmount(formatAmount(preset.toString()))}
                   >
                     {preset.toLocaleString()}
@@ -221,7 +228,6 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
                   className="mb-4 bg-white"
                   placeholder="Select Frequency"
                 >
-
                   <MenuItem value="hourly">Hourly</MenuItem>
                   <MenuItem value="daily">Daily</MenuItem>
                   <MenuItem value="weekly">Weekly</MenuItem>
@@ -229,36 +235,50 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
                 </Select>
               </div>
               {/* Select Card Section */}
-              <Select
-                fullWidth
-                variant="outlined"
-                displayEmpty
-                className="mb-4 bg-white"
-                placeholder="Select Card"
-                value={selectedCard || ""}
-                onChange={(event) => {
-                  setSelectedCard(event.target.value);
-                }}
-              >
-                {cards.map((card) => (
-                  <MenuItem key={card.id} value={card.id}>
-                    <div className="flex items-center">
-                      <IonIcon
-                        icon={cardIcon}
-                        style={{
-                          fontSize: "24px",
-                          color: getBankColor(card.bank_code),
-                        }}
-                      />
-                      <span className="ml-2">
-                        {card.bank_name} -
-                        {" "}
-                        {`**** ${card.card_number.slice(-4)}`}
-                      </span>
-                    </div>
-                  </MenuItem>
-                ))}
-              </Select>
+              <div className="mt-4">
+                <p className="text-sm text-gray-600">Using:</p>
+                {cards.length === 0 ? (
+                  <div className="text-center text-gray-600">
+                    No cards added yet...{" "}
+                    <span
+                      className="font-bold font-proxima text-blue-500 cursor-pointer"
+                      onClick={handleNavigateToAddCard}
+                    >
+                      Add Card Now...
+                    </span>
+                  </div>
+                ) : (
+                  <Select
+                    fullWidth
+                    variant="outlined"
+                    displayEmpty
+                    className="mb-4 bg-white"
+                    placeholder="Select Card"
+                    value={selectedCard || ""}
+                    onChange={(event) => {
+                      setSelectedCard(event.target.value);
+                    }}
+                  >
+                    {cards.map((card) => (
+                      <MenuItem key={card.id} value={card.id}>
+                        <div className="flex items-center">
+                          <IonIcon
+                            icon={cardIcon}
+                            style={{
+                              fontSize: "24px",
+                              color: getBankColor(card.bank_code),
+                            }}
+                          />
+                          <span className="ml-2">
+                            {card.bank_name} -{" "}
+                            {`**** ${card.card_number.slice(-4)}`}
+                          </span>
+                        </div>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </div>
             </div>
           </div>
         }
@@ -292,7 +312,16 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
         buttonText="OK"
         modalIcon={carSportOutline}
         iconColor="green"
-        startIcon={processing ? <CircularProgress size={20} style={{ color: 'green' }} /> : <IonIcon icon={checkmarkCircleOutline} style={{ fontSize: '20px', marginRight: 5 }} />}
+        startIcon={
+          processing ? (
+            <CircularProgress size={20} style={{ color: "green" }} />
+          ) : (
+            <IonIcon
+              icon={checkmarkCircleOutline}
+              style={{ fontSize: "20px", marginRight: 5 }}
+            />
+          )
+        }
         onButtonClick={() => {
           setShowSuccessModal(false);
           setShowConfetti(false); // Stop confetti when closing the modal
@@ -301,7 +330,9 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
         confettiAnimation={true}
       >
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
-          {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+          {showConfetti && (
+            <Confetti width={window.innerWidth} height={window.innerHeight} />
+          )}
         </div>
       </Modal>
       {/* Snackbar for notifications */}
@@ -311,7 +342,6 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = (
         message={snackbarMessage}
         severity={snackbarSeverity}
       />
-
     </>
   );
 };
