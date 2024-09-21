@@ -183,7 +183,7 @@ const TopSaversSection: React.FC = () => {
               {index > 2}
             </span>
             <Image
-              src={saver?.profilePicture || `/images/Profile1.png`}
+              src={`/images/Profile1.png`}
               alt={saver.firstName}
               width={index === 0 ? 50 : 40} // Larger profile picture for the top saver
               height={index === 0 ? 50 : 40}

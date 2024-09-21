@@ -1,25 +1,26 @@
 "use client"; // Ensure this component is treated as a Client Component
 
-import React, { useState, useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { cookieCreate } from "@/actions/user.actions";
 import { IonIcon } from "@ionic/react";
-import Testimonials from "../../../components/testimonials";
-import {
-  mailOutline,
-  lockClosedOutline,
-  eyeOutline,
-  eyeOffOutline,
-} from "ionicons/icons";
-import Subtitle from "../../../components/subtitle";
-import Title from "../../../components/title";
+import { CircularProgress } from "@mui/material";
 import axios from "axios";
-import CustomSnackbar from "../../../components/snackbar";
+import {
+  eyeOffOutline,
+  eyeOutline,
+  lockClosedOutline,
+  mailOutline,
+} from "ionicons/icons";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo, setUserToken } from "../../../Redux store/actions";
-import { AppDispatch } from "../../../Redux store/store";
+import { AppDispatch, initStore } from "../../../Redux store/store";
 import styles from "../../../components/landing/Header.module.css";
-import Link from "next/link";
-import { cookieCreate } from "@/actions/user.actions";
+import CustomSnackbar from "../../../components/snackbar";
+import Subtitle from "../../../components/subtitle";
+import Testimonials from "../../../components/testimonials";
+import Title from "../../../components/title";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -40,6 +41,7 @@ const LoginPage = () => {
     : "#4C28BC";
 
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   useEffect(() => {
     document.body.style.backgroundColor = "#351265";
@@ -67,7 +69,9 @@ const LoginPage = () => {
         const { access } = response.data;
 
         if (access) {
-          cookieCreate("userToken", access);
+          console.log("access", access);
+          await cookieCreate("userToken", access);
+          await initStore();
           dispatch(setUserToken(access));
           dispatch(fetchUserInfo(access)); // Ensure this is dispatched
 
@@ -78,7 +82,7 @@ const LoginPage = () => {
           playLoginSound();
 
           setTimeout(() => {
-            window.location.href = "/app";
+            router.push("/app");
           }, 1000);
         } else {
           setOpenSnackbar(true);

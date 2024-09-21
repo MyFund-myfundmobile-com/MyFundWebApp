@@ -18,6 +18,7 @@ import {
 import Subtitle from "./subtitle";
 import axios from "axios";
 import CustomSnackbar from "./snackbar";
+import { useRouter } from "next/navigation";
 
 interface ResetPasswordModalProps {
   isOpen: boolean;
@@ -41,6 +42,8 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -129,7 +132,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
     onClose();
-    window.location.href = "/login";
+    router.push("/login");
   };
 
   return (

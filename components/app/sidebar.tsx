@@ -111,14 +111,23 @@ const Sidebar: React.FC = () => {
 
         {[
           { icon: settingsOutline, label: "Settings", href: "settings" },
-          { icon: logOutOutline, label: "Log Out", class: "text-red-500" },
+          {
+            icon: logOutOutline,
+            href: "#",
+            label: "Log Out",
+            class: "text-red-500",
+            onclick: () => setIsLoggingOut(true),
+          },
         ].map((item, index) => (
           <Link
             href={`/app/${item.href}`}
             key={index}
+            onClick={item?.onclick}
           >
             <div
-              className={`flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${
+              className={` items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${
+                isRetracted ? "hidden" : "flex"
+              } ${
                 activeItem === item.href
                   ? "bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold"
                   : "hover:bg-opacity-10 hover:bg-gray-300"

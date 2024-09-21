@@ -276,7 +276,7 @@ const SettingsPage: React.FC = () => {
             <div className="relative">
               <div className="w-36 h-36 relative aspect-w-1 aspect-h-1">
                 <Image
-                  src={profileImage || `/images/Profile1.png`}
+                  src={`/images/Profile1.png`}
                   alt="Profile"
                   style={{
                     objectFit: "cover",

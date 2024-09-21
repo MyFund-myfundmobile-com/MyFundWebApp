@@ -1,22 +1,21 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Title from "@/components/title";
-import Subtitle from "@/components/subtitle";
-import Section from "@/components/section";
 import AccountCard from "@/components/accountCard";
-import { Divider, Tooltip } from "@mui/material";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import QuickActionsSection from "@/components/app/quickActions";
 import RecentTransactionsSection from "@/components/app/recentTransactions";
 import TopSaversSection from "@/components/app/topSavers";
 import WealthMapSection from "@/components/app/wealthMap";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { RootState } from "@/Redux store/store";
-import { useDispatch, useSelector } from "react-redux";
+import Section from "@/components/section";
+import Subtitle from "@/components/subtitle";
+import Title from "@/components/title";
 import { fetchUserInfo, updateWealthStage } from "@/Redux store/actions";
-import { AppDispatch } from "@/Redux store/store";
+import { AppDispatch, RootState } from "@/Redux store/store";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Divider, Tooltip } from "@mui/material";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 
 const HomePage: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -174,13 +173,13 @@ const HomePage: React.FC = () => {
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image
-            src={userInfo?.profile_picture || `/images/Profile1.png`}
+            src={`/images/Profile1.png`}
             width={120}
             height={120}
             alt="Profile"
             className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
             style={{ borderColor: `${badgeColorClass}` }}
-            onClick={() => navigate("/App/settings")}
+            onClick={() => navigate("/app/settings")}
           />
           <Tooltip
             title={`My Financial Status: Level ${

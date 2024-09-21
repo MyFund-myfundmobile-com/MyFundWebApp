@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserInfo, setUserToken } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ const LoginPage = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const isButtonDisabled = !email.includes("@") || password.length < 4;
+  const router = useRouter()
 
   const buttonBackgroundColor = isLoading
     ? "green"
@@ -78,7 +80,7 @@ const LoginPage = () => {
           playLoginSound();
 
           setTimeout(() => {
-            window.location.href = "/admin/App";
+            router.push("/admin/app");
           }, 1000);
         } else {
           setOpenSnackbar(true);

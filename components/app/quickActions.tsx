@@ -20,22 +20,22 @@ const QuickActionsSection = () => {
 
   const handleActiveAutoSaveButton = () => {
     if (isAutoSaveActive) {
-      navigate("/App/save"); // Navigate to SavePage without state
+      navigate("/app/save"); // Navigate to SavePage without state
     } else {
-      navigate("/App/save"); // Navigate to SavePage with state
+      navigate("/app/save"); // Navigate to SavePage with state
     }
   };
 
   const handleActivateAutoInvest = () => {
-    navigate("/App/invest"); // Navigate to SavePage with state
+    navigate("/app/invest"); // Navigate to SavePage with state
   };
 
   const handleKYCUpdate = () => {
-    navigate("/App/settings");
+    navigate("/app/settings");
   };
 
   const handleReferAndEarn = () => {
-    navigate("/App/withdraw");
+    navigate("/app/withdraw");
   };
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type

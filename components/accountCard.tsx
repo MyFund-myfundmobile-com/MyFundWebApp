@@ -165,7 +165,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
             <Image
               width={80}
               height={80}
-              src={image ?? "/images/Profile1.png"} // Fallback image
+              src={image || "/images/Profile1.png"} // Fallback image
               alt={propertyDetails?.name ?? "Default Alt Text"} // Fallback alt text
               className="object-cover w-full h-full rounded-l-lg"
               style={{ aspectRatio: "1 / 1", width: "100%", height: "100%" }}

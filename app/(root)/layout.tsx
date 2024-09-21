@@ -1,4 +1,3 @@
-import ChatAdmin from "@/components/ChatAdmin";
 import NavBar from "@/components/landing/navbar";
 
 export default function RootLayout({
@@ -10,7 +9,6 @@ export default function RootLayout({
     <>
       <NavBar />
       {children}
-      <ChatAdmin />
     </>
   );
 }

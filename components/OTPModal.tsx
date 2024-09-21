@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { PrimaryButton } from "@/components/Buttons/MainButtons";
+import { useRouter } from "next/navigation";
 
 interface OTPModalProps {
   email: string;
@@ -29,6 +30,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
     "success"
   );
   const inputRefs = useRef<HTMLInputElement[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen && inputRefs.current[0]) {
@@ -97,7 +99,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
               "We've confirmed it's you! Welcome to MyFund..."
             );
             console.log("Login Successful");
-            window.location.href = "/app"; // Redirect to your desired page upon successful login
+            router.push("/app"); // Redirect to your desired page upon successful login
           } else {
             console.error("Login API Error:", loginResponse.data);
             handleSnackbarOpen(

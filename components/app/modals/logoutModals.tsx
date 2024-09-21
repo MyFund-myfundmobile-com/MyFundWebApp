@@ -6,6 +6,7 @@ import { logOutOutline } from "ionicons/icons";
 import axios from "axios";
 import CustomSnackbar from "@/components/snackbar";
 import { deleteCookie } from "@/actions/user.actions";
+import { useRouter } from "next/navigation";
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -20,6 +21,8 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+
+  const router = useRouter();
 
   const handleLogoutConfirm = async () => {
     setLoggingOutButtonText(
@@ -58,7 +61,7 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
         });
 
         // Redirect to login page
-        window.location.href = "/login";
+        router.push("login");
       } else {
         throw new Error("Logout failed");
       }

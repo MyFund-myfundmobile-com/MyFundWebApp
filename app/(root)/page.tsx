@@ -1,3 +1,4 @@
+import ChatAdmin from "@/components/ChatAdmin";
 import Facts from "@/components/landing/facts";
 import Footer from "@/components/landing/footer";
 import Header from "@/components/landing/header";
@@ -10,6 +11,7 @@ const HomePage = () => {
       <HowItWorks />
       <Facts />
       <Footer />
+      <ChatAdmin />
     </main>
   );
 };

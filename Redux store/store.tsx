@@ -26,9 +26,11 @@ const store = configureStore({
   // Add other store configurations if any
 });
 
-const initStore = async () => {
+export const initStore = async () => {
   const hasCookie = await checkCookie("userToken"); // Use "userToken" to match the login
   const token = (await getCookie("userToken")) as string;
+
+  console.log(hasCookie, token);
 
   if (hasCookie) {
     store.dispatch(fetchUserInfo(token));
@@ -44,8 +46,6 @@ const initStore = async () => {
     store.dispatch(fetchEmailTemplates(token)); // Add this to fetch templates
   }
 };
-
-initStore();
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
