@@ -20,7 +20,7 @@ interface ModalProps {
   children?: React.ReactNode;
   startIcon?: React.ReactNode; // Add startIcon prop
   className?: string; // Add className prop
-  buttonBackgroundColor: string;
+  buttonBackgroundColor?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({

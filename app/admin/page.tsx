@@ -20,6 +20,7 @@ import { fetchUserInfo, setUserToken } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { cookieCreate } from "@/actions/user.actions";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +30,7 @@ const LoginPage = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const isButtonDisabled = !email.includes("@") || password.length < 4;
-  const router = useRouter()
+  const router = useRouter();
 
   const buttonBackgroundColor = isLoading
     ? "green"
@@ -50,6 +51,11 @@ const LoginPage = () => {
     };
   }, []);
 
+  const playLoginSound = () => {
+    const audio = new Audio("/audios/warm_login.mp3");
+    audio.play();
+  };
+
   const handleLogin = async () => {
     setIsLoading(true);
     try {
@@ -69,7 +75,7 @@ const LoginPage = () => {
         const { access } = response.data;
 
         if (access) {
-          localStorage.setItem("userToken", access);
+          cookieCreate("userToken", access);
           dispatch(setUserToken(access));
           dispatch(fetchUserInfo(access)); // Ensure this is dispatched
 
@@ -121,14 +127,8 @@ const LoginPage = () => {
     }
   };
 
-  const playLoginSound = () => {
-    const audio = new Audio("/audios/warm_login.mp3");
-    audio.play();
-  };
-
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
-  };
   };
 
   return (
@@ -201,7 +201,6 @@ const LoginPage = () => {
                   }}
                   onClick={handleLogin}
                   disabled={isButtonDisabled}
-                  
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -263,7 +262,6 @@ const LoginPage = () => {
       />
     </section>
   );
-
 };
 
 export default LoginPage;

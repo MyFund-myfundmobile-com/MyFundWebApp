@@ -561,8 +561,6 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
       <OTPModal
         isOpen={showOTPModal}
         onClose={() => setShowOTPModal(false)}
-        userInfo={userInfo}
-        number={userNumber}
       />
 
       <CustomSnackbar

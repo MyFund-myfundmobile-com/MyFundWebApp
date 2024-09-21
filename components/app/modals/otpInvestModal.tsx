@@ -1,13 +1,12 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import Modal from "@/components/modal";
+import CustomSnackbar from "@/components/snackbar";
+import { fetchUserInfo } from "@/Redux store/actions";
+import { AppDispatch, RootState } from "@/Redux store/store";
 import axios from "axios";
-import CustomSnackbar from "@/app/components/snackbar";
-import Modal from "@/app/components/modal";
+import React, { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/app/Redux store/store";
-import { RootState } from "@/app/Redux store/store";
-import { fetchUserInfo } from "@/app/Redux store/actions";
 
 interface OTPModalProps {
   isOpen: boolean;

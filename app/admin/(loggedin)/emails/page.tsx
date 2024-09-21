@@ -1,25 +1,24 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Title from "@/components/title";
-import Subtitle from "@/components/subtitle";
-import Section from "@/components/section";
-import { Divider, IconButton } from "@mui/material";
-import { Add, Edit, Delete } from "@mui/icons-material";
 import { PrimaryButton } from "@/components/Buttons/MainButtons";
+import Modal from "@/components/modal";
+import Section from "@/components/section";
+import CustomSnackbar from "@/components/snackbar"; // Import Snackbar component for notifications
+import Subtitle from "@/components/subtitle";
+import Title from "@/components/title";
+import { fetchEmailTemplates } from "@/Redux store/actions";
+import { AppDispatch, RootState } from "@/Redux store/store";
+import { Add, Delete, Edit } from "@mui/icons-material";
+import { CircularProgress, Divider, IconButton } from "@mui/material";
+import axios from "axios";
+import { trashOutline } from "ionicons/icons";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CreateTemplateModal from "../../../../components/admin/modals/createTemplateModal";
 import UnlayerModal from "../../../../components/admin/modals/unlayerModal";
-import Image from "next/image";
-import Modal from "@/components/modal";
-import { closeOutline, trashOutline } from "ionicons/icons";
-import { fetchUserInfo, fetchEmailTemplates } from "@/Redux store/actions";
-import { AppDispatch } from "@/Redux store/store";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/Redux store/store";
-import axios from "axios";
-import CustomSnackbar from "@/components/snackbar"; // Import Snackbar component for notifications
-import { CircularProgress } from "@mui/material";
-import { usePathname, useSearchParams } from "next/navigation";
+
 interface TemplateCard {
   id: string;
   title: string;
@@ -27,14 +26,13 @@ interface TemplateCard {
   imageData?: string;
 }
 
-const EmailsPage: React.FC = () => {
+const EmailsPage = () => {
   const [templateCards, setTemplateCards] = useState<TemplateCard[]>([]);
   const [showMessage, setShowMessage] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTemplateTitle, setNewTemplateTitle] = useState("");
   const [isUnlayerModalOpen, setIsUnlayerModalOpen] = useState(false);
   const [unlayerModalTitle, setUnlayerModalTitle] = useState("");
-
   const [isConfirmCloseOpen, setIsConfirmCloseOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [templateToDelete, setTemplateToDelete] = useState<string | null>(null);
@@ -47,7 +45,6 @@ const EmailsPage: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
-  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const emailTemplates = useSelector(
     (state: RootState) => state.auth.emailTemplates
   );
@@ -72,7 +69,8 @@ const EmailsPage: React.FC = () => {
     }
   }, [searchParams]);
 
-  if (emailTemplates && emailTemplates.length > 0) {
+  useEffect(() => {
+    if (emailTemplates && emailTemplates.length > 0) {
       const transformedTemplates: TemplateCard[] = emailTemplates.map(
         (template) => ({
           id: template.id.toString(),
@@ -81,10 +79,8 @@ const EmailsPage: React.FC = () => {
         })
       );
       setTemplateCards(transformedTemplates);
-      setShowMessage(false);
-    } else {
-      setShowMessage(true);
     }
+    setShowMessage(!(emailTemplates && emailTemplates.length > 0)); // Set message state outside
   }, [emailTemplates]);
 
   const handleTemplateTitleChange = (title: string) => {
@@ -148,7 +144,7 @@ const EmailsPage: React.FC = () => {
         setIsLoading(false); // Reset loading state
       }
     }
-  }
+  };
 
   const handleCreateTemplateSubmit = () => {
     if (newTemplateTitle.length >= 3) {
@@ -159,12 +155,10 @@ const EmailsPage: React.FC = () => {
     }
   };
 
-const handleEditTemplate = async (id: string) => {
+  const handleEditTemplate = async (id: string) => {
     setIsEditLoading((prevState) => ({ ...prevState, [id]: true }));
 
     try {
-      console.log("SECOND design before modal opens...:", editorHtml);
-
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/edit-template/${id}`,
         {
@@ -179,7 +173,6 @@ const handleEditTemplate = async (id: string) => {
         setUnlayerModalTitle(template.title);
         setIsUnlayerModalOpen(true);
         setEditorHtml(template.design);
-        console.log("saved design before modal opens...:", template.design);
       } else {
         setSnackbarMessage("Failed to load template. Please try again.");
         setSnackbarSeverity("error");
@@ -211,13 +204,11 @@ const handleEditTemplate = async (id: string) => {
     }
   };
 
-  
   const handleSaveTemplate = (title: string) => {
     const newTemplate: TemplateCard = {
       id: Math.random().toString(),
       title: title,
       createdAt: new Date().toISOString(),
-      // imageData: '/images/DrTsquare.png', // Adjusted to match your desired image
     };
 
     setTemplateCards([...templateCards, newTemplate]);
@@ -261,7 +252,7 @@ const handleEditTemplate = async (id: string) => {
       {/* Templates Section */}
       <Section>TEMPLATES</Section>
       <div className="border border-gray-300 p-4 rounded-lg min-h-screen mb-10">
-      {templateCards.length === 0 ? (
+        {templateCards.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center text-gray-500 italic">
               <Subtitle>You are yet to create a design template.</Subtitle>
@@ -300,7 +291,7 @@ const handleEditTemplate = async (id: string) => {
                     <Edit />
                   </IconButton>
                   <IconButton
-                    onClick={() => handleDeleteTemplate(card.id)}
+                    onClick={() => handleDeleteClick(card.id)} // Fixed typo
                     sx={{
                       color: "brown",
                       "&:hover": { backgroundColor: "#DCD1FF" },
@@ -326,10 +317,11 @@ const handleEditTemplate = async (id: string) => {
         templateCards={templateCards}
       />
 
-       <Modal
+      <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         header="Confirm Delete"
+        buttonBackgroundColor="4C28BC"
         body="Are you sure you want to delete this template? This action cannot be undone."
         buttonText={
           isLoading ? (
@@ -359,10 +351,10 @@ const handleEditTemplate = async (id: string) => {
           onSave={handleSaveTemplateFromUnlayer}
           onSend={() => {}}
           title={unlayerModalTitle || "Create Template"}
-          editorHtml={editorHtml} 
+          editorHtml={editorHtml}
         />
       )}
-       <CustomSnackbar
+      <CustomSnackbar
         open={snackbarOpen}
         message={snackbarMessage}
         severity={snackbarSeverity}
