@@ -5,6 +5,7 @@ import Modal from "@/components/modal";
 import { logOutOutline } from "ionicons/icons";
 import axios from "axios";
 import CustomSnackbar from "@/components/snackbar";
+import { deleteCookie } from "@/actions/user.actions";
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -46,6 +47,7 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
 
         sessionStorage.clear();
         localStorage.clear();
+        deleteCookie("userToken");
         document.cookie.split(";").forEach((c) => {
           document.cookie = c
             .replace(/^ +/, "")

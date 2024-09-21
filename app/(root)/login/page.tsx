@@ -19,6 +19,7 @@ import { fetchUserInfo, setUserToken } from "../../../Redux store/actions";
 import { AppDispatch } from "../../../Redux store/store";
 import styles from "../../../components/landing/Header.module.css";
 import Link from "next/link";
+import { cookieCreate } from "@/actions/user.actions";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -66,7 +67,7 @@ const LoginPage = () => {
         const { access } = response.data;
 
         if (access) {
-          localStorage.setItem("userToken", access);
+          cookieCreate("userToken", access);
           dispatch(setUserToken(access));
           dispatch(fetchUserInfo(access)); // Ensure this is dispatched
 
@@ -180,12 +181,12 @@ const LoginPage = () => {
               </div>
 
               <div className="text-right text-sm mb-4">
-                <a
+                <Link
                   href="/requestPasswordReset"
                   className="text-sm text-[#4C28BC]"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
 
               <div
