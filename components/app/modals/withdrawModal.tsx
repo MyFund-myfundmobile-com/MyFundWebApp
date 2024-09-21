@@ -90,7 +90,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(formatAmount(event.target.value));
+    const value = event.target.value.replace(/,/g, ""); // Remove commas
+    if (!isNaN(Number(value))) {
+      setAmount(formatAmount(value)); // Only set if it's a valid number
+    }
   };
 
   const formatAmountWithCommas = (amount: number) => {
@@ -199,20 +202,21 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   const handleTransfertoSaving = () => {};
 
   const handleWithdraw = async () => {
-    if (withdrawFrom === "savings" && withdrawTo === "Investment") {
-      handleTransferSavingstoInvest();
-    } else if (withdrawFrom === "investment" && withdrawTo === "Savings") {
-      handleTransferInvesttoSavings();
-    } else if (withdrawFrom === "wallet" && withdrawTo === "Savings") {
-      handleWalletToSavingsTransfer();
-    } else if (withdrawFrom === "wallet" && withdrawTo === "Investment") {
-      handleWalletToInvestmentTransfer();
-    } else if (withdrawFrom === "wallet" && withdrawTo === "Another User") {
-      handleTransferToWallet();
-    } else {
-      handleTransferToBankAccount();
-    }
-    setIsSending(true);
+    // setIsSending(true);
+
+    // if (withdrawFrom === "savings" && withdrawTo === "Investment") {
+    //   handleTransferSavingstoInvest();
+    // } else if (withdrawFrom === "investment" && withdrawTo === "Savings") {
+    //   handleTransferInvesttoSavings();
+    // } else if (withdrawFrom === "wallet" && withdrawTo === "Savings") {
+    //   handleWalletToSavingsTransfer();
+    // } else if (withdrawFrom === "wallet" && withdrawTo === "Investment") {
+    //   handleWalletToInvestmentTransfer();
+    // } else if (withdrawFrom === "wallet" && withdrawTo === "Another User") {
+    //   handleTransferToWallet();
+    // } else {
+    //   handleTransferToBankAccount();
+    // }
     // Simulate withdraw process
     setTimeout(() => {
       setIsSending(false);

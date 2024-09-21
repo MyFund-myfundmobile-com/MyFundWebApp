@@ -21,8 +21,7 @@ import { IonIcon } from "@ionic/react";
 import { useRouter } from "next/navigation";
 import { getCards, deleteCard } from "@/Redux store/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/Redux store/store";
-import { RootState } from "@/Redux store/store";
+import { AppDispatch, RootState } from "@/Redux store/store";
 import {
   fetchUserTransactions,
   fetchAccountBalances,
