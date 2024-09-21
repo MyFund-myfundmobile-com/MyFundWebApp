@@ -8,6 +8,7 @@ export async function cookieCreate(value: string, data: string) {
     value: data,
     httpOnly: true,
     path: "/",
+    maxAge: 60 * 60 * 24,
   });
 }
 

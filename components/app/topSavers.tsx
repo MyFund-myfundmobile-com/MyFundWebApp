@@ -72,9 +72,7 @@ const TopSaversSection: React.FC = () => {
     ) ?? -1;
 
   return (
-    <section className="border border-gray-300 bg-white p-4 rounded-lg w-full h-[calc(10*4rem)]">
-      {" "}
-      {/* Ensure height accommodates 10 savers */}
+    <section className="border border-gray-300 bg-white p-4 rounded-lg w-full h-[calc(10*4rem)] overflow-hidden">
       <Section style={{ marginTop: -1 }}>
         TOP SAVERS IN {currentMonth.toUpperCase()}
       </Section>
@@ -142,10 +140,10 @@ const TopSaversSection: React.FC = () => {
           </div>
         )}
 
-        <Subtitle style={{ marginTop: 10, marginBottom: 1, fontSize: 13 }}>
-          My Position
-        </Subtitle>
-        <Title style={{ color: "silver", marginTop: 0, fontSize: 70 }}>
+        {/* <Subtitle style={{ marginTop: 10, marginBottom: 1, fontSize: 13 }}>
+            My Position
+          </Subtitle> */}
+        {/* <Title style={{ color: "silver", marginTop: 0, fontSize: 70 }}>
           {userPosition === -1 ? (
             <span className="ml-5">-</span>
           ) : (
@@ -159,46 +157,46 @@ const TopSaversSection: React.FC = () => {
                 : "TH"
             }`
           )}
-        </Title>
+        </Title> */}
       </div>
       <Divider
         className="my-4 bg-silver mb-8"
         style={{ marginBottom: 25 }}
       />
-      <ul className="space-y-3">
-        {topSavers.map((saver, index) => (
-          <li
-            key={saver.id}
-            className="flex items-center space-x-3 justify-between" // Align trophies to end
-            style={{ height: "3rem" }} // Adjust height for consistency
-          >
-            <span
-              className="text-lg font-nexa"
-              style={{ textAlign: "center", alignSelf: "center" }}
+      <div className="overflow-y-auto h-[calc(10*3rem)]">
+        {" "}
+        {/* Adjust the height as needed */}
+        <ul className="space-y-3">
+          {topSavers.map((saver, index) => (
+            <li
+              key={saver.id}
+              className="flex items-center space-x-3 justify-between"
+              style={{ height: "3rem" }}
             >
-              {index + 1}
-              {index === 0 && <span className="ml-1"></span>}
-              {index === 1}
-              {index === 2}
-              {index > 2}
-            </span>
-            <Image
-              src={`/images/Profile1.png`}
-              alt={saver.firstName}
-              width={index === 0 ? 50 : 40} // Larger profile picture for the top saver
-              height={index === 0 ? 50 : 40}
-              className="w-12 h-12 rounded-full object-cover" // Larger size for the top saver
-            />
-            <span className="text-base font-product-sans">
-              {saver.firstName}
-            </span>
-            <div className="flex-grow" /> {/* Push trophies to the end */}
-            {index === 0 && <FaTrophy className="text-yellow-500" />}
-            {index === 1 && <FaTrophy className="text-gray-400" />}
-            {index === 2 && <FaTrophy className="text-orange-500" />}
-          </li>
-        ))}
-      </ul>
+              <span
+                className="text-lg font-nexa"
+                style={{ textAlign: "center", alignSelf: "center" }}
+              >
+                {index + 1}
+              </span>
+              <Image
+                src={`/images/Profile1.png`}
+                alt={saver.firstName}
+                width={index === 0 ? 50 : 40}
+                height={index === 0 ? 50 : 40}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <span className="text-base font-product-sans">
+                {saver.firstName}
+              </span>
+              <div className="flex-grow" />
+              {index === 0 && <FaTrophy className="text-yellow-500" />}
+              {index === 1 && <FaTrophy className="text-gray-400" />}
+              {index === 2 && <FaTrophy className="text-orange-500" />}
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 };
