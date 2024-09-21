@@ -4,6 +4,9 @@ import React, { useEffect, useRef } from "react";
 import { createOutline } from "ionicons/icons";
 import Modal from "@/components/modal";
 
+interface TemplateCard {
+  title: string;
+}
 interface CreateTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -11,6 +14,7 @@ interface CreateTemplateModalProps {
   onTitleChange: (title: string) => void;
   title: string;
   onCreateTemplateDesign: () => void;
+  templateCards: TemplateCard[]; //
 }
 
 const CreateTemplateModal: React.FC<CreateTemplateModalProps> = ({
@@ -20,9 +24,16 @@ const CreateTemplateModal: React.FC<CreateTemplateModalProps> = ({
   onTitleChange,
   title,
   onCreateTemplateDesign,
+  templateCards,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const isButtonDisabled = title.length < 3;
+
+  const isDuplicate = templateCards.some(
+    (card: TemplateCard) => card.title.toLowerCase() === title.toLowerCase()
+  );
+
+  // Disable the button if the title is too short or duplicate
+  const isButtonDisabled = title.length < 3 || isDuplicate;
 
   useEffect(() => {
     if (isOpen && inputRef.current) {

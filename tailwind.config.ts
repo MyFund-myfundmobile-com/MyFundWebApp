@@ -20,9 +20,18 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateX(30px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        shimmer: {
+          "0%": {
+            backgroundPosition: "-100% 0",
+          },
+          "100%": {
+            backgroundPosition: "100% 0",
+          },
+        },
       },
       animation: {
         floatIn: "floatIn 0.5s ease-out",
+        shimmer: "shimmer 1.5s infinite linear",
       },
       borderRadius: {
         arrow: "1rem", // Custom border radius for arrow effect

@@ -21,10 +21,27 @@ export const SET_AUTO_SAVE_SETTINGS = "SET_AUTO_SAVE_SETTINGS";
 export const SET_AUTO_SAVE_OFF = "SET_AUTO_SAVE_OFF";
 export const SET_AUTO_INVEST_SETTINGS = "SET_AUTO_INVEST_SETTINGS";
 export const SET_AUTO_INVEST_OFF = "SET_AUTO_INVEST_OFF";
+export const SET_ALL_USERS = "SET_ALL_USERS";
+export const SET_USERS_BY_DATE_RANGE = "SET_USERS_BY_DATE_RANGE";
+
+export const SET_EMAIL_TEMPLATES = "SET_EMAIL_TEMPLATES";
+
+export interface EmailTemplate {
+  id: number;
+  title: string;
+  design_body: string;
+  design_html: string;
+  last_update: string;
+}
+
+interface SetEmailTemplatesAction {
+  type: typeof SET_EMAIL_TEMPLATES;
+  payload: EmailTemplate[];
+}
 
 export interface User {
   is_first_time_signup?: boolean;
-  id: string | number | null; // Allow for null or number
+  id: string | number | null;
   firstName: string;
   lastName: string;
   mobileNumber: string;
@@ -55,6 +72,8 @@ export interface AuthState {
   token: string | null;
   bankAccounts: BankAccount[];
   cards: Card[];
+  allUsers?: User[];
+  emailTemplates: EmailTemplate[];
   userInfo: User;
   KYCStatus: KYCStatus;
   userTransactions: UserTransaction[];
@@ -121,18 +140,17 @@ export interface TopSaversData {
   };
 }
 
-export interface AutoInvestSettings {
-  active: boolean;
-  amount: number; // No longer optional
-  frequency: string; // No longer optional
-  autoinvest_enabled?: boolean; // Optional
-}
-
 export interface AutoSaveSettings {
   active: boolean;
   amount: number; // No longer optional
   frequency: string; // No longer optional
   autosave_enabled?: boolean; // Optional
+}
+export interface AutoInvestSettings {
+  active: boolean;
+  amount: number; // No longer optional
+  frequency: string; // No longer optional
+  autoinvest_enabled?: boolean; // Optional
 }
 
 interface Saver {
@@ -244,7 +262,6 @@ interface SetAutoSaveSettingsAction {
 interface SetAutoSaveOffAction {
   type: typeof SET_AUTO_SAVE_OFF;
 }
-
 interface SetAutoInvestSettingsAction {
   type: typeof SET_AUTO_INVEST_SETTINGS;
   payload: AutoInvestSettings;
@@ -252,6 +269,16 @@ interface SetAutoInvestSettingsAction {
 
 interface SetAutoInvestOffAction {
   type: typeof SET_AUTO_INVEST_OFF;
+}
+
+interface SetAllUsersAction {
+  type: typeof SET_ALL_USERS;
+  payload: User[];
+}
+
+interface SetUsersByDateRangeAction {
+  type: typeof SET_USERS_BY_DATE_RANGE;
+  payload: User[];
 }
 
 export type AuthActionTypes =
@@ -274,4 +301,9 @@ export type AuthActionTypes =
   | SetSelectedTopSaverAction
   | SetUserPercentageAction
   | SetAutoSaveSettingsAction
-  | SetAutoSaveOffAction;
+  | SetAutoSaveOffAction
+  | SetAutoInvestSettingsAction
+  | SetAutoInvestOffAction
+  | SetAllUsersAction
+  | SetUsersByDateRangeAction
+  | SetEmailTemplatesAction;

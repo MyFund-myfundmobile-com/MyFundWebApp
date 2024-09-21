@@ -8,17 +8,38 @@ import {
   lockClosedOutline,
   eyeOutline,
   eyeOffOutline,
-  arrowForwardOutline,
 } from "ionicons/icons";
+import Subtitle from "@/components/subtitle";
+import Title from "@/components/title";
+import axios from "axios";
+import CustomSnackbar from "@/components/snackbar";
 import styles from "@/components/landing/Header.module.css";
 import NavBar from "@/components/landing/navbar";
+import { useDispatch } from "react-redux";
+import { fetchUserInfo, setUserToken } from "@/Redux store/actions";
+import { AppDispatch } from "@/Redux store/store";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const isButtonDisabled = !email.includes("@") || password.length < 4;
+
+  const buttonBackgroundColor = isLoading
+    ? "green"
+    : isButtonDisabled
+    ? "grey"
+    : "#4C28BC";
+
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     document.body.style.backgroundColor = "#351265";
@@ -27,27 +48,99 @@ const LoginPage = () => {
     };
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsLoading(true);
-    // Simulate a login process with a delay
-    setTimeout(() => {
+    try {
+      const payload = {
+        username: email,
+        password: password,
+      };
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`,
+        payload
+      );
+
       setIsLoading(false);
-      window.location.href = "/admin/dashboard"; // Redirect to the home page after login
-    }, 2000); // 2-second delay for demonstration
+
+      if (response.status === 200) {
+        const { access } = response.data;
+
+        if (access) {
+          localStorage.setItem("userToken", access);
+          dispatch(setUserToken(access));
+          dispatch(fetchUserInfo(access)); // Ensure this is dispatched
+
+          setOpenSnackbar(true);
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Login successful! Loading...");
+
+          playLoginSound();
+
+          setTimeout(() => {
+            window.location.href = "/admin/App";
+          }, 1000);
+        } else {
+          setOpenSnackbar(true);
+          setSnackbarSeverity("error");
+          setSnackbarMessage(
+            "Login failed. Please ensure you entered the correct username/password."
+          );
+        }
+      } else {
+        setOpenSnackbar(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage(
+          "Login failed. Please ensure you entered the correct username/password."
+        );
+      }
+    } catch (error: any) {
+      // Assert error type as 'any'
+      setIsLoading(false);
+      setOpenSnackbar(true);
+      setSnackbarSeverity("error");
+
+      if (axios.isAxiosError(error)) {
+        // Check if error is an AxiosError
+        if (error.message === "Network Error") {
+          setSnackbarMessage(
+            "No internet connection. Please check your network."
+          );
+        } else if (error.response && error.response.status === 401) {
+          setSnackbarMessage("Invalid username or password. Please try again.");
+        } else {
+          setSnackbarMessage(
+            "Wrong username or password. Please check and try again."
+          );
+        }
+      } else {
+        setSnackbarMessage("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
+
+  const playLoginSound = () => {
+    const audio = new Audio("/audios/warm_login.mp3");
+    audio.play();
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
   };
 
   return (
-    <section className="bg-customPurple">
+    <section className="bg-customPurple animate-floatIn">
       <NavBar />
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <h2 className="mb-1 text-purple1 tracking-tight font-proxima font-black md:mb-2 md:text-5xl">
+            <Title>
               <span style={{ color: "#BB9CE8" }}>Admin</span> Login
-            </h2>
-            <p className="mb-8 text-lg text-[#4C28Bc] font-karla tracking-tight md:mb-12 md:text-0.5x0.5">
-              Enter your details below to login. {"\n"}
-            </p>
+            </Title>
+            <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
+              Enter your details below to login {"\n"}
+            </Subtitle>
             <form
               className="mx-auto mb-4 max-w-lg pb-4"
               onSubmit={(e) => e.preventDefault()}
@@ -61,7 +154,7 @@ const LoginPage = () => {
                   type="email"
                   name="email"
                   placeholder="Email Address"
-                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-sm text-[#333333] rounded-md"
+                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -81,19 +174,19 @@ const LoginPage = () => {
                   type={passwordVisible ? "text" : "password"}
                   name="password"
                   placeholder="Password"
-                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-sm text-[#333333] rounded-md"
+                  className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
-              <div className="text-right mb-4">
-                <a
-                  href="#"
-                  className="text-sm text-[#276EF1]"
+              <div className="text-right text-sm mb-4">
+                <Link
+                  href="/requestPasswordReset"
+                  className="text-sm text-[#4C28BC]"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
               <div
                 className={`${styles.buttonContainer} flex mb-4 justify-center items-center`}
@@ -102,10 +195,11 @@ const LoginPage = () => {
                   className="mr-5 inline-block rounded-xl px-8 py-4 text-center cursor-pointer font-semibold text-white"
                   style={{
                     boxShadow: "6px 6px #351265",
-                    backgroundColor: isLoading ? "black" : "#4C28BC",
+                    backgroundColor: buttonBackgroundColor,
                   }}
                   onClick={handleLogin}
-                  disabled={isLoading}
+                  disabled={isButtonDisabled}
+                  
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -144,23 +238,30 @@ const LoginPage = () => {
                 </button>
               </div>
             </form>
-            <p className="text-[#636262]">
+            <p className="text-sm text-[#636262]">
               New to MyFund?{" "}
-              <a
+              <Link
                 href="/register"
-                className="text-[#276EF1]"
+                className="text-sm font-bold text-purple1"
               >
                 Create Free Account
-              </a>
+              </Link>
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg">
+        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn">
           <Testimonials />
         </div>
       </div>
+      <CustomSnackbar
+        open={openSnackbar}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+        handleClose={handleCloseSnackbar}
+      />
     </section>
   );
+
 };
 
 export default LoginPage;

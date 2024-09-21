@@ -22,10 +22,14 @@ import {
   SET_TOP_SAVERS_DATA,
   SET_AUTO_SAVE_SETTINGS,
   SET_AUTO_SAVE_OFF,
+  AutoSaveSettings,
   SET_AUTO_INVEST_SETTINGS,
   SET_AUTO_INVEST_OFF,
+  SET_ALL_USERS,
+  SET_USERS_BY_DATE_RANGE,
+  EmailTemplate,
+  SET_EMAIL_TEMPLATES,
   AutoInvestSettings,
-  AutoSaveSettings,
   TopSaversData,
   UserTransaction,
   KYCStatus,
@@ -370,7 +374,7 @@ export const updateAutoSaveSettings = (
 export const setAutoSaveOff = (): AuthActionTypes => ({
   type: SET_AUTO_SAVE_OFF,
 });
-
+//invest related actions
 export const fetchAutoInvestSettings = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
     if (!token) {
@@ -434,3 +438,88 @@ export const updateWealthStage = (
   type: UPDATE_WEALTH_STAGE,
   payload: wealthStage,
 });
+
+export const fetchAllUsers = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<User[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-all-users/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Fetched users:", response.data);
+        dispatch({
+          type: SET_ALL_USERS,
+          payload: response.data,
+        });
+      } else {
+        console.error("Failed to fetch all users, status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching all users:", error);
+    }
+  };
+};
+
+// New action for fetching users by date range
+export const fetchUsersByDateRange = (token: string, dateRange: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<User[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users-by-date/`,
+        {
+          params: { date_range: dateRange },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Fetched users by date range:", response.data);
+        dispatch({
+          type: SET_USERS_BY_DATE_RANGE,
+          payload: response.data,
+        });
+      } else {
+        console.error(
+          "Failed to fetch users by date range, status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching users by date range:", error);
+    }
+  };
+};
+
+export const fetchEmailTemplates = (token: string) => {
+  return async (dispatch: Dispatch<AuthActionTypes>) => {
+    try {
+      const response = await axios.get<EmailTemplate[]>(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-templates/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: SET_EMAIL_TEMPLATES,
+          payload: response.data,
+        });
+      } else {
+        console.error("Failed to fetch templates, status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching templates:", error);
+    }
+  };
+};

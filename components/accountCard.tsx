@@ -7,8 +7,7 @@ import {
   IoHomeOutline,
   IoArrowDownOutline,
 } from "react-icons/io5";
-import { Img } from "react-image";
-
+import Image from "next/image";
 interface AccountCardProps {
   icon:
     | "save-outline"
@@ -17,7 +16,7 @@ interface AccountCardProps {
     | "home-outline";
   label: string;
   rate: string;
-  currency: string;
+  currency: React.ReactNode;
   amount: string;
   buttonText: string;
   buttonIcon:
@@ -58,14 +57,30 @@ const AccountCard: React.FC<AccountCardProps> = ({
   const [whole, decimal] = amount.split(".");
 
   const iconComponents: Record<string, JSX.Element> = {
-    "save-outline": <IoSaveOutline size={16} className="text-gray-500 mr-2" />,
+    "save-outline": (
+      <IoSaveOutline
+        size={16}
+        className="text-gray-500 mr-2"
+      />
+    ),
     "wallet-outline": (
-      <IoWalletOutline size={16} className="text-gray-500 mr-2" />
+      <IoWalletOutline
+        size={16}
+        className="text-gray-500 mr-2"
+      />
     ),
     "trending-up-outline": (
-      <IoTrendingUpOutline size={16} className="text-gray-500 mr-2" />
+      <IoTrendingUpOutline
+        size={16}
+        className="text-gray-500 mr-2"
+      />
     ),
-    "home-outline": <IoHomeOutline size={16} className="text-gray-500 mr-2" />,
+    "home-outline": (
+      <IoHomeOutline
+        size={16}
+        className="text-gray-500 mr-2"
+      />
+    ),
   };
 
   const buttonIconComponents: Record<string, JSX.Element> = {
@@ -91,7 +106,11 @@ const AccountCard: React.FC<AccountCardProps> = ({
       />
     ),
     "home-outline": (
-      <IoHomeOutline size={16} className="mr-1" style={{ marginTop: -3 }} />
+      <IoHomeOutline
+        size={16}
+        className="mr-1"
+        style={{ marginTop: -3 }}
+      />
     ),
     "arrow-down-outline": (
       <IoArrowDownOutline
@@ -143,7 +162,7 @@ const AccountCard: React.FC<AccountCardProps> = ({
       {isPropertyCard ? (
         <div className="flex h-full">
           <div className="w-4/5 h-full overflow-hidden">
-            <Img
+            <Image
               width={80}
               height={80}
               src={image ?? "/images/Profile1.png"} // Fallback image
@@ -167,14 +186,23 @@ const AccountCard: React.FC<AccountCardProps> = ({
               </div>
               <div className="text-white">
                 <p style={{ fontSize: 9 }}>{propertyDetails?.description}</p>
-                <p className="text-gray-400" style={{ fontSize: 9 }}>
+                <p
+                  className="text-gray-400"
+                  style={{ fontSize: 9 }}
+                >
                   {propertyDetails?.availableUnits}
                 </p>
                 <br />
-                <p className="text-purple-200" style={{ fontSize: 13 }}>
+                <p
+                  className="text-purple-200"
+                  style={{ fontSize: 13 }}
+                >
                   {propertyDetails?.cost}
                 </p>
-                <p className="text-green-400" style={{ fontSize: 13 }}>
+                <p
+                  className="text-green-400"
+                  style={{ fontSize: 13 }}
+                >
                   {propertyDetails?.roi}
                 </p>
               </div>
@@ -201,7 +229,10 @@ const AccountCard: React.FC<AccountCardProps> = ({
               {iconComponents[icon]}
               <span className="text-sm text-gray-400 font-karla">
                 {label}{" "}
-                <span className={rateColor} style={{ color: rateColor }}>
+                <span
+                  className={rateColor}
+                  style={{ color: rateColor }}
+                >
                   @{rate}
                 </span>
               </span>
