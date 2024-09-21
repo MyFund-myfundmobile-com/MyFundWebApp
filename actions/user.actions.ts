@@ -14,3 +14,13 @@ export async function cookieCreate(value: string, data: string) {
 export async function deleteCookie(data: string) {
   cookies().delete(data);
 }
+
+export async function checkCookie(data: string) {
+  const hasCookie = cookies().has(data);
+  return hasCookie;
+}
+
+export async function getCookie(data: string) {
+  const cookieValue = cookies().get(data)?.value;
+  return cookieValue;
+}
