@@ -15,9 +15,15 @@ import Confetti from "react-confetti";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { IonIcon } from "@ionic/react";
 import { arrowDownOutline, checkmarkCircleOutline } from "ionicons/icons";
-import { RootState } from "@/Redux store/store";
-import { useDispatch, UseDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/Redux store/store";
+import {
+  fetchUserTransactions,
+  fetchAccountBalances,
+  fetchTopSaversData,
+} from "@/Redux store/actions";
+import { trace } from "console";
+import axios from "axios";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -38,18 +44,45 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string>("");
 
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
   const dispatch = useDispatch<AppDispatch>();
-  const accountBalances = useSelector(
-    (state: RootState) => state.auth.accountBalances
+  const accountSavedBalance = useSelector(
+    (state: RootState) => state.auth.accountBalances.savings
+  );
+  const accountInvestBalance = useSelector(
+    (state: RootState) => state.auth.accountBalances.investment
+  );
+  const accountWalletBalance = useSelector(
+    (state: RootState) => state.auth.accountBalances.wallet
   );
 
   useEffect(() => {
     setWithdrawFrom(defaultWithdrawFrom);
   }, [defaultWithdrawFrom]);
 
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserTransactions(token));
+      dispatch(fetchAccountBalances(token));
+    }
+  }, [dispatch, token]);
+
   const handleClearAmount = () => {
     setAmount("");
   };
+
+  useEffect(() => {
+    if (showConfetti) {
+      const timer = setTimeout(() => setShowConfetti(false), 3000); // Hides confetti after 3 seconds
+      return () => clearTimeout(timer); // Cleanup on unmount or when showConfetti changes
+    }
+  }, [showConfetti]);
 
   const formatAmount = (value: string) => {
     const cleanedValue = value.replace(/[^0-9]/g, ""); // Remove non-digit characters
@@ -67,17 +100,118 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
     });
   };
 
-  const formattedSavings = formatAmountWithCommas(
-    Number(accountBalances.savings)
-  );
+  const formattedSavings = formatAmountWithCommas(Number(accountSavedBalance));
   const fomrattedInvestment = formatAmountWithCommas(
-    Number(accountBalances.investment)
+    Number(accountInvestBalance)
   );
-  const formattedWallet = formatAmountWithCommas(
-    Number(accountBalances.wallet)
-  );
+  const formattedWallet = formatAmountWithCommas(Number(accountWalletBalance));
 
-  const handleWithdraw = () => {
+  const handleTransferToBankAccount = () => {};
+  const handleWalletToSavingsTransfer = () => {};
+  const handleTransferToWallet = () => {};
+
+  const handleTransferToUser = () => {};
+  const handleWalletToInvestmentTransfer = () => {};
+  const handleTransferInvesttoSavings = async () => {};
+  const handleTransferSavingstoInvest = async () => {
+    try {
+      const requestedAmount = parseFloat(amount.replace(/,/g, ""));
+
+      if (requestedAmount > accountSavedBalance) {
+        // Display an snackbar for insufficient balance
+        setSnackbarOpen(true);
+        setSnackbarSeverity("error");
+        setSnackbarMessage(
+          "Insufficient Balance. You do not have enough balance in your SAVINGS account for this withdrawal."
+        );
+        return;
+      }
+
+      // Prepare the data to send to the backend API
+      const requestData = {
+        amount: requestedAmount,
+      };
+
+      console.log("Request Data:", requestData); // Log the requestData
+      console.log(token);
+      if (typeof token === "string") {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/savings-to-investment/`,
+          requestData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
+
+        console.log("API Response:", response); // Log the API response
+
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          dispatch(fetchUserTransactions(token));
+          dispatch(fetchAccountBalances(responseData.newAccountBalances));
+          console.log(responseData.newAccountBalances);
+
+          // setIsSuccessVisible(true);
+          // setWithdrawModalVisible(false);
+          setIsSending(false);
+        } else {
+          // Handle API errors here and show appropriate alerts
+          if (response.status === 400) {
+            setIsSending(false);
+            setSnackbarOpen(true);
+            setSnackbarSeverity("error");
+            setSnackbarMessage(
+              "Invalid input. Please check your data and try again."
+            );
+          } else if (response.status === 401) {
+            setIsSending(false);
+            setSnackbarOpen(true);
+            setSnackbarSeverity("error");
+            setSnackbarMessage("You are not authorized. Please login again.");
+          } else {
+            setIsSending(false);
+            setSnackbarMessage(
+              "An error occurred while processing your request. Please try again later."
+            );
+          }
+        }
+      } else {
+        throw new Error("Token is not available.");
+      }
+    } catch (error) {
+      console.error("Savings to Investment Transfer Error:", error);
+      // Handle network or other errors here and show an appropriate alert
+      setSnackbarOpen(true);
+      setSnackbarSeverity("error");
+      setSnackbarMessage(
+        "An error occurred. Please check your network connection and try again."
+      );
+    } finally {
+      // Reset the processing state
+      setIsSending(false);
+    }
+  };
+
+  const handleTransfertoSaving = () => {};
+
+  const handleWithdraw = async () => {
+    if (withdrawFrom === "savings" && withdrawTo === "Investment") {
+      handleTransferSavingstoInvest();
+    } else if (withdrawFrom === "investment" && withdrawTo === "Savings") {
+      handleTransferInvesttoSavings();
+    } else if (withdrawFrom === "wallet" && withdrawTo === "Savings") {
+      handleWalletToSavingsTransfer();
+    } else if (withdrawFrom === "wallet" && withdrawTo === "Investment") {
+      handleWalletToInvestmentTransfer();
+    } else if (withdrawFrom === "wallet" && withdrawTo === "Another User") {
+      handleTransferToWallet();
+    } else {
+      handleTransferToBankAccount();
+    }
     setIsSending(true);
     // Simulate withdraw process
     setTimeout(() => {
@@ -238,9 +372,15 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
               >
                 Withdraw from...
               </MenuItem>
-              <MenuItem value="Savings">Savings ({formattedSavings})</MenuItem>
-              <MenuItem value="Investment">Investment (N4,370,000)</MenuItem>
-              <MenuItem value="Wallet">Wallet (N199,000)</MenuItem>
+              <MenuItem value="Savings">{`Savings (₦${Math.floor(
+                accountSavedBalance
+              ).toLocaleString()})`}</MenuItem>
+              <MenuItem value="Investment">{`Investment (₦${Math.floor(
+                accountInvestBalance
+              ).toLocaleString()})`}</MenuItem>
+              <MenuItem value="Wallet">{`Wallet (₦${Math.floor(
+                accountWalletBalance
+              ).toLocaleString()})`}</MenuItem>
             </Select>
 
             {withdrawFrom && (
@@ -259,7 +399,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
                 >
                   Withdraw to...
                 </MenuItem>
-                {getWithdrawToOptions()}
+                <MenuItem value="Investment">Investment</MenuItem>
+                <MenuItem value="Bank Account">Bank Account</MenuItem>
+                <MenuItem value="Savings">Savings</MenuItem>
+                <MenuItem value="Another User">Another User</MenuItem>
               </Select>
             )}
 
