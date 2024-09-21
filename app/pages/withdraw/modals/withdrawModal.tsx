@@ -39,11 +39,16 @@ import {
 import axios from "axios";
 import CustomSnackbar from "@/app/components/snackbar";
 import Section from "@/app/components/section";
+import { AxiosError } from "axios";
 
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultWithdrawFrom: string;
+}
+
+interface ErrorResponse {
+  error: string;
 }
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({
@@ -177,6 +182,13 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
     }
     if (withdrawFrom === "Wallet" && withdrawTo === "Another User") {
       transferToWallet(); // Call the transfer function
+    }
+    if (
+      withdrawFrom === "Savings" ||
+      withdrawFrom === "Investment" ||
+      withdrawFrom === "Wallet"
+    ) {
+      handleWithdrawToBankAccount(); // Call the unified withdraw function
     }
     // Other transfer cases can go here...
   };
@@ -409,6 +421,83 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
       setSnackbarOpen(true);
     } finally {
       setIsSending(false); // Reset sending state
+    }
+  };
+
+  const handleWithdrawToBankAccount = async () => {
+    setIsSending(true);
+    let sourceAccountBalance;
+    try {
+      switch (withdrawFrom) {
+        case "Savings":
+          sourceAccountBalance = accountBalances.savings;
+          break;
+        case "Investment":
+          sourceAccountBalance = accountBalances.investment;
+          break;
+        case "Wallet":
+          sourceAccountBalance = accountBalances.wallet;
+          break;
+        default:
+          sourceAccountBalance = 0;
+      }
+      const requestedAmount = parseFloat(amount.replace(/,/g, ""));
+      if (sourceAccountBalance < requestedAmount) {
+        setIsSending(false);
+        setSnackbarMessage("Insufficient funds. Please check and try again.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+        return;
+      }
+      const requestData = {
+        source_account: withdrawFrom.toLowerCase(),
+        target_bank_account_id: selectedBankAccount,
+        amount: requestedAmount,
+      };
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/withdraw-to-bank/`,
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Withdrawal response:", response);
+      if (response.status === 200 && response.data.success) {
+        const responseData = response.data;
+        dispatch(fetchUserTransactions(token));
+        dispatch(fetchAccountBalances(responseData.updated_balance));
+        dispatch(fetchTopSaversData(token));
+
+        setSnackbarMessage("Payment sent successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        setShowSuccessModal(true);
+        setShowConfetti(true);
+      } else {
+        setSnackbarMessage(
+          response.data.error || "An error occurred. Please try again."
+        );
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+
+      console.log(
+        "Withdrawal Error:",
+        axiosError.response ? axiosError.response.data : axiosError
+      );
+      setSnackbarMessage(
+        axiosError.response?.data.error ||
+          "Network error. Please check your connection."
+      );
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    } finally {
+      setIsSending(false);
     }
   };
 
