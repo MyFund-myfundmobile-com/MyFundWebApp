@@ -7,6 +7,14 @@ import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { PrimaryButton } from "@/app/components/Buttons/MainButtons";
+import { useDispatch } from "react-redux";
+import {
+  fetchUserInfo,
+  setUserToken,
+  fetchUserBankAccounts,
+  fetchUserTransactions,
+} from "../Redux store/actions";
+import { AppDispatch } from "../Redux store/store";
 
 interface OTPModalProps {
   email: string;
@@ -29,6 +37,8 @@ const OTPModal: React.FC<OTPModalProps> = ({
     "success"
   );
   const inputRefs = useRef<HTMLInputElement[]>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (isOpen && inputRefs.current[0]) {
@@ -69,35 +79,58 @@ const OTPModal: React.FC<OTPModalProps> = ({
   const handleConfirm = async () => {
     setIsLoading(true);
 
+    const otpCode = otp; // Ensure otp is formatted correctly if needed
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/confirm-otp/`,
-        {
-          otp: otp,
-        }
+        { otp: otpCode }
       );
 
-      if (response.status === 200) {
-        setIsLoading(false);
+      console.log("API Response:", response.data);
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Account confirmed successfully."
+      ) {
         console.log("OTP Verification Successful");
 
         try {
           const loginResponse = await axios.post(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login/`,
-            {
-              username: email,
-              password: password,
-            }
+            { username: email, password: password }
           );
+
+          console.log("Login Response:", loginResponse.data);
 
           if (loginResponse.status === 200) {
             const { access, refresh, user_id } = loginResponse.data;
-            handleSnackbarOpen(
-              "success",
-              "We've confirmed it's you! Welcome to MyFund..."
-            );
-            console.log("Login Successful");
-            window.location.href = "/App"; // Redirect to your desired page upon successful login
+
+            // Ensure both tokens are available
+            if (access && refresh) {
+              dispatch(setUserToken(access));
+              dispatch(fetchUserInfo(access));
+              dispatch(fetchUserBankAccounts(access));
+              dispatch(fetchUserTransactions(access));
+
+              // Store the tokens for later use
+              localStorage.setItem("userToken", access);
+              localStorage.setItem("refreshToken", refresh);
+              localStorage.setItem("userId", user_id.toString());
+
+              handleSnackbarOpen(
+                "success",
+                "We've confirmed it's you! Welcome to MyFund..."
+              );
+              console.log("Login Successful");
+              window.location.href = "/App"; // Redirect after successful login
+            } else {
+              console.error("Tokens missing in response:", loginResponse.data);
+              handleSnackbarOpen(
+                "error",
+                "An error occurred while logging in. Please try again."
+              );
+            }
           } else {
             console.error("Login API Error:", loginResponse.data);
             handleSnackbarOpen(
@@ -116,7 +149,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
         console.error("OTP Verification Failed:", response.data);
         handleSnackbarOpen(
           "error",
-          "OTP Verification Failed. Please check and try again."
+          "Wrong OTP entered. Please check and try again."
         );
       }
     } catch (error) {

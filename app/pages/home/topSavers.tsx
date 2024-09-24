@@ -11,6 +11,7 @@ import { RootState } from "@/app/Redux store/store";
 import { FaTrophy, FaArrowUp } from "react-icons/fa";
 import { AppDispatch } from "@/app/Redux store/store";
 import Modal from "@/app/components/modal";
+import { CircularProgress } from "@mui/material";
 
 interface Saver {
   id: number;
@@ -24,6 +25,7 @@ const TopSaversSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const topSaversData = useSelector(
     (state: RootState) => state.auth.topSaversData
@@ -39,7 +41,10 @@ const TopSaversSection: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchTopSaversData(token));
+      setLoading(true);
+      dispatch(fetchTopSaversData(token)).finally(() => {
+        setLoading(false);
+      });
     }
 
     const monthNames = [
@@ -228,36 +233,46 @@ const TopSaversSection: React.FC = () => {
             </Title>
             {/* Scrollable list container */}
             <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-              <ul className="space-y-3">
-                {topSaversData?.top_savers?.map((saver, index) => (
-                  <li
-                    key={saver.id}
-                    className="flex items-center space-x-3 justify-between"
-                    style={{ height: "3rem" }}
-                  >
-                    <span
-                      className="text-lg font-nexa"
-                      style={{ textAlign: "center", alignSelf: "center" }}
+              {loading ? (
+                <div
+                  className="flex justify-center items-center text-gray-500 h-full"
+                  style={{ minHeight: "250px" }}
+                >
+                  <CircularProgress size={24} className="mr-2" />
+                  <Subtitle>Top Savers...</Subtitle>
+                </div>
+              ) : (
+                <ul className="space-y-3">
+                  {topSaversData?.top_savers?.map((saver, index) => (
+                    <li
+                      key={saver.id}
+                      className="flex items-center space-x-3 justify-between"
+                      style={{ height: "3rem" }}
                     >
-                      {index + 1}
-                    </span>
-                    <Img
-                      src={saver.profile_picture || `/images/Profile1.png`}
-                      alt={saver.first_name}
-                      width={index === 0 ? 50 : 40}
-                      height={index === 0 ? 50 : 40}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <span className="text-base font-product-sans">
-                      {saver.first_name}
-                    </span>
-                    <div className="flex-grow" />
-                    {index === 0 && <FaTrophy className="text-yellow-500" />}
-                    {index === 1 && <FaTrophy className="text-gray-400" />}
-                    {index === 2 && <FaTrophy className="text-orange-500" />}
-                  </li>
-                ))}
-              </ul>
+                      <span
+                        className="text-lg font-nexa"
+                        style={{ textAlign: "center", alignSelf: "center" }}
+                      >
+                        {index + 1}
+                      </span>
+                      <Img
+                        src={saver.profile_picture || `/images/Profile1.png`}
+                        alt={saver.first_name}
+                        width={index === 0 ? 50 : 40}
+                        height={index === 0 ? 50 : 40}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <span className="text-base font-product-sans">
+                        {saver.first_name}
+                      </span>
+                      <div className="flex-grow" />
+                      {index === 0 && <FaTrophy className="text-yellow-500" />}
+                      {index === 1 && <FaTrophy className="text-gray-400" />}
+                      {index === 2 && <FaTrophy className="text-orange-500" />}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </>
         }

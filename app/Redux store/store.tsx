@@ -39,7 +39,7 @@ if (token) {
   store.dispatch(fetchTopSaversData(token) as any);
   store.dispatch(fetchAutoSaveSettings(token) as any);
   store.dispatch(fetchAllUsers(token));
-  store.dispatch(fetchEmailTemplates(token)); // Add this to fetch templates
+  store.dispatch(fetchEmailTemplates(token));
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

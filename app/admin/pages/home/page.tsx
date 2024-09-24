@@ -8,25 +8,55 @@ import { Divider, Tooltip } from "@mui/material";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Image from "next/image";
-
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/Redux store/store";
+import TopSaversSection from "@/app/pages/home/topSavers";
+import RecentSignups from "./recentSignups";
+import RecentHouseOwners from "./recentHouseOwners";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  CircularProgress,
+  InputAdornment,
+} from "@mui/material";
 import {
   fetchUserInfo,
   updateWealthStage,
   fetchAllUsers,
 } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/Redux store/store";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
+const calculateRate = (newUsersToday: number, newUsersPreviousDay: number) => {
+  if (newUsersPreviousDay === 0) return "+100%"; // If there were no users yesterday.
+  const rate =
+    ((newUsersToday - newUsersPreviousDay) / newUsersPreviousDay) * 100;
+  return `${rate >= 0 ? "+" : ""}${rate.toFixed(2)}%`;
+};
+
+const calculateRateForPeriod = (
+  currentPeriod: number,
+  previousPeriod: number
+) => {
+  if (previousPeriod === 0) return "+100%"; // Avoid division by zero.
+  const rate = ((currentPeriod - previousPeriod) / previousPeriod) * 100;
+  return `${rate >= 0 ? "+" : ""}${rate.toFixed(2)}%`;
+};
+
 const HomePage: React.FC = () => {
+  const [rate, setRate] = useState<string>("");
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
   const [showRightButton, setShowRightButton] = useState<boolean>(true);
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
+
+  const [selectedLabel, setSelectedLabel] = useState<string>("This Month");
+  const [totalNewUsers, setTotalNewUsers] = useState<number>(0);
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
@@ -37,6 +67,7 @@ const HomePage: React.FC = () => {
   const currentWealthStage = useSelector(
     (state: RootState) => state.auth.currentWealthStage
   );
+  const allUsers = useSelector((state: RootState) => state.auth.allUsers);
 
   const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
@@ -53,6 +84,41 @@ const HomePage: React.FC = () => {
     console.log("All users have been fetched successfully:", totalUsers); // Add this line
   }, [totalUsers]);
 
+  const totalNewUsersThisMonth = useSelector(
+    (state: RootState) =>
+      state.auth.allUsers?.filter((user) => {
+        const joinedDate = new Date(user.date_joined);
+        return (
+          joinedDate.getFullYear() === new Date().getFullYear() &&
+          joinedDate.getMonth() === 8 // September is month 8 (0-based index)
+        );
+      }).length || 0
+  );
+
+  const totalNewUsersThisWeek = useSelector(
+    (state: RootState) =>
+      state.auth.allUsers?.filter((user) => {
+        const joinedDate = new Date(user.date_joined);
+        const now = new Date();
+        const oneWeekAgo = new Date(now);
+        oneWeekAgo.setDate(now.getDate() - 7);
+        return joinedDate >= oneWeekAgo && joinedDate <= now;
+      }).length || 0
+  );
+
+  console.log("Total new users this month:", totalNewUsersThisMonth);
+  console.log("Total new users this week:", totalNewUsersThisWeek);
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserInfo(token) as any);
+      dispatch(fetchAllUsers(token) as any)
+        .then(() => {
+          console.log("All users fetched:", allUsers);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [dispatch, token, allUsers]);
+
   useEffect(() => {
     if (currentWealthStage) {
       dispatch(updateWealthStage(currentWealthStage));
@@ -61,6 +127,20 @@ const HomePage: React.FC = () => {
 
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
+  };
+
+  const handleRangeUpdate = (label: string, count: number) => {
+    const labelMapping: Record<string, string> = {
+      daily: "Today",
+      weekly: "This Week",
+      monthly: "This Month",
+      quarterly: "The Last 4 Months",
+      last6months: "The Last 6 Months",
+      lastYear: "The Last 1 Year",
+    };
+
+    setSelectedLabel(labelMapping[label]);
+    setTotalNewUsers(count);
   };
 
   const handleEmailClick = () => {
@@ -152,6 +232,57 @@ const HomePage: React.FC = () => {
 
   const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
 
+  useEffect(() => {
+    if (selectedLabel === "Today") {
+      const todayUsers =
+        allUsers?.filter((user) => {
+          const joinDate = new Date(user.date_joined);
+          const today = new Date();
+          return (
+            joinDate.getFullYear() === today.getFullYear() &&
+            joinDate.getMonth() === today.getMonth() &&
+            joinDate.getDate() === today.getDate()
+          );
+        }).length || 0;
+
+      const previousDayUsers =
+        allUsers?.filter((user) => {
+          const joinDate = new Date(user.date_joined);
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          return (
+            joinDate.getFullYear() === yesterday.getFullYear() &&
+            joinDate.getMonth() === yesterday.getMonth() &&
+            joinDate.getDate() === yesterday.getDate()
+          );
+        }).length || 0;
+
+      setRate(calculateRate(todayUsers, previousDayUsers));
+    } else if (selectedLabel === "This Week") {
+      const now = new Date();
+      const startOfWeek = new Date();
+      startOfWeek.setDate(now.getDate() - now.getDay());
+
+      const lastWeekStart = new Date(startOfWeek);
+      lastWeekStart.setDate(startOfWeek.getDate() - 7);
+
+      const usersThisWeek =
+        allUsers?.filter((user) => {
+          const joinDate = new Date(user.date_joined);
+          return joinDate >= startOfWeek && joinDate <= now;
+        }).length || 0;
+
+      const usersLastWeek =
+        allUsers?.filter((user) => {
+          const joinDate = new Date(user.date_joined);
+          return joinDate >= lastWeekStart && joinDate < startOfWeek;
+        }).length || 0;
+
+      setRate(calculateRateForPeriod(usersThisWeek, usersLastWeek));
+    }
+    // Add similar calculations for "This Month", "Last 4 Months", etc.
+  }, [selectedLabel, allUsers]);
+
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
@@ -234,29 +365,28 @@ const HomePage: React.FC = () => {
         >
           <AccountCard
             icon="save-outline"
-            label="NEW USERS TODAY"
-            rate="+3%"
+            label={`NEW USERS ${selectedLabel.toUpperCase()}`}
+            rate={rate}
             currency=""
-            amount={showBalances ? "09" : "****"}
+            amount={showBalances ? totalNewUsers.toString() : "****"}
             buttonText="View List"
             buttonIcon="save-outline"
             style={{ transition: "opacity 0.3s ease" }}
           />
+
           <AccountCard
             icon="trending-up-outline"
             label="TOTAL USERS"
             rate="-2%"
             currency={
-              loading ? (
-                <span className="text-gray-500 animate-shimmer">
-                  Loading...
-                </span>
-              ) : (
-                ""
-              )
+              loading ? <CircularProgress size={24} className="mr-2" /> : ""
             }
             amount={
-              loading ? "" : showBalances ? totalUsers.toString() : "****"
+              loading
+                ? totalUsers.toString()
+                : showBalances
+                ? totalUsers.toString()
+                : "****"
             }
             buttonText="View List"
             buttonIcon="trending-up-outline"
@@ -310,15 +440,16 @@ const HomePage: React.FC = () => {
         style={{ marginTop: 20, marginBottom: 20 }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
-        <div
-          className="md:col-span-3"
-          style={{ alignSelf: "flex-start" }}
-        ></div>
-
-        <div className="md:col-span-3"></div>
-
-        <div className="md:col-span-6"></div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+        <div className="border border-gray-300 bg-[#dfd6fe] rounded-lg p-4">
+          <RecentSignups onRangeUpdate={handleRangeUpdate} />
+        </div>
+        <div className="border border-gray-300 bg-[#dfd6fe] rounded-lg p-4">
+          <TopSaversSection />
+        </div>
+        <div className="border border-gray-300 bg-[#dfd6fe] rounded-lg p-4">
+          <RecentHouseOwners />
+        </div>
       </div>
 
       <div className="fixed bottom-20 right-20 z-50 flex flex-col items-center">

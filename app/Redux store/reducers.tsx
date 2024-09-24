@@ -56,7 +56,10 @@ const initialState: AuthState = {
     is_first_time_signup: false,
     id: "", // Make sure it's an empty string or null, not undefined
     firstName: "",
+    first_name: "",
+    last_name: "",
     lastName: "",
+    phone_number: "",
     mobileNumber: "",
     email: "",
     token: "",
@@ -68,6 +71,7 @@ const initialState: AuthState = {
     cards: [],
     top_saver_percentage: 0,
     profile_picture: "",
+    date_joined: "",
   },
 
   accountBalances: {
@@ -220,6 +224,7 @@ const authReducer = (
         ...state,
         emailTemplates: action.payload, // Set fetched templates
       };
+
     default:
       return state;
   }

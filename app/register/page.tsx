@@ -112,10 +112,11 @@ const RegisterPage: React.FC = () => {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleCloseOTPModal = () => {
@@ -134,11 +135,14 @@ const RegisterPage: React.FC = () => {
         last_name: formData.lastName,
         email: formData.email,
         phone_number: formData.phone,
+        referral: formData.referral,
         password: formData.password,
-        how_did_you_hear: formData.howDidYouHear,
+        how_did_you_hear:
+          formData.howDidYouHear === "other" ? "OTHER" : formData.howDidYouHear,
       };
 
       console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+      console.log("How did you hear:", formData.howDidYouHear);
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/signup/`,
@@ -247,16 +251,16 @@ const RegisterPage: React.FC = () => {
                   <option value="" style={{ color: "#999999" }}>
                     *How did you hear about MyFund?
                   </option>
-                  <option value="social_media">
+                  <option value="SM">
                     Social Media - Facebook, Instagram, etc.
                   </option>
-                  <option value="instant_messaging">
+                  <option value="IMs">
                     Instant Messaging - WhatsApp, Telegram, etc.
                   </option>
-                  <option value="family_friend">Family and Friend</option>
-                  <option value="google_search">Google Search</option>
-                  <option value="recommended">Recommended</option>
-                  <option value="cashflow_game">Cashflow Game</option>
+                  <option value="FF">Family and Friend</option>
+                  <option value="GS">Google Search</option>
+                  <option value="REC">Recommended</option>
+                  <option value="CFG">Cashflow Game</option>
                   <option value="other">Other</option>
                 </select>
               </div>
