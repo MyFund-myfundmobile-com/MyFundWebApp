@@ -61,6 +61,7 @@ const SettingsPage: React.FC = () => {
   const location = useLocation(); // Initialize useLocation
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
+  const [isSavingsGoalModalOpen, setIsSavingsGoalModalOpen] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -73,6 +74,10 @@ const SettingsPage: React.FC = () => {
       }
       if (location.state.triggerAddBank) {
         setIsAddBankModalOpen(true);
+      }
+      if (location.state.triggerSavingsGoal) {
+        handleMenuSelect("Savings Goal");
+        setIsSavingsGoalModalOpen(true);
       }
     }
   }, [location.state]);
@@ -239,7 +244,13 @@ const SettingsPage: React.FC = () => {
   const getSelectedComponent = () => {
     switch (selectedMenu) {
       case "Savings Goal":
-        return <SavingsGoal />;
+        return (
+          <SavingsGoal
+            onNavigate={handleMenuSelect}
+            isSavingsGoalModalOpen={isSavingsGoalModalOpen}
+            setIsSavingsGoalModalOpen={setIsSavingsGoalModalOpen}
+          />
+        );
       case "Card and Bank Settings":
         return (
           <CardSettings
