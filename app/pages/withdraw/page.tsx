@@ -23,6 +23,7 @@ import { fetchUserInfo } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
 import RecentTransactionsSection from "../home/recentTransactions";
 import { useLocation } from "react-router-dom"; // Import useLocation
+import ShareModal from "./modals/shareModal";
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -41,6 +42,11 @@ const WithdrawPage = () => {
     (state: RootState) => state.auth.accountBalances
   );
   const location = useLocation();
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
 
   const bottomRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -145,26 +151,6 @@ const WithdrawPage = () => {
     setDefaultWithdrawFrom(accountType);
     setInitialAmount(amount); // Set the initial amount
     setIsWithdrawModalOpen(true);
-  };
-
-  const handleShareClick = () => {
-    const shareData = {
-      title: "Check out MyFund!",
-      text: "Join me on MyFund and start saving today!",
-      url: "https://myfundmobile.com",
-    };
-
-    if (navigator.share) {
-      navigator
-        .share(shareData)
-        .catch((err) => console.error("Error sharing:", err));
-    } else {
-      // Fallback for desktop: open a new window with sharing options
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        shareData.url
-      )}`;
-      window.open(shareUrl, "_blank", "noopener,noreferrer");
-    }
   };
 
   return (
@@ -368,6 +354,11 @@ const WithdrawPage = () => {
           </div>
         </div>
       </div>
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
+
       <WithdrawModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
