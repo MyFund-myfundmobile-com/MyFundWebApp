@@ -19,6 +19,7 @@ import OTPModal from "./OTPModal";
 import CustomSnackbar from "../components/snackbar";
 import Title from "../components/title";
 import Subtitle from "../components/subtitle";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
 
 type IconType = "user" | "mail" | "phone" | "lock" | "hearAbout";
 
@@ -31,6 +32,25 @@ const iconMap: { [key in IconType]: string } = {
 };
 
 const RegisterPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const [referral, setReferral] = useState<string | undefined>(undefined);
+  const [isReferralDisabled, setIsReferralDisabled] = useState(false);
+
+  useEffect(() => {
+    const referralParam = searchParams.get("referral");
+    const referralEmail = referralParam ? String(referralParam) : undefined;
+    setReferral(referralEmail);
+
+    // Update formData when referral is fetched
+    setFormData((prevData) => ({
+      ...prevData,
+      referral: referralEmail || "", // Set the referral email in formData
+    }));
+
+    // Set the referral input as disabled if it has a value
+    setIsReferralDisabled(!!referralEmail);
+  }, [searchParams]);
+
   useEffect(() => {
     document.body.style.backgroundColor = "#351265";
     return () => {
@@ -43,6 +63,8 @@ const RegisterPage: React.FC = () => {
     name: string;
     type: string;
     icon: IconType;
+    value?: string;
+    disabled?: boolean;
   }[] = [
     {
       placeholder: "*First Name",
@@ -68,6 +90,8 @@ const RegisterPage: React.FC = () => {
       name: "referral",
       type: "email",
       icon: "mail",
+      value: referral || "", // Prefill only the referral field
+      disabled: isReferralDisabled, // Disable if referral is prefilled from query param
     },
   ];
 
@@ -79,7 +103,7 @@ const RegisterPage: React.FC = () => {
     email: "",
     phone: "",
     password: "",
-    referral: "",
+    referral: referral || "", // Prefill the referral email
     howDidYouHear: "",
   });
 
@@ -115,7 +139,7 @@ const RegisterPage: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name as keyof typeof formData]: value, // Assert name is a key of formData
     }));
   };
 
@@ -210,12 +234,21 @@ const RegisterPage: React.FC = () => {
                     type={type}
                     name={name}
                     placeholder={placeholder}
-                    className="block h-9 w-full border border-black bg-[#fff] px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]"
+                    className={`block h-9 w-full border border-black ${
+                      name === "referral" ? "bg-gray-200" : "bg-[#fff]"
+                    } px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]`}
                     required={name !== "referral"}
                     onChange={handleInputChange}
+                    value={
+                      name === "referral"
+                        ? formData.referral
+                        : formData[name as keyof typeof formData]
+                    } // Use formData for value binding
+                    disabled={name === "referral" ? isReferralDisabled : false} // Disable only the referral input
                   />
                 </div>
               ))}
+
               <div className="relative mb-4">
                 <IonIcon
                   icon={iconMap["lock"]}
@@ -268,7 +301,12 @@ const RegisterPage: React.FC = () => {
               <label className="mb-6 flex items-center pb-12 font-medium lg:mb-1">
                 <span className="inline-block text-karla cursor-pointer text-xs">
                   By clicking Create Free Account, I agree with the{" "}
-                  <a href="#" className="font-bold text-[#0b0b1f]">
+                  <a
+                    href="/terms"
+                    className="font-bold text-[#0b0b1f]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Terms &amp; Conditions
                   </a>
                 </span>
