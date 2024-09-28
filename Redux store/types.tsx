@@ -43,7 +43,10 @@ export interface User {
   is_first_time_signup?: boolean;
   id: string | number | null;
   firstName: string;
+  first_name: string;
+  last_name: string;
   lastName: string;
+  phone_number: string;
   mobileNumber: string;
   email: string;
   token: string;
@@ -55,6 +58,7 @@ export interface User {
   cards: Card[];
   top_saver_percentage: number;
   profile_picture?: string;
+  date_joined: string;
 }
 
 export interface UserTransaction {
@@ -305,5 +309,5 @@ export type AuthActionTypes =
   | SetAutoInvestSettingsAction
   | SetAutoInvestOffAction
   | SetAllUsersAction
-  | SetUsersByDateRangeAction
-  | SetEmailTemplatesAction;
+  | SetEmailTemplatesAction
+  | SetUsersByDateRangeAction;

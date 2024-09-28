@@ -57,6 +57,9 @@ const initialState: AuthState = {
     id: "", // Make sure it's an empty string or null, not undefined
     firstName: "",
     lastName: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
     mobileNumber: "",
     email: "",
     token: "",
@@ -68,6 +71,7 @@ const initialState: AuthState = {
     cards: [],
     top_saver_percentage: 0,
     profile_picture: "",
+    date_joined: "",
   },
 
   accountBalances: {

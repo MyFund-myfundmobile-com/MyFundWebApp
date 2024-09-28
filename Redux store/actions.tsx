@@ -466,38 +466,6 @@ export const fetchAllUsers = (token: string) => {
   };
 };
 
-// New action for fetching users by date range
-export const fetchUsersByDateRange = (token: string, dateRange: string) => {
-  return async (dispatch: Dispatch<AuthActionTypes>) => {
-    try {
-      const response = await axios.get<User[]>(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users-by-date/`,
-        {
-          params: { date_range: dateRange },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log("Fetched users by date range:", response.data);
-        dispatch({
-          type: SET_USERS_BY_DATE_RANGE,
-          payload: response.data,
-        });
-      } else {
-        console.error(
-          "Failed to fetch users by date range, status:",
-          response.status
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching users by date range:", error);
-    }
-  };
-};
-
 export const fetchEmailTemplates = (token: string) => {
   return async (dispatch: Dispatch<AuthActionTypes>) => {
     try {
