@@ -87,6 +87,7 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
       const windowHeight = window.innerHeight;
       const editorHeight = windowHeight * 0.8;
 
+      // Initialize the Unlayer editor
       window.unlayer.init({
         appearance: {
           theme: "dark",
@@ -98,42 +99,62 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
         height: `${editorHeight}px`,
       });
 
-      if (editMode) {
-        const editorElement = document.getElementById("editor");
+      // Register callback to load the design after the editor is fully loaded
+      window.unlayer.registerCallback("editor:ready", function () {
+        console.log("Unlayer editor is ready");
 
-        // Check if editorJson is available first
-        if (editorJson) {
-          console.log("Loading design into Unlayer:", editorJson);
+        if (editMode && editorJson) {
+          try {
+            console.log("Raw Editor JSON:", editorJson); // Log the raw JSON for debugging
+            const trimmedJson = editorJson.trim(); // Trim any leading/trailing whitespace
 
-          window.unlayer.loadDesign(editorJson);
+            // Ensure editorJson is parsed as a valid JSON object
+            const parsedDesign =
+              typeof trimmedJson === "string"
+                ? JSON.parse(trimmedJson)
+                : trimmedJson;
+
+            console.log(
+              "Loading parsed JSON design into editor:",
+              parsedDesign
+            );
+            window.unlayer.loadDesign(parsedDesign);
+          } catch (error) {
+            console.error("Error parsing editorJson or loading design:", error);
+            console.log("Problematic JSON:", editorJson); // Log the problematic JSON
+            // Optionally load a default design or handle the error
+            window.unlayer.loadDesign(); // Load default design if parsing fails
+          }
+        } else if (editMode && editorHtml) {
+          console.log("Falling back to loading HTML content.");
+          window.unlayer.loadDesign(); // Load default design
           window.unlayer.registerCallback("design:loaded", function () {
-            console.log("Design loaded successfully with JSON.");
+            const editorElement = document.getElementById("editor");
+            if (editorElement) {
+              editorElement.innerHTML = editorHtml;
+            }
           });
+        } else {
+          console.log("Creating a new template in the editor.");
+          window.unlayer.loadDesign(); // Load default design
         }
-        // If editorJson is not available, fall back to loading the HTML version
-        else if (editorElement && editorHtml) {
-          console.log(
-            "Loading HTML into editor because JSON is not available."
-          );
-          editorElement.innerHTML = editorHtml;
-        }
-      } else {
-        console.log("Initializing empty design in Unlayer");
-        window.unlayer.addEventListener("design:updated", function () {
-          window.unlayer.exportHtml(function (data: {
-            design: any;
-            html: string;
-          }) {
-            const { design, html } = data;
-            console.log("Design updated, exporting JSON:", design);
-            console.log("Design updated, exporting HTML:", html);
-            setUnlayerHtmlContent(html); // Ensure that `unlayerHtmlContent` is updated
-            designRef.current = html; // Store the HTML in `designRef`
-          });
+      });
+
+      // Add event listener for design updates
+      window.unlayer.addEventListener("design:updated", function () {
+        window.unlayer.exportHtml(function (data: {
+          design: any;
+          html: string;
+        }) {
+          const { design, html } = data;
+          console.log("Design updated, exporting JSON:", design);
+          console.log("Design updated, exporting HTML:", html);
+          setUnlayerHtmlContent(html);
+          designRef.current = html;
         });
-      }
+      });
     }
-  }, [isOpen, isEditorLoaded, editorJson, editorHtml, editMode]);
+  }, [isOpen, isEditorLoaded, editMode, editorJson, editorHtml]);
 
   const handleSaveAndExit = async () => {
     setIsSaving(true);
