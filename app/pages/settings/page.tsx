@@ -62,6 +62,7 @@ const SettingsPage: React.FC = () => {
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
   const [isSavingsGoalModalOpen, setIsSavingsGoalModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -78,6 +79,10 @@ const SettingsPage: React.FC = () => {
       if (location.state.triggerSavingsGoal) {
         handleMenuSelect("Savings Goal");
         setIsSavingsGoalModalOpen(true);
+      }
+      if (location.state.shareModal) {
+        handleMenuSelect("Refer and Earn: N500 EACH");
+        setIsShareModalOpen(true);
       }
     }
   }, [location.state]);
@@ -275,8 +280,14 @@ const SettingsPage: React.FC = () => {
         return <TopSaversSettings />;
       case "FAQs":
         return <FAQs />;
-      case "Refer and Earn: N1000 EACH":
-        return <ReferAndEarnSettings />;
+      case "Refer and Earn: N500 EACH":
+        return (
+          <ReferAndEarnSettings
+            onNavigate={handleMenuSelect}
+            isShareModalOpen={isShareModalOpen}
+            setIsShareModalOpen={setIsShareModalOpen}
+          />
+        );
       case "Message Admin":
         return <MessageAdminSettings />;
       case "Rate MyFund":

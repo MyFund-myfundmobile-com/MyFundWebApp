@@ -36,7 +36,7 @@ const QuickActionsSection = () => {
   };
 
   const handleReferAndEarn = () => {
-    navigate("/App/withdraw", { state: { scrollToBottom: true } });
+    navigate("/App/settings", { state: { shareModal: true } });
   };
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type

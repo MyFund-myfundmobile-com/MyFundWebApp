@@ -31,7 +31,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({
     { label: "Update Transaction PIN", icon: keyOutline },
     { label: "Top Savers", icon: starOutline },
     { label: "FAQs", icon: helpCircleOutline },
-    { label: "Refer and Earn: N1000 EACH", icon: giftOutline },
+    { label: "Refer and Earn: N500 EACH", icon: giftOutline },
     { label: "Message Admin", icon: mailOutline },
     { label: "Rate MyFund", icon: thumbsUpOutline },
     { label: "Log Out", icon: logOutOutline, color: "brown" },

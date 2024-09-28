@@ -16,13 +16,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/Redux store/store";
 import { RootState } from "@/app/Redux store/store";
 import { fetchUserInfo } from "@/app/Redux store/actions";
+import ShareModal from "../../withdraw/modals/shareModal";
 
-const ReferAndEarn: React.FC = () => {
+// Define props interface
+interface ReferAndEarnProps {
+  onNavigate: (menu: string) => void;
+  isShareModalOpen: boolean;
+  setIsShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ReferAndEarn: React.FC<ReferAndEarnProps> = ({
+  onNavigate,
+  isShareModalOpen,
+  setIsShareModalOpen,
+}) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const token = useSelector((state: RootState) => state.auth.token);
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
 
   useEffect(() => {
     if (token) {
@@ -71,7 +87,7 @@ const ReferAndEarn: React.FC = () => {
             <div className="flex justify-center mt-4">
               <PrimaryButton
                 className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
-                onClick={() => console.log("Update Profile Clicked")}
+                onClick={handleShareClick}
                 background="#4C28BC"
                 hoverBackgroundColor="#351265"
                 color="#fff"
@@ -109,6 +125,11 @@ const ReferAndEarn: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
     </Box>
   );
 };

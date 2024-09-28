@@ -1,9 +1,14 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react"; // Added useEffect
 import "tailwindcss/tailwind.css";
 import { IonIcon } from "@ionic/react";
 import { notificationsOutline } from "ionicons/icons";
 import { User } from "../Redux store/types"; // Import User type
+import RecentTransactionsModal from "../pages/home/modals/recentTransactionsModal";
+import { RootState } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserTransactions } from "@/app/Redux store/actions";
+import { AppDispatch } from "@/app/Redux store/store";
 
 interface HeaderProps {
   isSidebarRetracted: boolean;
@@ -16,6 +21,30 @@ const Header: React.FC<HeaderProps> = ({
   activeItem,
   userInfo,
 }) => {
+  // State to manage modal visibility
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { userTransactions } = useSelector((state: RootState) => ({
+    userTransactions: state.auth.userTransactions,
+  }));
+
+  const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserTransactions(token));
+    }
+  }, [dispatch, token]);
+
+  // Function to open the modal
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div
@@ -38,9 +67,17 @@ const Header: React.FC<HeaderProps> = ({
             icon={notificationsOutline}
             className="text-purple1 text-2xl mr-4"
             style={{ color: "#4C28BC" }}
+            onClick={openModal} // Call openModal on click
           />
         </div>
       </div>
+
+      {/* Render the RecentTransactionsModal */}
+      <RecentTransactionsModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        transactions={userTransactions}
+      />
     </div>
   );
 };

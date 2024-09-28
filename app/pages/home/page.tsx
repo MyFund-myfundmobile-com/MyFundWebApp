@@ -233,7 +233,7 @@ const HomePage: React.FC = () => {
               className="mr-2"
               style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}
             >
-              {showBalances ? "HIDE" : "SHOW"} BALANCES{" "}
+              {showBalances ? "HIDE" : "SHOW"}{" "}
             </span>
           )}
           <span
