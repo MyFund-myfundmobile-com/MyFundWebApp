@@ -16,13 +16,14 @@ import {
 } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import WithdrawModal from "@/components/app/modals/withdrawModal";
-import { Img } from "react-image";
+import Image from "next/image";
 import { RootState } from "@/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserInfo } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import TopSaversSection from "@/components/app/topSavers";
 import RecentTransactionsSection from "@/components/app/recentTransactions";
+import ShareModal from "@/components/app/modals/shareModal";
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -47,6 +48,12 @@ const WithdrawPage = () => {
       bottomRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, []);
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
 
   useEffect(() => {
     if (token) {
@@ -138,26 +145,6 @@ const WithdrawPage = () => {
     setDefaultWithdrawFrom(accountType);
     setInitialAmount(amount); // Set the initial amount
     setIsWithdrawModalOpen(true);
-  };
-
-  const handleShareClick = () => {
-    const shareData = {
-      title: "Check out MyFund!",
-      text: "Join me on MyFund and start saving today!",
-      url: "https://myfundmobile.com",
-    };
-
-    if (navigator.share) {
-      navigator
-        .share(shareData)
-        .catch((err) => console.error("Error sharing:", err));
-    } else {
-      // Fallback for desktop: open a new window with sharing options
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        shareData.url
-      )}`;
-      window.open(shareUrl, "_blank", "noopener,noreferrer");
-    }
   };
 
   return (
@@ -319,7 +306,7 @@ const WithdrawPage = () => {
         <div className="md:col-span-6">
           <div className="bg-white p-4 rounded-lg shadow-md h-full">
             <div className="mb-4 mt-3">
-              <Img
+              <Image
                 src="/images/ReferAndEarn500.png"
                 alt="Refer and earn"
                 style={{
@@ -372,6 +359,10 @@ const WithdrawPage = () => {
           </div>
         </div>
       </div>
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
       <WithdrawModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
