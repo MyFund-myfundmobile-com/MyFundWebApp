@@ -113,7 +113,8 @@ const RegisterPage: React.FC = () => {
     !formData.email.includes("@") ||
     !formData.phone ||
     formData.password.length < 8 ||
-    !formData.howDidYouHear;
+    !formData.howDidYouHear ||
+    formData.howDidYouHear === ""; // howDidYouHear should be required
 
   const buttonBackgroundColor = isLoading
     ? "green"
@@ -159,10 +160,9 @@ const RegisterPage: React.FC = () => {
         last_name: formData.lastName,
         email: formData.email,
         phone_number: formData.phone,
-        referral: formData.referral,
+        referral: formData.referral ? formData.referral : "no referral", // Use referral if provided, else empty
         password: formData.password,
-        how_did_you_hear:
-          formData.howDidYouHear === "other" ? "OTHER" : formData.howDidYouHear,
+        how_did_you_hear: formData.howDidYouHear || "", // Ensure howDidYouHear is sent
       };
 
       console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
@@ -237,14 +237,13 @@ const RegisterPage: React.FC = () => {
                     className={`block h-9 w-full border border-black ${
                       name === "referral" ? "bg-gray-200" : "bg-[#fff]"
                     } px-3 py-6 pl-14 text-3x1 text-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4C28BC]`}
-                    required={name !== "referral"}
                     onChange={handleInputChange}
                     value={
                       name === "referral"
                         ? formData.referral
                         : formData[name as keyof typeof formData]
-                    } // Use formData for value binding
-                    disabled={name === "referral" ? isReferralDisabled : false} // Disable only the referral input
+                    }
+                    disabled={name === "referral" ? isReferralDisabled : false}
                   />
                 </div>
               ))}
