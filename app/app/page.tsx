@@ -24,6 +24,7 @@ const HomePage: React.FC = () => {
   const [showRightButton, setShowRightButton] = useState<boolean>(true);
   const [greeting, setGreeting] = useState<string>("");
   const [getGreeting, setGetGreeting] = useState<string>("");
+  const { push: navigate } = useRouter();
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
   const token = useSelector((state: RootState) => state.auth.token);
@@ -47,6 +48,20 @@ const HomePage: React.FC = () => {
       dispatch(updateWealthStage(currentWealthStage));
     }
   }, [dispatch, currentWealthStage]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (
+        userInfo.savings_goal_amount === null ||
+        userInfo.time_period === null ||
+        userInfo.preferred_asset === null
+      ) {
+        navigate("/app/settings?triggerSavingsGoal=true");
+      }
+    }, 3000); // Delay of 3 seconds
+
+    return () => clearTimeout(timeout); // Clear the timeout on component unmount
+  }, [userInfo, navigate]);
 
   const formatAmount = (amount: number) => {
     return amount < 10 ? `0${amount}` : `${amount}`;
@@ -72,8 +87,6 @@ const HomePage: React.FC = () => {
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
   };
-
-  const { push: navigate } = useRouter(); // Move useNavigate here
 
   const handleQuickSaveClick = () => {
     navigate("/app/save?quickSaveModalActive=true");

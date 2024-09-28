@@ -11,7 +11,17 @@ import { updateSavingsGoal } from "@/Redux store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/Redux store/store";
 
-const SavingsGoal: React.FC = () => {
+interface SavingsGoalProps {
+  onNavigate: (menu: string) => void;
+  isSavingsGoalModalOpen: boolean;
+  setIsSavingsGoalModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SavingsGoal: React.FC<SavingsGoalProps> = ({
+  onNavigate,
+  isSavingsGoalModalOpen,
+  setIsSavingsGoalModalOpen,
+}) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [savingsPerMonth, setSavingsPerMonth] = useState(5000); // Example monthly savings amount
   const [amountNum, setAmountNum] = useState(1000000); // Example target amount
@@ -57,7 +67,7 @@ const SavingsGoal: React.FC = () => {
 
   // Function to handle opening the modal
   const handleOpenModal = () => {
-    setIsOpenModal(true);
+    setIsSavingsGoalModalOpen(true);
   };
 
   // Function to handle setting the updated savings goal message
@@ -166,8 +176,8 @@ const SavingsGoal: React.FC = () => {
 
       {/* Modal for updating savings goal */}
       <UpdateSavingsGoalModal
-        isOpen={isOpenModal}
-        onClose={() => setIsOpenModal(false)}
+        isOpen={isSavingsGoalModalOpen}
+        onClose={() => setIsSavingsGoalModalOpen(false)}
         firstname={userInfo?.firstName}
         setUpdatedSavingsGoal={setUpdatedSavingsGoal}
         onUpdate={handleUpdate} // Pass handleUpdate function

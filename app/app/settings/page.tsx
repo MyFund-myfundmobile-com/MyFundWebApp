@@ -61,6 +61,7 @@ const SettingsPage: React.FC = () => {
   const searchParams = useSearchParams();
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
+  const [isSavingsGoalModalOpen, setIsSavingsGoalModalOpen] = useState(false);
 
   useEffect(() => {
     const triggerCardAndBankSettings = searchParams.get(
@@ -68,6 +69,7 @@ const SettingsPage: React.FC = () => {
     );
     const triggerAddCard = searchParams.get("triggerAddCard");
     const triggerAddBank = searchParams.get("triggerAddBank");
+    const triggerSavingsGoal = searchParams.get("triggerSavingsGoal");
 
     console.log(triggerCardAndBankSettings, triggerAddCard, "here!!!");
     if (triggerCardAndBankSettings) {
@@ -77,7 +79,10 @@ const SettingsPage: React.FC = () => {
       setIsAddCardModalOpen(true);
     }
     if (triggerAddBank) {
-      setIsAddCardModalOpen(true);
+      setIsAddBankModalOpen(true);
+    }
+    if (triggerSavingsGoal) {
+      setIsSavingsGoalModalOpen(true);
     }
   }, [searchParams]);
 
@@ -244,7 +249,13 @@ const SettingsPage: React.FC = () => {
   const getSelectedComponent = () => {
     switch (selectedMenu) {
       case "Savings Goal":
-        return <SavingsGoal />;
+        return (
+          <SavingsGoal
+            onNavigate={handleMenuSelect}
+            isSavingsGoalModalOpen={isSavingsGoalModalOpen}
+            setIsSavingsGoalModalOpen={setIsSavingsGoalModalOpen}
+          />
+        );
       case "Card and Bank Settings":
         return <CardSettings onNavigate={handleMenuSelect} />;
       case "Bank Settings":
