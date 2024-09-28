@@ -9,7 +9,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Image from "next/image";
 import TopSaversSection from "@/components/app/topSavers";
-import RecentSignups from "./recentSignups";
+import RecentSignups from "@/components/admin/recentSignups";
 import RecentHouseOwners from "@/components/admin/recentHouseOwners";
 import {
   FormControl,
