@@ -82,6 +82,12 @@ const HomePage: React.FC = () => {
   const handleQuickInvestClick = () => {
     navigate("/app/invest?quickInvestModalActive=true");
   };
+  const handleWithdrawClick = () => {
+    navigate("/app/withdraw?withdrawModalActive=true");
+  };
+  const handleBuyPropertyClick = () => {
+    navigate("/app/buyProperties?buyPropertyModalActive=true");
+  };
 
   useEffect(() => {
     const container = document.getElementById("account-cards-container");
@@ -311,6 +317,7 @@ const HomePage: React.FC = () => {
             }
             buttonText="Buy Properties"
             buttonIcon="home-outline"
+            onButtonClick={handleBuyPropertyClick}
           />
           <AccountCard
             icon="wallet-outline"
@@ -321,6 +328,7 @@ const HomePage: React.FC = () => {
             amount={showBalances ? formattedWallet : "****"}
             buttonText="Withdraw"
             buttonIcon="wallet-outline"
+            onButtonClick={handleWithdrawClick}
           />
         </div>
 

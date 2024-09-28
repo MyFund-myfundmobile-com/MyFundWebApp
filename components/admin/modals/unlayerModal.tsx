@@ -19,12 +19,6 @@ import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import CustomSnackbar from "@/components/snackbar"; // Import Snackbar component for notifications
 
-declare global {
-  interface Window {
-    unlayer: any;
-  }
-}
-
 interface UnlayerModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -37,6 +31,8 @@ interface UnlayerModalProps {
   onSend: () => void;
   title: string;
   editorHtml?: string;
+  editorJson: string;
+  editMode: boolean;
 }
 
 const UnlayerModal: React.FC<UnlayerModalProps> = ({
@@ -46,6 +42,8 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
   onSend,
   title,
   editorHtml,
+  editorJson,
+  editMode,
 }) => {
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const [isConfirmCloseOpen, setIsConfirmCloseOpen] = useState(false);
@@ -60,6 +58,7 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const designRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (isOpen && !isEditorLoaded) {
@@ -69,6 +68,9 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
       script.onload = () => {
         setIsEditorLoaded(true);
         console.log("Script loaded, editor ready");
+      };
+      script.onerror = () => {
+        console.error("Error loading unlayer script");
       };
       document.body.appendChild(script);
 
@@ -81,52 +83,57 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
   console.log("saved design outside useEffectytttttttttt", editorHtml);
 
   useEffect(() => {
-    console.log("Before running useEffect, current values:");
-    console.log("isOpen:", isOpen);
-    console.log("isEditorLoaded:", isEditorLoaded);
-    console.log("editorHtml:", editorHtml);
-    console.log("editorRef.current:", editorRef.current);
-
     if (isOpen && isEditorLoaded && editorRef.current) {
       const windowHeight = window.innerHeight;
       const editorHeight = windowHeight * 0.8;
 
-      console.log("Editor isOpen:", isOpen);
-      console.log("Editor isEditorLoaded:", isEditorLoaded);
-      console.log("Editor editorHtml content:", editorHtml);
+      window.unlayer.init({
+        appearance: {
+          theme: "dark",
+        },
+        id: "editor",
+        projectId: 229117,
+        displayMode: "email",
+        width: "100%",
+        height: `${editorHeight}px`,
+      });
 
-      if (window.unlayer) {
-        window.unlayer.init(
-          {
-            appearance: { theme: "dark" },
-            loader: {
-              html: '<div class="custom-spinner"></div>',
-              css: ".custom-spinner { color: red; }",
-            },
-            id: "editor",
-            projectId: 229117,
-            displayMode: "email",
-            width: "100%",
-            height: `${editorHeight}px`,
-            minHeight: "80vh",
-          },
-          () => {
-            console.log(
-              "Unlayer editor initialized, attempting to load design."
-            );
-            if (editorHtml) {
-              console.log("Loading design into editor:", editorHtml);
-              window.unlayer.loadDesign(JSON.parse(editorHtml)); // Load JSON design
-            } else {
-              console.warn("No editorHtml found to load into editor.");
-            }
-          }
-        );
+      if (editMode) {
+        const editorElement = document.getElementById("editor");
+
+        // Check if editorJson is available first
+        if (editorJson) {
+          console.log("Loading design into Unlayer:", editorJson);
+
+          window.unlayer.loadDesign(editorJson);
+          window.unlayer.registerCallback("design:loaded", function () {
+            console.log("Design loaded successfully with JSON.");
+          });
+        }
+        // If editorJson is not available, fall back to loading the HTML version
+        else if (editorElement && editorHtml) {
+          console.log(
+            "Loading HTML into editor because JSON is not available."
+          );
+          editorElement.innerHTML = editorHtml;
+        }
       } else {
-        console.error("Unlayer is not available.");
+        console.log("Initializing empty design in Unlayer");
+        window.unlayer.addEventListener("design:updated", function () {
+          window.unlayer.exportHtml(function (data: {
+            design: any;
+            html: string;
+          }) {
+            const { design, html } = data;
+            console.log("Design updated, exporting JSON:", design);
+            console.log("Design updated, exporting HTML:", html);
+            setUnlayerHtmlContent(html); // Ensure that `unlayerHtmlContent` is updated
+            designRef.current = html; // Store the HTML in `designRef`
+          });
+        });
       }
     }
-  }, [isOpen, isEditorLoaded, editorHtml]);
+  }, [isOpen, isEditorLoaded, editorJson, editorHtml, editMode]);
 
   const handleSaveAndExit = async () => {
     setIsSaving(true);
@@ -142,14 +149,25 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
     setIsSaving(true);
     try {
       window.unlayer.saveDesign(async (design: any) => {
-        console.log("Design saved:", design); // Log saved design
+        if (!design) {
+          console.error("No design data available");
+
+          throw new Error("No design data available to save");
+
+          console.log("Design saved as JSON:", design);
+        }
 
         const lastUpdate = new Date().toISOString();
 
         window.unlayer.exportHtml(async (data: any) => {
           const { html } = data;
-          console.log("Exported HTML:", html); // Log exported HTML
 
+          if (!html) {
+            console.error("No HTML content generated.");
+            throw new Error("No HTML content generated.");
+          }
+
+          console.log("Exported HTML version:", html); // Log exported HTML
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/save-template/`,
             {
@@ -167,7 +185,6 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
 
           if (response.status === 200) {
             const savedTemplate = response.data;
-            console.log("Template saved successfully:", savedTemplate); // Log saved template
 
             setSnackbarMessage("Template saved successfully!");
             setSnackbarSeverity("success");
@@ -182,7 +199,9 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
 
             onClose(); // Close the modal only after successful save
           } else {
-            throw new Error("Failed to save template");
+            setSnackbarMessage("Failed to save template. Please try again.");
+            setSnackbarSeverity("error");
+            setSnackbarOpen(true);
           }
         });
       });
@@ -193,6 +212,60 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
       setSnackbarOpen(true);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleUpdateDesign = async () => {
+    setIsSaving(true);
+    try {
+      window.unlayer.saveDesign(async (design: any) => {
+        const lastUpdate = new Date().toISOString();
+
+        window.unlayer.exportHtml(async (data: any) => {
+          const { html } = data;
+
+          const response = await axios.put(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/update-template/`,
+            {
+              title: title,
+              designBody: design,
+              designHTML: html,
+              lastUpdate: lastUpdate,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const updatedTemplate = response.data;
+            setSnackbarMessage("Template updated successfully!");
+            setSnackbarSeverity("success");
+            setSnackbarOpen(true);
+
+            // Callback to onSave with both JSON and HTML version
+            onSave({
+              id: updatedTemplate.id,
+              title: title,
+              lastUpdate: lastUpdate,
+              designHTML: html,
+            });
+
+            onClose(); // Close modal after successful update
+          } else {
+            throw new Error("Failed to update template");
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error updating template:", error);
+      setSnackbarMessage("Error updating template. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    } finally {
+      setIsSaving(false); // Ensure isSaving is false after the operation
     }
   };
 
@@ -251,7 +324,7 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
             >
               <PrimaryButton
                 className="rounded-lg px-4 py-2 mr-3 font-product-sans uppercase font-bold text-sm"
-                onClick={handleSendEmail} // Trigger sendEmailModal
+                onClick={editMode ? handleUpdateDesign : handleSaveDesign} // Trigger sendEmailModal
                 background="#4C28BC"
                 hoverBackgroundColor="#351265"
                 color="#fff"
@@ -271,12 +344,14 @@ const UnlayerModal: React.FC<UnlayerModalProps> = ({
                 {isSaving ? (
                   <>
                     <CircularProgress
-                      size={24}
+                      size={20}
                       color="inherit"
                       style={{ marginRight: 8 }}
                     />
-                    Saving...
+                    {editMode ? "Updating..." : "Saving..."}
                   </>
+                ) : editMode ? (
+                  "Update This Design"
                 ) : (
                   "Save This Design"
                 )}

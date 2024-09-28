@@ -196,12 +196,6 @@ const SendEmailModal: React.FC<SendEmailModalProps> = ({
     handleSend(subject, recipients);
   };
 
-  useEffect(() => {
-    if (htmlContent) {
-      console.log("Unlayer HTML Content:", htmlContent); // Add this log
-    }
-  }, [htmlContent]);
-
   const handleSend = async (subject: string, recipients: string[]) => {
     if (!token) {
       setSnackbarMessage(

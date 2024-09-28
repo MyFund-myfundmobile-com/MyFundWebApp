@@ -1,39 +1,26 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  Select,
-  MenuItem,
-  IconButton,
-  CircularProgress,
-} from "@mui/material";
-import CustomSnackbar from "@/components/snackbar";
-import {
-  ArrowUpward,
-  Close,
-  CheckCircleOutline,
-  FileCopyOutlined,
-} from "@mui/icons-material";
-import Modal from "@/components/modal";
-import Confetti from "react-confetti";
-import { SelectChangeEvent } from "@mui/material/Select";
-import {
-  carSportOutline,
-  checkmarkCircleOutline,
-  card as cardIcon,
-} from "ionicons/icons";
-import { IonIcon } from "@ionic/react";
 import { bankOptions } from "@/components/bankOptions";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import Modal from "@/components/modal";
+import CustomSnackbar from "@/components/snackbar";
 import {
   fetchAutoInvestSettings,
   fetchTopSaversData,
 } from "@/Redux store/actions";
-import { AppDispatch } from "@/Redux store/store";
-import { RootState } from "@/Redux store/store";
-import { useNavigate } from "react-router-dom";
+import { AppDispatch, RootState } from "@/Redux store/store";
+import { IonIcon } from "@ionic/react";
+import { ArrowUpward } from "@mui/icons-material";
+import { CircularProgress, MenuItem, Select, TextField } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
+import axios from "axios";
+import {
+  card as cardIcon,
+  carSportOutline,
+  checkmarkCircleOutline,
+} from "ionicons/icons";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Confetti from "react-confetti";
+import { useDispatch, useSelector } from "react-redux";
 
 interface AutoInvestModalProps {
   isOpen: boolean;
@@ -242,38 +229,53 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({
                 </Select>
               </div>
               {/* Select Card Section */}
-              <Select
-                fullWidth
-                variant="outlined"
-                displayEmpty
-                className="mb-4 bg-white"
-                placeholder="Select Card"
-                value={selectedCard || ""}
-                onChange={(event) => {
-                  setSelectedCard(event.target.value);
-                }}
-              >
-                {cards.map((card) => (
-                  <MenuItem
-                    key={card.id}
-                    value={card.id}
+              <div className="mt-4">
+                <p className="text-sm text-gray-600">Using:</p>
+                {cards.length === 0 ? (
+                  <div className="text-center text-gray-600">
+                    No cards added yet...{" "}
+                    <span
+                      className="font-bold font-proxima text-blue-500 cursor-pointer"
+                      onClick={handleNavigateToAddCard}
+                    >
+                      Add Card Now...
+                    </span>
+                  </div>
+                ) : (
+                  <Select
+                    fullWidth
+                    variant="outlined"
+                    displayEmpty
+                    className="mb-4 bg-white"
+                    placeholder="Select Card"
+                    value={selectedCard || ""}
+                    onChange={(event) => {
+                      setSelectedCard(event.target.value);
+                    }}
                   >
-                    <div className="flex items-center">
-                      <IonIcon
-                        icon={cardIcon}
-                        style={{
-                          fontSize: "24px",
-                          color: getBankColor(card.bank_code),
-                        }}
-                      />
-                      <span className="ml-2">
-                        {card.bank_name} -{" "}
-                        {`**** ${card.card_number.slice(-4)}`}
-                      </span>
-                    </div>
-                  </MenuItem>
-                ))}
-              </Select>
+                    {cards.map((card) => (
+                      <MenuItem
+                        key={card.id}
+                        value={card.id}
+                      >
+                        <div className="flex items-center">
+                          <IonIcon
+                            icon={cardIcon}
+                            style={{
+                              fontSize: "24px",
+                              color: getBankColor(card.bank_code),
+                            }}
+                          />
+                          <span className="ml-2">
+                            {card.bank_name} -{" "}
+                            {`**** ${card.card_number.slice(-4)}`}
+                          </span>
+                        </div>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </div>
             </div>
           </div>
         }

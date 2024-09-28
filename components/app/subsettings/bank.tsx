@@ -27,10 +27,17 @@ import {
 import CustomSnackbar from "@/components/snackbar";
 import { bankOptions } from "@/components/bankOptions";
 
-const BankSettings: React.FC<{ onNavigate: (menu: string) => void }> = ({
+interface BankSettingsProps {
+  onNavigate: (menu: string) => void;
+  isAddBankModalOpen: boolean;
+  setIsAddBankModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const BankSettings: React.FC<BankSettingsProps> = ({
   onNavigate,
+  isAddBankModalOpen,
+  setIsAddBankModalOpen,
 }) => {
-  const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);

@@ -60,18 +60,23 @@ const SettingsPage: React.FC = () => {
   const [showFileInput, setShowFileInput] = useState(false); // State to control file input visibility
   const searchParams = useSearchParams();
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
+  const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
 
   useEffect(() => {
     const triggerCardAndBankSettings = searchParams.get(
       "triggerCardAndBankSettings"
     );
     const triggerAddCard = searchParams.get("triggerAddCard");
+    const triggerAddBank = searchParams.get("triggerAddBank");
 
     console.log(triggerCardAndBankSettings, triggerAddCard, "here!!!");
     if (triggerCardAndBankSettings) {
       handleMenuSelect("Card and Bank Settings"); // Adjust according to your menu structure
     }
     if (triggerAddCard) {
+      setIsAddCardModalOpen(true);
+    }
+    if (triggerAddBank) {
       setIsAddCardModalOpen(true);
     }
   }, [searchParams]);
@@ -243,7 +248,11 @@ const SettingsPage: React.FC = () => {
       case "Card and Bank Settings":
         return <CardSettings onNavigate={handleMenuSelect} />;
       case "Bank Settings":
-        return <BankSettings onNavigate={handleMenuSelect} />;
+        <BankSettings
+          onNavigate={handleMenuSelect}
+          isAddBankModalOpen={isAddBankModalOpen}
+          setIsAddBankModalOpen={setIsAddBankModalOpen}
+        />;
       case "Update KYC":
         return <KYCSettings />;
       case "Update Transaction PIN":

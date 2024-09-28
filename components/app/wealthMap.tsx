@@ -190,7 +190,7 @@ const WealthMapSection = () => {
                 style={{ fontSize: "31px", marginRight: 5 }}
               />
             }
-            style={{ width: "95%", letterSpacing: 0.5, marginBottom: -10 }}
+            style={{ width: "95%", letterSpacing: 0.5, marginBottom: 17 }}
           >
             Learn More
           </PrimaryButton>

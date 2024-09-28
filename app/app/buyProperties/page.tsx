@@ -7,6 +7,7 @@ import AccountCard from "@/components/accountCard";
 import { Divider } from "@mui/material";
 import BuyPropertyModal from "@/components/app/modals/buyPropertyModal";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 const properties = [
   {
@@ -68,6 +69,14 @@ const BuyPropertiesPage = () => {
   } | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const success = searchParams.get("buyProperModalActive");
+    if (success === "true") {
+      setIsModalOpen(true);
+    }
+  }, [searchParams]);
 
   const handleOpenModal = (property: {
     image: string;

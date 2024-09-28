@@ -84,9 +84,9 @@ const SavePage = () => {
     const quickSaveActive = searchParams.get("quickSaveModalActive");
     const autosaveActive = searchParams.get("autoSaveModalActive");
     if (quickSaveActive) {
-      setIsQuickSaveModalOpen(true); // Open modal if quickSaveModalActive is true
+      setIsQuickSaveModalOpen(true);
     } else if (autosaveActive) {
-      setIsAutoSaveModalOpen(true); // Open modal if quickSaveModalActive is true
+      setIsAutoSaveModalOpen(true);
     }
   }, [searchParams]);
 
