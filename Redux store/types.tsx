@@ -69,7 +69,7 @@ export interface UserTransaction {
   description: string;
   time: string;
   transaction_id: string;
-  status: string;
+  status: "pending" | "confirmed";
 }
 
 export interface AuthState {

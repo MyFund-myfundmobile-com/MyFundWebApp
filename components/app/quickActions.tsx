@@ -35,7 +35,7 @@ const QuickActionsSection = () => {
   };
 
   const handleReferAndEarn = () => {
-    navigate("/app/withdraw");
+    navigate("/app/withdraw?shareModal=true");
   };
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type

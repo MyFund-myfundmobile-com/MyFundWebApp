@@ -62,6 +62,7 @@ const SettingsPage: React.FC = () => {
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false);
   const [isAddBankModalOpen, setIsAddBankModalOpen] = useState(false);
   const [isSavingsGoalModalOpen, setIsSavingsGoalModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     const triggerCardAndBankSettings = searchParams.get(
@@ -70,6 +71,7 @@ const SettingsPage: React.FC = () => {
     const triggerAddCard = searchParams.get("triggerAddCard");
     const triggerAddBank = searchParams.get("triggerAddBank");
     const triggerSavingsGoal = searchParams.get("triggerSavingsGoal");
+    const triggershareModal = searchParams.get("shareModal");
 
     console.log(triggerCardAndBankSettings, triggerAddCard, "here!!!");
     if (triggerCardAndBankSettings) {
@@ -83,6 +85,10 @@ const SettingsPage: React.FC = () => {
     }
     if (triggerSavingsGoal) {
       setIsSavingsGoalModalOpen(true);
+    }
+    if (triggershareModal) {
+      handleMenuSelect("Refer and Earn: N500 EACH");
+      setIsShareModalOpen(true);
     }
   }, [searchParams]);
 
@@ -273,7 +279,13 @@ const SettingsPage: React.FC = () => {
       case "FAQs":
         return <FAQs />;
       case "Refer and Earn: N500 EACH":
-        return <ReferAndEarnSettings />;
+        return (
+          <ReferAndEarnSettings
+            onNavigate={handleMenuSelect}
+            isShareModalOpen={isShareModalOpen}
+            setIsShareModalOpen={setIsShareModalOpen}
+          />
+        );
       case "Message Admin":
         return <MessageAdminSettings />;
       case "Rate MyFund":
