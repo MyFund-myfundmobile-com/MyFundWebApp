@@ -51,15 +51,15 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center ${
+      className={`fixed inset-0 flex items-center justify-center h-screen ${
         isOpen ? "" : "hidden"
       }`}
       aria-describedby="modal-body"
       aria-busy={isOpen}
       style={{ zIndex }}
     >
-      <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
-        <div className="relative bg-[#F7F5FF] rounded-lg p-8 w-full max-w-md z-50">
+      <div className="absolute inset-0 flex items-center h-full justify-center bg-gray-900 bg-opacity-75">
+        <div className="relative bg-[#F7F5FF] rounded-lg p-8 w-full max-w-md overflow-scroll z-50">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-600"

@@ -81,9 +81,7 @@ const LoginPage = () => {
 
           playLoginSound();
 
-          setTimeout(() => {
-            router.push("/app");
-          }, 1000);
+          router.push("/app");
         } else {
           setOpenSnackbar(true);
           setSnackbarSeverity("error");

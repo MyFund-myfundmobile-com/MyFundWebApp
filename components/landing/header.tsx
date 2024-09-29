@@ -61,14 +61,14 @@ const Header = () => {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
                 20% p.a.
               </span>{" "}
-              on your funds every January and July!
+              every January and July!
               <div className="mt-1" />
               <IoCheckmarkCircle className="inline text-green-500 mr-2" />
               Buy properties and{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-                earn lifetime rent
+                Earn lifetime rent
               </span>{" "}
-              via our hostels.
+              from our hostels.
             </p>
           </div>
 

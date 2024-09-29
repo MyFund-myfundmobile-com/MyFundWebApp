@@ -25,7 +25,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Sidebar: React.FC = () => {
-  const [isRetracted, setIsRetracted] = useState(true);
+  const [isRetracted, setIsRetracted] = useState(window.innerWidth < 768);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const activeItem = usePathname().split("/")[2];
 
@@ -109,16 +109,22 @@ const Sidebar: React.FC = () => {
 
         {[
           { icon: settingsOutline, label: "settings" },
-          { icon: logOutOutline, label: "Log Out", class: "text-red-500" },
+          {
+            icon: logOutOutline,
+            label: "Log Out",
+            class: "text-red-500",
+            onClick: () => setIsLoggingOut(true),
+          },
         ].map((item, index) => (
           <Link
-            href={item.label}
+            href={item.label === "Log Out" ? "#" : item.label}
             key={index}
             className={`capitalize flex items-center mb-3 px-4 py-2 cursor-pointer rounded transition-transform duration-300 ${
               activeItem === item.label
                 ? "bg-[#F7F5FF] text-[#BF73FA] transform scale-105 font-bold"
                 : "hover:bg-opacity-10 hover:bg-gray-300"
             }`}
+            onClick={item.onClick}
           >
             {isLoggingOut && item.label === "Log Out" ? (
               <>

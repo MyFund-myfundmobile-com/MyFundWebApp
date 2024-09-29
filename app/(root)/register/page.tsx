@@ -119,7 +119,8 @@ const RegisterPage: React.FC = () => {
     !formData.email.includes("@") ||
     !formData.phone ||
     formData.password.length < 8 ||
-    !formData.howDidYouHear;
+    !formData.howDidYouHear ||
+    formData.howDidYouHear === "";
 
   const buttonBackgroundColor = isLoading
     ? "green"
@@ -157,10 +158,9 @@ const RegisterPage: React.FC = () => {
         last_name: formData.lastName,
         email: formData.email,
         phone_number: formData.phone,
-        referral: formData.referral,
+        referral: formData.referral ? formData.referral : "no referral",
         password: formData.password,
-        how_did_you_hear:
-          formData.howDidYouHear === "other" ? "OTHER" : formData.howDidYouHear,
+        how_did_you_hear: formData.howDidYouHear || "",
       };
 
       console.log("API Base URL:", process.env.NEXT_PUBLIC_API_BASE_URL);

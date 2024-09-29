@@ -61,7 +61,7 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
         });
 
         // Redirect to login page
-        router.push("login");
+        router.push("/login");
       } else {
         throw new Error("Logout failed");
       }

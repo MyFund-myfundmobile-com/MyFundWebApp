@@ -309,12 +309,9 @@ const WithdrawPage = () => {
               <Image
                 src="/images/ReferAndEarn500.png"
                 alt="Refer and earn"
-                style={{
-                  width: "100%", // Make the image take up the full width of its container
-                  height: "auto", // Maintain the aspect ratio
-                  objectFit: "cover", // Ensure the image covers the container
-                }}
-                className="rounded-lg"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-lg"
               />
 
               <div className="flex justify-center mt-4">

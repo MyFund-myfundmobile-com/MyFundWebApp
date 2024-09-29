@@ -11,13 +11,14 @@ const FAQs: Array<FAQItem> = [
   },
   {
     question: "How do I earn income from MyFund?",
-    answer: "You earn all incomes into your wallet...\n\n" +
+    answer:
+      "You earn all incomes into your wallet...\n\n" +
       "- 13% p.a. on Savings and 20% p.a. on Sponsorship Investments every January and July.\n" +
       "- lifetime rental income on properties acquired.\n" +
       "- 5% commission on sold properties you refer.\n" +
       "- bonuses on referrals, and\n" +
-      "- as one of the top savers of the month."
-  },  
+      "- as one of the top savers of the month.",
+  },
   {
     question: "What is the minimum amount for monthly savings?",
     answer:
@@ -37,7 +38,7 @@ const FAQs: Array<FAQItem> = [
   {
     question: "What is the charge on withdrawals?",
     answer:
-      "Withdrawal from Wallet to any account is free. Immediate withdrawal from Savings and Sponsorship Investment, however, attracts a break fee of 2.5% and 5% respectively. If however you don't want to be charged, the waiting period is 90 days.",
+      "Withdrawal from Wallet to any account is free. Immediate withdrawal from Savings and Sponsorship Investment, however, attracts a break fee of 10% and 15% respectively. If however you don't want to be charged, the waiting period is 30 days and 90 days respectively.",
   },
   {
     question: "How much do I get on Referrals?",
@@ -66,12 +67,12 @@ const FAQs: Array<FAQItem> = [
     answer:
       "Withdrawals take time because the funds are usually tied up in investments per time. Immediate withdrawal, however, attracts a break fee of 10% of the amount requested if SAVINGS, 15% if from INVESTMENTS and 0% if from WALLET...to be processed for you without the waiting period.",
   },
-    {
+  {
     question: "What does Fractional Investment mean?",
     answer:
       "This is the ownership of a fraction of a real estate investment. This is achieved when members' funds are pooled together towards a big deal. When the property is rented out or sold, members get returns at the end of the year in their Wallets based on what they have in investments.",
   },
-  
+
   {
     question: "What percentage is charged on my rent when I buy properties",
     answer:

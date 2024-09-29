@@ -149,10 +149,10 @@ const TopSaversSection: React.FC = () => {
           </div>
         )}
 
-        {/* <Subtitle style={{ marginTop: 10, marginBottom: 1, fontSize: 13 }}>
-            My Position
-          </Subtitle> */}
-        {/* <Title style={{ color: "silver", marginTop: 0, fontSize: 70 }}>
+        <Subtitle style={{ marginTop: 10, marginBottom: 1, fontSize: 13 }}>
+          My Position
+        </Subtitle>
+        <Title style={{ color: "silver", marginTop: 0, fontSize: 70 }}>
           {userPosition === -1 ? (
             <span className="ml-5">-</span>
           ) : (
@@ -166,7 +166,7 @@ const TopSaversSection: React.FC = () => {
                 : "TH"
             }`
           )}
-        </Title> */}
+        </Title>
       </div>
       <Divider
         className="my-4 bg-silver mb-8"
@@ -189,7 +189,11 @@ const TopSaversSection: React.FC = () => {
                 {index + 1}
               </span>
               <Image
-                src={`/images/Profile1.png`}
+                src={
+                  !saver.profilePicture || saver.profilePicture == "nan"
+                    ? `/images/Profile1.png`
+                    : saver.profilePicture
+                }
                 alt={saver.firstName}
                 width={index === 0 ? 50 : 40}
                 height={index === 0 ? 50 : 40}
@@ -268,7 +272,8 @@ const TopSaversSection: React.FC = () => {
                         {index + 1}
                       </span>
                       <Image
-                        src={saver.profile_picture || `/images/Profile1.png`}
+                        src={`/images/Profile1.png`}
+                        // src={saver.profile_picture || `/images/Profile1.png`}
                         alt={saver.first_name}
                         width={index === 0 ? 50 : 40}
                         height={index === 0 ? 50 : 40}

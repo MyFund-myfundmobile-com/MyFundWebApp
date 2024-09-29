@@ -11,7 +11,7 @@ export default function AppLayout({
       <Sidebar />
       <div className="flex-grow flex flex-col transition-all duration-300 w-full overflow-x-scroll">
         <Header />
-        <main className="flex-grow md:pt-3 pt-5 bg-gray-100 overflow-y-auto w-full">
+        <main className="flex-grow md:pt-3 pt-5 bg-gray-100 overflow-y-auto w-full px-14">
           {children}
         </main>
       </div>
