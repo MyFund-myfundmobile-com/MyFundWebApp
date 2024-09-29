@@ -51,11 +51,7 @@ const NavBar = () => {
     };
 
     handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [windowWidth]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
