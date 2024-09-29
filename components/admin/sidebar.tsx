@@ -28,6 +28,7 @@ import useWindowWidth from "@/lib/useWindowWidth";
 const Sidebar: React.FC = () => {
   const windowWidth = useWindowWidth();
 
+  console.log(windowWidth);
   const [isRetracted, setIsRetracted] = useState(windowWidth < 768);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const activeItem = usePathname().split("/")[2];
