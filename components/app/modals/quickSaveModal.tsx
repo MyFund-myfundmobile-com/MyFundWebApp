@@ -29,6 +29,7 @@ import OTPModal from "./otpModal";
 import { fetchUserTransactions } from "@/Redux store/actions";
 import { Img } from "react-image";
 import { useRouter } from "next/navigation";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface QuickSaveModalProps {
   isOpen: boolean;
@@ -43,6 +44,7 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
   initialAmount,
   className,
 }) => {
+  const windowWidth = useWindowWidth();
   const [amount, setAmount] = useState(initialAmount);
   const [selectedOption, setSelectedOption] = useState("Bank Transfer");
   const [isSending, setIsSending] = useState(false);
@@ -470,7 +472,7 @@ const QuickSaveModal: React.FC<QuickSaveModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

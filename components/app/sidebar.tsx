@@ -18,9 +18,11 @@ import LogoutModal from "@/components/app/modals/logoutModals";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const Sidebar: React.FC = () => {
-  const [isRetracted, setIsRetracted] = useState(window.innerWidth < 768);
+  const windowWidth = useWindowWidth();
+  const [isRetracted, setIsRetracted] = useState(windowWidth < 768);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const activeItem = usePathname().split("/")[2];
 

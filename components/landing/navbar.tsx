@@ -2,13 +2,15 @@
 import { Img } from "react-image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { PrimaryButton } from "@/components/Buttons/MainButtons"
+import { PrimaryButton } from "@/components/Buttons/MainButtons";
 import { CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import { arrowDownOutline, arrowBack } from "ionicons/icons";
 import MenuIcon from "@mui/icons-material/Menu";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const NavBar = () => {
+  const windowWidth = useWindowWidth();
   const [isOpen, setIsOpen] = useState(true);
   const [isHostelsHovered, setIsHostelsHovered] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -40,7 +42,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
+      if (windowWidth >= 1024) {
         setIsOpen(true);
         setIsSidebarOpen(false);
       } else {
@@ -121,7 +123,10 @@ const NavBar = () => {
                         style={{ marginRight: 5, marginBottom: -2 }}
                       />
                       Downloading...
-                      <CircularProgress size={20} color="inherit" />
+                      <CircularProgress
+                        size={20}
+                        color="inherit"
+                      />
                     </div>
                   ) : (
                     <a
@@ -187,7 +192,10 @@ const NavBar = () => {
                 hoverBorderColor="#351265"
                 startIcon={
                   isLoggingIn ? (
-                    <CircularProgress size={20} color="inherit" />
+                    <CircularProgress
+                      size={20}
+                      color="inherit"
+                    />
                   ) : (
                     <svg
                       fill="currentColor"
@@ -272,7 +280,10 @@ const NavBar = () => {
           >
             <IonIcon icon={arrowBack} />
           </button>
-          <Link href="/" aria-label="home">
+          <Link
+            href="/"
+            aria-label="home"
+          >
             <Img
               src="/images/logo.png"
               loading="lazy"
@@ -320,7 +331,10 @@ const NavBar = () => {
           >
             FAQs
           </Link>
-          <Link href="/login" onClick={toggleSidebar}>
+          <Link
+            href="/login"
+            onClick={toggleSidebar}
+          >
             <PrimaryButton
               className="text-center w-full rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400"
               onClick={handleLoginClick}
@@ -335,7 +349,10 @@ const NavBar = () => {
               style={{ marginTop: 15 }}
               startIcon={
                 isLoggingIn ? (
-                  <CircularProgress size={20} color="inherit" />
+                  <CircularProgress
+                    size={20}
+                    color="inherit"
+                  />
                 ) : (
                   <svg
                     fill="currentColor"
@@ -352,7 +369,10 @@ const NavBar = () => {
               {isLoggingIn ? "LOG IN..." : "LOG IN"}
             </PrimaryButton>
           </Link>
-          <Link href="/register" onClick={toggleSidebar}>
+          <Link
+            href="/register"
+            onClick={toggleSidebar}
+          >
             <PrimaryButton
               className="text-center w-full rounded-lg px-4 py-3 font-product-sans font-bold text-sm text-gray-400"
               onClick={handleCreateAccountClick}

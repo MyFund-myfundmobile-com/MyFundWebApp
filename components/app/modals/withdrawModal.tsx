@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Section from "@/components/section";
 import CustomSnackbar from "@/components/snackbar";
 import axios, { AxiosError } from "axios";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -54,6 +55,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   onClose,
   defaultWithdrawFrom,
 }) => {
+  const windowWidth = useWindowWidth();
   const [amount, setAmount] = useState<string>("");
   const [userFirstName, setUserFirstName] = useState<string>("");
   const [userLastName, setUserLastName] = useState(""); // Fix typo here
@@ -992,7 +994,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

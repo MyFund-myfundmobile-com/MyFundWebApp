@@ -40,8 +40,10 @@ import { fetchUserInfo, updateWealthStage } from "@/Redux store/actions";
 import axios from "axios";
 import CustomSnackbar from "@/components/snackbar";
 import { useSearchParams } from "next/navigation";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const SettingsPage: React.FC = () => {
+  const windowWidth = useWindowWidth();
   const [selectedMenu, setSelectedMenu] = useState<string | null>(
     "Savings Goal"
   );
@@ -155,7 +157,7 @@ const SettingsPage: React.FC = () => {
       setIsLoggingOut(true);
     } else {
       setSelectedMenu(menu);
-      if (settingsRef.current && window.innerWidth <= 768) {
+      if (settingsRef.current && windowWidth <= 768) {
         // Assuming 768px is the mobile breakpoint
         settingsRef.current.scrollIntoView({ behavior: "smooth" });
       }

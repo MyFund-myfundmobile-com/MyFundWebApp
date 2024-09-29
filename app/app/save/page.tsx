@@ -23,8 +23,10 @@ import {
 } from "@/Redux store/actions"; // Import action
 import DeactivateAutoSaveModal from "@/components/app/modals/deactivateAutoSaveModal";
 import { useSearchParams } from "next/navigation";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const SavePage = () => {
+  const windowWidth = useWindowWidth();
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(true);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
@@ -92,7 +94,7 @@ const SavePage = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 900) {
+      if (windowWidth < 900) {
         setIsSidebarRetracted(true);
       } else {
         setIsSidebarRetracted(false);
@@ -289,7 +291,7 @@ const SavePage = () => {
           </Subtitle>
         </div>
         <div className="ml-auto flex items-center">
-          {typeof window !== "undefined" && window.innerWidth >= 900 && (
+          {typeof window !== "undefined" && windowWidth >= 900 && (
             <span
               className="mr-2"
               style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}

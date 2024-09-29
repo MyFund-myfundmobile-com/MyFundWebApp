@@ -7,6 +7,7 @@ import WealthMapSection from "@/components/app/wealthMap";
 import Section from "@/components/section";
 import Subtitle from "@/components/subtitle";
 import Title from "@/components/title";
+import useWindowWidth from "@/lib/useWindowWidth";
 import { fetchUserInfo, updateWealthStage } from "@/Redux store/actions";
 import { AppDispatch, RootState } from "@/Redux store/store";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -18,6 +19,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 
 const HomePage: React.FC = () => {
+  const windowWidth = useWindowWidth();
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
@@ -225,7 +227,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="ml-auto flex items-center">
-          {typeof window !== "undefined" && window.innerWidth >= 900 && (
+          {typeof window !== "undefined" && windowWidth >= 900 && (
             <span
               className="mr-2"
               style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}

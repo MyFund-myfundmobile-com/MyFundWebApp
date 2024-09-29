@@ -29,8 +29,10 @@ import { fetchUserInfo } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import { closeCircleOutline, attachOutline, helpOutline } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react"; // or the correct path if using a custom component
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const MessageAdmin: React.FC = () => {
+  const windowWidth = useWindowWidth();
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -269,7 +271,7 @@ const MessageAdmin: React.FC = () => {
         {showConfetti && (
           <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           </div>

@@ -2,6 +2,7 @@
 import { bankOptions } from "@/components/bankOptions";
 import Modal from "@/components/modal";
 import CustomSnackbar from "@/components/snackbar";
+import useWindowWidth from "@/lib/useWindowWidth";
 import {
   fetchAutoInvestSettings,
   fetchTopSaversData,
@@ -31,6 +32,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const windowWidth = useWindowWidth();
   const [amount, setAmount] = useState("");
   const [selectedFrequency, setSelectedFrequency] = useState("daily");
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
@@ -335,7 +337,7 @@ const AutoInvestModal: React.FC<AutoInvestModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

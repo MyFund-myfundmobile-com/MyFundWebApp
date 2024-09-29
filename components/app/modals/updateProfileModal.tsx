@@ -10,6 +10,7 @@ import { RootState } from "@/Redux store/store";
 import { updateUserProfile } from "@/Redux store/actions";
 import CustomSnackbar from "@/components/snackbar";
 import Confetti from "react-confetti";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface UpdateProfileModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const windowWidth = useWindowWidth();
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.token);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -168,7 +170,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
         {showConfetti && (
           <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           </div>

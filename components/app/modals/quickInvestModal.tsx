@@ -32,6 +32,7 @@ import CustomSnackbar from "@/components/snackbar";
 import { checkmarkCircleOutline, card as cardIcon } from "ionicons/icons";
 import axios from "axios";
 import OTPModal from "../modals/autoInvestModal";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface QuickInvestModalProps {
   isOpen: boolean;
@@ -44,6 +45,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
   onClose,
   initialAmount,
 }) => {
+  const windowWidth = useWindowWidth();
   const [amount, setAmount] = useState(initialAmount);
   const [selectedOption, setSelectedOption] = useState("Bank Transfer");
   const [isSending, setIsSending] = useState(false);
@@ -551,7 +553,7 @@ const QuickInvestModal: React.FC<QuickInvestModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

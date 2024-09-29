@@ -22,8 +22,11 @@ import { fetchAutoInvestSettings, fetchUserInfo } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
 import TopSaversSection from "@/components/app/topSavers";
 import DeactivateAutoInvestModal from "@/components/app/modals/deactivareAutoInvest";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const InvestPage = () => {
+  const windowWidth = useWindowWidth();
+
   const [isSidebarRetracted, setIsSidebarRetracted] = useState<boolean>(true);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
@@ -123,7 +126,7 @@ const InvestPage = () => {
   };
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 900) {
+      if (windowWidth < 900) {
         setIsSidebarRetracted(true);
       } else {
         setIsSidebarRetracted(false);

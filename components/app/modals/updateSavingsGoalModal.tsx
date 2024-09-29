@@ -16,6 +16,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/Redux store/store";
 import { fetchUserInfo } from "@/Redux store/actions";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface UpdateSavingsGoalModalProps {
   isOpen: boolean;
@@ -36,6 +37,8 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({
   setUpdatedSavingsGoal,
   onUpdate,
 }) => {
+  const windowWidth = useWindowWidth();
+
   const [preferredAsset, setPreferredAsset] = useState(
     "Real Estate (MyFund Hostels)"
   );
@@ -311,7 +314,7 @@ const UpdateSavingsGoalModal: React.FC<UpdateSavingsGoalModalProps> = ({
       {/* Confetti */}
       {showConfetti && (
         <Confetti
-          width={window.innerWidth}
+          width={windowWidth}
           height={window.innerHeight}
         />
       )}

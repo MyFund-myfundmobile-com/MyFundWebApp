@@ -1,18 +1,19 @@
 "use client";
-import React, { useState } from 'react';
-import Title from '@/components/title';
-import Subtitle from '@/components/subtitle';
-import { IonIcon } from '@ionic/react';
-import { shieldCheckmarkOutline } from 'ionicons/icons';
-import { TextField, MenuItem, Box, CircularProgress } from '@mui/material';
-import { CheckCircleOutline } from '@mui/icons-material';
-import { PrimaryButton } from '@/components/Buttons/MainButtons';
-import { checkmarkCircleOutline } from 'ionicons/icons';
-import Modal from '@/components/modal';
-import Confetti from 'react-confetti';
-
+import React, { useState } from "react";
+import Title from "@/components/title";
+import Subtitle from "@/components/subtitle";
+import { IonIcon } from "@ionic/react";
+import { shieldCheckmarkOutline } from "ionicons/icons";
+import { TextField, MenuItem, Box, CircularProgress } from "@mui/material";
+import { CheckCircleOutline } from "@mui/icons-material";
+import { PrimaryButton } from "@/components/Buttons/MainButtons";
+import { checkmarkCircleOutline } from "ionicons/icons";
+import Modal from "@/components/modal";
+import Confetti from "react-confetti";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const KYCSettings: React.FC = () => {
+  const windowWidth = useWindowWidth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -36,7 +37,6 @@ const KYCSettings: React.FC = () => {
 
     setShowConfetti(true); // Activate confetti on success
     setTimeout(() => setShowConfetti(false), 3000); // Hide confetti after 3 seconds
-
   };
 
   const handleCloseModal = () => {
@@ -44,27 +44,58 @@ const KYCSettings: React.FC = () => {
   };
 
   return (
-    <Box className="px-6 animate-floatIn max-w-full bg-[#F7F5FF]" style={{ padding: '36px', borderRadius: '8px', backgroundColor: 'white' }}>
+    <Box
+      className="px-6 animate-floatIn max-w-full bg-[#F7F5FF]"
+      style={{ padding: "36px", borderRadius: "8px", backgroundColor: "white" }}
+    >
       <div className="flex justify-between items-center">
         <div>
           <Title style={{ marginTop: -15 }}>Update KYC</Title>
-          <Subtitle style={{ marginTop: -5 }}>Update your details for added account security.</Subtitle>
+          <Subtitle style={{ marginTop: -5 }}>
+            Update your details for added account security.
+          </Subtitle>
         </div>
         <div className="flex items-center">
-          <p className="text-green-500 font-karla text-lg mr-2">Updated</p> {/* Replace with dynamic status */}
-          <CheckCircleOutline className="text-green-500" style={{ fontSize: '32px' }} />
+          <p className="text-green-500 font-karla text-lg mr-2">Updated</p>{" "}
+          {/* Replace with dynamic status */}
+          <CheckCircleOutline
+            className="text-green-500"
+            style={{ fontSize: "32px" }}
+          />
         </div>
       </div>
 
-      <div className="rounded-lg p-4 mt-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden" style={{ backgroundColor: '#DCD1FF', color: 'black', fontFamily: 'Karla', fontSize: 14, marginBottom: '16px' }}>
-        <IonIcon icon={shieldCheckmarkOutline} className="text-green-500 text-purple1 mr-4 self-center" style={{ fontSize: '48px' }} />
-        <p className="overflow-auto" style={{ wordWrap: 'break-word' }}>
-          <span className="font-bold text-purple1">KYC Guidelines:</span> KYC (Know Your Customer) guidelines by CBN are meant to prevent your account from being used, intentionally or unintentionally, by criminal elements for money laundering activities.
+      <div
+        className="rounded-lg p-4 mt-4 sm:p-6 grid grid-cols-[auto,1fr] items-start overflow-hidden"
+        style={{
+          backgroundColor: "#DCD1FF",
+          color: "black",
+          fontFamily: "Karla",
+          fontSize: 14,
+          marginBottom: "16px",
+        }}
+      >
+        <IonIcon
+          icon={shieldCheckmarkOutline}
+          className="text-green-500 text-purple1 mr-4 self-center"
+          style={{ fontSize: "48px" }}
+        />
+        <p
+          className="overflow-auto"
+          style={{ wordWrap: "break-word" }}
+        >
+          <span className="font-bold text-purple1">KYC Guidelines:</span> KYC
+          (Know Your Customer) guidelines by CBN are meant to prevent your
+          account from being used, intentionally or unintentionally, by criminal
+          elements for money laundering activities.
         </p>
       </div>
 
       {/* KYC Form */}
-      <form onSubmit={handleSubmit} className="mb-4">
+      <form
+        onSubmit={handleSubmit}
+        className="mb-4"
+      >
         {/* Form Fields */}
         <Box className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <TextField
@@ -73,7 +104,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           >
             <MenuItem value="Male">Male</MenuItem>
             <MenuItem value="Female">Female</MenuItem>
@@ -87,7 +118,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           >
             <MenuItem value="Single">Single</MenuItem>
             <MenuItem value="Married">Married</MenuItem>
@@ -104,7 +135,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           >
             <MenuItem value="Unemployed">Unemployed</MenuItem>
             <MenuItem value="Employed">Employed</MenuItem>
@@ -121,16 +152,22 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
-            >
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
+          >
             <MenuItem value="Less than N200000">Less than N200000</MenuItem>
             <MenuItem value="N200001 - N500000">N200001 - N500000</MenuItem>
             <MenuItem value="N500001 - N1million">N500001 - N1million</MenuItem>
-            <MenuItem value="N1million - N5million">N1million - N5million</MenuItem>
-            <MenuItem value="N5million - N10million">N5million - N10million</MenuItem>
-            <MenuItem value="N10million - N20million">N10million - N20million</MenuItem>
+            <MenuItem value="N1million - N5million">
+              N1million - N5million
+            </MenuItem>
+            <MenuItem value="N5million - N10million">
+              N5million - N10million
+            </MenuItem>
+            <MenuItem value="N10million - N20million">
+              N10million - N20million
+            </MenuItem>
             <MenuItem value="Above N20million">Above N20million</MenuItem>
-            </TextField>
+          </TextField>
 
           <TextField
             label="Date of Birth"
@@ -139,7 +176,7 @@ const KYCSettings: React.FC = () => {
             margin="dense"
             variant="outlined"
             InputLabelProps={{ shrink: true }}
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           />
 
           <TextField
@@ -147,7 +184,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           />
 
           <TextField
@@ -155,7 +192,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           />
 
           <TextField
@@ -164,19 +201,33 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           >
-            <MenuItem value="International Passport">International Passport</MenuItem>
+            <MenuItem value="International Passport">
+              International Passport
+            </MenuItem>
             <MenuItem value="Driver's License">Driver&apos;s License</MenuItem>
-            <MenuItem value="National ID Card (NIN)">National ID Card (NIN)</MenuItem>
-            <MenuItem value="Permanent Voter's Card">Permanent Voter&apos;s Card</MenuItem>
-            <MenuItem value="Bank Verification Number (BVN)">Bank Verification Number (BVN)</MenuItem>
+            <MenuItem value="National ID Card (NIN)">
+              National ID Card (NIN)
+            </MenuItem>
+            <MenuItem value="Permanent Voter's Card">
+              Permanent Voter&apos;s Card
+            </MenuItem>
+            <MenuItem value="Bank Verification Number (BVN)">
+              Bank Verification Number (BVN)
+            </MenuItem>
             <MenuItem value="Others">Others</MenuItem>
           </TextField>
 
           <div>
-            <div className="border border-dashed border-purple1 p-4 mt-1 rounded-lg" style={{ backgroundColor: 'white' }}>
-              <input type="file" onChange={handleFileChange} />
+            <div
+              className="border border-dashed border-purple1 p-4 mt-1 rounded-lg"
+              style={{ backgroundColor: "white" }}
+            >
+              <input
+                type="file"
+                onChange={handleFileChange}
+              />
               {selectedFile && <p>{selectedFile.name}</p>}
             </div>
           </div>
@@ -186,7 +237,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           />
 
           <TextField
@@ -195,7 +246,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           >
             <MenuItem value="Brother">Brother</MenuItem>
             <MenuItem value="Sister">Sister</MenuItem>
@@ -215,7 +266,7 @@ const KYCSettings: React.FC = () => {
             fullWidth
             margin="dense"
             variant="outlined"
-            InputProps={{ style: { backgroundColor: '#F7F5FF' } }}
+            InputProps={{ style: { backgroundColor: "#F7F5FF" } }}
           />
         </Box>
 
@@ -229,18 +280,31 @@ const KYCSettings: React.FC = () => {
             color="#fff"
             hoverColor="#fff"
             startIcon={
-              isUpdating ? <CircularProgress size={24} style={{ color: '#F7F5FF', marginRight: 8 }} /> : 
-              <IonIcon icon={shieldCheckmarkOutline} style={{ fontSize: '31px', marginRight: 5 }} />
+              isUpdating ? (
+                <CircularProgress
+                  size={24}
+                  style={{ color: "#F7F5FF", marginRight: 8 }}
+                />
+              ) : (
+                <IonIcon
+                  icon={shieldCheckmarkOutline}
+                  style={{ fontSize: "31px", marginRight: 5 }}
+                />
+              )
             }
-            style={{ width: '95%', letterSpacing: 0.5, marginBottom: -10, marginTop: 5}}
+            style={{
+              width: "95%",
+              letterSpacing: 0.5,
+              marginBottom: -10,
+              marginTop: 5,
+            }}
           >
-            {isUpdating ? 'Updating KYC...' : 'UPDATE KYC'}
+            {isUpdating ? "Updating KYC..." : "UPDATE KYC"}
           </PrimaryButton>
         </Box>
       </form>
 
-
-    <Modal
+      <Modal
         isOpen={showModal}
         onClose={handleCloseModal}
         header="KYC Updated Successfully!"
@@ -255,13 +319,12 @@ const KYCSettings: React.FC = () => {
         {showConfetti && (
           <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           </div>
         )}
-        </Modal>
-    
+      </Modal>
     </Box>
   );
 };

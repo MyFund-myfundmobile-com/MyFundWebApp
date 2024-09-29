@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux store/store";
 
 import { useRouter, usePathname } from "next/navigation";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 const calculateRate = (newUsersToday: number, newUsersPreviousDay: number) => {
   if (newUsersPreviousDay === 0) return "+100%"; // If there were no users yesterday.
@@ -47,6 +48,7 @@ const calculateRateForPeriod = (
 };
 
 const HomePage: React.FC = () => {
+  const windowWidth = useWindowWidth();
   const [rate, setRate] = useState<string>("");
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showBalances, setShowBalances] = useState<boolean>(true);
@@ -323,7 +325,7 @@ const HomePage: React.FC = () => {
           </Subtitle>
         </div>
         <div className="ml-auto flex items-center">
-          {typeof window !== "undefined" && window.innerWidth >= 900 && (
+          {typeof window !== "undefined" && windowWidth >= 900 && (
             <span
               className="mr-2"
               style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}

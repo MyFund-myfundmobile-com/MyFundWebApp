@@ -19,6 +19,7 @@ import {
   updateAutoInvestSettings,
 } from "@/Redux store/actions";
 import axios from "axios";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface DeactivateAutoInvestModalProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ const DeactivateAutoInvestModal: React.FC<DeactivateAutoInvestModalProps> = ({
   onClose,
   onDeactivate,
 }) => {
+  const windowWidth = useWindowWidth();
   const [processing, setProcessing] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -158,7 +160,7 @@ const DeactivateAutoInvestModal: React.FC<DeactivateAutoInvestModalProps> = ({
 
       {showConfetti && (
         <Confetti
-          width={window.innerWidth}
+          width={windowWidth}
           height={window.innerHeight}
         />
       )}
@@ -197,7 +199,7 @@ const DeactivateAutoInvestModal: React.FC<DeactivateAutoInvestModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

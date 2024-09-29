@@ -4,6 +4,7 @@ import { IonIcon } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { PrimaryButton } from "@/components/Buttons/MainButtons";
 import Confetti from "react-confetti";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface ModalProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ const Modal: React.FC<ModalProps> = ({
   buttonBackgroundColor = "#4C28BC",
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
+  const windowWidth = useWindowWidth();
 
   useEffect(() => {
     if (confettiAnimation) {
@@ -114,7 +116,7 @@ const Modal: React.FC<ModalProps> = ({
           {showConfetti && (
             <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
               <Confetti
-                width={window.innerWidth}
+                width={windowWidth}
                 height={window.innerHeight}
               />
             </div>

@@ -29,6 +29,7 @@ import { IonIcon } from "@ionic/react";
 import { bankOptions } from "@/components/bankOptions";
 import Confetti from "react-confetti";
 import { useRouter } from "next/navigation";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface AutoSaveModalProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
   onClose,
   className,
 }) => {
+  const windowWidth = useWindowWidth();
   const [amount, setAmount] = useState("");
   const [frequency, setFrequency] = useState("daily");
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
@@ -322,7 +324,7 @@ const AutoSaveModal: React.FC<AutoSaveModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}

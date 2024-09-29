@@ -19,6 +19,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { IonIcon } from "@ionic/react";
 import { checkmarkCircleOutline } from "ionicons/icons";
 import { Img } from "react-image";
+import useWindowWidth from "@/lib/useWindowWidth";
 
 interface BuyPropertyModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ const BuyPropertyModal: React.FC<BuyPropertyModalProps> = ({
   onClose,
   property,
 }) => {
+  const windowWidth = useWindowWidth();
   const [units, setUnits] = useState(1);
   const [selectedOption, setSelectedOption] = useState("Bank Transfer");
   const [isSending, setIsSending] = useState(false);
@@ -277,7 +279,7 @@ const BuyPropertyModal: React.FC<BuyPropertyModalProps> = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center pointer-events-none z-40">
           {showConfetti && (
             <Confetti
-              width={window.innerWidth}
+              width={windowWidth}
               height={window.innerHeight}
             />
           )}
