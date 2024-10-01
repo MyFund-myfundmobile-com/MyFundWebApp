@@ -97,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div
       className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${
-        isRetracted ? "w-12" : "w-64"
+        isRetracted ? "w-64 -left-64" : "w-64 left-0"
       } z-50`}
     >
       <div>

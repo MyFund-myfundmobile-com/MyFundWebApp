@@ -9,19 +9,21 @@ import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserTransactions } from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
+import { menuOutline } from "ionicons/icons";
 
 interface HeaderProps {
   isSidebarRetracted: boolean;
   activeItem: string;
-  userInfo: User | null; // Add userInfo prop
+  userInfo: User | null;
+  handleToggleSidebar: () => void; // Add handleToggleSidebar prop
 }
 
 const Header: React.FC<HeaderProps> = ({
   isSidebarRetracted,
   activeItem,
   userInfo,
+  handleToggleSidebar, // Destructure the new prop
 }) => {
-  // State to manage modal visibility
   const [isModalOpen, setModalOpen] = useState(false);
   const { userTransactions } = useSelector((state: RootState) => ({
     userTransactions: state.auth.userTransactions,
@@ -36,12 +38,10 @@ const Header: React.FC<HeaderProps> = ({
     }
   }, [dispatch, token]);
 
-  // Function to open the modal
   const openModal = () => {
     setModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -52,6 +52,14 @@ const Header: React.FC<HeaderProps> = ({
       style={{ paddingLeft: isSidebarRetracted ? "4rem" : "20rem" }}
     >
       <div className="flex justify-between items-center p-4">
+        {isSidebarRetracted && (
+          <IonIcon
+            icon={menuOutline}
+            className="text-purple1 text-2xl cursor-pointer"
+            style={{ marginLeft: -50 }}
+            onClick={handleToggleSidebar} // Call the prop function to toggle sidebar
+          />
+        )}
         <div
           className="text-center text-sm font-nexa flex-grow uppercase"
           style={{
@@ -60,19 +68,18 @@ const Header: React.FC<HeaderProps> = ({
             color: "lightgrey",
           }}
         >
-          {activeItem} {/* Display the active item */}
+          {activeItem}
         </div>
         <div className="absolute right-4 top-4">
           <IonIcon
             icon={notificationsOutline}
             className="text-purple1 text-2xl mr-4"
             style={{ color: "#4C28BC" }}
-            onClick={openModal} // Call openModal on click
+            onClick={openModal}
           />
         </div>
       </div>
 
-      {/* Render the RecentTransactionsModal */}
       <RecentTransactionsModal
         isOpen={isModalOpen}
         onClose={closeModal}

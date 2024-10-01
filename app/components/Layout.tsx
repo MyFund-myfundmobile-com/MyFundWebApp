@@ -54,11 +54,12 @@ const Layout = () => {
           <Header
             isSidebarRetracted={isSidebarRetracted}
             activeItem={activeItem}
-            userInfo={userInfo} // Pass user info to Header
+            userInfo={userInfo}
+            handleToggleSidebar={handleSidebarToggle} // Pass handleSidebarToggle to Header
           />
           <main
-            className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full"
-            style={{ backgroundColor: "#F7F5FF" }}
+            className="flex-grow pt-16 overflow-y-auto w-full"
+            style={{ backgroundColor: "#F7F5FF", marginLeft: -40 }}
           >
             <Outlet />
           </main>

@@ -295,7 +295,7 @@ const SavePage = () => {
               className="mr-2"
               style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}
             >
-              {showBalances ? "HIDE" : "SHOW"} BALANCE{" "}
+              {showBalances ? "HIDE" : "SHOW"}{" "}
             </span>
           )}
           <span
