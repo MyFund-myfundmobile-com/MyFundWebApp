@@ -370,16 +370,15 @@ const RegisterPage: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn">
+        <div className="hidden sm:flex flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn">
           <Testimonials />
-
-          <OTPModal
-            email={formData.email}
-            password={formData.password}
-            isOpen={showOTPModal}
-            onClose={handleCloseOTPModal}
-          />
         </div>
+        <OTPModal
+          email={formData.email}
+          password={formData.password}
+          isOpen={showOTPModal}
+          onClose={handleCloseOTPModal}
+        />
       </div>
 
       {/* Snackbar component for displaying success or error messages */}
