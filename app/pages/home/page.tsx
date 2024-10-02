@@ -200,7 +200,12 @@ const HomePage: React.FC = () => {
             height={120}
             alt="Profile"
             className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
-            style={{ borderColor: `${badgeColorClass}` }}
+            style={{
+              borderColor: `${badgeColorClass}`,
+              objectFit: "cover", // Ensure the image remains properly fitted within the circle
+              maxWidth: "100%", // Prevents overflow on smaller screens
+              maxHeight: "100%", // Ensures the height adapts properly
+            }}
             onClick={() => navigate("/App/settings")}
           />
           <Tooltip

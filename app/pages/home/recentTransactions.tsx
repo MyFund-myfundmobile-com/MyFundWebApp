@@ -155,7 +155,10 @@ const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
                 <div
                   className={`flex items-start p-2 rounded-lg border border-gray-300`}
                 >
-                  <IonIcon icon={iconName} style={{ fontSize: "30px" }} />
+                  <IonIcon
+                    icon={iconName}
+                    style={{ fontSize: "30px", color: "#4c28BC" }}
+                  />
                 </div>
                 <div className="flex-1 ml-3">
                   <div
