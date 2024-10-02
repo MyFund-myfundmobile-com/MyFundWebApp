@@ -150,8 +150,8 @@ const AccountCard: React.FC<AccountCardProps> = ({
 
   return (
     <div
-      className={`relative flex-grow min-w-[250px] ${
-        isPropertyCard ? "max-w-[450px]" : "max-w-[300px]"
+      className={`relative flex-grow w-full sm:min-w-[250px] ${
+        isPropertyCard ? "max-w-[450px]" : "max-w-full sm:max-w-[300px]"
       } bg-cover rounded-lg p-4 flex flex-col justify-between`}
       style={{
         ...style,

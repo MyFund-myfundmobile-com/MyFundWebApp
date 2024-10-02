@@ -143,9 +143,8 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const greetings = ["Hey", "Hi", "Hello"];
-    const randomIndex = Math.floor(Math.random() * greetings.length);
-    setGreeting(greetings[randomIndex]);
+    const greetings = ["Hey"];
+    setGreeting(greetings[0]);
   }, []);
 
   useEffect(() => {
@@ -190,7 +189,7 @@ const HomePage: React.FC = () => {
   const badgeColorClass = getBadgeColorClass(currentWealthStage.stage);
 
   return (
-    <div className="px-6 max-w-full animate-floatIn">
+    <div className="px-6 w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
         <div className="relative">
           <Image

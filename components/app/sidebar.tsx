@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Divider, Tooltip, CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import {
@@ -20,16 +20,24 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import useWindowWidth from "@/lib/useWindowWidth";
 
-const Sidebar: React.FC = () => {
-  const windowWidth = useWindowWidth();
-  const [isRetracted, setIsRetracted] = useState(windowWidth < 768);
+interface SidebarProps {
+  isRetracted: boolean;
+  setIsRetracted: Dispatch<SetStateAction<boolean>>;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isRetracted, setIsRetracted }) => {
+  const pathname = usePathname();
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const activeItem = usePathname().split("/")[2];
 
+  useEffect(() => {
+    setIsRetracted(true);
+  }, [pathname]);
+
   return (
     <div
-      className={`bg-purple1 h-full p-4 flex flex-col justify-between relative transition-all duration-300 ${
-        isRetracted ? "w-14" : "w-72"
+      className={`bg-purple1 h-full p-4 flex-col justify-between fixed transition-all duration-300 ${
+        isRetracted ? "w-0 sm:w-14 sm:flex hidden" : "w-60 flex"
       } z-50`}
     >
       <div>

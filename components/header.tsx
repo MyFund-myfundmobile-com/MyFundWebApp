@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IonIcon } from "@ionic/react";
@@ -11,14 +11,13 @@ import { RootState } from "@/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserTransactions } from "@/Redux store/actions";
 import { AppDispatch } from "@/Redux store/store";
+import { menuOutline } from "ionicons/icons";
 
 interface HeaderProps {
-  isSidebarRetracted: boolean;
-  activeItem: string;
-  userInfo: User | null; // Add userInfo prop
+  setIsRetracted: Dispatch<SetStateAction<boolean>>;
 }
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ setIsRetracted }) => {
   const pathname = usePathname().split("/")[2];
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -46,12 +45,14 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div
-      className="bg-white shadow-md z-10 transition-all duration-300"
-      style={{}}
-    >
+    <div className="bg-white shadow-md z-10 transition-all duration-300">
       <div className="flex justify-between items-center p-4">
-        <div className=" tracking-custom1 text-center text-[12px] font-nexa text-gray-400 flex-grow uppercase">
+        <IonIcon
+          icon={menuOutline}
+          className="text-purple1 text-2xl cursor-pointer inline-block sm:hidden"
+          onClick={() => setIsRetracted((state) => !state)}
+        />
+        <div className=" tracking-custom1 text-center text-[9px] sm:text-[12px] font-nexa text-gray-400 flex-grow uppercase">
           {pathname ?? "Dashboard"}
         </div>
         <div className="absolute right-4 top-4">
