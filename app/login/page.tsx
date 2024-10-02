@@ -133,7 +133,7 @@ const LoginPage = () => {
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
           <div className="mt- 15 max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
-            <div className="flex justify-center mb-6 mt-10">
+            <div className="flex justify-center mb-10 mt-14">
               <Img
                 src="/images/logo..png"
                 alt="MyFund Logo"

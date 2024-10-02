@@ -119,6 +119,25 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
     setWithdrawFrom(defaultWithdrawFrom);
   }, [defaultWithdrawFrom]);
 
+  const handleWithdrawAll = () => {
+    let totalAmount = 0;
+
+    switch (withdrawFrom) {
+      case "Savings":
+        totalAmount = accountBalances.savings || 0;
+        break;
+      case "Investment":
+        totalAmount = accountBalances.investment || 0;
+        break;
+      case "Wallet":
+        totalAmount = accountBalances.wallet || 0;
+        break;
+      default:
+        break;
+    }
+    setAmount(formatAmountWithCommas(Number(totalAmount)));
+  };
+
   const handleClearAmount = () => {
     setAmount("");
   };
@@ -173,24 +192,19 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
 
     if (withdrawFrom === "Savings" && withdrawTo === "Investment") {
       handleSavingsToInvestmentTransfer();
-    }
-    if (withdrawFrom === "Wallet" && withdrawTo === "Savings") {
+    } else if (withdrawFrom === "Wallet" && withdrawTo === "Savings") {
       handleWalletToSavingsTransfer();
-    }
-    if (withdrawFrom === "Wallet" && withdrawTo === "Investment") {
+    } else if (withdrawFrom === "Wallet" && withdrawTo === "Investment") {
       handleWalletToInvestmentTransfer();
-    }
-    if (withdrawFrom === "Wallet" && withdrawTo === "Another User") {
+    } else if (withdrawFrom === "Wallet" && withdrawTo === "Another User") {
       transferToWallet(); // Call the transfer function
-    }
-    if (
+    } else if (
       withdrawFrom === "Savings" ||
       withdrawFrom === "Investment" ||
-      withdrawFrom === "Wallet"
+      (withdrawFrom === "Wallet" && withdrawTo !== "Investment")
     ) {
-      handleWithdrawToBankAccount(); // Call the unified withdraw function
+      handleWithdrawToBankAccount(); // Call the unified withdraw function only if not transferring to Investment
     }
-    // Other transfer cases can go here...
   };
 
   const handleSavingsToInvestmentTransfer = async () => {
@@ -846,7 +860,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
             )}
 
             {renderAdditionalFields()}
-
             <TextField
               fullWidth
               variant="outlined"
@@ -858,9 +871,22 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
               InputProps={{
                 startAdornment: <span style={{ marginRight: 4 }}>&#8358;</span>,
                 endAdornment: (
-                  <IconButton onClick={handleClearAmount}>
-                    <Close />
-                  </IconButton>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      onClick={handleWithdrawAll}
+                      className="hover:bg-gray-200 rounded-md p-1"
+                    >
+                      <div
+                        className="font-karla text-sm tracking-tight italic bg-gray-200 rounded-md px-2 py-1 mr--5"
+                        style={{ marginRight: -6 }}
+                      >
+                        Withdraw All
+                      </div>
+                    </IconButton>
+                    <IconButton onClick={handleClearAmount}>
+                      <Close />
+                    </IconButton>
+                  </div>
                 ),
               }}
               placeholder={

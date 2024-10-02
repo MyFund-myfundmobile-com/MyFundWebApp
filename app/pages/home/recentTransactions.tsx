@@ -153,7 +153,7 @@ const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
                 onClick={openModal}
               >
                 <div
-                  className={`flex items-start p-2 rounded-lg border border-gray-300`}
+                  className={`flex items-start p-2 rounded-lg bg-[#f3e3fc] border border-gray-300`}
                 >
                   <IonIcon
                     icon={iconName}

@@ -24,13 +24,14 @@ import { AppDispatch } from "@/app/Redux store/store";
 import RecentTransactionsSection from "../home/recentTransactions";
 import { useLocation } from "react-router-dom"; // Import useLocation
 import ShareModal from "./modals/shareModal";
+import ReferAndEarn from "../settings/subsettings/referAndEarn";
+import { useNavigate } from "react-router-dom";
 
 const WithdrawPage = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
   const [showLeftButton, setShowLeftButton] = useState<boolean>(false);
   const [showRightButton, setShowRightButton] = useState<boolean>(true);
   const [showBalances, setShowBalances] = useState<boolean>(true);
-  const [isCopied, setIsCopied] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] =
     useState<boolean>(false);
   const [defaultWithdrawFrom, setDefaultWithdrawFrom] = useState<string>("");
@@ -43,10 +44,7 @@ const WithdrawPage = () => {
   );
   const location = useLocation();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
+  const navigate = useNavigate(); // Move useNavigate here
 
   const bottomRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -71,11 +69,8 @@ const WithdrawPage = () => {
     return amount < 10 ? `0${amount}` : `${amount}`;
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText("username@email.com").then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
+  const handleNavigate = (menu: string) => {
+    navigate("/App/save"); // Navigate to SavePage without state
   };
 
   // Add this formatting function to format account balances with commas
@@ -304,56 +299,11 @@ const WithdrawPage = () => {
         </div>
 
         <div className="md:col-span-6">
-          <div className="bg-white p-4 rounded-lg shadow-md h-full">
-            <div className="mb-4 mt-3">
-              <Img
-                src="/images/ReferAndEarn500.png"
-                alt="Refer and earn"
-                style={{
-                  width: "100%", // Make the image take up the full width of its container
-                  height: "auto", // Maintain the aspect ratio
-                  objectFit: "cover", // Ensure the image covers the container
-                }}
-                className="rounded-lg"
-              />
-
-              <div className="flex justify-center mt-4">
-                <PrimaryButton
-                  className="text-center w-full lg:w-auto rounded-lg px-4 py-3 font-product-sans uppercase font-bold text-sm"
-                  onClick={handleShareClick} // Update the onClick handler
-                  background="#4C28BC"
-                  hoverBackgroundColor="#351265"
-                  color="#fff"
-                  hoverColor="#fff"
-                  endIcon={<IonIcon icon={shareSocialOutline} />}
-                  style={{ width: "95%", letterSpacing: 0.5 }}
-                >
-                  SHARE AND EARN
-                </PrimaryButton>
-              </div>
-              <div className="flex justify-center">
-                <Subtitle
-                  className="flex items-center"
-                  style={{ alignSelf: "center" }}
-                >
-                  Referral ID: {userInfo?.email}
-                  <span className="flex items-center ml-2">
-                    {isCopied ? (
-                      <>
-                        <IonIcon
-                          icon={checkmarkOutline}
-                          style={{ color: "green", marginRight: "4px" }}
-                        />
-                        <span style={{ color: "green" }}>Copied</span>
-                      </>
-                    ) : (
-                      <IonIcon icon={copyOutline} onClick={handleCopyClick} />
-                    )}
-                  </span>
-                </Subtitle>
-              </div>
-            </div>
-          </div>
+          <ReferAndEarn
+            onNavigate={handleNavigate}
+            isShareModalOpen={isShareModalOpen}
+            setIsShareModalOpen={setIsShareModalOpen}
+          />
         </div>
       </div>
       <ShareModal

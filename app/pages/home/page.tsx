@@ -193,19 +193,14 @@ const HomePage: React.FC = () => {
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
-        <div className="relative flex-shrink-0 w-24 h-24 md:w-32 md:h-32">
+        <div className="relative">
           <Image
             src={userInfo?.profile_picture || `/images/Profile1.png`}
             width={120}
             height={120}
             alt="Profile"
             className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
-            style={{
-              borderColor: `${badgeColorClass}`,
-              objectFit: "cover", // Ensure the image remains properly fitted within the circle
-              maxWidth: "100%", // Prevents overflow on smaller screens
-              maxHeight: "100%", // Ensures the height adapts properly
-            }}
+            style={{ borderColor: `${badgeColorClass}` }}
             onClick={() => navigate("/App/settings")}
           />
           <Tooltip
