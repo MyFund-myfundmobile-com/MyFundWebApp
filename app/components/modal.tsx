@@ -59,7 +59,9 @@ const Modal: React.FC<ModalProps> = ({
       style={{ zIndex }}
     >
       <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
-        <div className="relative bg-[#F7F5FF] rounded-lg p-8 w-full max-w-md z-50">
+        <div className="relative bg-[#F7F5FF] rounded-lg p-8 w-full max-w-md z-50 overflow-y-auto max-h-[90vh]">
+          {" "}
+          {/* Added overflow-y-auto and max-h */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-600"
