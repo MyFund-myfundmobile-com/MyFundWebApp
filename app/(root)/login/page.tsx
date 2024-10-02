@@ -133,7 +133,7 @@ const LoginPage = () => {
   return (
     <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
-        <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
+        <div className="bg-[#F7F5FF] flex flex-col items-center justify-center h-screen">
           <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
             <Title>
               <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
@@ -251,7 +251,7 @@ const LoginPage = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn">
+        <div className="hidden flex-col items-center justify-center bg-customPurple rounded-lg animate-floatIn sm:flex">
           <Testimonials />
         </div>
       </div>
