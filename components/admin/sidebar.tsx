@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Divider, Tooltip, CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import {
@@ -25,11 +25,12 @@ import Image from "next/image";
 import Link from "next/link";
 import useWindowWidth from "@/lib/useWindowWidth";
 
-const Sidebar: React.FC = () => {
-  const windowWidth = useWindowWidth();
+interface SidebarProps {
+  isRetracted: boolean;
+  setIsRetracted: Dispatch<SetStateAction<boolean>>;
+}
 
-  console.log(windowWidth);
-  const [isRetracted, setIsRetracted] = useState(windowWidth < 768);
+const Sidebar: React.FC<SidebarProps> = ({ isRetracted, setIsRetracted }) => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const activeItem = usePathname().split("/")[2];
 
