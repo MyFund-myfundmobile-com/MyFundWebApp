@@ -137,11 +137,19 @@ const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
             const isFailed = transaction.description
               .toLowerCase()
               .includes("failed");
+
+            // Add check for "withdrawal" in the description
+            const isWithdrawal = transaction.description
+              .toLowerCase()
+              .includes("withdrawal");
+
             const amountClass = isFailed
               ? "text-red-600"
               : transaction.status === "pending" ||
                 transaction.description.toLowerCase().includes("pending")
               ? "text-gray-400"
+              : isWithdrawal
+              ? "text-red-700" // Apply brownish red for withdrawals
               : transaction.type === "debit"
               ? "text-red-600"
               : "text-green-600";

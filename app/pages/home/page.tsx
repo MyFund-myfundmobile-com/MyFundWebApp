@@ -193,38 +193,49 @@ const HomePage: React.FC = () => {
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
-        <div className="relative">
-          <Image
-            src={userInfo?.profile_picture || `/images/Profile1.png`}
-            width={120}
-            height={120}
-            alt="Profile"
-            className={`w-24 h-24 rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
-            style={{ borderColor: `${badgeColorClass}` }}
-            onClick={() => navigate("/App/settings")}
-          />
-          <Tooltip
-            title={`My Financial Status: Level ${
-              currentWealthStage.stage
-            }: ${currentWealthStage.text.toUpperCase()}`}
-            placement="right"
-          >
-            <div
-              className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center border-${badgeColorClass} justify-center font-proxima text-sm cursor-pointer`}
-              style={{
-                backgroundColor: badgeColorClass ? badgeColorClass : "#4c28BC",
-              }}
-            >
-              {currentWealthStage.stage}
+        <div className="flex flex-col lg:flex-row mb-4 mt-5">
+          <div className="flex flex-col lg:flex-row items-start">
+            {/* Profile Image */}
+            <div className="flex items-center">
+              <div className="relative">
+                <div className="w-24 h-24 relative aspect-w-1 aspect-h-1">
+                  <Image
+                    src={userInfo?.profile_picture || `/images/Profile1.png`}
+                    width={120}
+                    height={120}
+                    alt="Profile"
+                    className={`w-full h-full rounded-full border-2 border-${badgeColorClass} cursor-pointer`}
+                    style={{ borderColor: `${badgeColorClass}` }}
+                    onClick={() => navigate("/App/settings")}
+                  />
+                </div>
+                <Tooltip
+                  title={`My Financial Status: Level ${
+                    currentWealthStage.stage
+                  }: ${currentWealthStage.text.toUpperCase()}`}
+                  placement="right"
+                >
+                  <div
+                    className={`absolute top-1 right-1 text-white rounded-full w-5 h-5 flex items-center border-${badgeColorClass} justify-center font-proxima text-sm cursor-pointer`}
+                    style={{
+                      backgroundColor: badgeColorClass
+                        ? badgeColorClass
+                        : "#4c28BC",
+                    }}
+                  >
+                    {currentWealthStage.stage}
+                  </div>
+                </Tooltip>
+              </div>
+              <div className="ml-4">
+                <Title>
+                  <span style={{ color: "#BB9CE8" }}>{greeting}</span>{" "}
+                  {userInfo?.firstName && `${userInfo.firstName},`}
+                </Title>
+                <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
+              </div>
             </div>
-          </Tooltip>
-        </div>
-        <div className="ml-4">
-          <Title>
-            <span style={{ color: "#BB9CE8" }}>{greeting}</span>{" "}
-            {userInfo?.firstName && `${userInfo.firstName},`}
-          </Title>
-          <Subtitle>{getGreeting}, Welcome to MyFund 👋🏼</Subtitle>
+          </div>
         </div>
 
         <div className="ml-auto flex items-center">
