@@ -193,7 +193,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="px-6 max-w-full animate-floatIn">
       <div className="flex items-center mb-4 mt-5 relative">
-        <div className="relative">
+        <div className="relative flex-shrink-0 w-24 h-24 md:w-32 md:h-32">
           <Image
             src={userInfo?.profile_picture || `/images/Profile1.png`}
             width={120}
