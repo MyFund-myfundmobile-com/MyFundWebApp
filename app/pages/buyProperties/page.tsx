@@ -11,6 +11,10 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 import RecentTransactionsSection from "../home/recentTransactions";
 import TopSaversSection from "../home/topSavers";
 import WealthMapSection from "../home/wealthMap";
+import { RootState } from "@/app/Redux store/store";
+import { useDispatch, useSelector } from "react-redux";
+import Modal from "@/app/components/modal";
+import { AppDispatch } from "@/app/Redux store/store";
 
 const properties = [
   {
@@ -29,14 +33,14 @@ const properties = [
     cost: "N4,500,000/unit",
     roi: "N400,000 p.a.",
   },
-  {
-    image: "/images/myfundhostel.jpeg",
-    name: "MyFund Hostel",
-    description: "Behind the Cafeteria",
-    availableUnits: "Shared Room: 20 units",
-    cost: "N3,000,000/unit",
-    roi: "N350,000 p.a.",
-  },
+  // {
+  //   image: "/images/myfundhostel.jpeg",
+  //   name: "MyFund Hostel",
+  //   description: "Behind the Cafeteria",
+  //   availableUnits: "Shared Room: 20 units",
+  //   cost: "N3,000,000/unit",
+  //   roi: "N350,000 p.a.",
+  // },
   // {
   //   image: "/images/phase2.png",
   //   name: "Phase 2 Hostels",
@@ -65,13 +69,26 @@ const properties = [
 
 const BuyPropertiesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false); // For Sell Properties Modal
+
   const location = useLocation();
+
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
+  const token = useSelector((state: RootState) => state.auth.token);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const accountBalances = useSelector(
+    (state: RootState) => state.auth.accountBalances
+  );
 
   useEffect(() => {
     if (location.state?.buyPropertyModalActive) {
       setIsModalOpen(true);
     }
   }, [location.state]);
+
+  const formatAmount = (amount: number) => {
+    return amount < 10 ? `0${amount}` : `${amount}`;
+  };
 
   const [selectedProperty, setSelectedProperty] = useState<{
     image: string;
@@ -101,6 +118,18 @@ const BuyPropertiesPage = () => {
     setIsModalOpen(false);
   };
 
+  const handleSellButtonClick = () => {
+    if (accountBalances.properties === 0) {
+      setIsSellModalOpen(true);
+    } else {
+      console.log("Sell Properties Clicked");
+    }
+  };
+
+  const handleSellModalClose = () => {
+    setIsSellModalOpen(false);
+  };
+
   return (
     <div className="px-6 w-full animate-floatIn overflow-x-hidden">
       <Title>Own</Title>
@@ -116,6 +145,29 @@ const BuyPropertiesPage = () => {
       </div>
       <Section>MY PROPERTIES</Section>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+        <div
+          className="relative"
+          style={{
+            flex: "1 1 auto",
+            transform: "scale(1.40)",
+            transformOrigin: "top left",
+            marginBottom: 60,
+          }}
+        >
+          <AccountCard
+            icon="save-outline"
+            label="MY PROPERTIES"
+            rate="yearly rent"
+            rateColor="#43FF8E"
+            currency=""
+            amount={formatAmount(accountBalances.properties)}
+            buttonText="Sell Properties"
+            buttonIcon="home-outline"
+            // buttonBackgroundColor="grey" // Button background color to grey
+            onButtonClick={handleSellButtonClick}
+          />
+        </div>
+
         {properties.map((property, index) => (
           <AccountCard
             key={index}
@@ -162,6 +214,18 @@ const BuyPropertiesPage = () => {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           property={selectedProperty}
+        />
+      )}
+
+      {isSellModalOpen && (
+        <Modal
+          isOpen={isSellModalOpen}
+          onClose={handleSellModalClose}
+          header="Sell Property"
+          body="You are yet to acquire a property."
+          buttonText="Close"
+          zIndex={1000}
+          onButtonClick={handleSellModalClose}
         />
       )}
     </div>
