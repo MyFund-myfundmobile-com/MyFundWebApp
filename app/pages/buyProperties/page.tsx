@@ -8,6 +8,9 @@ import { Divider } from "@mui/material";
 import BuyPropertyModal from "./modals/buyPropertyModal";
 import { Img } from "react-image";
 import { useLocation } from "react-router-dom"; // Import useLocation
+import RecentTransactionsSection from "../home/recentTransactions";
+import TopSaversSection from "../home/topSavers";
+import WealthMapSection from "../home/wealthMap";
 
 const properties = [
   {
@@ -34,30 +37,30 @@ const properties = [
     cost: "N3,000,000/unit",
     roi: "N350,000 p.a.",
   },
-  {
-    image: "/images/phase2.png",
-    name: "Phase 2 Hostels",
-    description: "Beside Sports Complex",
-    availableUnits: "Studio: 15 units",
-    cost: "N4,000,000/unit",
-    roi: "N380,000 p.a.",
-  },
-  {
-    image: "/images/phase3.jpeg",
-    name: "Phase 3 Apartments",
-    description: "Engineering Block",
-    availableUnits: "1 Bedroom: 18 units",
-    cost: "N5,500,000/unit",
-    roi: "N420,000 p.a.",
-  },
-  {
-    image: "/images/phase4.png",
-    name: "Phase 4 Apartments",
-    description: "Sports Complex",
-    availableUnits: "Selfcon: 12 units",
-    cost: "N6,000,000/unit",
-    roi: "N500,000 p.a.",
-  },
+  // {
+  //   image: "/images/phase2.png",
+  //   name: "Phase 2 Hostels",
+  //   description: "Beside Sports Complex",
+  //   availableUnits: "Studio: 15 units",
+  //   cost: "N4,000,000/unit",
+  //   roi: "N380,000 p.a.",
+  // },
+  // {
+  //   image: "/images/phase3.jpeg",
+  //   name: "Phase 3 Apartments",
+  //   description: "Engineering Block",
+  //   availableUnits: "1 Bedroom: 18 units",
+  //   cost: "N5,500,000/unit",
+  //   roi: "N420,000 p.a.",
+  // },
+  // {
+  //   image: "/images/phase4.png",
+  //   name: "Phase 4 Apartments",
+  //   description: "Sports Complex",
+  //   availableUnits: "Selfcon: 12 units",
+  //   cost: "N6,000,000/unit",
+  //   roi: "N500,000 p.a.",
+  // },
 ];
 
 const BuyPropertiesPage = () => {
@@ -141,8 +144,17 @@ const BuyPropertiesPage = () => {
         className="my-4 bg-gray-100"
         style={{ marginTop: 20, marginBottom: 20 }}
       />
+
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
-        {/* Additional sections can be added here */}
+        <div className="md:col-span-4">
+          <RecentTransactionsSection />
+        </div>
+        <div className="md:col-span-4">
+          <TopSaversSection />
+        </div>
+        <div className="md:col-span-4">
+          <WealthMapSection />
+        </div>
       </div>
 
       {selectedProperty && (

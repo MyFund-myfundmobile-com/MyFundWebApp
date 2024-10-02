@@ -30,7 +30,9 @@ const ReferAndEarn: React.FC<ReferAndEarnProps> = ({
   isShareModalOpen,
   setIsShareModalOpen,
 }) => {
-  const [isCopied, setIsCopied] = useState(false);
+  // Add these new state variables at the beginning of your component
+  const [isReferralIdCopied, setIsReferralIdCopied] = useState(false);
+  const [isReferralLinkCopied, setIsReferralLinkCopied] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -46,10 +48,20 @@ const ReferAndEarn: React.FC<ReferAndEarnProps> = ({
     }
   }, [dispatch, token]);
 
-  const handleCopyClick = () => {
+  // Update the handleCopyClick function for Referral ID
+  const handleReferralIdCopyClick = () => {
     navigator.clipboard.writeText(userInfo?.email);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 3000);
+    setIsReferralIdCopied(true);
+    setTimeout(() => setIsReferralIdCopied(false), 3000);
+  };
+
+  // Update the handleCopyClick function for Referral Link
+  const handleReferralLinkCopyClick = () => {
+    navigator.clipboard.writeText(
+      `http://www.myfundmobile.com/${userInfo?.email}`
+    );
+    setIsReferralLinkCopied(true);
+    setTimeout(() => setIsReferralLinkCopied(false), 3000);
   };
 
   return (
@@ -101,14 +113,17 @@ const ReferAndEarn: React.FC<ReferAndEarnProps> = ({
 
             <div className="flex justify-center">
               <Subtitle
-                className="flex items-center"
+                className="flex items-center flex-wrap" // Added flex-wrap for word wrap
                 style={{ alignSelf: "center" }}
               >
-                <span className="font-italics">Referral ID:</span> <br />
-                <br />{" "}
-                <span className="font-bold font-proxim">{userInfo?.email}</span>
+                <span className="font-italics">Referral ID: </span> <br />
+                <span className="font-bold font-proxima ml-2">
+                  {" "}
+                  {/* Added ml-2 for margin-left */}
+                  {userInfo?.email}
+                </span>
                 <span className="flex items-center ml-2">
-                  {isCopied ? (
+                  {isReferralIdCopied ? (
                     <>
                       <IonIcon
                         icon={checkmarkOutline}
@@ -117,7 +132,46 @@ const ReferAndEarn: React.FC<ReferAndEarnProps> = ({
                       <span style={{ color: "green" }}>Copied</span>
                     </>
                   ) : (
-                    <IonIcon icon={copyOutline} onClick={handleCopyClick} />
+                    <IonIcon
+                      icon={copyOutline}
+                      onClick={handleReferralIdCopyClick}
+                    />
+                  )}
+                </span>
+              </Subtitle>
+            </div>
+
+            <div className="flex justify-center mt-2">
+              <Subtitle
+                className="flex items-center flex-wrap" // Added flex-wrap for word wrap
+                style={{ alignSelf: "center" }}
+              >
+                <span className="font-italics">Referral Link: </span> <br />
+                <span className="font-bold font-proxima ml-2">
+                  {" "}
+                  {/* Added ml-2 for margin-left */}
+                  <a
+                    href={`http://www.myfundmobile.com/${userInfo?.email}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {`http://www.myfundmobile.com/${userInfo?.email}`}
+                  </a>
+                </span>
+                <span className="flex items-center ml-2">
+                  {isReferralLinkCopied ? (
+                    <>
+                      <IonIcon
+                        icon={checkmarkOutline}
+                        style={{ color: "green", marginRight: "4px" }}
+                      />
+                      <span style={{ color: "green" }}>Copied</span>
+                    </>
+                  ) : (
+                    <IonIcon
+                      icon={copyOutline}
+                      onClick={handleReferralLinkCopyClick}
+                    />
                   )}
                 </span>
               </Subtitle>

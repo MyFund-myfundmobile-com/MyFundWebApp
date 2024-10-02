@@ -18,6 +18,7 @@ import styles from "../ui/landing/Header.module.css";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo, setUserToken } from "../Redux store/actions";
 import { AppDispatch } from "../Redux store/store";
+import { Img } from "react-image";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -131,7 +132,15 @@ const LoginPage = () => {
     <section className="bg-customPurple animate-floatIn">
       <div className="bg-customPurple grid md:h-screen md:grid-cols-2">
         <div className="bg-[#F7F5FF] flex flex-col items-center justify-center">
-          <div className="max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
+          <div className="mt- 15 max-w-xl px-5 py-16 text-center md:px-10 md:py-24 lg:py-32">
+            <div className="flex justify-center mb-6 mt-10">
+              <Img
+                src="/images/logo..png"
+                alt="MyFund Logo"
+                className="h-16 w-16"
+              />
+            </div>
+
             <Title>
               <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
             </Title>

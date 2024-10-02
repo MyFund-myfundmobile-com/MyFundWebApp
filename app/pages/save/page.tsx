@@ -413,7 +413,7 @@ const SavePage = () => {
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3" style={{ alignSelf: "flex-start" }}>
-          <RecentTransactionsSection />
+          <RecentTransactionsSection transactionType="Savings" />
         </div>
         <div className="md:col-span-3">
           <TopSaversSection />

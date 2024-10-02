@@ -22,13 +22,52 @@ interface Transaction {
   status: "pending" | "confirmed";
 }
 
-const RecentTransactionsSection: React.FC = () => {
+interface RecentTransactionsSectionProps {
+  transactionType?: "Savings" | "Invest" | "Withdraw" | "Save"; // Optional filter for transaction types
+}
+
+const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
+  transactionType,
+}) => {
   const { userTransactions, isLoading } = useSelector((state: RootState) => ({
     userTransactions: state.auth.userTransactions,
     isLoading: state.auth.isLoading,
   }));
 
-  const displayedTransactions = userTransactions.slice(0, 5);
+  // Define arrays of keywords for different transaction types
+  const savingsKeywords = ["quicksave", "autosave", "savings"];
+  const investKeywords = ["quickinvest", "autoinvest", "investment"];
+  const propertyKeywords = ["property", "real estate", "purchase", "rent"]; // Add property-related keywords
+
+  // Function to determine relevant keywords based on transactionType
+  const getKeywordsForTransactionType = (type: string | undefined) => {
+    switch (type?.toLowerCase()) {
+      case "savings":
+      case "save":
+        return savingsKeywords;
+      case "invest":
+      case "investment":
+        return investKeywords;
+      case "property": // Add case for property transactions
+        return propertyKeywords;
+      default:
+        return [];
+    }
+  };
+
+  // Get keywords based on transactionType
+  const keywords = getKeywordsForTransactionType(transactionType);
+
+  // Filter transactions based on the keywords
+  const filteredTransactions = keywords.length
+    ? userTransactions.filter((transaction) =>
+        keywords.some((keyword) =>
+          transaction.description.toLowerCase().includes(keyword)
+        )
+      )
+    : userTransactions;
+
+  const displayedTransactions = filteredTransactions.slice(0, 5);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const openModal = () => setIsModalOpen(true);

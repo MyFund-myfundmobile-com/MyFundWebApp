@@ -18,7 +18,10 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 import { Img } from "react-image";
 import { RootState } from "@/app/Redux store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAutoInvestSettings, fetchUserInfo } from "@/app/Redux store/actions";
+import {
+  fetchAutoInvestSettings,
+  fetchUserInfo,
+} from "@/app/Redux store/actions";
 import { AppDispatch } from "@/app/Redux store/store";
 import TopSaversSection from "../home/topSavers";
 import DeactivateAutoInvestModal from "./modals/deactivateAutoInvest";
@@ -30,20 +33,21 @@ const InvestPage = () => {
   const [showBalances, setShowBalances] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [amount, setAmount] = useState<string>("");
-  const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false);//
-  const [tempAutoInvestState, setTempAutoInvestState] = useState<boolean>(false);//
+  const [isAutoInvestOn, setIsAutoInvestOn] = useState<boolean>(false); //
+  const [tempAutoInvestState, setTempAutoInvestState] =
+    useState<boolean>(false); //
   const [isQuickInvestModalOpen, setIsQuickInvestModalOpen] =
     useState<boolean>(false);
   const [isAutoInvestModalOpen, setIsAutoInvestModalOpen] =
     useState<boolean>(false); // State for AutoSave modal
-
 
   const [showQuickInvestModal, setShowQuickInvestModal] =
     useState<boolean>(false);
   const [showAutoInvestModal, setShowAutoInvestModal] =
     useState<boolean>(false);
 
-  const [isDeactivateAutoInvestModalOpen, setIsDeactivateAutoInvestModalOpen] = useState<boolean>(false);
+  const [isDeactivateAutoInvestModalOpen, setIsDeactivateAutoInvestModalOpen] =
+    useState<boolean>(false);
   const location = useLocation(); // Initialize useLocation
 
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch type
@@ -74,10 +78,10 @@ const InvestPage = () => {
 
     if (newAutoInvestStatus) {
       setIsAutoInvestModalOpen(true);
-    }
-    else {
-      if (autoInvestSettings?.active) { setIsDeactivateAutoInvestModalOpen(true); }
-      else {
+    } else {
+      if (autoInvestSettings?.active) {
+        setIsDeactivateAutoInvestModalOpen(true);
+      } else {
         setIsAutoInvestModalOpen(true);
       }
     }
@@ -119,11 +123,9 @@ const InvestPage = () => {
     }, 5000);
   };
 
-
-
   const handleCloseDeactivateAutoInvestModal = () => {
     setIsDeactivateAutoInvestModalOpen(false);
-  }
+  };
 
   const handleCloseAutoInvestModal = () => {
     setIsAutoInvestOn(tempAutoInvestState); // Revert to the original state
@@ -134,7 +136,6 @@ const InvestPage = () => {
     setAmount(presetAmount);
     setIsQuickInvestModalOpen(true);
   };
-
 
   // Add this formatting function to format account balances with commas
   const formatAmountWithCommas = (amount: number) => {
@@ -156,13 +157,9 @@ const InvestPage = () => {
     return () => clearInterval(slideInterval);
   });
 
-
-
   const handleToggleBalances = () => {
     setShowBalances(!showBalances);
   };
-
-
 
   // Function to get the current month
   const getCurrentMonthName = () => {
@@ -275,8 +272,9 @@ const InvestPage = () => {
         {slides.map((_, index) => (
           <div
             key={index}
-            className={`w-2 h-2 mx-1 rounded-full ${index === currentSlide ? "bg-purple-500" : "bg-gray-300"
-              }`}
+            className={`w-2 h-2 mx-1 rounded-full ${
+              index === currentSlide ? "bg-purple-500" : "bg-gray-300"
+            }`}
           ></div>
         ))}
       </div>
@@ -300,7 +298,7 @@ const InvestPage = () => {
             className="mr-2"
             style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}
           >
-            {showBalances ? "HIDE" : "SHOW"} {" "}
+            {showBalances ? "HIDE" : "SHOW"}{" "}
           </span>
           <span
             onClick={handleToggleBalances}
@@ -379,8 +377,9 @@ const InvestPage = () => {
               }}
             />
             <span
-              className={`text-gray-500 font-karla ${isAutoInvestOn ? "text-green-500" : ""
-                }`}
+              className={`text-gray-500 font-karla ${
+                isAutoInvestOn ? "text-green-500" : ""
+              }`}
               style={{ fontSize: 12 }}
             >
               {isAutoInvestOn ? "AutoInvest is ON" : "AutoInvest is OFF"}
@@ -415,7 +414,7 @@ const InvestPage = () => {
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3" style={{ alignSelf: "flex-start" }}>
-          <RecentTransactionsSection />
+          <RecentTransactionsSection transactionType="Invest" />
         </div>
         <div className="md:col-span-3">
           <TopSaversSection />

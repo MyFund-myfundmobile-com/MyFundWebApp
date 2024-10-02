@@ -161,12 +161,14 @@ const WithdrawPage = () => {
           <Subtitle>Move money between your accounts or to your bank.</Subtitle>
         </div>
         <div className="ml-auto flex items-center">
-          <span
-            className="mr-2"
-            style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}
-          >
-            {showBalances ? "HIDE" : "SHOW"} BALANCES{" "}
-          </span>
+          {typeof window !== "undefined" && window.innerWidth >= 900 && (
+            <span
+              className="mr-2"
+              style={{ letterSpacing: 2, color: "grey", fontSize: 13 }}
+            >
+              {showBalances ? "HIDE" : "SHOW"}{" "}
+            </span>
+          )}
           <span
             onClick={handleToggleBalances}
             style={{
@@ -294,7 +296,7 @@ const WithdrawPage = () => {
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-10">
         <div className="md:col-span-3" style={{ alignSelf: "flex-start" }}>
-          <RecentTransactionsSection />
+          <RecentTransactionsSection transactionType="Withdraw" />
         </div>
 
         <div className="md:col-span-3">
