@@ -81,6 +81,13 @@ const BuyPropertiesPage = () => {
   );
 
   useEffect(() => {
+    // Ensure page scrolls to the top on mobile when the page mounts
+    if (window.innerWidth < 900) {
+      window.scrollTo(0, 0); // Scroll to top
+    }
+  }, []);
+
+  useEffect(() => {
     if (location.state?.buyPropertyModalActive) {
       setIsModalOpen(true);
     }
@@ -163,7 +170,6 @@ const BuyPropertiesPage = () => {
             amount={formatAmount(accountBalances.properties)}
             buttonText="Sell Properties"
             buttonIcon="home-outline"
-            // buttonBackgroundColor="grey" // Button background color to grey
             onButtonClick={handleSellButtonClick}
           />
         </div>

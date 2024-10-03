@@ -68,6 +68,13 @@ const HomePage: React.FC = () => {
     return amount < 10 ? `0${amount}` : `${amount}`;
   };
 
+  useEffect(() => {
+    // Ensure page scrolls to the top on mobile when the page mounts
+    if (window.innerWidth < 900) {
+      window.scrollTo(0, 0); // Scroll to top
+    }
+  }, []);
+
   const formatAmountWithCommas = (amount: number) => {
     return amount.toLocaleString("en-NG", {
       minimumFractionDigits: 2,

@@ -69,6 +69,12 @@ const WithdrawPage = () => {
     return amount < 10 ? `0${amount}` : `${amount}`;
   };
 
+  useEffect(() => {
+    if (window.innerWidth < 900) {
+      window.scrollTo(0, 0); // Scroll to top
+    }
+  }, []);
+
   const handleNavigate = (menu: string) => {
     navigate("/App/save"); // Navigate to SavePage without state
   };

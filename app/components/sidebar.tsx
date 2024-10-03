@@ -56,10 +56,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleMenuItemClickInternal = (item: string) => {
-    // Renamed to avoid naming conflict
-    setActiveItem(item); // Set the active item
+    setActiveItem(item);
     setLastSelectedItem(item);
-    onMenuItemClick(item); // Call the function passed from Layout
+    onMenuItemClick(item);
+    window.scrollTo(0, 0);
+
     if (window.innerWidth < 900) {
       setIsRetracted(true);
       onToggle();
@@ -71,22 +72,22 @@ const Sidebar: React.FC<SidebarProps> = ({
         setIsLoggingOut(true);
         break;
       case "DASHBOARD":
-        navigate("/App/home"); // Navigate to the homepage
+        navigate("/App/home");
         break;
       case "SAVE":
-        navigate("/App/save"); // Navigate to the save page
+        navigate("/App/save");
         break;
       case "INVEST":
-        navigate("/App/invest"); // Navigate to the invest page
+        navigate("/App/invest");
         break;
       case "WITHDRAW":
-        navigate("/App/withdraw"); // Navigate to the withdraw page
+        navigate("/App/withdraw");
         break;
       case "BUY PROPERTIES":
-        navigate("/App/buyProperties"); // Navigate to the buy properties page
+        navigate("/App/buyProperties");
         break;
       case "Settings":
-        navigate("/App/settings"); // Navigate to the buy properties page
+        navigate("/App/settings");
         break;
       default:
         navigate("/App/home");

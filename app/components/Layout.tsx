@@ -20,8 +20,16 @@ const Layout = () => {
   };
 
   useEffect(() => {
+    // Ensure page scrolls to the top on mobile when the page mounts
+    if (window.innerWidth < 900) {
+      window.scrollTo(0, 0); // Scroll to top
+    }
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) {
+        window.scrollTo(0, 0); // Scroll to top
         setIsSidebarRetracted(true);
       } else {
         setIsSidebarRetracted(false);

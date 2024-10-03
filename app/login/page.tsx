@@ -61,8 +61,6 @@ const LoginPage = () => {
         payload
       );
 
-      setIsLoading(false);
-
       if (response.status === 200) {
         const { access } = response.data;
 
