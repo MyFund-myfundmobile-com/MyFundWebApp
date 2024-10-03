@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Img } from "react-image";
@@ -24,7 +23,8 @@ const NotFound = () => {
             404 Error
           </h1>
           <p className="mx-auto mb-5 max-w-lg text-sm text-[#636262] sm:text-base md:mb-6 lg:mb-8">
-            What you are looking for does not exist or is unavailable{" "}
+            If you are not automatically redirected after a few seconds, kindly
+            click the button below...{" "}
           </p>
           <Link
             href="/"

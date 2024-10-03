@@ -18,6 +18,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     "/requestPasswordReset",
     "/faq",
     "/unsubscribe",
+    "/about",
   ].includes(pathname);
 
   useEffect(() => {

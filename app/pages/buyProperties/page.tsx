@@ -33,30 +33,30 @@ const properties = [
     cost: "N4,500,000/unit",
     roi: "N400,000 p.a.",
   },
-  // {
-  //   image: "/images/myfundhostel.jpeg",
-  //   name: "MyFund Hostel",
-  //   description: "Behind the Cafeteria",
-  //   availableUnits: "Shared Room: 20 units",
-  //   cost: "N3,000,000/unit",
-  //   roi: "N350,000 p.a.",
-  // },
-  // {
-  //   image: "/images/phase2.png",
-  //   name: "Phase 2 Hostels",
-  //   description: "Beside Sports Complex",
-  //   availableUnits: "Studio: 15 units",
-  //   cost: "N4,000,000/unit",
-  //   roi: "N380,000 p.a.",
-  // },
-  // {
-  //   image: "/images/phase3.jpeg",
-  //   name: "Phase 3 Apartments",
-  //   description: "Engineering Block",
-  //   availableUnits: "1 Bedroom: 18 units",
-  //   cost: "N5,500,000/unit",
-  //   roi: "N420,000 p.a.",
-  // },
+  {
+    image: "/images/myfundhostel.jpeg",
+    name: "MyFund Hostel",
+    description: "Behind the Cafeteria",
+    availableUnits: "Shared Room: 20 units",
+    cost: "N3,000,000/unit",
+    roi: "N350,000 p.a.",
+  },
+  {
+    image: "/images/phase2.png",
+    name: "Phase 2 Hostels",
+    description: "Beside Sports Complex",
+    availableUnits: "Studio: 15 units",
+    cost: "N4,000,000/unit",
+    roi: "N380,000 p.a.",
+  },
+  {
+    image: "/images/phase3.jpeg",
+    name: "Phase 3 Apartments",
+    description: "Engineering Block",
+    availableUnits: "1 Bedroom: 18 units",
+    cost: "N5,500,000/unit",
+    roi: "N420,000 p.a.",
+  },
   // {
   //   image: "/images/phase4.png",
   //   name: "Phase 4 Apartments",
@@ -184,7 +184,10 @@ const BuyPropertiesPage = () => {
             amount={property.cost}
             buttonText="Buy Now"
             buttonIcon="home-outline"
-            style={{ backgroundImage: "url(/images/icb2.png)" }}
+            style={{
+              // backgroundImage: "url(/images/icb2.png)"
+              color: "#4c28Bc",
+            }}
             isPropertyCard
             propertyDetails={{
               name: property.name,

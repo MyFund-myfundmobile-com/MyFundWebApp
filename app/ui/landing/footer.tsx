@@ -137,7 +137,7 @@ const Footer = () => {
               </li>
               <li>Call: +2349032719396</li>
               <li>
-                <a href="https://www.myfundmobile.com/resubscribe?email={{user.email}}">
+                <a href="https://www.myfundmobile.com/unsubscribe">
                   Get Practicaly Money Tips by Mail
                 </a>
               </li>
