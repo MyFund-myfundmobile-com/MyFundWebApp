@@ -24,6 +24,7 @@ import TopSaversSettings from "./subsettings/topSavers";
 import FAQs from "./subsettings/FAQs";
 import ReferAndEarnSettings from "./subsettings/referAndEarn";
 import MessageAdminSettings from "./subsettings/messageAdmin";
+import WithdrawalRequestTransactions from "./subsettings/withdrawalRequest";
 import RateMyFundSettings from "./subsettings/rateMyFund";
 import PrivacyAndPolicySettings from "./subsettings/privacyAndPolicy";
 import SavingsGoal from "./subsettings/savingsGoal";
@@ -161,6 +162,9 @@ const SettingsPage: React.FC = () => {
     if (location.state && location.state.triggerKYC) {
       handleMenuSelect("Update KYC");
     }
+    if (location.state && location.state.triggerMessageAdmin) {
+      handleMenuSelect("Message Admin");
+    }
   }, [location.state]);
 
   // Handler to trigger file input click
@@ -290,6 +294,8 @@ const SettingsPage: React.FC = () => {
         );
       case "Message Admin":
         return <MessageAdminSettings />;
+      case "Submit Withdrawal Request":
+        return <WithdrawalRequestTransactions />;
       case "Rate MyFund":
         return <RateMyFundSettings />;
       case "Privacy and Policy":

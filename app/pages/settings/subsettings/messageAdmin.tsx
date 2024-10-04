@@ -135,23 +135,23 @@ const MessageAdmin: React.FC = () => {
             Send a message to the administrator.
           </Subtitle>
         </div>
-        <div className="flex items-center">
-          {/* Updated WhatsApp Button */}
+        <div className="flex flex-col items-start mt-4 sm:mt-0">
           <a
             href="http://wa.me/2349032719396"
-            target="_blank" // Opens in a new window
+            target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center bg-green-600 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:bg-green-700"
-            style={{ letterSpacing: 0.5, marginTop: 1 }}
+            className="flex items-center bg-green-600 text-white rounded-lg px-4 py-2 font-product-sans uppercase font-bold text-sm cursor-pointer transform transition-transform duration-200 hover:scale-105 hover:bg-green-700 whitespace-nowrap"
+            style={{ letterSpacing: 0.5, marginTop: 1, width: "100%" }}
           >
             <Image
               src="/images/whatsapp.png"
               alt="WhatsApp Icon"
-              width={24}
-              height={24}
+              width={32} // Increased width for larger icon
+              height={32} // Increased height for larger icon
               className="mr-2"
             />
-            <span>Live Chat Admin Instead</span>
+            <span className="hidden sm:inline">Live Chat Admin Instead</span>{" "}
+            {/* Hidden on mobile */}
           </a>
         </div>
       </div>

@@ -143,8 +143,8 @@ const LoginPage = () => {
               <span style={{ color: "#BB9CE8" }}>Welcome</span> Back
             </Title>
             <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
-              Earn 20% p.a. every January and July. {"\n"}
-              Own properties and earn a lifetime rent. Jump right back in!
+              Earn 20% p.a. every January and July! {"\n"}
+              Earn lifetime rent from our hostels. Jump right back in!
             </Subtitle>
             <form
               className="mx-auto mb-4 max-w-lg pb-4"

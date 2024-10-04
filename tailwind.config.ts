@@ -57,7 +57,7 @@ const config: Config = {
         cream: "#FBDABB",
         silver: "#EDEFEE",
         black1: "#333333",
-        customBackground: "#F7F5FF",
+        customBackground: "#F5F1FF",
         customPurple: "#351265",
       },
     },

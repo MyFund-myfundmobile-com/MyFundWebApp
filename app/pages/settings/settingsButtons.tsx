@@ -5,6 +5,7 @@ import {
   settingsOutline,
   cardOutline,
   personOutline,
+  arrowDownOutline,
   keyOutline,
   starOutline,
   helpCircleOutline,
@@ -33,6 +34,7 @@ const SettingsButtonsSection: React.FC<SettingsButtonsSectionProps> = ({
     { label: "FAQs", icon: helpCircleOutline },
     { label: "Refer and Earn: N500 EACH", icon: giftOutline },
     { label: "Message Admin", icon: mailOutline },
+    { label: "Submit Withdrawal Request", icon: arrowDownOutline },
     { label: "Rate MyFund", icon: thumbsUpOutline },
     { label: "Log Out", icon: logOutOutline, color: "brown" },
   ];

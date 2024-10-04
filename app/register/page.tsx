@@ -215,7 +215,7 @@ const RegisterPage: React.FC = () => {
 
             <Subtitle style={{ color: "#4C28BC", marginBottom: 25 }}>
               Earn 20% p.a. every January and July. {"\n"}
-              Buy properties for a lifetime rent.
+              Earn lifetime rent from our hostels.
             </Subtitle>
 
             <form

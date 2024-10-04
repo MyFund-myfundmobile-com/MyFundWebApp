@@ -89,6 +89,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       case "Settings":
         navigate("/App/settings");
         break;
+      case "Message Admin":
+        navigate("/App/settings", { state: { triggerMessageAdmin: true } });
+        break;
       default:
         navigate("/App/home");
         break;
@@ -97,8 +100,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed left-0 top-0 bottom-0 transition-all duration-300 ${
-        isRetracted ? "w-64 -left-64" : "w-64 left-0"
+      className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed top-0 bottom-0 transition-all duration-300 ${
+        isRetracted ? "w-64 -left-full" : "w-64 left-0"
       } z-50`}
     >
       <div>
@@ -161,6 +164,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {[
           { icon: settingsOutline, label: "Settings" },
+          { icon: chatbubbleOutline, label: "Message Admin" },
           { icon: logOutOutline, label: "Log Out", class: "text-red-500" },
         ].map((item, index) => (
           <div

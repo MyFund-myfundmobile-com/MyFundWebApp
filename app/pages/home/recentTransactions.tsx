@@ -23,7 +23,7 @@ interface Transaction {
 }
 
 interface RecentTransactionsSectionProps {
-  transactionType?: "Savings" | "Invest" | "Withdraw" | "Save"; // Optional filter for transaction types
+  transactionType?: "Savings" | "Invest" | "Withdraw" | "Save";
 }
 
 const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
@@ -48,7 +48,7 @@ const RecentTransactionsSection: React.FC<RecentTransactionsSectionProps> = ({
       case "invest":
       case "investment":
         return investKeywords;
-      case "property": // Add case for property transactions
+      case "property":
         return propertyKeywords;
       default:
         return [];

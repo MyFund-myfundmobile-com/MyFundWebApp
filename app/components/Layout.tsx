@@ -5,13 +5,15 @@ import { Provider, useSelector } from "react-redux"; // Import useSelector
 import store from "../Redux store/store";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import MainTab from "./mainTab";
 import { RootState } from "../Redux store/store"; // Import RootState
 
 const Layout = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState(
-    window.innerWidth < 768
+    window.innerWidth < 900
   );
   const [activeItem, setActiveItem] = useState("DASHBOARD");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Track if it's mobile view
 
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
@@ -20,7 +22,6 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    // Ensure page scrolls to the top on mobile when the page mounts
     if (window.innerWidth < 900) {
       window.scrollTo(0, 0); // Scroll to top
     }
@@ -29,13 +30,17 @@ const Layout = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 900) {
-        window.scrollTo(0, 0); // Scroll to top
-        setIsSidebarRetracted(true);
+        setIsSidebarRetracted(true); // Retract sidebar if window is less than 900px
       } else {
-        setIsSidebarRetracted(false);
+        setIsSidebarRetracted(false); // Expand sidebar if window is more than 900px
       }
+      setIsMobile(window.innerWidth < 768); // Update mobile view state
     };
     window.addEventListener("resize", handleResize);
+
+    // Ensure sidebar retracts on initial render based on window width
+    handleResize();
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -71,6 +76,7 @@ const Layout = () => {
           >
             <Outlet />
           </main>
+          {isMobile && <MainTab />} {/* Show the MainTab only on mobile */}
         </div>
       </div>
     </Provider>
