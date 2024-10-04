@@ -52,7 +52,7 @@ const AdminLayout = () => {
         />
         <main
           className="flex-grow pt-16 bg-gray-100 overflow-y-auto w-full"
-          style={{ backgroundColor: "#F7F5FF" }}
+          style={{ backgroundColor: "#F5F1FF" }}
         >
           <Outlet /> {/* This is where the nested routes will be rendered */}
         </main>

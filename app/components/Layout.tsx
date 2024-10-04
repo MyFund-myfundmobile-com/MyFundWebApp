@@ -71,7 +71,7 @@ const Layout = () => {
             handleToggleSidebar={handleSidebarToggle} // Pass handleSidebarToggle to Header
           />
           <main
-            className="flex-grow pt-16 overflow-y-auto w-full"
+            className="flex-grow pt-16 pb-10 overflow-y-auto w-full"
             style={{ backgroundColor: "#F7F5FF", marginLeft: -40 }}
           >
             <Outlet />

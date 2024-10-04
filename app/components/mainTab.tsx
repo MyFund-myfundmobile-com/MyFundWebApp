@@ -15,7 +15,7 @@ const MainTab = () => {
   return (
     <div className="fixed bottom-0 left-0 w-full shadow-lg flex justify-around py-4 bg-customPurple text-white">
       <TabItem
-        label="Home"
+        label="MyFund"
         icon={home}
         active={activeTab === "Home"}
         onClick={() => handleTabClick("Home", "/App/home")}
@@ -65,17 +65,13 @@ const TabItem = ({
       className={`h-8 w-8 ${active ? "text-[#BF73FA]" : "text-gray-300"}`}
       style={{ marginBottom: 5 }}
     />
-    <span
-      className={`text-xs ${
-        active ? "text-[#BF73FA]" : "text-gray-300"
-      } uppercase`} // Added uppercase styling
-    >
+    <span className={`text-xs ${active ? "text-[#BF73FA]" : "text-gray-300"}`}>
       {label}
     </span>
     {active && (
       <div
-        className={`w-1 h-1 mt-1 rounded-full ${
-          active ? "text-[#BF73FA]" : "text-gray-300"
+        className={`w-2 h-2 mt-1 rounded-full ${
+          active ? "bg-[#BF73FA]" : "bg-gray-300"
         }`}
       ></div>
     )}
