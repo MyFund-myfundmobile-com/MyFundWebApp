@@ -72,7 +72,7 @@ const Layout = () => {
           />
           <main
             className="flex-grow pt-16 pb-10 overflow-y-auto w-full"
-            style={{ backgroundColor: "#F7F5FF", marginLeft: -40 }}
+            style={{ backgroundColor: "#F5F1FF", marginLeft: -40 }}
           >
             <Outlet />
           </main>
