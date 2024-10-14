@@ -142,11 +142,31 @@ const SavingsGoal: React.FC<SavingsGoalProps> = ({
           <span className="font-bold text-purple1">
             You should be saving...
           </span>
-          <Title style={{ fontSize: 115, marginTop: 0, color: "#BB9CE8" }}>
-            ₦{savingsPerMonth.toLocaleString()}
+          <Title
+            style={{
+              fontSize: window.innerWidth < 600 ? 65 : 115, // Adjust size for mobile view
+              marginTop: 0,
+              color: "#BB9CE8",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 20,
+                marginTop: -10,
+              }}
+            >
+              ₦
+            </span>
+            {savingsPerMonth.toLocaleString()}
           </Title>
 
-          <Title style={{ fontSize: 50, marginTop: -15, color: "grey" }}>
+          <Title
+            style={{
+              fontSize: window.innerWidth < 600 ? 25 : 50,
+              marginTop: -15,
+              color: "grey",
+            }}
+          >
             per month
           </Title>
         </p>

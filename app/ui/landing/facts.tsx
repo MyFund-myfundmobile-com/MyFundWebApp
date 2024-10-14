@@ -54,7 +54,7 @@ const Facts = () => {
               <p className="text-sm text-[#636262]">
                 To become the go-to platform in the country for the
                 working-class people for real estate investments with 1 million
-                financially free families by 2035.
+                financially free families by 2045.
               </p>
             </div>
             {/* Feature Item */}

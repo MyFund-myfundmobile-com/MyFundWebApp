@@ -5,18 +5,7 @@ import Title from "../components/title";
 import Subtitle from "../components/subtitle";
 import Divider from "@mui/material/Divider";
 import { IonIcon } from "@ionic/react";
-import {
-  menuOutline,
-  personCircleOutline,
-  walletOutline,
-  trendingUpOutline,
-  businessOutline,
-  settingsOutline,
-  chatbubbleOutline,
-  logOutOutline,
-  chevronForwardOutline,
-  chevronBackOutline,
-} from "ionicons/icons";
+import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons";
 import Section from "../components/section";
 
 const AboutPage = () => {
@@ -26,7 +15,7 @@ const AboutPage = () => {
     {
       title: "Our Mission",
       content:
-        "To provide working- and retiring-class people with the opportunity to earn passive income from real estate.",
+        "To provide working-class people the opportunity to earn passive income from real estate regardless of their location.",
       image: "/images/onedown.png",
     },
     {
@@ -34,6 +23,33 @@ const AboutPage = () => {
       content:
         "To become the go-to platform for real estate investments with 1 million financially free families by 2045.",
       image: "/images/Inauguration.png",
+    },
+  ];
+
+  const milestones = [
+    {
+      year: 2021,
+      description:
+        "Prelaunched MyFund at the Wealth Leadership Academy with - 42 users.",
+      image: "/images/wlapix2.png",
+    },
+    {
+      year: 2022,
+      description:
+        "Certified as an independent financial organization. First 500 users.",
+      image: "/images/innaugurated.png",
+    },
+    {
+      year: 2023,
+      description:
+        "Launched the National Hostel Project starting with FUNAAB Hostels.",
+      image: "/images/3dfunaab.png",
+    },
+    {
+      year: 2024,
+      description:
+        "Launched Enterprise Mobile App and New Webapp. First 1000 users/downloads.",
+      image: "/images/myfundmobile.png",
     },
   ];
 
@@ -121,6 +137,73 @@ const AboutPage = () => {
         className="my-12"
         style={{ backgroundColor: "white", height: "2px" }}
       />
+
+      <div className="w-full px-20 py-10 text-center">
+        <Title style={{ color: "silver" }}>Our Story</Title>
+        <div className="hidden md:flex justify-between mt-10 p-2">
+          {/* Web View */}
+          {milestones.map((milestone, index) => (
+            <div
+              key={index}
+              className="relative border border-silver rounded-lg p-4 w-1/4 flex flex-col items-center"
+              style={{
+                borderStyle: "dashed",
+                borderWidth: "2px",
+                borderColor: "grey",
+              }} // Custom styles for thickness and dash length
+            >
+              {index > 0 && (
+                <div className="absolute left-[-10px] top-1/2 p-2 transform -translate-y-1/2 w-[2px] bg-silver h-10" />
+              )}
+              <h2 className="text-white text-xl mb-2">{milestone.year}</h2>
+              <Image
+                src={milestone.image}
+                alt={`Image for ${milestone.year}`}
+                width={150} // Changed to be square
+                height={150} // Changed to be square
+                className="rounded-lg mb-2 object-cover w-full h-full" // Added w-full and h-full to cover the container
+              />
+              <p
+                className="text-gray-300 text-center text-karla font-karla"
+                style={{ letterSpacing: -0.5 }}
+              >
+                {milestone.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile View */}
+        <div className="md:hidden flex flex-col items-start">
+          {milestones.map((milestone, index) => (
+            <div
+              key={index}
+              className="flex items-start mb-10 border border-silver rounded-lg p-4 "
+            >
+              <div className="w-1 bg-customPurple h-full" />
+              <div className="flex flex-col ml-4">
+                <h2 className="text-white text-lg">{milestone.year}</h2>
+                <div className="bg-customPurple p-2 rounded-lg">
+                  <Image
+                    src={milestone.image}
+                    alt={`Image for ${milestone.year}`}
+                    width={150} // Changed to be square
+                    height={150} // Changed to be square
+                    className="rounded-lg object-cover w-full h-full" // Added w-full and h-full to cover the container
+                  />
+                </div>
+                <p className="text-gray-300 mt-2">{milestone.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Divider
+        className="my-12"
+        style={{ backgroundColor: "white", height: "2px" }}
+      />
+
       {/* Team Members Section */}
       <div className="w-full pl-20 pr-20 px-80 py-10 text-center">
         <Title style={{ color: "silver" }}>Meet Our Team</Title>
@@ -173,7 +256,7 @@ const teamMembers = [
   {
     name: "Timilehin Adebambo",
     role: "CTO",
-    image: "/images/icb.png",
+    image: "/images/timi.jpg",
   },
   {
     name: "Joseph Gideon (Chubi)",

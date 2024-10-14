@@ -3,13 +3,18 @@ import { IonIcon } from "@ionic/react";
 import { home, save, trendingUp, wallet, menu } from "ionicons/icons";
 import { useNavigate } from "react-router-dom";
 
-const MainTab = () => {
-  const [activeTab, setActiveTab] = useState("Home");
+const MainTab = ({
+  onMenuItemClick,
+}: {
+  onMenuItemClick: (label: string) => void;
+}) => {
+  const [activeTab, setActiveTab] = useState("MyFund");
   const navigate = useNavigate();
 
   const handleTabClick = (tab: string, path: string) => {
     setActiveTab(tab);
-    navigate(path); // Navigates to the corresponding path
+    onMenuItemClick(tab); // Call the prop function to update the header
+    navigate(path);
   };
 
   return (
@@ -17,8 +22,8 @@ const MainTab = () => {
       <TabItem
         label="MyFund"
         icon={home}
-        active={activeTab === "Home"}
-        onClick={() => handleTabClick("Home", "/App/home")}
+        active={activeTab === "MyFund"}
+        onClick={() => handleTabClick("MyFund", "/App/home")}
       />
       <TabItem
         label="Save"

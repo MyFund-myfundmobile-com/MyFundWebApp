@@ -79,11 +79,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   );
 
   const token = useSelector((state: RootState) => state.auth.token) || ""; // Fallback to empty string if token is null
-  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  const cards = useSelector((state: RootState) => state.auth.cards);
-  const accountSavedBalance = useSelector(
-    (state: RootState) => state.auth.accountBalances.savings
-  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

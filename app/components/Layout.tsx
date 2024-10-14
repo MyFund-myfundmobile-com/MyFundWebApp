@@ -12,7 +12,7 @@ const Layout = () => {
   const [isSidebarRetracted, setIsSidebarRetracted] = useState(
     window.innerWidth < 900
   );
-  const [activeItem, setActiveItem] = useState("DASHBOARD");
+  const [activeItem, setActiveItem] = useState("MyFund");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Track if it's mobile view
 
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -58,6 +58,7 @@ const Layout = () => {
           onToggle={handleSidebarToggle}
           isRetracted={isSidebarRetracted}
           onMenuItemClick={handleMenuItemClick}
+          activeItem={activeItem} // Pass activeItem as a prop
         />
         <div
           className={`flex-grow flex flex-col transition-all duration-300 ${
@@ -76,7 +77,7 @@ const Layout = () => {
           >
             <Outlet />
           </main>
-          {isMobile && <MainTab />} {/* Show the MainTab only on mobile */}
+          {isMobile && <MainTab onMenuItemClick={handleMenuItemClick} />}
         </div>
       </div>
     </Provider>

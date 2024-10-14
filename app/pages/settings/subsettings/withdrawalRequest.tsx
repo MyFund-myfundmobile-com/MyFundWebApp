@@ -151,7 +151,7 @@ const WithdrawalRequestTransactions: React.FC<
             />
           }
         >
-          SUBMIT WITHDRAWAL REQUEST
+          WITHDRAW
         </PrimaryButton>
       </Box>
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Divider, Tooltip, CircularProgress } from "@mui/material";
 import { IonIcon } from "@ionic/react";
 import {
@@ -21,42 +21,54 @@ import { Img } from "react-image";
 interface SidebarProps {
   onToggle: () => void;
   isRetracted: boolean;
-  onMenuItemClick: (item: string) => void; // Add this prop
+  onMenuItemClick: (item: string) => void;
+  activeItem: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   onToggle,
   isRetracted: initialRetracted,
   onMenuItemClick,
+  activeItem,
 }) => {
   // Destructure the new prop
   const [isRetracted, setIsRetracted] = useState<boolean>(initialRetracted);
-  const [activeItem, setActiveItem] = useState<string>("");
-  const [lastSelectedItem, setLastSelectedItem] = useState<string>("DASHBOARD");
+  // const [setActiveItem] = useState<string>("");
+  const [lastSelectedItem, setLastSelectedItem] = useState<string>("MYFUND");
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !isRetracted &&
+        window.innerWidth < 900
+      ) {
+        setIsRetracted(true);
+        onToggle(); // This uses the onToggle function
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isRetracted, onToggle]); // Added onToggle as a dependency
+
   useEffect(() => {
     setIsRetracted(initialRetracted);
-    if (initialRetracted) {
-      setActiveItem("");
-    } else {
-      setActiveItem(lastSelectedItem);
-    }
-  }, [initialRetracted, lastSelectedItem]);
+  }, [initialRetracted]);
 
   const handleToggleSidebar = () => {
-    if (isRetracted) {
-      setActiveItem(lastSelectedItem);
-    } else {
-      setLastSelectedItem(activeItem);
-    }
     setIsRetracted(!isRetracted);
     onToggle();
   };
 
   const handleMenuItemClickInternal = (item: string) => {
-    setActiveItem(item);
     setLastSelectedItem(item);
     onMenuItemClick(item);
     window.scrollTo(0, 0);
@@ -71,7 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       case "Log Out":
         setIsLoggingOut(true);
         break;
-      case "DASHBOARD":
+      case "MYFUND":
         navigate("/App/home");
         break;
       case "SAVE":
@@ -100,6 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
+      ref={sidebarRef} // Attach ref here
       className={`bg-purple1 h-full p-4 flex flex-col justify-between fixed top-0 bottom-0 transition-all duration-300 ${
         isRetracted ? "w-64 -left-full" : "w-64 left-0"
       } z-50`}
@@ -127,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="text-white px-2 space-y-6 font-nexa">
           {[
-            { icon: personCircleOutline, label: "DASHBOARD" },
+            { icon: personCircleOutline, label: "MYFUND" },
             { icon: walletOutline, label: "SAVE" },
             { icon: trendingUpOutline, label: "INVEST" },
             { icon: businessOutline, label: "BUY PROPERTIES" },

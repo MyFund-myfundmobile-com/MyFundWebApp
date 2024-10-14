@@ -72,7 +72,7 @@ const QuickActionsSection = () => {
       </Section>
       <div className="flex flex-col gap-2 mt-2 font-karla">
         <button
-          className={`flex items-center p-2 border rounded-lg ${
+          className={`flex items-center p-2 border-2 border-gray-300 rounded-lg ${
             isAutoSaveActive ? "bg-gray-200" : "bg-white"
           } transition-all duration-300 transform ${
             isAutoSaveActive ? "" : "hover:scale-105 hover:bg-[#DCD1FF]"
@@ -86,7 +86,7 @@ const QuickActionsSection = () => {
             }`}
           />
           <span
-            className={`ml-3 flex-1 text-left text-sm ${
+            className={`ml-3 flex-1 text-left text-base ${
               isAutoSaveActive ? "text-green-600 font-bold" : "text-black"
             }`}
             style={{ letterSpacing: -0.5 }}
@@ -104,7 +104,7 @@ const QuickActionsSection = () => {
         </button>
 
         <button
-          className={`flex items-center p-2 border rounded-lg ${
+          className={`flex items-center p-2 border-2 border-gray-300 rounded-lg ${
             autoInvestSettings.active ? "bg-gray-200" : "bg-white"
           } transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]`}
           onClick={handleActivateAutoInvest}
@@ -116,7 +116,7 @@ const QuickActionsSection = () => {
               autoInvestSettings.active ? "text-green-500" : "text-black"
             }`}
           />
-          <span className="ml-3 flex-1 text-left text-sm">
+          <span className="ml-3 flex-1 text-left text-base">
             {autoInvestSettings.active
               ? `AutoInvest is ON:`
               : "Turn ON AutoInvest"}
@@ -130,16 +130,18 @@ const QuickActionsSection = () => {
         </button>
 
         <button
-          className="flex items-center p-2 border rounded-lg bg-white transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]"
+          className="flex items-center p-2 border-2 border-gray-300 rounded-lg bg-white transition-all duration-300 transform hover:scale-105 hover:bg-[#DCD1FF]"
           onClick={handleReferAndEarn} // Update the onClick handler
         >
           <IonIcon icon={personAddOutline} className="text-xl text-black" />
-          <span className="ml-3 flex-1 text-left text-sm">Refer and Earn</span>
-          <span className="text-xs text-green-600">₦500 EACH</span>
+          <span className="ml-3 flex-1 text-left text-base">
+            Refer and Earn
+          </span>
+          <span className="text-base text-green-600">₦500 EACH</span>
         </button>
 
         <button
-          className={`flex items-center p-2 border rounded-lg ${
+          className={`flex items-center p-2 border-2 border-gray-300 rounded-lg ${
             kycStatus?.kycStatus === "Pending..." ||
             kycStatus?.kycStatus === "Updated!"
               ? "bg-gray-200"
@@ -160,8 +162,8 @@ const QuickActionsSection = () => {
             icon={shieldCheckmarkOutline}
             className="text-xl text-black"
           />
-          <span className="ml-3 flex-1 text-left text-sm">Update KYC:</span>
-          <span className={`text-sm ${statusColor}`}>{statusText}</span>
+          <span className="ml-3 flex-1 text-left text-base">Update KYC:</span>
+          <span className={`text-base ${statusColor}`}>{statusText}</span>
           {kycStatus?.kycStatus === "Updated!" && (
             <IonIcon
               icon={checkmarkCircle}

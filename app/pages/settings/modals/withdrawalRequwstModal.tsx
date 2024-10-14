@@ -26,6 +26,7 @@ import {
   fetchAccountBalances,
   fetchTopSaversData,
 } from "@/app/Redux store/actions";
+import { bankOptions } from "@/app/components/bankOptions";
 
 interface WithdrawalRequestModalProps {
   isOpen: boolean;
@@ -46,17 +47,9 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
   const [withdrawTo, setWithdrawTo] = useState("");
   const [selectedBankAccount, setSelectedBankAccount] = useState("");
   const [amount, setAmount] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userFirstName, setUserFirstName] = useState("");
-  const [userLastName, setUserLastName] = useState("");
-  const [isResolving, setIsResolving] = useState(false);
 
   const token = useSelector((state: RootState) => state.auth.token) || ""; // Fallback to empty string if token is null
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  const cards = useSelector((state: RootState) => state.auth.cards);
-  const accountSavedBalance = useSelector(
-    (state: RootState) => state.auth.accountBalances.savings
-  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -75,7 +68,28 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
     (state: RootState) => state.auth.bankAccounts
   );
 
-  // Update the handler to use SelectChangeEvent instead of ChangeEvent
+  const getBankColor = (bankCode: string) => {
+    const bank = bankOptions.find((option) => option.code === bankCode);
+    return bank ? bank.color : "#4c28bc"; // Default color if not found
+  };
+
+  const formatAmountWithCommas = (amount: number) => {
+    return amount.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formattedSavings = formatAmountWithCommas(
+    Number(accountBalances.savings)
+  );
+  const formattedInvestment = formatAmountWithCommas(
+    Number(accountBalances.investment)
+  );
+  const formattedWallet = formatAmountWithCommas(
+    Number(accountBalances.wallet)
+  );
+
   const handleWithdrawFromChange = (event: SelectChangeEvent<string>) => {
     const selectedWithdrawFrom = event.target.value;
     setWithdrawFrom(selectedWithdrawFrom);
@@ -103,7 +117,6 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
 
   const handleWithdrawAll = () => {
     console.log("Withdraw all clicked!");
-    // Add logic to withdraw all funds from selected source
   };
 
   const renderAdditionalFields = () => {
@@ -167,7 +180,7 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        header="Withdraw"
+        header="Withdraw to Bank Account"
         body={
           <div>
             <p>
@@ -175,6 +188,51 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
               to your bank account.
             </p>
             <br />
+
+            <p>
+              Immediate Withdrawal to{" "}
+              <span style={{ color: "green", fontWeight: "bold" }}>
+                Bank Account
+              </span>{" "}
+              attracts...
+              <ul>
+                <li>
+                  <span style={{ color: "brown", fontWeight: "bold" }}>
+                    10%
+                  </span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    SAVINGS
+                  </span>
+                </li>
+                <li>
+                  <span style={{ color: "brown", fontWeight: "bold" }}>
+                    15%
+                  </span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    INVESTMENT
+                  </span>
+                </li>
+                <li>
+                  <span style={{ color: "green", fontWeight: "bold" }}>0%</span>{" "}
+                  charge if from{" "}
+                  <span style={{ color: "#4C28BC", fontWeight: "bold" }}>
+                    WALLET
+                  </span>
+                </li>
+              </ul>
+              <br />
+              To schedule a withdrawal without charges,{" "}
+              <span className="font-proxima text-[#4c28BC]">
+                message admin with the withdrawal request{" "}
+              </span>
+              <span className="text-italics font-italics">
+                (30 days, if from Savings and 90 days, if from Investment).
+              </span>
+            </p>
+            <br />
+
             <FormControl fullWidth variant="outlined" className="mb-5">
               <InputLabel>Withdraw from...</InputLabel>
               <Select
@@ -188,9 +246,13 @@ const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
                 <MenuItem value="" disabled>
                   Withdraw from...
                 </MenuItem>
-                <MenuItem value="Savings">Savings</MenuItem>
-                <MenuItem value="Investment">Investment</MenuItem>
-                <MenuItem value="Wallet">Wallet</MenuItem>
+                <MenuItem value="Savings">
+                  Savings (₦{formattedSavings})
+                </MenuItem>
+                <MenuItem value="Investment">
+                  Investment (₦{formattedInvestment})
+                </MenuItem>
+                <MenuItem value="Wallet">Wallet (₦{formattedWallet})</MenuItem>
               </Select>
             </FormControl>
 

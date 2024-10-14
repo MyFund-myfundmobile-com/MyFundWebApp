@@ -52,7 +52,7 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const payload = {
-        username: email,
+        username: email.toLowerCase(),
         password: password,
       };
 
